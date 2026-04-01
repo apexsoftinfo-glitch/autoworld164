@@ -1,0 +1,23 @@
+# Secrets
+.env
+config/api-keys.json
+android/key.properties
+*.p12
+*.jks
+*.keystore
+
+# IDE / AI configs with secrets
+.mcp.json
+.codex/config.toml
+
+# Flutter / Dart
+build/
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
+
+# OS
+.DS_Store
+Thumbs.db
