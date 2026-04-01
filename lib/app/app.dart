@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../core/theme/app_theme.dart';
 import '../l10n/l10n.dart';
 import 'navigation/session_navigation_observer.dart';
 import 'router/app_gate.dart';
@@ -20,10 +21,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light,
       home: _AppShell(hasSupabaseKeys: hasSupabaseKeys),
     );
   }
