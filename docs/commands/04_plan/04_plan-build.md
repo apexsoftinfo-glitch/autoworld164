@@ -1,0 +1,1 @@
+Super, to teraz rozpocznij implementację pierwszego baby stepa. Tylko jeden, tylko pierwszy z `docs/commands/05_build/`, nic więcej. Do dzieła!

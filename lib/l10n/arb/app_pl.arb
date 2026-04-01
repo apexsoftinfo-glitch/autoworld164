@@ -1,0 +1,160 @@
+{
+  "@@locale": "pl",
+  "localizationBootstrap": "Lokalizacja aplikacji jest skonfigurowana.",
+  "@localizationBootstrap": {
+    "description": "Technical placeholder used to bootstrap Flutter localization before migrating existing UI strings."
+  },
+  "errorInvalidCredentials": "Nieprawidłowy email lub hasło.",
+  "errorAnonymousAuthDisabled": "Logowanie jako gość jest obecnie wyłączone.",
+  "errorEmail": "Sprawdź adres email i spróbuj ponownie.",
+  "errorPassword": "Sprawdź hasło i spróbuj ponownie.",
+  "errorNetwork": "Problem z połączeniem. Spróbuj ponownie.",
+  "errorDeleteAccountSetupRequired": "Delete account wymaga jeszcze dokończenia setupu w Supabase.",
+  "errorDeleteAccountFailed": "Nie udało się usunąć konta. Spróbuj ponownie.",
+  "errorSharedUsersSetupRequired": "Brakuje tabeli shared_users albo jej schema nie zgadza się z template.",
+  "errorDeleteAccountNotImplemented": "Usuwanie konta nie jest jeszcze gotowe.",
+  "errorUnknown": "Wystąpił nieoczekiwany błąd.",
+  "errorWithKey": "Wystąpił błąd: {errorKey}",
+  "@errorWithKey": {
+    "description": "Fallback error message for unknown error keys.",
+    "placeholders": {
+      "errorKey": {}
+    }
+  },
+  "guestDisplayName": "Gość",
+  "registeredUserDisplayName": "Użytkownik",
+  "loadingLabel": "Ładowanie...",
+  "sessionErrorTitle": "Błąd sesji",
+  "accountTypeGuest": "gość",
+  "accountTypeRegistered": "zalogowany",
+  "commonYes": "tak",
+  "commonNo": "nie",
+  "userTierGuest": "gość",
+  "userTierRegistered": "konto",
+  "userTierPro": "Pro",
+  "homeTitle": "Start",
+  "currentSessionTitle": "Aktualna sesja",
+  "sessionUserId": "ID użytkownika: {value}",
+  "@sessionUserId": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionAccountType": "Typ konta: {value}",
+  "@sessionAccountType": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionPlan": "Plan: {value}",
+  "@sessionPlan": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionPro": "Pro: {value}",
+  "@sessionPro": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionEmail": "E-mail: {value}",
+  "@sessionEmail": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionDisplayNameValue": "Nazwa wyświetlana: {value}",
+  "@sessionDisplayNameValue": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionFirstName": "Imię: {value}",
+  "@sessionFirstName": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "developerToolsTitle": "Narzędzia deweloperskie",
+  "retryButtonLabel": "Spróbuj ponownie",
+  "welcomeTitle": "Witaj",
+  "welcomeBody": "Kontynuuj jako gość albo zaloguj się na istniejące konto.",
+  "continueAsGuestButtonLabel": "Kontynuuj jako gość",
+  "loginButtonLabel": "Zaloguj się",
+  "loginScreenTitle": "Logowanie",
+  "loginExistingAccountTitle": "Zaloguj się na istniejące konto",
+  "loginExistingAccountBody": "Użyj adresu e-mail i hasła, aby przełączyć się na istniejące konto.",
+  "emailFieldLabel": "E-mail",
+  "passwordFieldLabel": "Hasło",
+  "switchAccountWarningTitle": "Przełączasz konto",
+  "switchAccountWarningBody": "Logowanie w tym miejscu przełączy Cię z obecnego konta gościa na inne konto. Dane gościa i Pro nie łączą się automatycznie.",
+  "registerScreenTitle": "Rejestracja",
+  "secureGuestAccountTitle": "Zabezpiecz to konto gościa",
+  "secureGuestAccountBody": "To zachowa Twoje obecne dane i połączy to konto gościa z adresem e-mail oraz hasłem.",
+  "registerButtonLabel": "Zarejestruj się",
+  "profileSavedSnackbar": "Profil zapisany",
+  "proEnabledSnackbar": "Pro aktywowane",
+  "profileTitle": "Profil",
+  "firstNameFieldLabel": "Imię",
+  "saveFirstNameButtonLabel": "Zapisz imię",
+  "accountSecuredSnackbar": "Konto zabezpieczone",
+  "logoutButtonLabel": "Wyloguj się",
+  "buyProButtonLabel": "Kup Pro",
+  "deleteAccountButtonLabel": "Usuń konto",
+  "discardChangesTitle": "Odrzucić zmiany?",
+  "discardChangesBody": "Masz niezapisane zmiany. Jeśli wyjdziesz teraz, zostaną utracone.",
+  "stayButtonLabel": "Zostań",
+  "discardButtonLabel": "Odrzuć",
+  "closeButtonLabel": "Zamknij",
+  "protectProBannerTitle": "Zabezpiecz dostęp do Pro",
+  "protectProBannerBody": "To konto gościa ma już Pro. Zarejestruj to konto, aby nie stracić dostępu w przyszłości.",
+  "developerDiagnosticsTitle": "Diagnostyka tylko dla debug",
+  "developerDiagnosticsBody": "Użyj tego ekranu, aby sprawdzić lokalną konfigurację aplikacji i status integracji.",
+  "revenueCatDisconnectedTitle": "RevenueCat nie jest podłączony",
+  "revenueCatDisconnectedBody": "Dodaj klucze RevenueCat do config/api-keys.json, gdy będziesz gotowy testować subskrypcje.",
+  "sessionSectionTitle": "Sesja",
+  "loggedInLabel": "Zalogowany",
+  "anonymousLabel": "Anonimowy",
+  "planLabel": "Plan",
+  "proLabel": "Pro",
+  "userIdLabel": "ID użytkownika",
+  "emailLabel": "E-mail",
+  "displayNameLabel": "Nazwa wyświetlana",
+  "supabaseSectionTitle": "Supabase",
+  "keysConfiguredLabel": "Klucze skonfigurowane",
+  "supabaseUrlLabel": "Supabase URL",
+  "revenueCatSectionTitle": "RevenueCat",
+  "supportedPlatformLabel": "Wspierana platforma",
+  "sdkActiveLabel": "SDK aktywne",
+  "currentKeySourceLabel": "Aktualne źródło klucza",
+  "missingValueLabel": "brak",
+  "debugForceProTitle": "Debug: wymuś status Pro",
+  "debugForceProSubtitle": "Działa tylko bez aktywnego RevenueCat i tylko w debugowym narzędziu.",
+  "missingSupabaseAgentPrompt": "Połącz `Supabase MCP` z moim projektem Supabase i uzupełnij `config/api-keys.json` wartościami `SUPABASE_URL` oraz `SUPABASE_ANON_KEY`.",
+  "missingSupabaseTitle": "Brakuje kluczy Supabase",
+  "missingSupabaseBody": "Dodaj klucze Supabase do pliku konfiguracyjnego i uruchom aplikację ponownie.",
+  "missingSupabaseFileLabel": "Uzupełnij ten plik",
+  "missingSupabaseFilePath": "config/api-keys.json",
+  "missingSupabaseStep1Title": "Krok 1: zainstaluj `Supabase MCP`",
+  "missingSupabaseStep1Body": "Najpierw dodaj `Supabase MCP` do swojego agenta AI.",
+  "missingSupabaseStep2Title": "Krok 2: wklej ten prompt agentowi",
+  "copyPromptButtonLabel": "Kopiuj prompt",
+  "promptCopiedSnackbar": "Prompt skopiowany",
+  "missingSupabaseStep3Title": "Krok 3: zamknij i otwórz aplikację ponownie",
+  "missingSupabaseStep3Body": "Gdy agent uzupełni plik z kluczami, zamknij aplikację i uruchom ją jeszcze raz.",
+  "sharedUsersAgentPrompt": "Uruchom task `docs/tasks/02_SUPABASE_SHARED_USERS_SETUP.md` i doprowadź tabelę `shared_users` do minimalnej zgodności z tym projektem używając `Supabase MCP`.",
+  "sharedUsersSetupTitle": "Brakuje tabeli `shared_users` w Supabase",
+  "sharedUsersSetupBody": "Aplikacja nie może wczytać dodatkowych danych użytkowników (takich jak np. imię), bo tabela `shared_users` nie istnieje albo jej struktura nie zgadza się z założeniami minimalnymi.",
+  "sharedUsersGuideLabel": "Skorzystaj z gotowej instrukcji:",
+  "sharedUsersGuideFile": "02_SUPABASE_SHARED_USERS_SETUP.md",
+  "sharedUsersAiPromptTitle": "Wklej ten prompt agentowi AI",
+  "sharedUsersAiHelpBody": "Jeżeli Twój agent AI ma dostęp do Supabase MCP, ustawi wszystko wg. przygotowanej instrukcji za Ciebie autmatycznie.",
+  "deleteAccountSetupAgentPrompt": "Uruchom task `docs/tasks/03_SUPABASE_DELETE_ACCOUNT_SETUP.md` i dokończ deployment `delete-account` w Supabase oraz przepnij profil na gotowy flow używając `Supabase MCP`.",
+  "deleteAccountSetupTitle": "Delete account wymaga dodatkowego setupu",
+  "deleteAccountSetupBody": "Logika `Delete account` jest już wstępnie przygotowana w template, ale funkcja `delete-account` nie została jeszcze wdrożona w tym projekcie, a profil nadal prowadzi do tego ekranu setupu.",
+  "deleteAccountGuideLabel": "Skorzystaj z gotowej instrukcji:",
+  "deleteAccountGuideFile": "03_SUPABASE_DELETE_ACCOUNT_SETUP.md",
+  "deleteAccountAiPromptTitle": "Wklej ten prompt agentowi AI",
+  "deleteAccountAiHelpBody": "Jeżeli Twój agent AI ma dostęp do Supabase MCP, może wdrożyć funkcję `delete-account`, sprawdzić `verify_jwt`, przepiąć profil na gotowy flow i zaktualizować testy."
+}

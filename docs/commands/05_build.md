@@ -1,0 +1,1 @@
+Znajdź pierwszy plik .md w `docs/commands/05_build/` krok `01` i zaimplementuj go. Nie czytaj innych plików, tylko ten oznaczony jako `01`!

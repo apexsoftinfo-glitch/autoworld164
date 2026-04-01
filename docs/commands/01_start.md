@@ -1,0 +1,1 @@
+Wykonaj polecenie z pliku `docs/commands/01_start/01_start-about-them.md`.

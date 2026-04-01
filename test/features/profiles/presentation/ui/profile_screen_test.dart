@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:myapp/app/profile/presentation/cubit/account_actions_cubit.dart';
+import 'package:myapp/app/session/models/session_status_model.dart';
+import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
+import 'package:myapp/core/di/injection.dart';
+import 'package:myapp/features/profiles/presentation/cubit/profile_cubit.dart';
+import 'package:myapp/features/profiles/presentation/ui/profile_screen.dart';
+import 'package:myapp/l10n/generated/app_localizations.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../../../support/mocks.dart';
+
+void main() {
+  late MockSessionRepository sessionRepository;
+  late BehaviorSubject<SessionStatusModel> sessionController;
+  late MockSharedUserRepository sharedUserRepository;
+  late MockAuthRepository authRepository;
+  late MockSubscriptionRepository subscriptionRepository;
+
+  setUp(() async {
+    sessionRepository = MockSessionRepository();
+    sessionController = BehaviorSubject.seeded(
+      buildAuthenticatedSessionStatus(
+        userId: 'guest-1',
+        isAnonymous: true,
+        isPro: true,
+        sharedUser: buildSharedUser(id: 'guest-1', firstName: 'Guest'),
+      ),
+    );
+    sharedUserRepository = MockSharedUserRepository();
+    authRepository = MockAuthRepository();
+    subscriptionRepository = MockSubscriptionRepository();
+
+    when(
+      () => sessionRepository.sessionStream,
+    ).thenAnswer((_) => sessionController.stream.cast());
+    when(
+      () => sessionRepository.current,
+    ).thenAnswer((_) => sessionController.value);
+    when(() => sessionRepository.refresh()).thenAnswer((_) async {});
+
+    await getIt.reset();
+    getIt.registerFactory<SessionCubit>(() => SessionCubit(sessionRepository));
+    getIt.registerFactory<ProfileCubit>(
+      () => ProfileCubit(sharedUserRepository),
+    );
+    getIt.registerFactory<AccountActionsCubit>(
+      () => AccountActionsCubit(authRepository, subscriptionRepository),
+    );
+  });
+
+  tearDown(() async {
+    await sessionController.close();
+    await getIt.reset();
+  });
+
+  testWidgets('shows protect-pro banner for guest with pro', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const ProfileScreen(),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Zabezpiecz dostęp do Pro'), findsOneWidget);
+    expect(find.text('Zarejestruj się'), findsOneWidget);
+    expect(find.text('Zaloguj się'), findsOneWidget);
+  });
+
+  testWidgets('opens delete account setup screen from profile', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const ProfileScreen(),
+      ),
+    );
+    await tester.pump();
+
+    await tester.scrollUntilVisible(
+      find.text('Usuń konto'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Usuń konto'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Delete account wymaga dodatkowego setupu'),
+      findsOneWidget,
+    );
+    expect(find.text('03_SUPABASE_DELETE_ACCOUNT_SETUP.md'), findsOneWidget);
+  });
+}

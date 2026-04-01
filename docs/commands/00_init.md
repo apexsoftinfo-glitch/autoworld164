@@ -1,0 +1,1 @@
+Wykonaj polecenie z pliku `docs/commands/00_init/01_init-git.md`.

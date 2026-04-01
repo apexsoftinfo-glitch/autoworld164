@@ -1,0 +1,1 @@
+Wykonaj polecenie z pliku `docs/commands/03_design/01_design-plan.md`.

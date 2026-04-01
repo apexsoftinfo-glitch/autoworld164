@@ -1,0 +1,1 @@
+Wykonaj kroki zawarte w @docs/tasks/01_INITIALIZE_APP_SETUP.md

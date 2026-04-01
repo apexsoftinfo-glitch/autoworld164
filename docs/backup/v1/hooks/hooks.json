@@ -1,0 +1,17 @@
+{
+  "description": "Project hooks for Flutter development workflow",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if the edited file is a Cubit file (ends with _cubit.dart). If YES, respond with a systemMessage reminding to update or verify the corresponding test file. The test file should be at: test/features/<feature_name>/cubit/<cubit_name>_test.dart. If the test file doesn't exist, remind to create it. If NO (not a cubit file), return empty response. Input: $TOOL_INPUT",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

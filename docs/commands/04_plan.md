@@ -1,0 +1,1 @@
+Wykonaj polecenie z pliku `docs/commands/04_plan/01_plan-explore.md`.
