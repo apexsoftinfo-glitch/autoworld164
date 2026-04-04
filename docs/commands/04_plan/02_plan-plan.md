@@ -7,13 +7,13 @@ Na tym etapie nie piszesz jeszcze żadnego kodu! Tworzymy tylko dokładny plan i
 CEL: Aplikacja musi robić jedną główną rzecz ale DOBRZE. Nie przeginaj ze scope. Ma to być proste MVP, które działa. DZIAŁA DOBRZE. 
 
 Plan powinien zawierać w sobie implemnetację całej aplikacji. 
-- kolejne ekrany z utrzymaniem stylu `lib/features/home/ui/home_screen.dart` (opisany dodatkowo w `DESIGN.md`)
+- kolejne ekrany z utrzymaniem stylu `lib/features/home/ui/home_screen.dart` (opisany dodatkowo w `docs/DESIGN.md`)
 - cubity + test jednostkowe
 - nowa struktura tabel w supabase database z użyciem zalogowanego uid
 - polityki RLS
 - spięcie tego wszystkiego w aktualnej architekturze z użyciem repositories i data sources
 - lokalizację wszelkich stringów na pl/en
-- testy integracyjne (wyrzuć przykładowy integration_test/counter_test.dart)
+- testy integracyjne (wyrzuć przykładowy integration_test/counter_test_example.dart)
 itp. 
 
 Trzymaj się zasad opisanych w `AGENTS.md`.
@@ -34,7 +34,7 @@ Rzeczy powiązane z Supabase zalecaj w tym planie wprowadzać przez Supabase MCP
 
 # TASK
 
-Przygotuj pełny plan implemnetacyjny głównego MVP i zapisz go w całości do `docs/commands/04_plan/IMPL_PLAN.md`.
+Przygotuj pełny plan implemnetacyjny głównego MVP i zapisz go w całości do `docs/IMPL_PLAN.md`.
 
 Na końcu przedstaw jego skróconą wersję użytkownikowi.
 

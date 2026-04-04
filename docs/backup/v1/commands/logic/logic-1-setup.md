@@ -103,7 +103,7 @@ UserTier get tier {
 2. `/auth` → full SessionRepository (auth + profile + connectivity + RevenueCat)
 
 **Limity:**
-- Guest: X elementów (z IDEA.md)
+- Guest: X elementów (z docs/IDEA.md)
 - Registered: X × 3 (mnożnik stały)
 - Pro: bez limitu (null)
 ~~~

@@ -9,7 +9,7 @@ Zbuduj warstwę logiki: modele, cubity, repozytoria, FakeDataSource i testy.
 
 **Skill:** `.claude/skills/flutter-logic/SKILL.md`
 
-> **Nazwy domenowe:** Zastąp `{Entity}` nazwą z IDEA.md (np. Task, Note, Entry).
+> **Nazwy domenowe:** Zastąp `{Entity}` nazwą z docs/IDEA.md (np. Task, Note, Entry).
 > Przykłady: `{Entity}Model`, `{Entity}Repository`, `{Entities}Cubit`, `{Entity}DataSource`
 
 ---

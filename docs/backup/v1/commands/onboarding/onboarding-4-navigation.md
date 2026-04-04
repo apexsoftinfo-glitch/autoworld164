@@ -8,7 +8,7 @@ Przycisk "Rozpocznij" → `Navigator.pushReplacement` → `OnboardingScreen()`
 ## 4.2 Guided Onboarding → Home
 
 Po Minimal Setup (strona 7):
-1. `saveFirstEntry()` zapisuje wpis przez `{Entities}Repository` (np. TasksRepository - z IDEA.md)
+1. `saveFirstEntry()` zapisuje wpis przez `{Entities}Repository` (np. TasksRepository - z docs/IDEA.md)
 2. `setOnboardingCompleted()` ustawia flagę przez `ProfilesRepository`
 3. `isCompleted = true` → UI nawiguje do Home
 

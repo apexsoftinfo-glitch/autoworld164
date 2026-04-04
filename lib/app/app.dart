@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../core/theme/app_theme.dart';
+import 'locale/presentation/cubit/app_locale_cubit.dart';
 import '../l10n/l10n.dart';
 import 'navigation/session_navigation_observer.dart';
 import 'router/app_gate.dart';
@@ -16,13 +16,24 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AutoWorld164',
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: AppTheme.light,
-      home: _AppShell(hasSupabaseKeys: hasSupabaseKeys),
+    return BlocProvider<AppLocaleCubit>.value(
+      value: GetIt.I<AppLocaleCubit>(),
+      child: BlocBuilder<AppLocaleCubit, AppLocaleState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'XII',
+            debugShowCheckedModeBanner: false,
+            locale: state.localeOrNull,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+              useMaterial3: true,
+            ),
+            home: _AppShell(hasSupabaseKeys: hasSupabaseKeys),
+          );
+        },
+      ),
     );
   }
 }

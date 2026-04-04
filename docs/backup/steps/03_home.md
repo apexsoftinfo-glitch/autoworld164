@@ -1,6 +1,6 @@
 # WPROWADZENIE
 
-Stworzyć 5 wariantów ekranu głównego Home Screen dla pomysłu opisanego w @IDEA.md.
+Stworzyć 5 wariantów ekranu głównego Home Screen dla pomysłu opisanego w @docs/IDEA.md.
 
 ## Znaczenie
 
@@ -36,7 +36,7 @@ Warianty muszą radykalnie od siebie różnić. Think outside the box.
 
 # ZADANIE
 
-Zapoznaj się się z plikiem @IDEA.md. Twoim zadaniem będzie zaprojektowanie 5 wariantów głównego ekran aplikacji. 
+Zapoznaj się się z plikiem @docs/IDEA.md. Twoim zadaniem będzie zaprojektowanie 5 wariantów głównego ekran aplikacji. 
 
 Pracujemy w `lib/features/home/ui/home_screen.dart`.
 
@@ -50,7 +50,7 @@ Jeżeli core aplikacji to kilka ekranów, to zaprojektuj kilka z nich pod każdy
 
 Z głównego ekranu, user zawsze ma mieć bezposredni dostęp do istniejącego ekranu Profilu ProfileScreen `lib/features/profiles/presentation/ui/profile_screen.dart`.
 
-[] zapoznales sie z idea.md
+[] zapoznales sie z docs/IDEA.md
 [] zaimplementowales 5 radykalnie różnych wariantow ekranu głównego
 [] zapytales usera ktory mu sie najabrzdiej podoba
 [] user zdecydowal sie na jakas wersje

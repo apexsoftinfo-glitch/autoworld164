@@ -42,44 +42,44 @@ Statusy:
 | ⬜ | Potwierdzono, że pomysł nie dubluje istniejącej aplikacji community albo różnica została świadomie zaakceptowana |
 | ⬜ | User zatwierdził pomysł do realizacji |
 
-## Krok 3. Utwórz `IDEA.md`
+## Krok 3. Utwórz `docs/IDEA.md`
 
 | Status | Item |
 | --- | --- |
-| ⬜ | `IDEA.md` istnieje |
-| ⬜ | `IDEA.md` zawiera nazwę aplikacji |
-| ⬜ | `IDEA.md` zawiera imię i nazwisko autora |
-| ⬜ | `IDEA.md` zawiera `APP_BUNDLE_ID` |
+| ⬜ | `docs/IDEA.md` istnieje |
+| ⬜ | `docs/IDEA.md` zawiera nazwę aplikacji |
+| ⬜ | `docs/IDEA.md` zawiera imię i nazwisko autora |
+| ⬜ | `docs/IDEA.md` zawiera `APP_BUNDLE_ID` |
 | ⬜ | `APP_BUNDLE_ID` ma poprawny format `com.imienazwisko.appname` |
-| ⬜ | `IDEA.md` zawiera `SUPABASE_TABLE_PREFIX` |
+| ⬜ | `docs/IDEA.md` zawiera `SUPABASE_TABLE_PREFIX` |
 | ⬜ | `SUPABASE_TABLE_PREFIX` jest równy ostatniemu segmentowi `APP_BUNDLE_ID` z dopisanym `_` |
-| ⬜ | `IDEA.md` opisuje co aplikacja robi |
-| ⬜ | `IDEA.md` opisuje docelowego użytkownika |
-| ⬜ | `IDEA.md` opisuje główny ból użytkownika |
-| ⬜ | `IDEA.md` opisuje, jak użytkownik radzi sobie dziś z problemem |
-| ⬜ | `IDEA.md` opisuje, co w obecnym sposobie jest niewygodne, za wolne albo nieskuteczne |
-| ⬜ | `IDEA.md` wyjaśnia, dlaczego aplikacja ma być dla użytkownika lepszym rozwiązaniem |
-| ⬜ | `IDEA.md` opisuje rezultat, który użytkownik chce osiągnąć |
-| ⬜ | `IDEA.md` opisuje wartość dla użytkownika |
-| ⬜ | `IDEA.md` zawiera główną obietnicę wartości aplikacji |
-| ⬜ | `IDEA.md` opisuje niszę aplikacji |
-| ⬜ | `IDEA.md` zawiera język i sformułowania użytkownika z rozmowy |
-| ⬜ | `IDEA.md` zawiera krótki opis aplikacji |
-| ⬜ | `IDEA.md` zawiera długi opis aplikacji |
-| ⬜ | `IDEA.md` zawiera ustalenia z rozmowy z userem |
-| ⬜ | `IDEA.md` zawiera opis pierwszego głównego ekranu po onboardingu (Home Screen) |
-| ⬜ | `IDEA.md` zawiera listę pozostałych ekranów |
-| ⬜ | `IDEA.md` rozróżnia funkcje free i pro oraz proponuje podstawowe limity |
-| ⬜ | `IDEA.md` zawiera plan wersji `0.0.1`, `0.0.2`, `0.0.3` |
-| ⬜ | Kluczowe sekcje `IDEA.md` zostały uzupełnione treścią, a nie zostawione jako puste hasła dla usera |
+| ⬜ | `docs/IDEA.md` opisuje co aplikacja robi |
+| ⬜ | `docs/IDEA.md` opisuje docelowego użytkownika |
+| ⬜ | `docs/IDEA.md` opisuje główny ból użytkownika |
+| ⬜ | `docs/IDEA.md` opisuje, jak użytkownik radzi sobie dziś z problemem |
+| ⬜ | `docs/IDEA.md` opisuje, co w obecnym sposobie jest niewygodne, za wolne albo nieskuteczne |
+| ⬜ | `docs/IDEA.md` wyjaśnia, dlaczego aplikacja ma być dla użytkownika lepszym rozwiązaniem |
+| ⬜ | `docs/IDEA.md` opisuje rezultat, który użytkownik chce osiągnąć |
+| ⬜ | `docs/IDEA.md` opisuje wartość dla użytkownika |
+| ⬜ | `docs/IDEA.md` zawiera główną obietnicę wartości aplikacji |
+| ⬜ | `docs/IDEA.md` opisuje niszę aplikacji |
+| ⬜ | `docs/IDEA.md` zawiera język i sformułowania użytkownika z rozmowy |
+| ⬜ | `docs/IDEA.md` zawiera krótki opis aplikacji |
+| ⬜ | `docs/IDEA.md` zawiera długi opis aplikacji |
+| ⬜ | `docs/IDEA.md` zawiera ustalenia z rozmowy z userem |
+| ⬜ | `docs/IDEA.md` zawiera opis pierwszego głównego ekranu po onboardingu (Home Screen) |
+| ⬜ | `docs/IDEA.md` zawiera listę pozostałych ekranów |
+| ⬜ | `docs/IDEA.md` rozróżnia funkcje free i pro oraz proponuje podstawowe limity |
+| ⬜ | `docs/IDEA.md` zawiera plan wersji `0.0.1`, `0.0.2`, `0.0.3` |
+| ⬜ | Kluczowe sekcje `docs/IDEA.md` zostały uzupełnione treścią, a nie zostawione jako puste hasła dla usera |
 
-## Krok 4. Zweryfikuj `IDEA.md` z userem
+## Krok 4. Zweryfikuj `docs/IDEA.md` z userem
 
 | Status | Item |
 | --- | --- |
-| ⬜ | User został poproszony o weryfikację `IDEA.md` |
+| ⬜ | User został poproszony o weryfikację `docs/IDEA.md` |
 | ⬜ | Jeśli user zgłosił uwagi do dokumentów: zostały uwzględnione |
-| ⬜ | User ostatecznie zatwierdził `IDEA.md` |
+| ⬜ | User ostatecznie zatwierdził `docs/IDEA.md` |
 
 ## Krok 5. Ustaw identyfikatory aplikacji
 
@@ -96,7 +96,7 @@ Statusy:
 | --- | --- |
 | ⬜ | Placeholder `<app_description>...</app_description>` został podmieniony w sekcji `App Context` w `AGENTS.md` |
 | ⬜ | Sekcja `App Context` w `AGENTS.md` zawiera krótki opis aplikacji w `1-3` zdaniach |
-| ⬜ | Sekcja `App Context` w `AGENTS.md` odsyła do `IDEA.md` po pełny opis produktu |
+| ⬜ | Sekcja `App Context` w `AGENTS.md` odsyła do `docs/IDEA.md` po pełny opis produktu |
 | ⬜ | Placeholder `<supabase_table_prefix>` został podmieniony w `AGENTS.md` |
 | ⬜ | Użyty prefix jest zgodny z ustalonym `SUPABASE_TABLE_PREFIX` |
 
@@ -104,7 +104,7 @@ Statusy:
 
 | Status | Item |
 | --- | --- |
-| ⬜ | `IDEA.md` i `ONBOARDING_AND_PAYWALL.md` zostały zapisane w osobnym commicie |
+| ⬜ | `docs/IDEA.md` i `docs/ONBOARDING_AND_PAYWALL.md` zostały zapisane w osobnym commicie |
 | ⬜ | Pozostałe zmiany zostały zapisane w oddzielnym commicie lub commitach |
 
 ## Krok 8. Wyślij dane aplikacji do platformy

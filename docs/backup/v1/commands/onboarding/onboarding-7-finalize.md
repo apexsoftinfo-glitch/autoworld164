@@ -75,7 +75,7 @@ Wpisz `/database` gdy będziesz gotowy.
 - **Każdy hardcoded string oznaczaj `// L10N`** - onboarding ma DUŻO tekstów (wizualizacje, CTA, labels, przykładowe dane)
 - **Design System z CLAUDE.md** - onboarding MUSI wyglądać jak Home (vibe, paleta, typography)
 - **Error handling** dla kroków z zapisem (idle/loading/error/success)
-- **Repository z `/logic`** - używaj ProfilesRepository i `{Entities}Repository` (np. TasksRepository - z IDEA.md)
+- **Repository z `/logic`** - używaj ProfilesRepository i `{Entities}Repository` (np. TasksRepository - z docs/IDEA.md)
 - **Błędy inline (SelectableText)** - NIGDY snackbar!
 - **Czekaj na "ok"** przed commitem - nie rób commita bez potwierdzenia usera
 

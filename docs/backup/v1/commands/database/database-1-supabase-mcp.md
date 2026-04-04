@@ -30,11 +30,11 @@ Szczegóły: `docs/SESSION_ARCHITECTURE.md`
 
 **Przykład:**
 - Table Prefix w CLAUDE.md: `{prefix}_`
-- Schemat mówi: `{entities}` (nazwa z IDEA.md, np. entries, tasks, notes)
+- Schemat mówi: `{entities}` (nazwa z docs/IDEA.md, np. entries, tasks, notes)
 - **Tworzysz tabelę:** `{prefix}_{entities}` ✅
 - **NIE:** `{entities}` ❌
 
-> **Parametryzacja:** Zastąp `{prefix}` prefixem z CLAUDE.md, a `{entities}` nazwą encji z IDEA.md.
+> **Parametryzacja:** Zastąp `{prefix}` prefixem z CLAUDE.md, a `{entities}` nazwą encji z docs/IDEA.md.
 
 **Dlaczego?** Wszystkie aplikacje usera dzielą jeden projekt Supabase. Prefix rozróżnia tabele między aplikacjami.
 
@@ -166,7 +166,7 @@ Nie masz jeszcze konta Supabase? Spokojnie, założymy je razem!
 4. Po zalogowaniu kliknij "New Project"
 5. Wypełnij:
    - Organization: wybierz lub utwórz
-   - Project name: [nazwa z IDEA.md]
+   - Project name: [nazwa z docs/IDEA.md]
    - Database Password: wygeneruj silne hasło (zapisz je!)
    - Region: wybierz najbliższy (np. Frankfurt dla PL)
 6. Kliknij "Create new project"

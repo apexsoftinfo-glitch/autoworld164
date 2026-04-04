@@ -36,7 +36,7 @@ curl -X POST {API Base URL}/user/apps \
   }'
 ```
 
-**WAŻNE:** `description` to krótki elevator pitch (2-3 zdania), NIE cały IDEA.md!
+**WAŻNE:** `description` to krótki elevator pitch (2-3 zdania), NIE cały docs/IDEA.md!
 
 ## 4.3 Zapisz dane z response
 

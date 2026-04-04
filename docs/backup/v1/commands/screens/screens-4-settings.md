@@ -36,9 +36,9 @@ Settings MUSI zawierać te opcje:
 | **Wyloguj** | Logout | Placeholder → snackbar "Wkrótce" |
 | **Usuń konto** | Delete account | Placeholder → dialog potwierdzenia → snackbar |
 
-## 4.1b Pro features w Settings (z IDEA.md)
+## 4.1b Pro features w Settings (z docs/IDEA.md)
 
-Sprawdź IDEA.md → "Paywall Content" → tabelę "What's included" → kolumnę "Implementacja".
+Sprawdź docs/IDEA.md → "Paywall Content" → tabelę "What's included" → kolumnę "Implementacja".
 
 Jeśli jakiś benefit ma implementację "Toggle w Settings" (np. "Premium Themes"):
 - **Zbuduj feature normalnie** (np. ThemeNotifier z dark mode już istnieje powyżej)

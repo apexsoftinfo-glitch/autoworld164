@@ -191,7 +191,27 @@ class AppLocalizationsPl extends AppLocalizations {
   String get profileTitle => 'Profil';
 
   @override
+  String get profileLanguageSectionTitle => 'Język aplikacji';
+
+  @override
+  String get profileLanguageSectionDescription =>
+      'Wybierz, czy aplikacja ma używać języka urządzenia, polskiego czy angielskiego.';
+
+  @override
   String get firstNameFieldLabel => 'Imię';
+
+  @override
+  String get languageOptionSystem => 'Automatyczny';
+
+  @override
+  String get languageOptionSystemDescription =>
+      'Używa języka urządzenia. Dla nieobsługiwanych języków aplikacja wraca do English.';
+
+  @override
+  String get languageOptionPolish => 'Polski';
+
+  @override
+  String get languageOptionEnglish => 'English';
 
   @override
   String get saveFirstNameButtonLabel => 'Zapisz imię';

@@ -63,4 +63,4 @@ curl -s https://auedkfdtobshqutwinee.supabase.co/functions/v1/apps-api/user \
 
 5. Gdy skończysz, przedstaw mu co zostało wykonane w tym kroku, zasugeruj, aby napisał `next` aby przejść dalej.
 
-Gdy odpowie "next", przejdź do wykonania polecenia zawartego w `docs/commands/01_start/02_start-do-you-have-idea.md`.
+Gdy odpowie "next", przejdź do wykonania polecenia zawartego w `docs/commands/01_start/02_start-do-you-have-docs/IDEA.md`.

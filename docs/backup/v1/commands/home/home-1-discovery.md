@@ -1,8 +1,8 @@
 # KROK 1-2: Przygotowanie i Discovery wizji layoutu
 
-## 1.1 Przeczytaj IDEA.md
+## 1.1 Przeczytaj docs/IDEA.md
 
-Przeczytaj `IDEA.md` - potrzebujesz:
+Przeczytaj `docs/IDEA.md` - potrzebujesz:
 - Sekcja "Home Screen" (layout, elementy, empty state, CTA)
 - Sekcja "Złota Nisza" (co aplikacja robi, dla kogo)
 - Nazwa aplikacji
@@ -17,9 +17,9 @@ W `CLAUDE.md`:
 
 ## 2.1 Potwierdź zrozumienie
 
-Powiedz użytkownikowi co zrozumiałeś z IDEA.md:
+Powiedz użytkownikowi co zrozumiałeś z docs/IDEA.md:
 ```
-Przeczytałem IDEA.md i wiem o czym jest [nazwa aplikacji].
+Przeczytałem docs/IDEA.md i wiem o czym jest [nazwa aplikacji].
 
 [2-3 zdania podsumowujące główną funkcję i co user będzie robił na Home Screen]
 ```
@@ -49,7 +49,7 @@ Co wolisz?
 5. Nawet z wizją usera → i tak 5 RÓŻNYCH wariantów eksplorujących tę wizję
 
 **Jeśli user nie ma wizji:**
-1. "Spoko! Na podstawie IDEA.md przygotuję 5 radykalnie różnych układów."
+1. "Spoko! Na podstawie docs/IDEA.md przygotuję 5 radykalnie różnych układów."
 2. Przejdź do następnego kroku
 
 **Jeśli user mówi czego NIE chce:**

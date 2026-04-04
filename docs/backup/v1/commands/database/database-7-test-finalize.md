@@ -196,7 +196,7 @@ config/
 └── api-keys.json  # Supabase credentials (w .gitignore po wypełnieniu)
 ```
 
-> **Parametryzacja:** Zastąp `{feature}` i `{entities}` nazwami z IDEA.md.
+> **Parametryzacja:** Zastąp `{feature}` i `{entities}` nazwami z docs/IDEA.md.
 
 ---
 

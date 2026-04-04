@@ -136,11 +136,11 @@ Design System z CLAUDE.md:
 - Typography: [skopiuj z CLAUDE.md]
 - Charakterystyka: [skopiuj z CLAUDE.md]
 
-Kontekst z IDEA.md:
-- Wizualizacja Problemu: [z IDEA.md]
-- Wizualizacja Rozwiązania: [z IDEA.md]
-- Demo Experience: [z IDEA.md]
-- Minimal Setup pola: [z IDEA.md]
+Kontekst z docs/IDEA.md:
+- Wizualizacja Problemu: [z docs/IDEA.md]
+- Wizualizacja Rozwiązania: [z docs/IDEA.md]
+- Demo Experience: [z docs/IDEA.md]
+- Minimal Setup pola: [z docs/IDEA.md]
 
 Strony:
 1. Imię - TextField autofocus
@@ -165,7 +165,7 @@ Wymagania:
 Pola stanu:
 - `currentPage` (int) - aktualna strona (0-6)
 - `userName` (String) - imię usera
-- `first{Entity}Text` (String) - pole z Minimal Setup (z IDEA.md, np. firstTaskText, firstNoteText)
+- `first{Entity}Text` (String) - pole z Minimal Setup (z docs/IDEA.md, np. firstTaskText, firstNoteText)
 - `saveState` (OnboardingSaveState) - stan zapisu
 - `isCompleted` (bool) - czy zakończony
 - `isAuthenticating` (bool) - placeholder dla auth
@@ -178,7 +178,7 @@ Onboarding MUSI używać Repository z `/logic` do zapisu danych.
 
 **Zależności cubita:**
 - `ProfilesRepository` - zapis imienia, oznaczenie onboardingu jako ukończony
-- `{Entities}Repository` - zapis pierwszego elementu (np. TasksRepository, NotesRepository - z IDEA.md)
+- `{Entities}Repository` - zapis pierwszego elementu (np. TasksRepository, NotesRepository - z docs/IDEA.md)
 
 **Metoda `saveName()` - strona Imię:**
 1. Walidacja: `userName.trim().isEmpty` → return
@@ -189,7 +189,7 @@ Onboarding MUSI używać Repository z `/logic` do zapisu danych.
 **Metoda `saveFirstEntry()` - strona Minimal Setup:**
 1. Walidacja: pole tekstowe puste → return
 2. Emit `loading`
-3. Utworzenie `{Entity}Model` z danymi usera (np. TaskModel, NoteModel - z IDEA.md)
+3. Utworzenie `{Entity}Model` z danymi usera (np. TaskModel, NoteModel - z docs/IDEA.md)
 4. Wywołanie `_{entities}Repository.add{Entity}(model)`
 5. Fold result: error → emit error, success → `setOnboardingCompleted()` + emit `isCompleted = true`
 
@@ -212,8 +212,8 @@ Dla każdej strony pamiętaj:
 ### Checklista po KROKU 3:
 - [ ] Strona 1: Imię (TextField autofocus + error handling)
 - [ ] Strona 2: Preview ("Witaj, [imię]!")
-- [ ] Strona 3: Problem (WIZUALIZACJA z IDEA.md)
-- [ ] Strona 4: Solution (WIZUALIZACJA z IDEA.md)
+- [ ] Strona 3: Problem (WIZUALIZACJA z docs/IDEA.md)
+- [ ] Strona 4: Solution (WIZUALIZACJA z docs/IDEA.md)
 - [ ] Strona 5: Experience (2-3 kliknięcia demo)
 - [ ] Strona 6: Bridge ("Twoja kolej!")
 - [ ] Strona 7: Minimal Setup (1-2 pola + error handling)

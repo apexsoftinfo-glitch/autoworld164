@@ -65,7 +65,7 @@ Na końcu kroku (finalizacja) zaktualizuj sekcję "▶ Co dalej" w CLAUDE.md:
 ## ▶ Co dalej
 
 **Następny krok:** `/design` — 5 radykalnie różnych stylów
-**Instrukcje:** `.claude/commands/design.md`
+**Instrukcje:** `.claude/commands/docs/DESIGN.md`
 
 > Wpisz `/design` gdy będziesz gotowy!
 ~~~

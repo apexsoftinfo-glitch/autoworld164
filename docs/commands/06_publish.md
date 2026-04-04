@@ -1,0 +1,1 @@
+Wykonaj polecenie z pliku `docs/commands/06_publish/01_publish-analyze.md`.

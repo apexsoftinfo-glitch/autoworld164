@@ -2,7 +2,7 @@
 
 Aplikacja mobilna Flutter na `iOS` i `Android`.
 
-Szczegóły produktu znajdują się w [IDEA.md](IDEA.md).
+Szczegóły produktu znajdują się w [IDEA.md](docs/IDEA.md).
 
 ## Codemagic: `config/api-keys.json`
 

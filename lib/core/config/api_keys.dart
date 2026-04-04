@@ -6,8 +6,10 @@
 class ApiKeys {
   static const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
   static const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
-  static const revenueCatAppleApiKey =
-      String.fromEnvironment('REVENUECAT_APPLE_API_KEY');
-  static const revenueCatGoogleApiKey =
-      String.fromEnvironment('REVENUECAT_GOOGLE_API_KEY');
+  static const revenueCatAppleApiKey = String.fromEnvironment(
+    'REVENUECAT_APPLE_API_KEY',
+  );
+  static const revenueCatGoogleApiKey = String.fromEnvironment(
+    'REVENUECAT_GOOGLE_API_KEY',
+  );
 }

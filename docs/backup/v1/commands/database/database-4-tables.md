@@ -16,7 +16,7 @@ Ty MUSISZ dodać prefix z KROK 3.1 → `{prefix}_{entities}`!
 
 ## 4.2 Utwórz migrację (Z PREFIXEM!)
 
-> **Parametryzacja:** Zastąp `{prefix}` prefixem z CLAUDE.md, `{entities}` nazwą encji z IDEA.md.
+> **Parametryzacja:** Zastąp `{prefix}` prefixem z CLAUDE.md, `{entities}` nazwą encji z docs/IDEA.md.
 
 **Pamiętaj:** Nazwa tabeli = `{prefix}_` + nazwa ze schematu!
 

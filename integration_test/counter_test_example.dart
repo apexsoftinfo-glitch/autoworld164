@@ -1,4 +1,5 @@
 // EXAMPLE: How to write integration tests
+// integration_test/counter_test.dart
 /*
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

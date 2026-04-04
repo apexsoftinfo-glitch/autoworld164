@@ -61,9 +61,9 @@ W `CLAUDE.md`:
 ### 1.2 Zbierz dane
 
 Pobierz dane z aktualnego CLAUDE.md i projektu:
-- **Nazwa aplikacji** → `docs/IDEA.md` (nagłówek lub sekcja "Nazwa")
-- **Opis** → `docs/IDEA.md` (sekcje "Problem" + "Rozwiązanie")
-- **Limity** → `docs/IDEA.md` (sekcja "Auth & Tiery")
+- **Nazwa aplikacji** → `docs/docs/IDEA.md` (nagłówek lub sekcja "Nazwa")
+- **Opis** → `docs/docs/IDEA.md` (sekcje "Problem" + "Rozwiązanie")
+- **Limity** → `docs/docs/IDEA.md` (sekcja "Auth & Tiery")
 - **Główna funkcja** → sprawdź `lib/features/` jaki folder jest główny (nie session/onboarding/settings)
 
 ### 1.3 Przepisz CLAUDE.md
@@ -74,13 +74,13 @@ Przepisz CLAUDE.md używając poniższego template. Sekcje oznaczone `>` to inst
 **Nowa zawartość CLAUDE.md:**
 
 ```markdown
-# [Nazwa Aplikacji z IDEA.md]
+# [Nazwa Aplikacji z docs/IDEA.md]
 
-[Jednozdaniowy opis aplikacji z IDEA.md]
+[Jednozdaniowy opis aplikacji z docs/IDEA.md]
 
 ## O projekcie
 
-[2-3 zdania z IDEA.md: co aplikacja robi, dla kogo jest, jaki problem rozwiązuje]
+[2-3 zdania z docs/IDEA.md: co aplikacja robi, dla kogo jest, jaki problem rozwiązuje]
 
 ## Stack technologiczny
 

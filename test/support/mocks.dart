@@ -1,4 +1,5 @@
 import 'package:mocktail/mocktail.dart';
+import 'package:myapp/app/locale/data/repositories/app_locale_repository.dart';
 import 'package:myapp/app/session/data/repositories/session_repository.dart';
 import 'package:myapp/app/session/models/session_status_model.dart';
 import 'package:myapp/app/session/models/user_session_model.dart';
@@ -14,6 +15,8 @@ class MockSharedUserRepository extends Mock implements SharedUserRepository {}
 
 class MockSubscriptionRepository extends Mock
     implements SubscriptionRepository {}
+
+class MockAppLocaleRepository extends Mock implements AppLocaleRepository {}
 
 class MockSessionRepository extends Mock implements SessionRepository {}
 

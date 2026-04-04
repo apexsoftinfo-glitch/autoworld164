@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
 import 'app_localizations_pl.dart';
 
 // ignore_for_file: type=lint
@@ -92,7 +93,10 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('pl')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('pl'),
+  ];
 
   /// Technical placeholder used to bootstrap Flutter localization before migrating existing UI strings.
   ///
@@ -406,11 +410,47 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get profileTitle;
 
+  /// No description provided for @profileLanguageSectionTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Język aplikacji'**
+  String get profileLanguageSectionTitle;
+
+  /// No description provided for @profileLanguageSectionDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wybierz, czy aplikacja ma używać języka urządzenia, polskiego czy angielskiego.'**
+  String get profileLanguageSectionDescription;
+
   /// No description provided for @firstNameFieldLabel.
   ///
   /// In pl, this message translates to:
   /// **'Imię'**
   String get firstNameFieldLabel;
+
+  /// No description provided for @languageOptionSystem.
+  ///
+  /// In pl, this message translates to:
+  /// **'Automatyczny'**
+  String get languageOptionSystem;
+
+  /// No description provided for @languageOptionSystemDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Używa języka urządzenia. Dla nieobsługiwanych języków aplikacja wraca do English.'**
+  String get languageOptionSystemDescription;
+
+  /// No description provided for @languageOptionPolish.
+  ///
+  /// In pl, this message translates to:
+  /// **'Polski'**
+  String get languageOptionPolish;
+
+  /// No description provided for @languageOptionEnglish.
+  ///
+  /// In pl, this message translates to:
+  /// **'English'**
+  String get languageOptionEnglish;
 
   /// No description provided for @saveFirstNameButtonLabel.
   ///
@@ -784,7 +824,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['pl'].contains(locale.languageCode);
+      <String>['en', 'pl'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -793,6 +833,8 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
     case 'pl':
       return AppLocalizationsPl();
   }

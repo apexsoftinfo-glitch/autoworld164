@@ -15,7 +15,7 @@ Zaprojektuj UKŁAD głównego ekranu: discovery wizji → 5 wireframe'ów → wy
 
 1. Przeczytaj `CLAUDE.md` - sekcja "Stan projektu"
 2. Sprawdź status:
-   - `/start` musi być `done` (IDEA.md gotowe)
+   - `/start` musi być `done` (docs/IDEA.md gotowe)
    - Jeśli `/start` nie jest `done` → powiedz: "Najpierw wpisz `/start` aby ustalić pomysł."
 3. Sprawdź status `/home`:
    - Jeśli `done` → "Masz już wireframe. Wpisz `/design` aby kontynuować."
@@ -35,7 +35,7 @@ Wykonuj kroki **po kolei**. Po ukończeniu każdego → przeczytaj następny pli
 | Kolejność | Plik | Co robi |
 |-----------|------|---------|
 | 0 | `.claude/commands/home/home-0-setup.md` | Rozbuduj CLAUDE.md, sync z platformą |
-| 1 | `.claude/commands/home/home-1-discovery.md` | Przeczytaj IDEA.md, discovery wizji layoutu |
+| 1 | `.claude/commands/home/home-1-discovery.md` | Przeczytaj docs/IDEA.md, discovery wizji layoutu |
 | 2 | `.claude/commands/home/home-2-wireframes.md` | 5 fundamentalnie różnych wireframe'ów |
 | 3 | `.claude/commands/home/home-3-test.md` | Test, prezentacja, wybór użytkownika |
 | 4 | `.claude/commands/home/home-4-finalize.md` | Sprzątanie, zapis, commit, sync |

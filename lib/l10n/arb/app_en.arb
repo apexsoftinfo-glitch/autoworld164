@@ -1,0 +1,166 @@
+{
+  "@@locale": "en",
+  "localizationBootstrap": "App localization is configured.",
+  "@localizationBootstrap": {
+    "description": "Technical placeholder used to bootstrap Flutter localization before migrating existing UI strings."
+  },
+  "errorInvalidCredentials": "Invalid email or password.",
+  "errorAnonymousAuthDisabled": "Guest sign-in is currently disabled.",
+  "errorEmail": "Check the email address and try again.",
+  "errorPassword": "Check the password and try again.",
+  "errorNetwork": "Connection problem. Try again.",
+  "errorDeleteAccountSetupRequired": "Delete account still requires additional Supabase setup.",
+  "errorDeleteAccountFailed": "Could not delete the account. Try again.",
+  "errorSharedUsersSetupRequired": "The shared_users table is missing or its schema does not match the template.",
+  "errorDeleteAccountNotImplemented": "Delete account is not ready yet.",
+  "errorUnknown": "An unexpected error occurred.",
+  "errorWithKey": "An error occurred: {errorKey}",
+  "@errorWithKey": {
+    "description": "Fallback error message for unknown error keys.",
+    "placeholders": {
+      "errorKey": {}
+    }
+  },
+  "guestDisplayName": "Guest",
+  "registeredUserDisplayName": "User",
+  "loadingLabel": "Loading...",
+  "sessionErrorTitle": "Session error",
+  "accountTypeGuest": "guest",
+  "accountTypeRegistered": "signed in",
+  "commonYes": "yes",
+  "commonNo": "no",
+  "userTierGuest": "guest",
+  "userTierRegistered": "account",
+  "userTierPro": "Pro",
+  "homeTitle": "Home",
+  "currentSessionTitle": "Current session",
+  "sessionUserId": "User ID: {value}",
+  "@sessionUserId": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionAccountType": "Account type: {value}",
+  "@sessionAccountType": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionPlan": "Plan: {value}",
+  "@sessionPlan": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionPro": "Pro: {value}",
+  "@sessionPro": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionEmail": "Email: {value}",
+  "@sessionEmail": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionDisplayNameValue": "Display name: {value}",
+  "@sessionDisplayNameValue": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "sessionFirstName": "First name: {value}",
+  "@sessionFirstName": {
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "developerToolsTitle": "Developer tools",
+  "retryButtonLabel": "Try again",
+  "welcomeTitle": "Welcome",
+  "welcomeBody": "Continue as a guest or sign in to an existing account.",
+  "continueAsGuestButtonLabel": "Continue as guest",
+  "loginButtonLabel": "Log in",
+  "loginScreenTitle": "Log in",
+  "loginExistingAccountTitle": "Log in to an existing account",
+  "loginExistingAccountBody": "Use your email address and password to switch to an existing account.",
+  "emailFieldLabel": "Email",
+  "passwordFieldLabel": "Password",
+  "switchAccountWarningTitle": "You're switching accounts",
+  "switchAccountWarningBody": "Logging in here will switch you from the current guest account to another account. Guest data and Pro access are not merged automatically.",
+  "registerScreenTitle": "Sign up",
+  "secureGuestAccountTitle": "Secure this guest account",
+  "secureGuestAccountBody": "This will keep your current data and connect this guest account to an email address and password.",
+  "registerButtonLabel": "Sign up",
+  "profileSavedSnackbar": "Profile saved",
+  "proEnabledSnackbar": "Pro enabled",
+  "profileTitle": "Profile",
+  "profileLanguageSectionTitle": "App language",
+  "profileLanguageSectionDescription": "Choose whether the app should use the device language, Polish, or English.",
+  "firstNameFieldLabel": "First name",
+  "languageOptionSystem": "Automatic",
+  "languageOptionSystemDescription": "Uses the device language. For unsupported languages, the app falls back to English.",
+  "languageOptionPolish": "Polski",
+  "languageOptionEnglish": "English",
+  "saveFirstNameButtonLabel": "Save first name",
+  "accountSecuredSnackbar": "Account secured",
+  "logoutButtonLabel": "Log out",
+  "buyProButtonLabel": "Buy Pro",
+  "deleteAccountButtonLabel": "Delete account",
+  "discardChangesTitle": "Discard changes?",
+  "discardChangesBody": "You have unsaved changes. If you leave now, they will be lost.",
+  "stayButtonLabel": "Stay",
+  "discardButtonLabel": "Discard",
+  "closeButtonLabel": "Close",
+  "protectProBannerTitle": "Protect access to Pro",
+  "protectProBannerBody": "This guest account already has Pro. Register this account so you do not lose access in the future.",
+  "developerDiagnosticsTitle": "Debug-only diagnostics",
+  "developerDiagnosticsBody": "Use this screen to inspect the local app configuration and integration status.",
+  "revenueCatDisconnectedTitle": "RevenueCat is not connected",
+  "revenueCatDisconnectedBody": "Add RevenueCat keys to config/api-keys.json when you're ready to test subscriptions.",
+  "sessionSectionTitle": "Session",
+  "loggedInLabel": "Signed in",
+  "anonymousLabel": "Anonymous",
+  "planLabel": "Plan",
+  "proLabel": "Pro",
+  "userIdLabel": "User ID",
+  "emailLabel": "Email",
+  "displayNameLabel": "Display name",
+  "supabaseSectionTitle": "Supabase",
+  "keysConfiguredLabel": "Keys configured",
+  "supabaseUrlLabel": "Supabase URL",
+  "revenueCatSectionTitle": "RevenueCat",
+  "supportedPlatformLabel": "Supported platform",
+  "sdkActiveLabel": "SDK active",
+  "currentKeySourceLabel": "Current key source",
+  "missingValueLabel": "missing",
+  "debugForceProTitle": "Debug: force Pro status",
+  "debugForceProSubtitle": "Works only without active RevenueCat and only in the debug tool.",
+  "missingSupabaseAgentPrompt": "Connect `Supabase MCP` to my Supabase project and fill `config/api-keys.json` with `SUPABASE_URL` and `SUPABASE_ANON_KEY`.",
+  "missingSupabaseTitle": "Supabase keys are missing",
+  "missingSupabaseBody": "Add Supabase keys to the config file and restart the app.",
+  "missingSupabaseFileLabel": "Fill in this file",
+  "missingSupabaseFilePath": "config/api-keys.json",
+  "missingSupabaseStep1Title": "Step 1: install `Supabase MCP`",
+  "missingSupabaseStep1Body": "First add `Supabase MCP` to your AI agent.",
+  "missingSupabaseStep2Title": "Step 2: paste this prompt into the agent",
+  "copyPromptButtonLabel": "Copy prompt",
+  "promptCopiedSnackbar": "Prompt copied",
+  "missingSupabaseStep3Title": "Step 3: close and reopen the app",
+  "missingSupabaseStep3Body": "When the agent fills in the keys file, close the app and launch it again.",
+  "sharedUsersAgentPrompt": "Run task `docs/tasks/02_SUPABASE_SHARED_USERS_SETUP.md` and bring the `shared_users` table to minimal compatibility with this project using `Supabase MCP`.",
+  "sharedUsersSetupTitle": "The `shared_users` table is missing in Supabase",
+  "sharedUsersSetupBody": "The app cannot load additional user data, such as the first name, because the `shared_users` table does not exist or its structure does not match the minimal assumptions.",
+  "sharedUsersGuideLabel": "Use the prepared guide:",
+  "sharedUsersGuideFile": "02_SUPABASE_SHARED_USERS_SETUP.md",
+  "sharedUsersAiPromptTitle": "Paste this prompt into your AI agent",
+  "sharedUsersAiHelpBody": "If your AI agent has access to Supabase MCP, it can configure everything for you automatically using the prepared guide.",
+  "deleteAccountSetupAgentPrompt": "Run task `docs/tasks/03_SUPABASE_DELETE_ACCOUNT_SETUP.md`, finish deploying `delete-account` in Supabase, and switch the profile to the ready flow using `Supabase MCP`.",
+  "deleteAccountSetupTitle": "Delete account requires additional setup",
+  "deleteAccountSetupBody": "The `Delete account` logic is already scaffolded in the template, but the `delete-account` function has not yet been deployed in this project, and the profile still leads to this setup screen.",
+  "deleteAccountGuideLabel": "Use the prepared guide:",
+  "deleteAccountGuideFile": "03_SUPABASE_DELETE_ACCOUNT_SETUP.md",
+  "deleteAccountAiPromptTitle": "Paste this prompt into your AI agent",
+  "deleteAccountAiHelpBody": "If your AI agent has access to Supabase MCP, it can deploy the `delete-account` function, verify `verify_jwt`, switch the profile to the ready flow, and update the tests."
+}

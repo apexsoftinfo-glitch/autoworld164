@@ -49,9 +49,9 @@ curl -X PATCH {API Base URL}/user/apps/{Platform App ID} \
 
 ## KROK 1: Inwentaryzacja ekranów
 
-### 1.1 Przeczytaj IDEA.md
+### 1.1 Przeczytaj docs/IDEA.md
 
-Przeczytaj sekcję "Ekrany" z `IDEA.md` - lista wszystkich ekranów.
+Przeczytaj sekcję "Ekrany" z `docs/IDEA.md` - lista wszystkich ekranów.
 
 ### 1.2 Zidentyfikuj ekrany do zbudowania
 
@@ -60,7 +60,7 @@ Ekrany z priorytetem CORE (bez Welcome i Onboarding - to `/onboarding`):
 - **Add/Edit Screen** - formularz (może być jeden ekran)
 - **Settings Screen** - ustawienia użytkownika
 
-### 1.2b Zidentyfikuj Pro features z IDEA.md
+### 1.2b Zidentyfikuj Pro features z docs/IDEA.md
 
 Przeczytaj sekcję **"Paywall Content" → tabela "What's included"** (kolumna "Implementacja").
 

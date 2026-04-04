@@ -21,9 +21,9 @@ Jeśli istnieje `lib/features/onboarding/` → usuń cały folder. Budujemy od z
 
 ---
 
-## 1.1 Przeczytaj IDEA.md
+## 1.1 Przeczytaj docs/IDEA.md
 
-Przeczytaj sekcję "Onboarding (Guided Onboarding)" z `IDEA.md`:
+Przeczytaj sekcję "Onboarding (Guided Onboarding)" z `docs/IDEA.md`:
 - Wizualizacja Problemu (co pokazać)
 - Wizualizacja Rozwiązania (co pokazać)
 - Demo Experience (co user może kliknąć)

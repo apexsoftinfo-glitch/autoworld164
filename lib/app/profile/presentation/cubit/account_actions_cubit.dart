@@ -9,12 +9,7 @@ import '../../../../shared/error_messages.dart';
 
 part 'account_actions_cubit.freezed.dart';
 
-enum AccountAction {
-  signOut,
-  deleteAccount,
-  buyPro,
-  developerProOverride,
-}
+enum AccountAction { signOut, deleteAccount, buyPro, developerProOverride }
 
 @freezed
 sealed class AccountActionsState with _$AccountActionsState {

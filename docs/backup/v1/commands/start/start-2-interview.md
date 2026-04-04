@@ -125,4 +125,4 @@ Zrób finalny `PATCH /user` z:
 
 ---
 
-> ✅ Ukończone → przeczytaj i wykonaj `.claude/commands/start/start-3-idea.md`
+> ✅ Ukończone → przeczytaj i wykonaj `.claude/commands/start/start-3-docs/IDEA.md`

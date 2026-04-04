@@ -22,7 +22,7 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.anatolkaramanyan.autoworld"
+    namespace = "com.example.12apps"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -36,7 +36,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.anatolkaramanyan.autoworld"
+        applicationId = "com.example.12apps"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26

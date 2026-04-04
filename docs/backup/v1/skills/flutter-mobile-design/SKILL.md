@@ -133,8 +133,8 @@ Beautiful means nothing at 30fps.
 
 **Every screen MUST use project-specific content:**
 
-1. **App Name**: Read from `IDEA.md` → use in Welcome screen, headers, branding
-2. **Tagline/Subtitle**: Read from `IDEA.md` → use in Welcome, onboarding
+1. **App Name**: Read from `docs/IDEA.md` → use in Welcome screen, headers, branding
+2. **Tagline/Subtitle**: Read from `docs/IDEA.md` → use in Welcome, onboarding
 3. **User Name**: Read from `CLAUDE.md` (section "Dane użytkownika" → "Imię") → use in greetings like "Witaj [Imię]!"
 4. **Design Tokens**: If Design System was created (Faza 3 of /12apps-build), use those:
    - Colors from `ThemeData`/`ColorScheme` (NOT generic green, blue, etc.)
@@ -159,8 +159,8 @@ Beautiful means nothing at 30fps.
    ```
 
 **NEVER leave placeholders:**
-- `[APP NAME]` → Replace with real name from IDEA.md
-- `[TAGLINE]` → Replace with real subtitle from IDEA.md
+- `[APP NAME]` → Replace with real name from docs/IDEA.md
+- `[TAGLINE]` → Replace with real subtitle from docs/IDEA.md
 - `[Imię]` or `[Name]` → Replace with real name from CLAUDE.md
 - Generic green circle logo → Create themed logo/icon matching app aesthetic
 - Default Material colors → Use custom palette from Design System

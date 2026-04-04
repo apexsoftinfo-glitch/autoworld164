@@ -22,8 +22,7 @@ abstract final class AppConfig {
     };
   }
 
-  static bool get hasRevenueCatKeys =>
-      currentRevenueCatApiKey.isNotEmpty;
+  static bool get hasRevenueCatKeys => currentRevenueCatApiKey.isNotEmpty;
 
   static String get maskedSupabaseUrl {
     if (!hasSupabaseKeys) return '';

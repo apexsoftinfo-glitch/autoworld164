@@ -95,11 +95,11 @@ Zanim przejdziesz do kroku 3, upewnij się, że użytkownik ZATWIERDZA ten pomys
 
 Po zakończeniu kroku 2 zaktualizuj checklistę.
 
-3. Zapisz ustalenia do pliku `IDEA.md` w głównym katalogu projektu.
+3. Zapisz ustalenia do pliku `docs/IDEA.md` w głównym katalogu projektu.
 
-Wypełnij istniejący szkielet w `IDEA.md`.
+Wypełnij istniejący szkielet w `docs/IDEA.md`.
 
-`IDEA.md` jest dokumentem produktu.
+`docs/IDEA.md` jest dokumentem produktu.
 
 Ma opisywać:
 - czym jest aplikacja,
@@ -134,7 +134,7 @@ Zaproponuj też prosty podział limitów między free i pro, np. limit liczby el
 
 Po zakończeniu kroku 3 zaktualizuj checklistę.
 
-4. Daj użytkownikowi do weryfikacji `IDEA.md`.
+4. Daj użytkownikowi do weryfikacji `docs/IDEA.md`.
 
 Niech zapozna się z plikiem. Poczekaj na jego odpowiedź.
 Nie idź dalej, dopóki użytkownik nie zatwierdzi dokumentu albo nie zgłosi uwag.
@@ -156,13 +156,13 @@ Podmień placeholder `<app_description>...</app_description>` na krótki opis ap
 Ten opis ma:
 - krótko wyjaśniać, o czym jest aplikacja,
 - być tylko skrótem, nie duplikatem pełnego dokumentu produktu,
-- zawierać zdanie: `Pełny opis produktu znajduje się w IDEA.md.`
+- zawierać zdanie: `Pełny opis produktu znajduje się w docs/IDEA.md.`
 
 Znajdź też odniesienie odnośnie tabel Supabase i podmień `<supabase_table_prefix>` na ustalony tutaj `__SUPABASE_TABLE_PREFIX__`.
 
 Po zakończeniu kroku 6 zaktualizuj checklistę.
 
-7. Zacommituj pliki `IDEA.md` i `ONBOARDING_AND_PAYWALL.md` oraz resztę w oddzielnych commitach.
+7. Zacommituj pliki `docs/IDEA.md` i `docs/ONBOARDING_AND_PAYWALL.md` oraz resztę w oddzielnych commitach.
 
 Dokumenty strategiczne zapisz w osobnym commicie.
 Pozostałe zmiany zapisz w oddzielnym commicie albo commitach.
@@ -177,15 +177,15 @@ curl -s -X POST https://auedkfdtobshqutwinee.supabase.co/functions/v1/apps-api/u
   -d '{
     "name": "__APP_DISPLAY_NAME__",
     "description": "__APP_DESCRIPTION__",
-    "idea_md": "**zawartość pliku IDEA.md**",
+    "idea_md": "**zawartość pliku docs/IDEA.md**",
     "bundle_id": "__APP_BUNDLE_ID__",
     "table_prefix": "__SUPABASE_TABLE_PREFIX__"
   }'
 
 Jeżeli request zakończy się sukcesem i endpoint zwróci response w stylu `{ "id": "..." }`, zapisz ten identyfikator do `.env` jako `APP_PLATFORM_ID=...`.
 
-Do platformy nadal wysyłasz `idea_md` jako zawartość `IDEA.md`.
-`ONBOARDING_AND_PAYWALL.md` na tym etapie jest dokumentem lokalnym repo i nie musi być wysyłany.
+Do platformy nadal wysyłasz `idea_md` jako zawartość `docs/IDEA.md`.
+`docs/ONBOARDING_AND_PAYWALL.md` na tym etapie jest dokumentem lokalnym repo i nie musi być wysyłany.
 
 Po zakończeniu kroku 8 zaktualizuj checklistę.
 

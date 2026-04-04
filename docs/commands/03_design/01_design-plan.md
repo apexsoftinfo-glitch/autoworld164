@@ -1,6 +1,6 @@
 # INTRO
 
-Zapoznaj się z plikiem `IDEA.md`, aby zrozumieć pomysł aplikacji.
+Zapoznaj się z plikiem `docs/IDEA.md`, aby zrozumieć pomysł aplikacji.
 
 Wciąż jesteśmy na bardzo wczesnym etapie, jeszcze nic nie jest podłączone.
 

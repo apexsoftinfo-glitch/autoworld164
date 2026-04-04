@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/locale/models/app_locale_option_model.dart';
+import '../../../../app/locale/presentation/cubit/app_locale_cubit.dart';
 import '../../../../app/developer/ui/developer_screen.dart';
 import '../../../../app/profile/presentation/cubit/account_actions_cubit.dart';
 import '../../../../app/session/presentation/cubit/session_cubit.dart';
@@ -10,6 +12,7 @@ import '../../../../app/ui/delete_account_setup_required_screen.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../features/auth/presentation/ui/login_screen.dart';
 import '../../../../features/auth/presentation/ui/register_screen.dart';
+import '../../../../core/config/revenuecat_config.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/error_messages.dart';
 import '../cubit/profile_cubit.dart';
@@ -21,6 +24,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AppLocaleCubit>.value(value: getIt<AppLocaleCubit>()),
         BlocProvider<SessionCubit>.value(value: getIt<SessionCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => getIt<ProfileCubit>()),
         BlocProvider<AccountActionsCubit>(
@@ -121,6 +125,8 @@ class _ProfileViewState extends State<_ProfileView> {
                             final isSavingName = profileState.isSaving;
                             final activeAccountAction =
                                 accountState.activeAction;
+                            final isInteractionLocked =
+                                isSavingName || activeAccountAction != null;
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -129,14 +135,10 @@ class _ProfileViewState extends State<_ProfileView> {
                                   const _ProtectProBanner(),
                                   const SizedBox(height: 24),
                                 ],
-                                _ProfileSummary(session: session),
-                                const SizedBox(height: 24),
                                 TextField(
                                   controller: _firstNameController,
                                   focusNode: _firstNameFocusNode,
-                                  enabled:
-                                      !isSavingName &&
-                                      activeAccountAction == null,
+                                  enabled: !isInteractionLocked,
                                   keyboardType: TextInputType.name,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: InputDecoration(
@@ -148,9 +150,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                 ),
                                 const SizedBox(height: 16),
                                 FilledButton(
-                                  onPressed:
-                                      !isSavingName &&
-                                          activeAccountAction == null
+                                  onPressed: !isInteractionLocked
                                       ? () => _saveFirstName(context, session)
                                       : null,
                                   child: isSavingName
@@ -162,6 +162,10 @@ class _ProfileViewState extends State<_ProfileView> {
                                           ),
                                         )
                                       : Text(l10n.saveFirstNameButtonLabel),
+                                ),
+                                const SizedBox(height: 16),
+                                _AppLanguageDropdown(
+                                  isEnabled: !isInteractionLocked,
                                 ),
                                 if (profileState.errorKey != null) ...[
                                   const SizedBox(height: 16),
@@ -194,12 +198,12 @@ class _ProfileViewState extends State<_ProfileView> {
                                 const SizedBox(height: 32),
                                 if (session.isAnonymousUser) ...[
                                   FilledButton.tonal(
-                                    onPressed:
-                                        !isSavingName &&
-                                            activeAccountAction == null
+                                    onPressed: !isInteractionLocked
                                         ? () async {
                                             final result =
-                                                await Navigator.of(context).push<bool>(
+                                                await Navigator.of(
+                                                  context,
+                                                ).push<bool>(
                                                   MaterialPageRoute<bool>(
                                                     builder: (_) =>
                                                         const RegisterScreen(),
@@ -223,15 +227,14 @@ class _ProfileViewState extends State<_ProfileView> {
                                   ),
                                   const SizedBox(height: 12),
                                   OutlinedButton(
-                                    onPressed:
-                                        !isSavingName &&
-                                            activeAccountAction == null
-                                        ? () => Navigator.of(context).push<void>(
-                                            MaterialPageRoute<void>(
-                                              builder: (_) =>
-                                                  const LoginScreen(),
-                                            ),
-                                          )
+                                    onPressed: !isInteractionLocked
+                                        ? () =>
+                                              Navigator.of(context).push<void>(
+                                                MaterialPageRoute<void>(
+                                                  builder: (_) =>
+                                                      const LoginScreen(),
+                                                ),
+                                              )
                                         : null,
                                     child: Text(l10n.loginButtonLabel),
                                   ),
@@ -239,9 +242,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                 ],
                                 if (!session.isAnonymousUser) ...[
                                   OutlinedButton(
-                                    onPressed:
-                                        !isSavingName &&
-                                            activeAccountAction == null
+                                    onPressed: !isInteractionLocked
                                         ? () => context
                                               .read<AccountActionsCubit>()
                                               .signOut()
@@ -260,11 +261,11 @@ class _ProfileViewState extends State<_ProfileView> {
                                   ),
                                   const SizedBox(height: 12),
                                 ],
-                                if (!session.isProUser) ...[
+                                if (!session.isProUser &&
+                                    RevenueCatConfig.isEnabled) ...[
                                   FilledButton(
                                     onPressed:
-                                        !isSavingName &&
-                                            activeAccountAction == null &&
+                                        !isInteractionLocked &&
                                             session.userIdOrNull != null
                                         ? () => context
                                               .read<AccountActionsCubit>()
@@ -285,9 +286,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                   const SizedBox(height: 12),
                                 ],
                                 OutlinedButton(
-                                  onPressed:
-                                      !isSavingName &&
-                                          activeAccountAction == null
+                                  onPressed: !isInteractionLocked
                                       ? () => Navigator.of(context).push<void>(
                                           MaterialPageRoute<void>(
                                             builder: (_) =>
@@ -298,17 +297,18 @@ class _ProfileViewState extends State<_ProfileView> {
                                   child: Text(l10n.deleteAccountButtonLabel),
                                 ),
                                 if (kDebugMode) ...[
+                                  const Divider(height: 48),
+                                  _ProfileSummary(session: session),
                                   const SizedBox(height: 12),
                                   OutlinedButton.icon(
-                                    onPressed:
-                                        !isSavingName &&
-                                            activeAccountAction == null
-                                        ? () => Navigator.of(context).push<void>(
-                                            MaterialPageRoute<void>(
-                                              builder: (_) =>
-                                                  const DeveloperScreen(),
-                                            ),
-                                          )
+                                    onPressed: !isInteractionLocked
+                                        ? () =>
+                                              Navigator.of(context).push<void>(
+                                                MaterialPageRoute<void>(
+                                                  builder: (_) =>
+                                                      const DeveloperScreen(),
+                                                ),
+                                              )
                                         : null,
                                     icon: const Icon(Icons.developer_mode),
                                     label: Text(l10n.developerToolsTitle),
@@ -368,6 +368,70 @@ class _ProfileViewState extends State<_ProfileView> {
   }
 }
 
+class _AppLanguageDropdown extends StatelessWidget {
+  const _AppLanguageDropdown({required this.isEnabled});
+
+  final bool isEnabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return BlocBuilder<AppLocaleCubit, AppLocaleState>(
+      builder: (context, state) {
+        final isSelectionEnabled = isEnabled && !state.isSaving;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DropdownButtonFormField<AppLocaleOptionModel>(
+              initialValue: state.selectedOption,
+              decoration: InputDecoration(
+                labelText: l10n.profileLanguageSectionTitle,
+                helperText: l10n.profileLanguageSectionDescription,
+              ),
+              items: [
+                DropdownMenuItem(
+                  value: AppLocaleOptionModel.system,
+                  child: Text(l10n.languageOptionSystem),
+                ),
+                DropdownMenuItem(
+                  value: AppLocaleOptionModel.polish,
+                  child: Text(l10n.languageOptionPolish),
+                ),
+                DropdownMenuItem(
+                  value: AppLocaleOptionModel.english,
+                  child: Text(l10n.languageOptionEnglish),
+                ),
+              ],
+              onChanged: isSelectionEnabled
+                  ? (option) {
+                      if (option == null) return;
+                      context.read<AppLocaleCubit>().selectLocale(option);
+                    }
+                  : null,
+            ),
+            if (state.selectedOption == AppLocaleOptionModel.system) ...[
+              const SizedBox(height: 4),
+              Text(
+                l10n.languageOptionSystemDescription,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+            if (state.errorKey != null) ...[
+              const SizedBox(height: 8),
+              SelectableText(
+                messageForErrorKey(l10n, state.errorKey),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _ProfileSummary extends StatelessWidget {
   const _ProfileSummary({required this.session});
 
@@ -379,8 +443,8 @@ class _ProfileSummary extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -415,7 +479,7 @@ class _ProtectProBanner extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),

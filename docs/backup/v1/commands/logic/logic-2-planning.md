@@ -1,14 +1,14 @@
 # KROK 1: Planowanie architektury
 
-### 1.1 Przeczytaj IDEA.md
+### 1.1 Przeczytaj docs/IDEA.md
 
-Przeczytaj `IDEA.md` — potrzebujesz:
+Przeczytaj `docs/IDEA.md` — potrzebujesz:
 - Sekcja "Złota Nisza" (co aplikacja robi, jaki problem rozwiązuje)
 - Sekcja "Ekrany" (jakie dane wyświetlamy na poszczególnych ekranach)
 - Sekcja "Home Screen" (co user widzi na głównym ekranie)
 
 Na tej podstawie **sam zaprojektuj model danych** — jakie encje, jakie pola, jakie relacje.
-Zapisz wynikowy model do IDEA.md (nowa sekcja "Model Danych" po "Złota Nisza").
+Zapisz wynikowy model do docs/IDEA.md (nowa sekcja "Model Danych" po "Złota Nisza").
 
 ### 1.2 Zaplanuj strukturę
 

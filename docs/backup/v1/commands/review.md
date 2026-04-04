@@ -96,7 +96,7 @@ abstract class ReviewService {
 
 **Logika implementacji:**
 1. Przechowuj liczbę udanych akcji w LocalStorage
-2. Po osiągnięciu _triggerThreshold (z IDEA.md, np. 5) → trigger review flow
+2. Po osiągnięciu _triggerThreshold (z docs/IDEA.md, np. 5) → trigger review flow
 3. Zapisz flagę `review_requested` żeby nie pytać ponownie
 
 ### 1.3 Utwórz ReviewDialogHelper
@@ -222,7 +222,7 @@ Wpisz `/localize` gdy będziesz gotowy!
 
 ### WAŻNE
 - Ask for review: dialog → debug snackbar (kDebugMode) / InAppReview (release)
-- Threshold z IDEA.md (sekcja "Ask for review")
+- Threshold z docs/IDEA.md (sekcja "Ask for review")
 - Persystencja flagi `review_requested`
 
 ### ZAKAZY

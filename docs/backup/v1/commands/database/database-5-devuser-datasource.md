@@ -42,7 +42,7 @@ Wymagania:
 
 ### 6.2 Wzorzec Supabase{Entities}DataSource
 
-> **Parametryzacja:** Zastąp `{Entities}` nazwą encji z IDEA.md (np. Entries, Tasks, Notes).
+> **Parametryzacja:** Zastąp `{Entities}` nazwą encji z docs/IDEA.md (np. Entries, Tasks, Notes).
 
 **WAŻNE:** Nazwa tabeli w `.from()` MUSI mieć prefix!
 

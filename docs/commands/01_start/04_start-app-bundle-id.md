@@ -20,7 +20,7 @@ Masz osiągnąć 3 rzeczy:
 
 ## Krok 1. Pobierz nowy identyfikator
 
-- Upewnij się, że w pliku `IDEA.md` jest zdefiniowany unikalny identyfikator aplikacji, a nie jakiś generyczny typu `com.imienazwisko.appname`.
+- Upewnij się, że w pliku `docs/IDEA.md` jest zdefiniowany unikalny identyfikator aplikacji, a nie jakiś generyczny typu `com.imienazwisko.appname`.
 - Musi posiadać realne imię i nazwisko autora oraz nazwę aplikacji zapisaną w formacie: wszystko z małych liter [a-z], żadnych cyf, żadnych znaków specjalnych, brak polskich znaków.
 
 ## Krok 2. Zmień Android `namespace` i `applicationId`

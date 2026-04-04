@@ -4,13 +4,13 @@ Sprawdź czy checklisty w docs/tasks/checklists/ są ukończone.
 
 Jeżeli nie, poinformuj użytkownika, że najpierw należy je wykonać.
 
-Jeżeli tak, przejrzyj @IDEA.md oraz ułóż plan implemnetacji aplikacji. 
+Jeżeli tak, przejrzyj @docs/IDEA.md oraz ułóż plan implemnetacji aplikacji. 
 
 Zapisz go poniżej w pliku @docs/steps/04_implement.md w `# IMPLEMENTATION PLAN:`.
 
 Pamiętaj aby przestrzegać zasad z @AGENTS.md
 
-Wszelkie ekrany muszą przestrzegać zasad wizualnych sprecyzowanych specjalnie pod tą aplikację w @DESIGN.md.
+Wszelkie ekrany muszą przestrzegać zasad wizualnych sprecyzowanych specjalnie pod tą aplikację w @docs/DESIGN.md.
 
 Ekran główny pownien być już zaprojektowany wizualnie, ale jeszcze w żaden sposób nie spięty z flow aplikacji ani z bazą. 
 

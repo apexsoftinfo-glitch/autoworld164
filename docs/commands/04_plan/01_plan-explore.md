@@ -1,4 +1,4 @@
-Zapoznaj się z `IDEA.md`, aby zrozumieć pomysł na aplikację.
+Zapoznaj się z `docs/IDEA.md`, aby zrozumieć pomysł na aplikację.
 
 Póki co w tej aplikacji mamy zaimplementowany tylko Welcome Screen, który otwiera się przy pierwszym uruchomieniu aplikacji.
 

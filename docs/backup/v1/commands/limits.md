@@ -89,7 +89,7 @@ Na końcu kroku (finalizacja) zaktualizuj sekcję "▶ Co dalej" w CLAUDE.md:
 
 ## KROK 1: Skonfiguruj LimitPolicy
 
-### 1.1 Przeczytaj IDEA.md
+### 1.1 Przeczytaj docs/IDEA.md
 
 Znajdź sekcję "Auth & Tiery":
 - Typ limitu (count/daily/weekly/monthly)
@@ -101,8 +101,8 @@ Plik: `lib/core/limits/app_limit_policy.dart`
 
 ```dart
 const appLimitPolicy = LimitPolicy(
-  type: LimitType.[z IDEA.md],
-  guestLimit: [z IDEA.md],
+  type: LimitType.[z docs/IDEA.md],
+  guestLimit: [z docs/IDEA.md],
 );
 ```
 
@@ -209,15 +209,15 @@ void showUpgradeDialog(BuildContext context, LimitExceededFailure failure) {
 
 ---
 
-## KROK 6.5: Gate Pro features z IDEA.md
+## KROK 6.5: Gate Pro features z docs/IDEA.md
 
-### 6.5.1 Przeczytaj IDEA.md → "Paywall Content"
+### 6.5.1 Przeczytaj docs/IDEA.md → "Paywall Content"
 
 Znajdź tabelę "What's included" i kolumnę **"Implementacja"**.
 
 Dla KAŻDEGO benefitu (poza #1 "Zdjęcie limitu" — to już obsługuje KROK 5):
 
-| Implementacja w IDEA.md | Co zrobić w /limits |
+| Implementacja w docs/IDEA.md | Co zrobić w /limits |
 |--------------------------|---------------------|
 | **Toggle w Settings** (np. Dark Mode, Themes) | Owinąć widget w `if (session.isPro)` — jeśli nie Pro, pokaż locked tile z `onTap: showPaywall()` |
 | **Ekran Pro-only** (np. Insights, Stats) | Dodać check przed nawigacją: `if (!session.isPro) { showPaywall(); return; }` |
@@ -291,7 +291,7 @@ flutter analyze
 ```
 feat(limits): implement tier-based limits with upgrade dialogs
 
-- Configure LimitPolicy from IDEA.md
+- Configure LimitPolicy from docs/IDEA.md
 - Add LimitExceededFailure with computed upgradeTarget
 - Add UpgradeToRegisteredDialog for guests
 - Integrate showPaywall() for registered users (RevenueCat paywall)
@@ -308,7 +308,7 @@ feat(limits): implement tier-based limits with upgrade dialogs
 - Guest → UpgradeToRegisteredDialog (rejestracja)
 - Registered → PaywallScreen (placeholder)
 - Paywall uses `showPaywall()` (RevenueCat already integrated)
-- **Pro features z IDEA.md "Paywall Content" MUSZĄ być gated za session.isPro** (KROK 6.5)
+- **Pro features z docs/IDEA.md "Paywall Content" MUSZĄ być gated za session.isPro** (KROK 6.5)
 - **Szukaj komentarzy `// PRO`** w kodzie z /screens — oznaczają co gatować
 
 ### ZAKAZY

@@ -4,7 +4,9 @@ To jest projekt Flutter na `iOS` i `Android`.
 
 ## App Context
 
-AutoWorld164 to aplikacja dla kolekcjonerów modeli aut w skali 1/64, umożliwiająca zarządzanie zbiorami i śledzenie ich wartości. Pełny opis produktu znajduje się w pliku IDEA.md.
+<app_description>
+Ta sekcja będzie uzupełniana później, w kroku `docs/commands/01_start/06_start-agents-md.md`.
+</app_description>
 
 # Critical Rules
 
@@ -86,7 +88,7 @@ Form screens mają być mobilne i bezpieczne: scroll, dismiss keyboard, poprawne
 # Supabase
 
 Ten projekt Flutter działa w jednym wspólnym projekcie Supabase razem z innymi aplikacjami.
-Każda nowa tabela specyficzna dla tej aplikacji musi mieć prefix `autoworld_`, np. `autoworld_tasks`.
+Każda nowa tabela specyficzna dla tej aplikacji musi mieć prefix `<supabase_table_prefix>_`, np. `<supabase_table_prefix>_tasks`.
 Nazwy kolumn w bazie zawsze zapisuj w `snake_case`.
 Logika `Supabase` ma być w `Data Source`; wyjątek: bootstrap aplikacji i DI mogą inicjalizować klienta.
 Dla tabel używanych w `Stream` włącz `RLS` i utwórz odpowiednie policies.

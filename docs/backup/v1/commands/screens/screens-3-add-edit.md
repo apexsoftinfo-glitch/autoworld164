@@ -7,7 +7,7 @@ Przeczytaj: .claude/skills/flutter-ui/SKILL.md
 
 Zadanie: Zbuduj Add/Edit Screen (formularz).
 
-Kontekst z IDEA.md:
+Kontekst z docs/IDEA.md:
 - Pola formularza: [z modelu danych]
 - Walidacja: [wymagane pola]
 

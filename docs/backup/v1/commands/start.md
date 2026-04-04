@@ -1,15 +1,15 @@
 ---
-description: Discovery + IDEA.md - pierwszy krok w tworzeniu aplikacji
+description: Discovery + docs/IDEA.md - pierwszy krok w tworzeniu aplikacji
 allowed-tools: Read, Write, Edit, Bash, AskUserQuestion, Glob, Grep, Task
 ---
 
-# /start - Discovery + IDEA.md
+# /start - Discovery + docs/IDEA.md
 
-Przeprowadź użytkownika przez proces odkrywania pomysłu i wygeneruj kompletny IDEA.md.
+Przeprowadź użytkownika przez proces odkrywania pomysłu i wygeneruj kompletny docs/IDEA.md.
 
 ## Dwa główne cele /start:
 
-1. **IDEA.md** — plan aplikacji zatwierdzony przez usera
+1. **docs/IDEA.md** — plan aplikacji zatwierdzony przez usera
 2. **Konfiguracja projektu** — Bundle ID, App Name, table prefix ustawione w kodzie
 
 > **/start NIE jest ukończony dopóki OBA cele nie są zrobione!**
@@ -36,10 +36,10 @@ Wykonuj kroki **po kolei**. Po ukończeniu każdego → przeczytaj następny pli
 |-----------|------|---------|
 | 1 | `.claude/commands/start/start-1-platform.md` | Połączenie z platformą, API Key |
 | 2 | `.claude/commands/start/start-2-interview.md` | Wywiad (tylko nowi userzy) |
-| 3 | `.claude/commands/start/start-3-idea.md` | Pomysł na aplikację |
+| 3 | `.claude/commands/start/start-3-docs/IDEA.md` | Pomysł na aplikację |
 | 4 | `.claude/commands/start/start-4-app.md` | Utwórz aplikację na platformie |
 | 5 | `.claude/commands/start/start-5-comms.md` | Styl komunikacji |
-| 6 | `.claude/commands/start/start-6-ideamd.md` | Generuj i zatwierdź IDEA.md |
+| 6 | `.claude/commands/start/start-6-ideamd.md` | Generuj i zatwierdź docs/IDEA.md |
 | 7 | `.claude/commands/start/start-7-finalize.md` | Bundle ID w kodzie, sync, commit |
 
 **Zacznij teraz:** Przeczytaj `.claude/commands/start/start-1-platform.md` i wykonaj go.

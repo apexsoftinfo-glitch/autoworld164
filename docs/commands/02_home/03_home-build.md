@@ -18,4 +18,4 @@ WAŻNE: Implementację wykonasz w przygotowanym pliku `lib/features/home/ui/temp
 4. Wykonaj commit.
 5. Krótko podsumuj zmiany i poproś użytkownika o feedback. Poinformuj go, że to tylko szkielet i że na tym etapie jeszcze nie pracujemy nad wyglądem tylko nad rozmieszczeniem elementów.
 6. Po każdej poprawce rób `flutter analyze`, commit i proś o feedback. Pętla trwa dopóki użytkownik nie wykaże zadowolenia z wybranego wariantu. 
-7. Gdy wszystko jest okej zaproponuj przejście do kolejnego etapu /design poleceniem dostępnym w `docs/commands/03_design.md`.
+7. Gdy wszystko jest okej zaproponuj przejście do kolejnego etapu /design poleceniem dostępnym w `docs/commands/03_docs/DESIGN.md`.

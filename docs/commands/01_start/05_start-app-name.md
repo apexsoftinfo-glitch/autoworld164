@@ -10,7 +10,7 @@ Masz podmienić obecną nazwę `XII` na nową nazwę aplikacji widocznej dla use
 
 ## Krok 1. Zlokalizuj nową nazwę
 
-- Upewnij się, że w pliku `IDEA.md` jest zdefiniowana nazwa aplikacji.
+- Upewnij się, że w pliku `docs/IDEA.md` jest zdefiniowana nazwa aplikacji.
 
 ## Krok 2. Zmień nazwę na `iOS`
 

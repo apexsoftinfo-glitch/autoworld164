@@ -4,6 +4,6 @@ Znajdź inne, istenijące wcześniej ekrany w aplikacji takie jak np
 - Logowanie - `lib/features/auth/presentation/ui/login_screen.dart`
 - Rejestracja - `lib/features/auth/presentation/ui/register_screen.dart`
 
-I dopasuj je wizualnie do ustalonego stylu opisanego w `DESIGN.md`
+I dopasuj je wizualnie do ustalonego stylu opisanego w `docs/DESIGN.md`
 
 Gdy skończysz, wykonaj commit. Poinformuj użytkownika o zmianach, o ukończeniu etapu /design, a następnie zaproponuj mu przejście do kolejnego etpau /plan za pomocą komendy `next`. Gdy ją wpisze, przejdź do pliku `docs/commands/04_plan.md`.

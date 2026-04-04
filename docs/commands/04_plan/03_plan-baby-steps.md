@@ -1,6 +1,6 @@
 # TASK
 
-Rozbij teraz ten plan `docs/commands/04_plan/IMPL_PLAN.md` na wiele małych kroków / oddzielnych pliczków .md.
+Rozbij teraz ten plan `docs/IMPL_PLAN.md` na wiele małych kroków / oddzielnych pliczków .md.
 
 Każdy pojedyńczy krok implementacyjny powinien być niezależny i dokładnie technicznie opisany w oddzielnym pliku .md w folderze `docs/commands/05_build/`.
 

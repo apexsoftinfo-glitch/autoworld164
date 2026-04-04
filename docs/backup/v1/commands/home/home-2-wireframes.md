@@ -42,11 +42,11 @@ Przeczytaj: .claude/skills/flutter-mobile-design/SKILL.md
 
 Zadanie: Wymyśl i stwórz 5 FUNDAMENTALNIE różnych wireframe'ów dla Home Screen.
 
-Kontekst z IDEA.md:
+Kontekst z docs/IDEA.md:
 - Aplikacja: [nazwa]
-- Elementy do wyświetlenia: [z IDEA.md]
-- Empty state: [z IDEA.md]
-- CTA: [z IDEA.md]
+- Elementy do wyświetlenia: [z docs/IDEA.md]
+- Empty state: [z docs/IDEA.md]
+- CTA: [z docs/IDEA.md]
 - Wizja użytkownika: [opis lub "brak - zaproponuj sam"]
 
 KRYTYCZNE - MAKSYMALNA RÓŻNORODNOŚĆ:

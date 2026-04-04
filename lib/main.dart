@@ -19,9 +19,5 @@ void main() async {
 
   await configureRevenueCat();
   await configureDependencies();
-  runApp(
-    App(
-      hasSupabaseKeys: AppConfig.hasSupabaseKeys,
-    ),
-  );
+  runApp(App(hasSupabaseKeys: AppConfig.hasSupabaseKeys));
 }

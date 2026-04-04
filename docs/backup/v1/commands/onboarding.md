@@ -34,7 +34,7 @@ Wykonuj kroki **po kolei**. Po ukończeniu każdego → przeczytaj następny pli
 | Kolejność | Plik | Co robi |
 |-----------|------|---------|
 | 0 | `.claude/commands/onboarding/onboarding-0-claudemd.md` | Rozbuduj CLAUDE.md (Flow Contract, EntryPoint Policy) |
-| 1 | `.claude/commands/onboarding/onboarding-1-preparation.md` | Przeczytaj IDEA.md, Design System, skill |
+| 1 | `.claude/commands/onboarding/onboarding-1-preparation.md` | Przeczytaj docs/IDEA.md, Design System, skill |
 | 2 | `.claude/commands/onboarding/onboarding-2-welcome.md` | Welcome Screen (logo + animacja + 2 przyciski) |
 | 3 | `.claude/commands/onboarding/onboarding-3-guided.md` | Guided Onboarding (7 stron PageView + cubit) |
 | 4 | `.claude/commands/onboarding/onboarding-4-navigation.md` | Podłączenie Welcome → Guided Onboarding → Home |

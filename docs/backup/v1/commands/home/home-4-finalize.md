@@ -72,7 +72,7 @@ Wpisz `/design` gdy będziesz gotowy.
 - **flutter analyze** przed commitem - zero problemów!
 
 ### WAŻNE
-- Wymyślaj layouty dopasowane do IDEA.md
+- Wymyślaj layouty dopasowane do docs/IDEA.md
 - Light/dark toggle w każdym wariancie
 - Fake data (nie puste ekrany)
 - Czekaj na "ok" usera przed generowaniem (jeśli ma wizję)
@@ -106,7 +106,7 @@ lib/features/home/ui/
 
 ## Checklist
 
-- [ ] IDEA.md przeczytane
+- [ ] docs/IDEA.md przeczytane
 - [ ] User zapytany o wizję layoutu
 - [ ] Jeśli ma wizję → doprecyzowane i potwierdzone ("ok")
 - [ ] 5 wireframe'ów RADYKALNIE różnych

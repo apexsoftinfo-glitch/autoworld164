@@ -122,10 +122,10 @@ class _WelcomeAppIcon extends StatelessWidget {
       child: switch (platform) {
         TargetPlatform.android => ClipOval(child: image),
         TargetPlatform.iOS => ClipRRect(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(20),
           child: image,
         ),
-        _ => ClipRRect(borderRadius: BorderRadius.circular(24), child: image),
+        _ => ClipRRect(borderRadius: BorderRadius.circular(20), child: image),
       },
     );
   }

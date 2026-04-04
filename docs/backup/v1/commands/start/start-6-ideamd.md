@@ -1,8 +1,8 @@
-# KROK 6: Generowanie IDEA.md
+# KROK 6: Generowanie docs/IDEA.md
 
 ## 6.1 Wygeneruj kompletny dokument
 
-Na podstawie ustalonego pomysłu wypełnij WSZYSTKIE sekcje IDEA.md.
+Na podstawie ustalonego pomysłu wypełnij WSZYSTKIE sekcje docs/IDEA.md.
 Generuj CAŁOŚĆ sam — nie pytaj usera o każdą sekcję.
 
 **⚠️ Sekcja "Paywall Content" jest OBOWIĄZKOWA!** Wygeneruj:
@@ -13,7 +13,7 @@ Generuj CAŁOŚĆ sam — nie pytaj usera o każdą sekcję.
 **Flow generowania benefitów:**
 1. Benefit #1 = ZAWSZE "Unlimited [nazwa elementów]" → Implementacja: "Zdjęcie limitu (count)"
 2. Benefit #2 = ZAWSZE "Premium Themes" lub "Dark Mode & Colors" → Implementacja: "Toggle w Settings"
-3. Benefit #3-5 = przeczytaj katalog strategii w komentarzu HTML w IDEA.md template i dobierz wg:
+3. Benefit #3-5 = przeczytaj katalog strategii w komentarzu HTML w docs/IDEA.md template i dobierz wg:
    - **Complexity tier:** starter = TYLKO trivial/easy, master = easy/medium
    - **Typ apki:** lista → sorting/filters, tracker → insights/streaks, dziennik → history/export
    - **Balans:** mieszaj kategorie (organizacja + insights + data), NIE dawaj 3 z tej samej
@@ -24,7 +24,7 @@ Generuj CAŁOŚĆ sam — nie pytaj usera o każdą sekcję.
 Agent w /screens przeczyta tabelę i zbuduje ekrany/feature'y Pro.
 Agent w /limits przeczyta tabelę i doda if(isPro) checks.
 
-**Na samej górze IDEA.md** (zaraz pod nagłówkiem i elevator pitch) umieść metadane:
+**Na samej górze docs/IDEA.md** (zaraz pod nagłówkiem i elevator pitch) umieść metadane:
 - **App Display Name:** [nazwa wyświetlana w Store]
 - **Bundle ID:** [com.imienazwisko.nazwaapki — z KROKU 4]
 - **Description (EN):** [1-2 zdania po angielsku dla App Store / Google Play]

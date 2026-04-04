@@ -2,9 +2,9 @@
 
 > **⚠️ WYKONAJ NATYCHMIAST po "ok" od usera! Nie wyświetlaj komunikatu i nie czekaj — od razu rób poniższe kroki.**
 
-## 7.1 Zapisz IDEA.md
+## 7.1 Zapisz docs/IDEA.md
 
-Po potwierdzeniu "ok" zapisz IDEA.md do pliku.
+Po potwierdzeniu "ok" zapisz docs/IDEA.md do pliku.
 
 ## 7.2 Konfiguracja Bundle ID i App Name w kodzie
 
@@ -84,7 +84,7 @@ curl -X PATCH {API Base URL}/user/apps/{Platform App ID} \
 git add -A
 git commit -m "feat: complete app idea and planning
 
-- Add IDEA.md with full app specification
+- Add docs/IDEA.md with full app specification
 - Configure bundle ID: {bundle_id}
 - Configure table prefix: {table_prefix}"
 ```
@@ -94,7 +94,7 @@ git commit -m "feat: complete app idea and planning
 > Dopiero TERAZ (po ustawieniu done + commit) wyświetl komunikat userowi:
 
 ```
-IDEA.md gotowe, aplikacja skonfigurowana! Commit wykonany.
+docs/IDEA.md gotowe, aplikacja skonfigurowana! Commit wykonany.
 Wpisz `/home` gdy będziesz gotowy.
 ```
 
@@ -108,7 +108,7 @@ Wpisz `/home` gdy będziesz gotowy.
 - **NIE oznaczaj /start jako `done` bez Bundle ID w kodzie** (7.2) i weryfikacji grep (7.2.1)
 - **Zapisuj cytaty użytkownika** o pomyśle — dosłowne słowa
 - **Sync status z platformą** przy każdej zmianie statusu
-- Generuj CAŁE IDEA.md sam — nie pytaj o każdą sekcję
+- Generuj CAŁE docs/IDEA.md sam — nie pytaj o każdą sekcję
 
 ### CENNIK (stały, niezmienny)
 Monthly: $9.99 | Yearly: $39.99 | Lifetime: $99.99 — NIGDY nie kwestionuj tych cen.

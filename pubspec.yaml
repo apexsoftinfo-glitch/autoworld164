@@ -1,4 +1,4 @@
-# Flutter Template by Adam Smaka - Version: 2.0.0 beta 8
+# Flutter Template by Adam Smaka - Version: 2.0.0 beta 12
 
 name: myapp
 description: "A new Flutter project."
@@ -44,6 +44,7 @@ dependencies:
 
   # DI
   get_it: ^9.2.1
+  shared_preferences: ^2.5.3
 
   # Reactive streams
   rxdart: ^0.28.0
@@ -57,8 +58,6 @@ dependencies:
   purchases_ui_flutter: ^9.13.1
   supabase_flutter: ^2.12.0
   injectable: ^2.7.1+4
-  google_fonts: ^8.0.2
-  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:

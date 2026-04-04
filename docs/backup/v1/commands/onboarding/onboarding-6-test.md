@@ -15,7 +15,7 @@ Przetestuj cały flow:
 1. Welcome → "Rozpocznij" → powinien przejść do Guided Onboarding
 2. Strona 1 (Imię) → wpisz coś → Dalej
 3. Strona 2 (Preview) → czy pokazuje Twoje imię?
-4. Strona 3 (Problem) → czy wizualizacja pasuje do IDEA.md?
+4. Strona 3 (Problem) → czy wizualizacja pasuje do docs/IDEA.md?
 5. Strona 4 (Solution) → czy wizualizacja pokazuje rozwiązanie?
 6. Strona 5 (Experience) → kliknij 2-3 elementy demo
 7. Strona 6 (Bridge) → "Twoja kolej!"
@@ -43,7 +43,7 @@ Po testach usera, zapytaj:
 Świetnie że przetestowałeś! Mam kilka pytań:
 
 1. **Welcome Screen** - animacja logo wygląda dobrze? Przyciski czytelne?
-2. **Strona Problem** - wizualizacja pokazuje problem z IDEA.md? Zrozumiała?
+2. **Strona Problem** - wizualizacja pokazuje problem z docs/IDEA.md? Zrozumiała?
 3. **Strona Solution** - widać różnicę między problemem a rozwiązaniem?
 4. **Strona Experience** - klikanie działa płynnie? Demo jest jasne?
 5. **Minimal Setup** - tylko 1-2 pola? Łatwe do wypełnienia?

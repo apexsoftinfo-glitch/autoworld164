@@ -2,7 +2,7 @@
 
 Twoim zadaniem jako agenta AI jest zrealizowanie poniższych poleceń.
 
-CEL: Zaktualizować placeholdery w AGENTS.md
+CEL: Zaktualizować placeholdery w AGENTS.md i CLAUDE.md
 
 # Task
 
@@ -12,11 +12,13 @@ Podmień placeholder `<app_description>...</app_description>` na krótki opis ap
 Ten opis ma:
 - krótko wyjaśniać, o czym jest aplikacja,
 - być tylko skrótem, nie duplikatem pełnego dokumentu produktu,
-- zawierać zdanie: `Pełny opis produktu znajduje się w pliku IDEA.md.`
+- zawierać zdanie: `Pełny opis produktu znajduje się w pliku docs/IDEA.md.`
 
-Znajdź też odniesienie odnośnie tabel Supabase i podmień `<supabase_table_prefix>` na ustalony `IDEA.md` `__SUPABASE_TABLE_PREFIX__`.
+Znajdź też odniesienie odnośnie tabel Supabase i podmień `<supabase_table_prefix>` na ustalony `docs/IDEA.md` `__SUPABASE_TABLE_PREFIX__`.
 
-Zacommituj zmiany.
+Po zakończeniu edycji `AGENTS.md` skopiuj jego pełną zawartość do `CLAUDE.md` w katalogu głównym projektu, tak aby oba pliki były identyczne.
+
+Zacommituj zmiany obu plików razem.
 
 # Finish
 

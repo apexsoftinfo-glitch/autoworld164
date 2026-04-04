@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:myapp/app/locale/models/app_locale_option_model.dart';
+import 'package:myapp/app/locale/presentation/cubit/app_locale_cubit.dart';
 import 'package:myapp/app/profile/presentation/cubit/account_actions_cubit.dart';
 import 'package:myapp/app/session/models/session_status_model.dart';
 import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
@@ -15,9 +17,15 @@ import '../../../../support/mocks.dart';
 void main() {
   late MockSessionRepository sessionRepository;
   late BehaviorSubject<SessionStatusModel> sessionController;
+  late MockAppLocaleRepository appLocaleRepository;
+  late BehaviorSubject<AppLocaleOptionModel> appLocaleController;
   late MockSharedUserRepository sharedUserRepository;
   late MockAuthRepository authRepository;
   late MockSubscriptionRepository subscriptionRepository;
+
+  setUpAll(() {
+    registerFallbackValue(AppLocaleOptionModel.system);
+  });
 
   setUp(() async {
     sessionRepository = MockSessionRepository();
@@ -29,10 +37,25 @@ void main() {
         sharedUser: buildSharedUser(id: 'guest-1', firstName: 'Guest'),
       ),
     );
+    appLocaleRepository = MockAppLocaleRepository();
+    appLocaleController = BehaviorSubject.seeded(AppLocaleOptionModel.system);
     sharedUserRepository = MockSharedUserRepository();
     authRepository = MockAuthRepository();
     subscriptionRepository = MockSubscriptionRepository();
 
+    when(
+      () => appLocaleRepository.current,
+    ).thenReturn(appLocaleController.value);
+    when(
+      () => appLocaleRepository.localeStream,
+    ).thenAnswer((_) => appLocaleController.stream);
+    when(() => appLocaleRepository.setLocaleOption(any())).thenAnswer((
+      invocation,
+    ) async {
+      final option =
+          invocation.positionalArguments.single as AppLocaleOptionModel;
+      appLocaleController.add(option);
+    });
     when(
       () => sessionRepository.sessionStream,
     ).thenAnswer((_) => sessionController.stream.cast());
@@ -42,6 +65,9 @@ void main() {
     when(() => sessionRepository.refresh()).thenAnswer((_) async {});
 
     await getIt.reset();
+    getIt.registerLazySingleton<AppLocaleCubit>(
+      () => AppLocaleCubit(appLocaleRepository),
+    );
     getIt.registerFactory<SessionCubit>(() => SessionCubit(sessionRepository));
     getIt.registerFactory<ProfileCubit>(
       () => ProfileCubit(sharedUserRepository),
@@ -52,6 +78,7 @@ void main() {
   });
 
   tearDown(() async {
+    await appLocaleController.close();
     await sessionController.close();
     await getIt.reset();
   });
@@ -59,6 +86,7 @@ void main() {
   testWidgets('shows protect-pro banner for guest with pro', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('pl'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: const ProfileScreen(),
@@ -71,9 +99,31 @@ void main() {
     expect(find.text('Zaloguj się'), findsOneWidget);
   });
 
+  testWidgets('shows app language dropdown under first name controls', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('pl'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const ProfileScreen(),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Język aplikacji'), findsOneWidget);
+    expect(find.text('Automatyczny'), findsOneWidget);
+    expect(
+      find.byType(DropdownButtonFormField<AppLocaleOptionModel>),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('opens delete account setup screen from profile', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('pl'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: const ProfileScreen(),

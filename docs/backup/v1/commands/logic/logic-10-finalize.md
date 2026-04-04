@@ -116,7 +116,7 @@ test/features/{feature}/cubit/
 ## Checklisty
 
 ### Po KROKU 1:
-- [ ] IDEA.md przeczytane, model danych zaprojektowany i zapisany do IDEA.md
+- [ ] docs/IDEA.md przeczytane, model danych zaprojektowany i zapisany do docs/IDEA.md
 - [ ] Schemat Supabase zaplanowany
 - [ ] Schemat zapisany w CLAUDE.md (sekcja "Database Schema")
 

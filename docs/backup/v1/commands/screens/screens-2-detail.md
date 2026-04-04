@@ -7,8 +7,8 @@ Przeczytaj: .claude/skills/flutter-ui/SKILL.md
 
 Zadanie: Zbuduj Detail Screen w stylu Home Screen.
 
-Kontekst z IDEA.md:
-- Co pokazuje detail: [z IDEA.md]
+Kontekst z docs/IDEA.md:
+- Co pokazuje detail: [z docs/IDEA.md]
 - Akcje na detail: [edytuj, usuń, inne]
 
 Wymagania:
