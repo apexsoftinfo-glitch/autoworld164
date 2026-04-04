@@ -811,6 +811,30 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Jeżeli Twój agent AI ma dostęp do Supabase MCP, może wdrożyć funkcję `delete-account`, sprawdzić `verify_jwt`, przepiąć profil na gotowy flow i zaktualizować testy.'**
   String get deleteAccountAiHelpBody;
+
+  /// No description provided for @deleteAccountDialogTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Usunąć konto?'**
+  String get deleteAccountDialogTitle;
+
+  /// No description provided for @deleteAccountDialogBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna. Wszystkie Twoje dane oraz dostęp Pro zostaną utracone.'**
+  String get deleteAccountDialogBody;
+
+  /// No description provided for @deleteAccountCancelButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Anuluj'**
+  String get deleteAccountCancelButtonLabel;
+
+  /// No description provided for @deleteAccountConfirmButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Usuń'**
+  String get deleteAccountConfirmButtonLabel;
 }
 
 class _AppLocalizationsDelegate

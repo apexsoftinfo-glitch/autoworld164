@@ -8,7 +8,6 @@ import '../../../../app/developer/ui/developer_screen.dart';
 import '../../../../app/profile/presentation/cubit/account_actions_cubit.dart';
 import '../../../../app/session/presentation/cubit/session_cubit.dart';
 import '../../../../app/session/presentation/session_localizations.dart';
-import '../../../../app/ui/delete_account_setup_required_screen.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../features/auth/presentation/ui/login_screen.dart';
 import '../../../../features/auth/presentation/ui/register_screen.dart';
@@ -287,14 +286,19 @@ class _ProfileViewState extends State<_ProfileView> {
                                 ],
                                 OutlinedButton(
                                   onPressed: !isInteractionLocked
-                                      ? () => Navigator.of(context).push<void>(
-                                          MaterialPageRoute<void>(
-                                            builder: (_) =>
-                                                const DeleteAccountSetupRequiredScreen(),
+                                      ? () => _confirmDeleteAccount(context)
+                                      : null,
+                                  child:
+                                      activeAccountAction ==
+                                          AccountAction.deleteAccount
+                                      ? const SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
                                           ),
                                         )
-                                      : null,
-                                  child: Text(l10n.deleteAccountButtonLabel),
+                                      : Text(l10n.deleteAccountButtonLabel),
                                 ),
                                 if (kDebugMode) ...[
                                   const Divider(height: 48),
@@ -354,6 +358,35 @@ class _ProfileViewState extends State<_ProfileView> {
     );
 
     return result ?? false;
+  }
+
+  Future<void> _confirmDeleteAccount(BuildContext context) async {
+    final l10n = context.l10n;
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteAccountDialogTitle),
+        content: Text(l10n.deleteAccountDialogBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.deleteAccountCancelButtonLabel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            child: Text(l10n.deleteAccountConfirmButtonLabel),
+          ),
+        ],
+      ),
+    );
+
+    if (context.mounted && result == true) {
+      context.read<AccountActionsCubit>().deleteAccount();
+    }
   }
 
   void _saveFirstName(BuildContext context, SessionState session) {

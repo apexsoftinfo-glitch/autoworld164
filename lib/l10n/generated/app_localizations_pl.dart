@@ -410,4 +410,17 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get deleteAccountAiHelpBody =>
       'Jeżeli Twój agent AI ma dostęp do Supabase MCP, może wdrożyć funkcję `delete-account`, sprawdzić `verify_jwt`, przepiąć profil na gotowy flow i zaktualizować testy.';
+
+  @override
+  String get deleteAccountDialogTitle => 'Usunąć konto?';
+
+  @override
+  String get deleteAccountDialogBody =>
+      'Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna. Wszystkie Twoje dane oraz dostęp Pro zostaną utracone.';
+
+  @override
+  String get deleteAccountCancelButtonLabel => 'Anuluj';
+
+  @override
+  String get deleteAccountConfirmButtonLabel => 'Usuń';
 }

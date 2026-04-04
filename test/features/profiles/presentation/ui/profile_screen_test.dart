@@ -120,7 +120,10 @@ void main() {
     );
   });
 
-  testWidgets('opens delete account setup screen from profile', (tester) async {
+  testWidgets('shows delete account confirmation dialog', (tester) async {
+    when(() => authRepository.deleteAccount()).thenAnswer((_) async {});
+    when(() => authRepository.signOut()).thenAnswer((_) async {});
+
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('pl'),
@@ -139,10 +142,18 @@ void main() {
     await tester.tap(find.text('Usuń konto'));
     await tester.pumpAndSettle();
 
+    expect(find.text('Usunąć konto?'), findsOneWidget);
     expect(
-      find.text('Delete account wymaga dodatkowego setupu'),
+      find.text(
+        'Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna. Wszystkie Twoje dane oraz dostęp Pro zostaną utracone.',
+      ),
       findsOneWidget,
     );
-    expect(find.text('03_SUPABASE_DELETE_ACCOUNT_SETUP.md'), findsOneWidget);
+
+    await tester.tap(find.text('Usuń'));
+    await tester.pumpAndSettle();
+
+    verify(() => authRepository.deleteAccount()).called(1);
+    verify(() => authRepository.signOut()).called(1);
   });
 }

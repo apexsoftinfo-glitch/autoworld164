@@ -410,4 +410,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteAccountAiHelpBody =>
       'If your AI agent has access to Supabase MCP, it can deploy the `delete-account` function, verify `verify_jwt`, switch the profile to the ready flow, and update the tests.';
+
+  @override
+  String get deleteAccountDialogTitle => 'Delete account?';
+
+  @override
+  String get deleteAccountDialogBody =>
+      'Are you sure you want to delete your account? This action is permanent and cannot be undone. All your data and Pro access will be lost.';
+
+  @override
+  String get deleteAccountCancelButtonLabel => 'Cancel';
+
+  @override
+  String get deleteAccountConfirmButtonLabel => 'Delete';
 }
