@@ -9,6 +9,7 @@ import '../models/car_model.dart';
 import '../presentation/cubit/cars_collection_cubit.dart';
 
 import 'car_form_screen.dart';
+import 'car_details_screen.dart';
 
 class GarageScreen extends StatelessWidget {
   const GarageScreen({super.key});
@@ -278,9 +279,10 @@ class _CarCard extends StatelessWidget {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {
-                // TODO: Open Car Details
-              },
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CarDetailsScreen(car: car)),
+              ),
               borderRadius: BorderRadius.circular(20),
             ),
           ),

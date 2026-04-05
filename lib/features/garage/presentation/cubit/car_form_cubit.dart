@@ -104,4 +104,23 @@ class CarFormCubit extends Cubit<CarFormState> {
       )));
     }
   }
+
+  Future<void> deleteCar(String carId) async {
+    final currentSeries = state.maybeWhen(
+      initial: (s) => s,
+      loading: (s) => s,
+      error: (ek, s) => s,
+      orElse: () => <String>[],
+    );
+    emit(CarFormState.loading(availableSeries: currentSeries));
+    try {
+      final cars = await _carsRepository.carsStream.first;
+      final car = cars.firstWhere((c) => c.id == carId);
+      await _carsRepository.deleteCar(car);
+      emit(const CarFormState.success());
+    } catch (e, stack) {
+      debugPrint('CarFormCubit deleteCar error: $e\n$stack');
+      emit(CarFormState.error('errorUnknown', availableSeries: currentSeries));
+    }
+  }
 }
