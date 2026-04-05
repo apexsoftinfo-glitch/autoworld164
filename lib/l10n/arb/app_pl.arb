@@ -172,5 +172,14 @@
   "carSeriesLabel": "Seria",
   "carPurchasePriceLabel": "Cena zakupu",
   "carEstimatedValueLabel": "Szacowana wartość",
-  "carPhotoLabel": "Zdjęcie"
+  "carPhotoLabel": "Zdjęcie",
+  "garageTitle": "Mój Garaż",
+  "garageEmptyStateTitle": "Twój garaż jest pusty",
+  "garageEmptyStateSubtitle": "Dodaj swój pierwszy model 1/64, aby zacząć kolekcję.",
+  "garageAddFirstCarButton": "Dodaj pierwszy model",
+  "garageTotalValue": "Wartość kolekcji",
+  "garageTotalItems": "Sztuk w garażu",
+  "garageCarDetails": "Szczegóły",
+  "garageDeleteCarConfirm": "Czy na pewno chcesz usunąć ten model?",
+  "garageSuccessDeleted": "Model został usunięty"
 }

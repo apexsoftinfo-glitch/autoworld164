@@ -5,6 +5,7 @@ import '../../profiles/presentation/ui/profile_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
+import '../../garage/ui/garage_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -122,7 +123,10 @@ class _HomeScreenView extends StatelessWidget {
                           label: 'MÓJ GARAŻ',
                           icon: Icons.auto_awesome,
                           color: const Color(0xFFFFD700),
-                          onTap: () => _showComingSoon(context, 'Mój Garaż'),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const GarageScreen()),
+                          ),
                         ),
                         _VIPCard(
                           label: 'NOWOŚCI',

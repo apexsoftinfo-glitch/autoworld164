@@ -172,5 +172,14 @@
   "carSeriesLabel": "Series",
   "carPurchasePriceLabel": "Purchase price",
   "carEstimatedValueLabel": "Estimated value",
-  "carPhotoLabel": "Photo"
+  "carPhotoLabel": "Photo",
+  "garageTitle": "My Garage",
+  "garageEmptyStateTitle": "Your garage is empty",
+  "garageEmptyStateSubtitle": "Add your first 1/64 model to start your collection.",
+  "garageAddFirstCarButton": "Add first model",
+  "garageTotalValue": "Collection value",
+  "garageTotalItems": "Items in garage",
+  "garageCarDetails": "Details",
+  "garageDeleteCarConfirm": "Are you sure you want to delete this model?",
+  "garageSuccessDeleted": "Model has been deleted"
 }

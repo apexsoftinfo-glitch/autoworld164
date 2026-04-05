@@ -441,4 +441,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get carPhotoLabel => 'Photo';
+
+  @override
+  String get garageTitle => 'My Garage';
+
+  @override
+  String get garageEmptyStateTitle => 'Your garage is empty';
+
+  @override
+  String get garageEmptyStateSubtitle =>
+      'Add your first 1/64 model to start your collection.';
+
+  @override
+  String get garageAddFirstCarButton => 'Add first model';
+
+  @override
+  String get garageTotalValue => 'Collection value';
+
+  @override
+  String get garageTotalItems => 'Items in garage';
+
+  @override
+  String get garageCarDetails => 'Details';
+
+  @override
+  String get garageDeleteCarConfirm =>
+      'Are you sure you want to delete this model?';
+
+  @override
+  String get garageSuccessDeleted => 'Model has been deleted';
 }

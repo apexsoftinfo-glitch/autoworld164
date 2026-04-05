@@ -871,6 +871,60 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Zdjęcie'**
   String get carPhotoLabel;
+
+  /// No description provided for @garageTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Mój Garaż'**
+  String get garageTitle;
+
+  /// No description provided for @garageEmptyStateTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Twój garaż jest pusty'**
+  String get garageEmptyStateTitle;
+
+  /// No description provided for @garageEmptyStateSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj swój pierwszy model 1/64, aby zacząć kolekcję.'**
+  String get garageEmptyStateSubtitle;
+
+  /// No description provided for @garageAddFirstCarButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj pierwszy model'**
+  String get garageAddFirstCarButton;
+
+  /// No description provided for @garageTotalValue.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wartość kolekcji'**
+  String get garageTotalValue;
+
+  /// No description provided for @garageTotalItems.
+  ///
+  /// In pl, this message translates to:
+  /// **'Sztuk w garażu'**
+  String get garageTotalItems;
+
+  /// No description provided for @garageCarDetails.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szczegóły'**
+  String get garageCarDetails;
+
+  /// No description provided for @garageDeleteCarConfirm.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy na pewno chcesz usunąć ten model?'**
+  String get garageDeleteCarConfirm;
+
+  /// No description provided for @garageSuccessDeleted.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model został usunięty'**
+  String get garageSuccessDeleted;
 }
 
 class _AppLocalizationsDelegate

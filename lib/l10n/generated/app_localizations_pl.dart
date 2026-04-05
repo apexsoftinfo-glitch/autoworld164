@@ -441,4 +441,32 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get carPhotoLabel => 'Zdjęcie';
+
+  @override
+  String get garageTitle => 'Mój Garaż';
+
+  @override
+  String get garageEmptyStateTitle => 'Twój garaż jest pusty';
+
+  @override
+  String get garageEmptyStateSubtitle =>
+      'Dodaj swój pierwszy model 1/64, aby zacząć kolekcję.';
+
+  @override
+  String get garageAddFirstCarButton => 'Dodaj pierwszy model';
+
+  @override
+  String get garageTotalValue => 'Wartość kolekcji';
+
+  @override
+  String get garageTotalItems => 'Sztuk w garażu';
+
+  @override
+  String get garageCarDetails => 'Szczegóły';
+
+  @override
+  String get garageDeleteCarConfirm => 'Czy na pewno chcesz usunąć ten model?';
+
+  @override
+  String get garageSuccessDeleted => 'Model został usunięty';
 }
