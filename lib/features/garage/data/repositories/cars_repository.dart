@@ -17,6 +17,7 @@ abstract class CarsRepository {
     required double purchasePrice,
     required double estimatedValue,
     List<File> photos = const [],
+    List<String> internetUrls = const [],
   });
   Future<void> editCar({
     required CarModel oldModel,
@@ -28,10 +29,13 @@ abstract class CarsRepository {
     required double purchasePrice,
     required double estimatedValue,
     List<File> newPhotos = const [],
+    List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
   });
   Future<void> deleteCar(CarModel car);
   Future<List<String>> getSeries();
+  Future<List<String>> searchWebPhotos(String query);
+  Future<double> estimateValue(String query);
 }
 
 @LazySingleton(as: CarsRepository)
@@ -61,6 +65,7 @@ class CarsRepositoryImpl implements CarsRepository {
     required double purchasePrice,
     required double estimatedValue,
     List<File> photos = const [],
+    List<String> internetUrls = const [],
   }) async {
     try {
       final data = {
@@ -72,8 +77,8 @@ class CarsRepositoryImpl implements CarsRepository {
         'purchase_price': purchasePrice,
         'estimated_value': estimatedValue,
       };
-
-      await _dataSource.addCar(data, photos);
+ 
+      await _dataSource.addCar(data, photos, internetUrls);
       if (series != null) {
         await _dataSource.addSeries(series);
       }
@@ -94,6 +99,7 @@ class CarsRepositoryImpl implements CarsRepository {
     required double purchasePrice,
     required double estimatedValue,
     List<File> newPhotos = const [],
+    List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
     try {
@@ -112,6 +118,7 @@ class CarsRepositoryImpl implements CarsRepository {
         oldModel.id,
         data,
         newPhotos,
+        internetUrls,
         oldModel.photoPaths,
       );
       if (series != null) {
@@ -135,4 +142,27 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<List<String>> getSeries() => _dataSource.fetchSeries();
+
+  @override
+  Future<List<String>> searchWebPhotos(String query) async {
+    // Simulated search results for demo
+    if (query.toLowerCase().contains('porsche')) {
+      return [
+        'https://m.media-amazon.com/images/I/71X8f8E8q8L._AC_SL1500_.jpg',
+        'https://m.media-amazon.com/images/I/61S-r0w873L._AC_SL1500_.jpg',
+        'https://m.media-amazon.com/images/I/71u9zHh0o4L._AC_SL1500_.jpg',
+      ];
+    }
+    return [
+      'https://m.media-amazon.com/images/I/71u9zHh0o4L._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/61S-r0w873L._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/71X8f8E8q8L._AC_SL1500_.jpg',
+    ];
+  }
+
+  @override
+  Future<double> estimateValue(String query) async {
+    // Simulated AI valuation
+    return 35.0;
+  }
 }

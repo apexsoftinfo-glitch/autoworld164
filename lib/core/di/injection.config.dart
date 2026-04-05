@@ -42,6 +42,8 @@ import 'package:myapp/features/garage/presentation/cubit/car_form_cubit.dart'
     as _i885;
 import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart'
     as _i182;
+import 'package:myapp/features/garage/presentation/cubit/search_photos_cubit.dart'
+    as _i537;
 import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
     as _i381;
 import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart'
@@ -128,6 +130,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i491.WelcomeCubit>(
       () => _i491.WelcomeCubit(gh<_i37.AuthRepository>()),
+    );
+    gh.factory<_i537.SearchPhotosCubit>(
+      () => _i537.SearchPhotosCubit(gh<_i630.CarsRepository>()),
     );
     gh.factory<_i639.AccountActionsCubit>(
       () => _i639.AccountActionsCubit(

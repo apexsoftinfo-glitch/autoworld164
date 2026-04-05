@@ -34,6 +34,15 @@ class CarFormCubit extends Cubit<CarFormState> {
     }
   }
 
+  Future<double?> estimateValue(String query) async {
+    try {
+      return await _carsRepository.estimateValue(query);
+    } catch (e) {
+      debugPrint('CarFormCubit estimateValue error: $e');
+      return null;
+    }
+  }
+
   Future<void> saveCar({
     CarModel? existingCar,
     required String brand,
@@ -44,6 +53,7 @@ class CarFormCubit extends Cubit<CarFormState> {
     required double purchasePrice,
     required double estimatedValue,
     List<File> newPhotos = const [],
+    List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
     emit(const CarFormState.loading());
@@ -59,6 +69,7 @@ class CarFormCubit extends Cubit<CarFormState> {
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
           newPhotos: newPhotos,
+          internetUrls: photoUrls,
           remainingPhotoPaths: remainingPhotoPaths,
         );
       } else {
@@ -71,6 +82,7 @@ class CarFormCubit extends Cubit<CarFormState> {
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
           photos: newPhotos,
+          internetUrls: photoUrls,
         );
       }
       emit(const CarFormState.success());

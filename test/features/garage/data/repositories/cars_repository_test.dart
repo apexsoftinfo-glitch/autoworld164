@@ -44,7 +44,7 @@ void main() {
     });
 
     test('addCar passes mapped data to data source', () async {
-      when(() => mockDataSource.addCar(any(), any()))
+      when(() => mockDataSource.addCar(any(), any(), any()))
           .thenAnswer((_) async {});
 
       await repository.addCar(
@@ -64,6 +64,7 @@ void main() {
               'purchase_price': 10.0,
               'estimated_value': 20.0,
             },
+            [],
             [],
           )).called(1);
     });

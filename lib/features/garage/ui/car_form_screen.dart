@@ -9,6 +9,7 @@ import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../models/car_model.dart';
 import '../presentation/cubit/car_form_cubit.dart';
+import 'search_photos_dialog.dart';
 
 class CarFormScreen extends StatefulWidget {
   final CarModel? car;
@@ -30,6 +31,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
   
   final List<File> _newImages = [];
   final List<String> _remainingPhotoPaths = [];
+  final List<String> _internetPhotoUrls = [];
   DateTime? _purchaseDate;
 
   @override
@@ -53,6 +55,29 @@ class _CarFormScreenState extends State<CarFormScreen> {
     
     _purchaseDate = widget.car?.purchaseDate ?? DateTime.now();
   }
+
+  Future<void> _searchInternet(BuildContext context) async {
+    final query = '${_brandController.text} ${_nameController.text} 1/64'
+        .trim();
+    if (query.isEmpty) return;
+    
+    final url = await SearchPhotosDialog.show(context, query);
+    if (url != null) {
+      setState(() => _internetPhotoUrls.add(url));
+    }
+  }
+
+  Future<void> _aiEstimate(BuildContext context, CarFormCubit cubit) async {
+    final query = '${_brandController.text} ${_nameController.text} ${_seriesController.text}'
+        .trim();
+    if (query.isEmpty) return;
+    
+    final value = await cubit.estimateValue(query);
+    if (value != null) {
+      _estimatedValueController.text = value.toStringAsFixed(2);
+    }
+  }
+
 
   @override
   void dispose() {
@@ -164,19 +189,16 @@ class _CarFormScreenState extends State<CarFormScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              _MultiPhotoPicker(
-                                newImages: _newImages,
-                                remainingPaths: _remainingPhotoPaths,
-                                onAdd: _pickImage,
-                                onRemoveNew: (i) => setState(() => _newImages.removeAt(i)),
-                                onRemoveExisting: (p) => setState(() => _remainingPhotoPaths.remove(p)),
-                                onSearchOnline: () {
-                                  // Placeholder for image search
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Szukanie zdjęć w internecie...')),
-                                  );
-                                },
-                              ),
+                                _MultiPhotoPicker(
+                                  newImages: _newImages,
+                                  remainingPaths: _remainingPhotoPaths,
+                                  internetUrls: _internetPhotoUrls,
+                                  onAdd: _pickImage,
+                                  onRemoveNew: (i) => setState(() => _newImages.removeAt(i)),
+                                  onRemoveExisting: (p) => setState(() => _remainingPhotoPaths.remove(p)),
+                                  onRemoveInternet: (u) => setState(() => _internetPhotoUrls.remove(u)),
+                                  onSearchOnline: () => _searchInternet(context),
+                                ),
                               const SizedBox(height: 32),
                               
                               _GlassInput(
@@ -226,12 +248,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                       keyboardType: TextInputType.number,
                                       suffix: IconButton(
                                         icon: const Icon(Icons.auto_fix_high, color: Color(0xFFFFD700), size: 18),
-                                        onPressed: () {
-                                          // Placeholder for AI valuation
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text('Wyliczanie wartości AI...')),
-                                          );
-                                        },
+                                        onPressed: () => _aiEstimate(context, context.read<CarFormCubit>()),
                                       ),
                                       validator: (v) => double.tryParse(v ?? '') == null ? '?' : null,
                                     ),
@@ -262,6 +279,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                       purchasePrice: double.parse(_purchasePriceController.text),
                                       estimatedValue: double.parse(_estimatedValueController.text),
                                       newPhotos: _newImages,
+                                      photoUrls: _internetPhotoUrls,
                                       remainingPhotoPaths: _remainingPhotoPaths,
                                     );
                                   }
@@ -298,24 +316,28 @@ class _CarFormScreenState extends State<CarFormScreen> {
 class _MultiPhotoPicker extends StatelessWidget {
   final List<File> newImages;
   final List<String> remainingPaths;
+  final List<String> internetUrls;
   final VoidCallback onAdd;
   final Function(int) onRemoveNew;
   final Function(String) onRemoveExisting;
+  final Function(String) onRemoveInternet;
   final VoidCallback onSearchOnline;
 
   const _MultiPhotoPicker({
     required this.newImages,
     required this.remainingPaths,
+    required this.internetUrls,
     required this.onAdd,
     required this.onRemoveNew,
     required this.onRemoveExisting,
+    required this.onRemoveInternet,
     required this.onSearchOnline,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final total = newImages.length + remainingPaths.length;
+    final total = newImages.length + remainingPaths.length + internetUrls.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,6 +376,11 @@ class _MultiPhotoPicker extends StatelessWidget {
               ...remainingPaths.map((p) => _Thumbnail(
                 path: p,
                 onRemove: () => onRemoveExisting(p),
+              )),
+
+              ...internetUrls.map((u) => _Thumbnail(
+                url: u,
+                onRemove: () => onRemoveInternet(u),
               )),
             ],
           ),
@@ -402,9 +429,10 @@ class _AddPhotoBox extends StatelessWidget {
 class _Thumbnail extends StatelessWidget {
   final File? image;
   final String? path;
+  final String? url;
   final VoidCallback onRemove;
 
-  const _Thumbnail({this.image, this.path, required this.onRemove});
+  const _Thumbnail({this.image, this.path, this.url, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -420,12 +448,7 @@ class _Thumbnail extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: image != null 
-                ? Image.file(image!, fit: BoxFit.cover)
-                : Image.network(
-                    'https://laapoqdayvmszqcijyob.supabase.co/storage/v1/object/public/autoworld_photos/$path',
-                    fit: BoxFit.cover,
-                  ),
+            child: _buildImage(),
           ),
           Positioned(
             right: 4,
@@ -441,6 +464,21 @@ class _Thumbnail extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildImage() {
+    if (image != null) return Image.file(image!, fit: BoxFit.cover);
+    if (url != null) {
+      return Image.network(
+        url!,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Center(child: Icon(Icons.error_outline, color: Colors.white24)),
+      );
+    }
+    return Image.network(
+      'https://laapoqdayvmszqcijyob.supabase.co/storage/v1/object/public/autoworld_photos/$path',
+      fit: BoxFit.cover,
     );
   }
 }

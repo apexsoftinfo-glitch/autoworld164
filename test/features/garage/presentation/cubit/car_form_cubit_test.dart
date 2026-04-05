@@ -37,6 +37,7 @@ void main() {
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
               photos: any(named: 'photos'),
+              internetUrls: any(named: 'internetUrls'),
             )).thenAnswer((_) async {});
         return CarFormCubit(carsRepository);
       },
@@ -64,6 +65,7 @@ void main() {
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
               photos: any(named: 'photos'),
+              internetUrls: any(named: 'internetUrls'),
             )).thenThrow(Exception('database error'));
         return CarFormCubit(carsRepository);
       },

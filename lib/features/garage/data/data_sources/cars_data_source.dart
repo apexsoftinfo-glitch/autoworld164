@@ -3,14 +3,16 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
 
 abstract class CarsDataSource {
   Stream<List<Map<String, dynamic>>> watchCars();
-  Future<void> addCar(Map<String, dynamic> data, List<File> photos);
+  Future<void> addCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls);
   Future<void> editCar(
     String id,
     Map<String, dynamic> data,
     List<File> newPhotos,
+    List<String> internetUrls,
     List<String> oldPhotoPaths,
   );
   Future<void> deleteCar(String id, List<String> photoPaths);
@@ -45,7 +47,7 @@ class CarsDataSourceImpl implements CarsDataSource {
     
     final paths = <String>[];
     for (final photo in photos) {
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}_${paths.length}.jpg';
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}_local_${paths.length}.jpg';
       final path = '$userId/$fileName';
       await _supabase.storage.from('autoworld_photos').upload(path, photo);
       paths.add(path);
@@ -53,14 +55,36 @@ class CarsDataSourceImpl implements CarsDataSource {
     return paths;
   }
 
+  Future<List<String>> _uploadFromUrls(List<String> urls) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) throw Exception('unauthenticated');
+    
+    final paths = <String>[];
+    for (final url in urls) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          final fileName = '${DateTime.now().millisecondsSinceEpoch}_remote_${paths.length}.jpg';
+          final path = '$userId/$fileName';
+          await _supabase.storage.from('autoworld_photos').uploadBinary(path, response.bodyBytes);
+          paths.add(path);
+        }
+      } catch (e) {
+        debugPrint('Error uploading from URL $url: $e');
+      }
+    }
+    return paths;
+  }
+
   @override
-  Future<void> addCar(Map<String, dynamic> data, List<File> photos) async {
+  Future<void> addCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls) async {
     try {
-      final photoPaths = await _uploadPhotos(photos);
+      final localPaths = await _uploadPhotos(photos);
+      final remotePaths = await _uploadFromUrls(internetUrls);
 
       await _supabase.from('autoworld_cars').insert({
         ...data,
-        'photo_paths': photoPaths,
+        'photo_paths': [...localPaths, ...remotePaths],
       });
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl addCar error: $e\n$stack');
@@ -73,21 +97,18 @@ class CarsDataSourceImpl implements CarsDataSource {
     String id,
     Map<String, dynamic> data,
     List<File> newPhotos,
+    List<String> internetUrls,
     List<String> oldPhotoPaths,
   ) async {
     try {
-      // For now, we append new photos to the existing array in the UI or logic.
-      // But let's assume we are replacing or providing the full new set of files 
-      // is not ideal. Let's assume we are adding new ones.
-      final uploadedPaths = await _uploadPhotos(newPhotos);
+      final localPaths = await _uploadPhotos(newPhotos);
+      final remotePaths = await _uploadFromUrls(internetUrls);
       
-      // In a real app, you'd manage which ones to keep/delete. 
-      // For this task, let's keep it simple: data['photo_paths'] should contain 
-      // the combined list of remaining old paths + new paths.
+      final currentPathsInDb = data['photo_paths'] as List? ?? [];
       
       await _supabase.from('autoworld_cars').update({
         ...data,
-        if (uploadedPaths.isNotEmpty) 'photo_paths': [...(data['photo_paths'] as List? ?? []), ...uploadedPaths],
+        'photo_paths': [...currentPathsInDb, ...localPaths, ...remotePaths],
       }).eq('id', id);
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl editCar error: $e\n$stack');
