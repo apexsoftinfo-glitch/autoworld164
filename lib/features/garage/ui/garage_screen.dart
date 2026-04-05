@@ -75,32 +75,47 @@ class _GarageScreenView extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-              data: (cars, purchaseTotal, estimatedTotal, stats) {
+              data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
                 if (cars.isEmpty) {
                   return const _EmptyGarageView();
                 }
 
                 return Column(
                   children: [
-                    const SizedBox(height: kToolbarHeight + 40),
                     _GarageSummaryHeader(
-                      pieces: cars.length,
+                      pieces: filtered.length,
                       totalValue: estimatedTotal,
                     ),
+                    const SizedBox(height: 16),
+                    _SearchAndToggleBar(
+                      query: query,
+                      viewType: viewType,
+                      onSearch: (v) => context.read<CarsCollectionCubit>().search(v),
+                      onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
+                    ),
                     Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(24),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 0.75,
-                        ),
-                        itemCount: cars.length,
-                        itemBuilder: (context, index) {
-                          return _CarCard(car: cars[index]);
-                        },
-                      ),
+                      child: viewType == CollectionViewType.grid 
+                        ? GridView.builder(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: filtered.length,
+                            itemBuilder: (context, index) {
+                              return _CarCard(car: filtered[index]);
+                            },
+                          )
+                        : ListView.separated(
+                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                            itemCount: filtered.length,
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              return _CarListTile(car: filtered[index]);
+                            },
+                          ),
                     ),
                   ],
                 );
@@ -130,21 +145,18 @@ class _GarageSummaryHeader extends StatelessWidget {
       ? '${(totalValue / 1000).toStringAsFixed(1)}K' 
       : totalValue.toStringAsFixed(0);
 
-    return _GlassBox(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      borderColor: const Color(0xFFFFD700).withValues(alpha: 0.2),
+      padding: const EdgeInsets.fromLTRB(16, kToolbarHeight + 10, 16, 12),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05), width: 1)),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _Stat(
             label: l10n.garageTotalItems.toUpperCase(),
             value: pieces.toString(),
-          ),
-          Container(
-            width: 1,
-            height: 30,
-            color: Colors.white10,
           ),
           _Stat(
             label: l10n.garageTotalValue.toUpperCase(),
@@ -172,7 +184,7 @@ class _Stat extends StatelessWidget {
           value,
           style: TextStyle(
             color: valueColor ?? Colors.white,
-            fontSize: 20,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -365,22 +377,133 @@ class _EmptyGarageView extends StatelessWidget {
   }
 }
 
+class _SearchAndToggleBar extends StatelessWidget {
+  final String query;
+  final CollectionViewType viewType;
+  final ValueChanged<String> onSearch;
+  final VoidCallback onToggle;
+
+  const _SearchAndToggleBar({
+    required this.query,
+    required this.viewType,
+    required this.onSearch,
+    required this.onToggle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          Expanded(
+            child: _GlassBox(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                onChanged: onSearch,
+                style: const TextStyle(color: Colors.white, fontSize: 13),
+                decoration: const InputDecoration(
+                  hintText: 'Szukaj modelu...',
+                  hintStyle: TextStyle(color: Colors.white24, fontSize: 12),
+                  border: InputBorder.none,
+                  icon: Icon(Icons.search, size: 18, color: Colors.white38),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          _GlassBox(
+            padding: EdgeInsets.zero,
+            child: IconButton(
+              icon: Icon(
+                viewType == CollectionViewType.grid ? Icons.view_headline : Icons.grid_view,
+                color: Colors.white70,
+                size: 18,
+              ),
+              onPressed: onToggle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CarListTile extends StatelessWidget {
+  final CarModel car;
+  const _CarListTile({required this.car});
+
+  @override
+  Widget build(BuildContext context) {
+    final supabase = getIt<SupabaseClient>();
+    final photoUrl = car.photoPath != null 
+      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
+      : null;
+
+    return _GlassBox(
+      padding: const EdgeInsets.all(12),
+      child: InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => CarDetailsScreen(car: car)),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(
+                width: 60,
+                height: 60,
+                child: photoUrl != null
+                  ? Image.network(photoUrl, fit: BoxFit.cover, errorBuilder: (c, e, s) => _ImagePlaceholder())
+                  : _ImagePlaceholder(),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    car.brand.toUpperCase(),
+                    style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
+                  ),
+                  Text(
+                    car.modelName,
+                    style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
+                  ),
+                  if (car.series != null)
+                    Text(
+                      car.series!,
+                      style: const TextStyle(color: Colors.white38, fontSize: 10),
+                    ),
+                ],
+              ),
+            ),
+            Text(
+              '\$${car.estimatedValue.toStringAsFixed(0)}',
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _GlassBox extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
-  final EdgeInsets? margin;
   final Color? borderColor;
   const _GlassBox({
     required this.child,
     required this.padding,
-    this.margin,
     this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin,
       decoration: BoxDecoration(
         color: Colors.transparent,
         boxShadow: [

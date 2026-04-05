@@ -276,7 +276,7 @@ class _DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.delete_outline, color: Colors.white38),
+      icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
       onPressed: () => _confirmDelete(context),
     );
   }

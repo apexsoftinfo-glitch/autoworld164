@@ -9,6 +9,8 @@ import 'package:flutter/foundation.dart';
 
 part 'cars_collection_cubit.freezed.dart';
 
+enum CollectionViewType { grid, list }
+
 @freezed
 sealed class CarsCollectionState with _$CarsCollectionState {
   const factory CarsCollectionState.initial() = CarsCollectionInitial;
@@ -16,9 +18,12 @@ sealed class CarsCollectionState with _$CarsCollectionState {
   const factory CarsCollectionState.error(String errorKey) = CarsCollectionError;
   const factory CarsCollectionState.data({
     required List<CarModel> cars,
+    required List<CarModel> filteredCars,
     required double totalPurchasePrice,
     required double totalEstimatedValue,
     @Default({}) Map<String, int> brandStats,
+    @Default('') String query,
+    @Default(CollectionViewType.grid) CollectionViewType viewType,
   }) = CarsCollectionData;
 }
 
@@ -50,11 +55,25 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
           }
         }
 
+        final currentQuery = state.maybeWhen(
+          data: (c, fc, pt, et, st, q, vt) => q,
+          orElse: () => '',
+        );
+        final currentViewType = state.maybeWhen(
+          data: (c, fc, pt, et, st, q, vt) => vt,
+          orElse: () => CollectionViewType.grid,
+        );
+
+        final filtered = _filterCars(cars, currentQuery);
+
         emit(CarsCollectionState.data(
           cars: cars,
+          filteredCars: filtered,
           totalPurchasePrice: purchaseTotal,
           totalEstimatedValue: estimatedTotal,
           brandStats: stats,
+          query: currentQuery,
+          viewType: currentViewType,
         ));
       },
       onError: (error) {
@@ -62,6 +81,51 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         emit(const CarsCollectionState.error('errorUnknown'));
       },
     );
+  }
+
+  void search(String query) {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, estimatedTotal, stats, q, viewType) {
+      final newFiltered = _filterCars(cars, query);
+      emit(CarsCollectionState.data(
+        cars: cars,
+        filteredCars: newFiltered,
+        totalPurchasePrice: purchaseTotal,
+        totalEstimatedValue: estimatedTotal,
+        brandStats: stats,
+        query: query,
+        viewType: viewType,
+      ));
+    });
+  }
+
+  void toggleView() {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
+      final newType = viewType == CollectionViewType.grid ? CollectionViewType.list : CollectionViewType.grid;
+      emit(CarsCollectionState.data(
+        cars: cars,
+        filteredCars: filtered,
+        totalPurchasePrice: purchaseTotal,
+        totalEstimatedValue: estimatedTotal,
+        brandStats: stats,
+        query: query,
+        viewType: newType,
+      ));
+    });
+  }
+
+  List<CarModel> _filterCars(List<CarModel> cars, String query) {
+    if (query.isEmpty) return cars;
+    final q = query.toLowerCase();
+    return cars.where((c) {
+      final matchText = [
+        c.brand,
+        c.modelName,
+        c.series ?? '',
+        c.toyMaker ?? '',
+        c.purchasePrice.toString(),
+      ].join(' ').toLowerCase();
+      return matchText.contains(q);
+    }).toList();
   }
 
   void retry() {

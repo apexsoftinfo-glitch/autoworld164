@@ -131,13 +131,13 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String errorKey)?  error,TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)?  data,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String errorKey)?  error,TResult Function( List<CarModel> cars,  List<CarModel> filteredCars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats,  String query,  CollectionViewType viewType)?  data,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial() when initial != null:
 return initial();case CarsCollectionLoading() when loading != null:
 return loading();case CarsCollectionError() when error != null:
 return error(_that.errorKey);case CarsCollectionData() when data != null:
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);case _:
+return data(_that.cars,_that.filteredCars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats,_that.query,_that.viewType);case _:
   return orElse();
 
 }
@@ -155,13 +155,13 @@ return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String errorKey)  error,required TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)  data,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String errorKey)  error,required TResult Function( List<CarModel> cars,  List<CarModel> filteredCars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats,  String query,  CollectionViewType viewType)  data,}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial():
 return initial();case CarsCollectionLoading():
 return loading();case CarsCollectionError():
 return error(_that.errorKey);case CarsCollectionData():
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);}
+return data(_that.cars,_that.filteredCars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats,_that.query,_that.viewType);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -175,13 +175,13 @@ return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String errorKey)?  error,TResult? Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)?  data,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String errorKey)?  error,TResult? Function( List<CarModel> cars,  List<CarModel> filteredCars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats,  String query,  CollectionViewType viewType)?  data,}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial() when initial != null:
 return initial();case CarsCollectionLoading() when loading != null:
 return loading();case CarsCollectionError() when error != null:
 return error(_that.errorKey);case CarsCollectionData() when data != null:
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);case _:
+return data(_that.cars,_that.filteredCars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats,_that.query,_that.viewType);case _:
   return null;
 
 }
@@ -341,7 +341,7 @@ as String,
 
 
 class CarsCollectionData with DiagnosticableTreeMixin implements CarsCollectionState {
-  const CarsCollectionData({required final  List<CarModel> cars, required this.totalPurchasePrice, required this.totalEstimatedValue, final  Map<String, int> brandStats = const {}}): _cars = cars,_brandStats = brandStats;
+  const CarsCollectionData({required final  List<CarModel> cars, required final  List<CarModel> filteredCars, required this.totalPurchasePrice, required this.totalEstimatedValue, final  Map<String, int> brandStats = const {}, this.query = '', this.viewType = CollectionViewType.grid}): _cars = cars,_filteredCars = filteredCars,_brandStats = brandStats;
   
 
  final  List<CarModel> _cars;
@@ -349,6 +349,13 @@ class CarsCollectionData with DiagnosticableTreeMixin implements CarsCollectionS
   if (_cars is EqualUnmodifiableListView) return _cars;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_cars);
+}
+
+ final  List<CarModel> _filteredCars;
+ List<CarModel> get filteredCars {
+  if (_filteredCars is EqualUnmodifiableListView) return _filteredCars;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_filteredCars);
 }
 
  final  double totalPurchasePrice;
@@ -360,6 +367,8 @@ class CarsCollectionData with DiagnosticableTreeMixin implements CarsCollectionS
   return EqualUnmodifiableMapView(_brandStats);
 }
 
+@JsonKey() final  String query;
+@JsonKey() final  CollectionViewType viewType;
 
 /// Create a copy of CarsCollectionState
 /// with the given fields replaced by the non-null parameter values.
@@ -372,21 +381,21 @@ $CarsCollectionDataCopyWith<CarsCollectionData> get copyWith => _$CarsCollection
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CarsCollectionState.data'))
-    ..add(DiagnosticsProperty('cars', cars))..add(DiagnosticsProperty('totalPurchasePrice', totalPurchasePrice))..add(DiagnosticsProperty('totalEstimatedValue', totalEstimatedValue))..add(DiagnosticsProperty('brandStats', brandStats));
+    ..add(DiagnosticsProperty('cars', cars))..add(DiagnosticsProperty('filteredCars', filteredCars))..add(DiagnosticsProperty('totalPurchasePrice', totalPurchasePrice))..add(DiagnosticsProperty('totalEstimatedValue', totalEstimatedValue))..add(DiagnosticsProperty('brandStats', brandStats))..add(DiagnosticsProperty('query', query))..add(DiagnosticsProperty('viewType', viewType));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarsCollectionData&&const DeepCollectionEquality().equals(other._cars, _cars)&&(identical(other.totalPurchasePrice, totalPurchasePrice) || other.totalPurchasePrice == totalPurchasePrice)&&(identical(other.totalEstimatedValue, totalEstimatedValue) || other.totalEstimatedValue == totalEstimatedValue)&&const DeepCollectionEquality().equals(other._brandStats, _brandStats));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarsCollectionData&&const DeepCollectionEquality().equals(other._cars, _cars)&&const DeepCollectionEquality().equals(other._filteredCars, _filteredCars)&&(identical(other.totalPurchasePrice, totalPurchasePrice) || other.totalPurchasePrice == totalPurchasePrice)&&(identical(other.totalEstimatedValue, totalEstimatedValue) || other.totalEstimatedValue == totalEstimatedValue)&&const DeepCollectionEquality().equals(other._brandStats, _brandStats)&&(identical(other.query, query) || other.query == query)&&(identical(other.viewType, viewType) || other.viewType == viewType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cars),totalPurchasePrice,totalEstimatedValue,const DeepCollectionEquality().hash(_brandStats));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cars),const DeepCollectionEquality().hash(_filteredCars),totalPurchasePrice,totalEstimatedValue,const DeepCollectionEquality().hash(_brandStats),query,viewType);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CarsCollectionState.data(cars: $cars, totalPurchasePrice: $totalPurchasePrice, totalEstimatedValue: $totalEstimatedValue, brandStats: $brandStats)';
+  return 'CarsCollectionState.data(cars: $cars, filteredCars: $filteredCars, totalPurchasePrice: $totalPurchasePrice, totalEstimatedValue: $totalEstimatedValue, brandStats: $brandStats, query: $query, viewType: $viewType)';
 }
 
 
@@ -397,7 +406,7 @@ abstract mixin class $CarsCollectionDataCopyWith<$Res> implements $CarsCollectio
   factory $CarsCollectionDataCopyWith(CarsCollectionData value, $Res Function(CarsCollectionData) _then) = _$CarsCollectionDataCopyWithImpl;
 @useResult
 $Res call({
- List<CarModel> cars, double totalPurchasePrice, double totalEstimatedValue, Map<String, int> brandStats
+ List<CarModel> cars, List<CarModel> filteredCars, double totalPurchasePrice, double totalEstimatedValue, Map<String, int> brandStats, String query, CollectionViewType viewType
 });
 
 
@@ -414,13 +423,16 @@ class _$CarsCollectionDataCopyWithImpl<$Res>
 
 /// Create a copy of CarsCollectionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? cars = null,Object? totalPurchasePrice = null,Object? totalEstimatedValue = null,Object? brandStats = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? cars = null,Object? filteredCars = null,Object? totalPurchasePrice = null,Object? totalEstimatedValue = null,Object? brandStats = null,Object? query = null,Object? viewType = null,}) {
   return _then(CarsCollectionData(
 cars: null == cars ? _self._cars : cars // ignore: cast_nullable_to_non_nullable
+as List<CarModel>,filteredCars: null == filteredCars ? _self._filteredCars : filteredCars // ignore: cast_nullable_to_non_nullable
 as List<CarModel>,totalPurchasePrice: null == totalPurchasePrice ? _self.totalPurchasePrice : totalPurchasePrice // ignore: cast_nullable_to_non_nullable
 as double,totalEstimatedValue: null == totalEstimatedValue ? _self.totalEstimatedValue : totalEstimatedValue // ignore: cast_nullable_to_non_nullable
 as double,brandStats: null == brandStats ? _self._brandStats : brandStats // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as Map<String, int>,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,viewType: null == viewType ? _self.viewType : viewType // ignore: cast_nullable_to_non_nullable
+as CollectionViewType,
   ));
 }
 

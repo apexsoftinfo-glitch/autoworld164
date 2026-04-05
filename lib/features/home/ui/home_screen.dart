@@ -167,11 +167,11 @@ class _HomeScreenView extends StatelessWidget {
               child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
                 builder: (context, state) {
                   final pieces = state.maybeWhen(
-                    data: (cars, purchasePrice, estimatedValue, stats) => cars.length.toString(),
+                    data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) => cars.length.toString(),
                     orElse: () => '0',
                   );
                   final value = state.maybeWhen(
-                    data: (cars, purchasePrice, estimatedValue, stats) {
+                    data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) {
                       final isPolish = Localizations.localeOf(context).languageCode == 'pl';
                       final currencyFormat = NumberFormat.simpleCurrency(
                         locale: isPolish ? 'pl_PL' : 'en_US',
