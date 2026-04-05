@@ -21,123 +21,162 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 32),
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 32),
+                    // Header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'VIP SHOWROOM', 
-                          style: TextStyle(
-                            fontSize: 10, 
-                            fontWeight: FontWeight.w900, 
-                            letterSpacing: 5, 
-                            color: Color(0xFFFFD700),
-                          ),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'VIP SHOWROOM', 
+                              style: TextStyle(
+                                fontSize: 10, 
+                                fontWeight: FontWeight.w900, 
+                                letterSpacing: 5, 
+                                color: Color(0xFFFFD700),
+                              ),
+                            ),
+                            Text(
+                              'GARAŻ ANATOLA', 
+                              style: TextStyle(
+                                fontSize: 26, 
+                                fontWeight: FontWeight.w200, 
+                                letterSpacing: -1,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'GARAŻ ANATOLA', 
-                          style: TextStyle(
-                            fontSize: 26, 
-                            fontWeight: FontWeight.w200, 
-                            letterSpacing: -1,
-                            color: Colors.white,
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: const Color(0xFFFFD700).withValues(alpha: 0.5), 
+                                width: 1,
+                              ),
+                              boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
+                            ),
+                            child: const CircleAvatar(
+                              radius: 20, 
+                              backgroundColor: Colors.black26, 
+                              child: Icon(Icons.person, color: Color(0xFFFFD700)),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFFFFD700).withValues(alpha: 0.5), 
-                            width: 1,
-                          ),
-                          boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
+                    const SizedBox(height: 48),
+
+                    // Navigation Grid
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      children: [
+                        _VIPCard(
+                          label: 'MÓJ GARAŻ', 
+                          icon: Icons.auto_awesome, 
+                          color: const Color(0xFFFFD700),
+                          onTap: () => _showComingSoon(context, 'Mój Garaż'),
                         ),
-                        child: const CircleAvatar(
-                          radius: 20, 
-                          backgroundColor: Colors.black26, 
-                          child: Icon(Icons.person, color: Color(0xFFFFD700)),
+                        _VIPCard(
+                          label: 'UPDATES', 
+                          icon: Icons.trending_up, 
+                          color: Colors.white70,
+                          onTap: () => _showComingSoon(context, 'Nowości'),
                         ),
-                      ),
+                        _VIPCard(
+                          label: 'HOT HUNT', 
+                          icon: Icons.explore, 
+                          color: Colors.white70,
+                          onTap: () => _showComingSoon(context, 'Hunting'),
+                        ),
+                        _VIPCard(
+                          label: 'SYSTEM', 
+                          icon: Icons.tune, 
+                          color: Colors.white30,
+                          onTap: () => _showComingSoon(context, 'Ustawienia'),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 140), // Bottom padding for command bar
                   ],
                 ),
-                const SizedBox(height: 48),
-
-                // Stats Section
-                _GlassBox(
-                  padding: const EdgeInsets.all(28),
-                  borderColor: const Color(0xFFFFD700).withValues(alpha: 0.2),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _VIPStat(label: 'PIECES', value: '124'),
-                      _VIPStat(label: 'EST. VALUE', value: '2.5K PLN'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 48),
-
-                // Navigation Grid
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  children: [
-                    _VIPCard(
-                      label: 'MÓJ GARAŻ', 
-                      icon: Icons.auto_awesome, 
-                      color: const Color(0xFFFFD700),
-                      onTap: () => _showComingSoon(context, 'Mój Garaż'),
-                    ),
-                    _VIPCard(
-                      label: 'UPDATES', 
-                      icon: Icons.trending_up, 
-                      color: Colors.white70,
-                      onTap: () => _showComingSoon(context, 'Nowości'),
-                    ),
-                    _VIPCard(
-                      label: 'HOT HUNT', 
-                      icon: Icons.explore, 
-                      color: Colors.white70,
-                      onTap: () => _showComingSoon(context, 'Hunting'),
-                    ),
-                    _VIPCard(
-                      label: 'SYSTEM', 
-                      icon: Icons.tune, 
-                      color: Colors.white30,
-                      onTap: () => _showComingSoon(context, 'Ustawienia'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
-              ],
+              ),
             ),
-          ),
+            
+            // Unified Bottom Command Bar (Stats + Action)
+            Positioned(
+              bottom: 32,
+              left: 20,
+              right: 20,
+              child: _GlassBox(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    const _VIPStat(label: 'PIECES', value: '124'),
+                    const SizedBox(width: 24),
+                    const _VIPStat(label: 'VALUE', value: '2.5K'),
+                    const Spacer(),
+                    // Stylish Add Button
+                    GestureDetector(
+                      onTap: () => _showComingSoon(context, 'Dodawanie modelu'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD700),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+                              blurRadius: 15,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.add, color: Colors.black, size: 20),
+                            SizedBox(width: 8),
+                            Text(
+                              'ADD',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 13,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showComingSoon(context, 'Dodawanie modelu'),
-        backgroundColor: const Color(0xFFFFD700),
-        child: const Icon(Icons.add, color: Colors.black, size: 32),
       ),
     );
   }
@@ -186,23 +225,25 @@ class _VIPStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           value, 
           style: const TextStyle(
-            fontSize: 22, 
+            fontSize: 20, 
             fontWeight: FontWeight.bold, 
             color: Color(0xFFFFD700), 
-            letterSpacing: 1,
+            height: 1.0,
           ),
         ),
         Text(
           label, 
           style: const TextStyle(
-            fontSize: 9, 
+            fontSize: 8, 
             fontWeight: FontWeight.w900, 
             color: Colors.white38, 
-            letterSpacing: 3,
+            letterSpacing: 1.5,
           ),
         ),
       ],
