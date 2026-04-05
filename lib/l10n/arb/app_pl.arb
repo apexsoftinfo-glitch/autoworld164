@@ -166,5 +166,11 @@
   "deleteAccountDialogTitle": "Usunąć konto?",
   "deleteAccountDialogBody": "Czy na pewno chcesz usunąć swoje konto? Ta operacja jest nieodwracalna. Wszystkie Twoje dane oraz dostęp Pro zostaną utracone.",
   "deleteAccountCancelButtonLabel": "Anuluj",
-  "deleteAccountConfirmButtonLabel": "Usuń"
+  "deleteAccountConfirmButtonLabel": "Usuń",
+  "carBrandLabel": "Marka",
+  "carModelNameLabel": "Nazwa modelu",
+  "carSeriesLabel": "Seria",
+  "carPurchasePriceLabel": "Cena zakupu",
+  "carEstimatedValueLabel": "Szacowana wartość",
+  "carPhotoLabel": "Zdjęcie"
 }

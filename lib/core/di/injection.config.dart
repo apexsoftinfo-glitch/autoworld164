@@ -34,6 +34,10 @@ import 'package:myapp/features/auth/presentation/cubit/register_cubit.dart'
     as _i27;
 import 'package:myapp/features/auth/presentation/cubit/welcome_cubit.dart'
     as _i491;
+import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart'
+    as _i491;
+import 'package:myapp/features/garage/data/repositories/cars_repository.dart'
+    as _i630;
 import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
     as _i381;
 import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart'
@@ -67,6 +71,9 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i894.SubscriptionRepositoryImpl(gh<_i138.SubscriptionDataSource>()),
     );
+    gh.lazySingleton<_i491.CarsDataSource>(
+      () => _i491.CarsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i634.AppLocaleDataSource>(
       () => _i634.SharedPreferencesAppLocaleDataSource(
         gh<_i460.SharedPreferences>(),
@@ -80,6 +87,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i910.AppLocaleRepository>(
       () => _i910.AppLocaleRepositoryImpl(gh<_i634.AppLocaleDataSource>()),
+    );
+    gh.lazySingleton<_i630.CarsRepository>(
+      () => _i630.CarsRepositoryImpl(gh<_i491.CarsDataSource>()),
     );
     gh.lazySingleton<_i636.SharedUserRepository>(
       () => _i636.SharedUserRepositoryImpl(gh<_i381.SharedUserDataSource>()),

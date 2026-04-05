@@ -423,4 +423,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get deleteAccountConfirmButtonLabel => 'Usuń';
+
+  @override
+  String get carBrandLabel => 'Marka';
+
+  @override
+  String get carModelNameLabel => 'Nazwa modelu';
+
+  @override
+  String get carSeriesLabel => 'Seria';
+
+  @override
+  String get carPurchasePriceLabel => 'Cena zakupu';
+
+  @override
+  String get carEstimatedValueLabel => 'Szacowana wartość';
+
+  @override
+  String get carPhotoLabel => 'Zdjęcie';
 }

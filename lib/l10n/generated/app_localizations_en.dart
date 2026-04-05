@@ -423,4 +423,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountConfirmButtonLabel => 'Delete';
+
+  @override
+  String get carBrandLabel => 'Brand';
+
+  @override
+  String get carModelNameLabel => 'Model name';
+
+  @override
+  String get carSeriesLabel => 'Series';
+
+  @override
+  String get carPurchasePriceLabel => 'Purchase price';
+
+  @override
+  String get carEstimatedValueLabel => 'Estimated value';
+
+  @override
+  String get carPhotoLabel => 'Photo';
 }

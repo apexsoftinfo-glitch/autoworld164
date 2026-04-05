@@ -835,6 +835,42 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Usuń'**
   String get deleteAccountConfirmButtonLabel;
+
+  /// No description provided for @carBrandLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Marka'**
+  String get carBrandLabel;
+
+  /// No description provided for @carModelNameLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nazwa modelu'**
+  String get carModelNameLabel;
+
+  /// No description provided for @carSeriesLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Seria'**
+  String get carSeriesLabel;
+
+  /// No description provided for @carPurchasePriceLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Cena zakupu'**
+  String get carPurchasePriceLabel;
+
+  /// No description provided for @carEstimatedValueLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szacowana wartość'**
+  String get carEstimatedValueLabel;
+
+  /// No description provided for @carPhotoLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjęcie'**
+  String get carPhotoLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -166,5 +166,11 @@
   "deleteAccountDialogTitle": "Delete account?",
   "deleteAccountDialogBody": "Are you sure you want to delete your account? This action is permanent and cannot be undone. All your data and Pro access will be lost.",
   "deleteAccountCancelButtonLabel": "Cancel",
-  "deleteAccountConfirmButtonLabel": "Delete"
+  "deleteAccountConfirmButtonLabel": "Delete",
+  "carBrandLabel": "Brand",
+  "carModelNameLabel": "Model name",
+  "carSeriesLabel": "Series",
+  "carPurchasePriceLabel": "Purchase price",
+  "carEstimatedValueLabel": "Estimated value",
+  "carPhotoLabel": "Photo"
 }
