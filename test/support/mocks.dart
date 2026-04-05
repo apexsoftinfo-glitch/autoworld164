@@ -8,8 +8,14 @@ import 'package:myapp/features/auth/models/auth_principal_model.dart';
 import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart';
 import 'package:myapp/features/profiles/models/shared_user_model.dart';
 import 'package:myapp/features/subscription/data/repositories/subscription_repository.dart';
+import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
+
+import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+class MockCarsRepository extends Mock implements CarsRepository {}
+class MockCarsCollectionCubit extends Mock implements CarsCollectionCubit {}
+
 
 class MockSharedUserRepository extends Mock implements SharedUserRepository {}
 

@@ -38,6 +38,10 @@ import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart'
     as _i491;
 import 'package:myapp/features/garage/data/repositories/cars_repository.dart'
     as _i630;
+import 'package:myapp/features/garage/presentation/cubit/car_form_cubit.dart'
+    as _i885;
+import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart'
+    as _i182;
 import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
     as _i381;
 import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart'
@@ -102,6 +106,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i686.AppLocaleCubit>(
       () => _i686.AppLocaleCubit(gh<_i910.AppLocaleRepository>()),
+    );
+    gh.factory<_i885.CarFormCubit>(
+      () => _i885.CarFormCubit(gh<_i630.CarsRepository>()),
+    );
+    gh.factory<_i182.CarsCollectionCubit>(
+      () => _i182.CarsCollectionCubit(gh<_i630.CarsRepository>()),
     );
     gh.lazySingleton<_i526.SessionRepository>(
       () => _i526.SessionRepositoryImpl(

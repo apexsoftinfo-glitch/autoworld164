@@ -2,8 +2,24 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/di/injection.dart';
+import '../../garage/presentation/cubit/cars_collection_cubit.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<CarsCollectionCubit>(),
+      child: const _HomeScreenView(),
+    );
+  }
+}
+
+class _HomeScreenView extends StatelessWidget {
+  const _HomeScreenView();
 
   @override
   Widget build(BuildContext context) {
@@ -141,19 +157,35 @@ class HomeScreen extends StatelessWidget {
               bottom: 32,
               left: 20,
               right: 20,
-              child: _GlassBox(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    const _VIPStat(label: 'PIECES', value: '124'),
-                    const SizedBox(width: 24),
-                    const _VIPStat(label: 'VALUE', value: '2.5K'),
-                    const Spacer(),
+              child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+                builder: (context, state) {
+                  final pieces = state.maybeWhen(
+                    data: (cars, purchasePrice, estimatedValue) => cars.length.toString(),
+                    orElse: () => '0',
+                  );
+                  final value = state.maybeWhen(
+                    data: (cars, purchasePrice, estimatedValue) {
+                      if (estimatedValue >= 1000) {
+                        return '\$${(estimatedValue / 1000).toStringAsFixed(1)}K';
+                      }
+                      return '\$${estimatedValue.toStringAsFixed(0)}';
+                    },
+                    orElse: () => '\$0',
+                  );
+
+                  return _GlassBox(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        _VIPStat(label: 'PIECES', value: pieces),
+                        const SizedBox(width: 24),
+                        _VIPStat(label: 'VALUE', value: value),
+                        const Spacer(),
                     // Stylish Add Button
                     GestureDetector(
                       onTap: () => _showComingSoon(context, 'Dodawanie modelu'),
@@ -195,8 +227,10 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              );
+             },
             ),
+          ),
           ],
         ),
       ),
