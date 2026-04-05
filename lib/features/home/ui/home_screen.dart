@@ -4,10 +4,13 @@ import 'package:intl/intl.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
+import '../../garage/models/car_model.dart';
 import '../../garage/ui/garage_screen.dart';
 import '../../garage/ui/car_form_screen.dart';
+import '../../garage/ui/car_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -66,7 +69,7 @@ class _HomeScreenView extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'GARAŻ ANATOLA',
+                              'Moja Kolekcja',
                               style: TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w200,
@@ -111,10 +114,83 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 32),
 
+                    // Recent Models Section
+                    BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) {
+                            if (cars.isEmpty) return const SizedBox.shrink();
+                            
+                            final recent = cars.reversed.take(5).toList();
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'OSTATNIO DODANE',
+                                        style: TextStyle(
+                                          color: Color(0xFFFFD700),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 1.2,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (_) => const GarageScreen()),
+                                        ),
+                                        child: const Text(
+                                          'ZOBACZ WSZYSTKIE',
+                                          style: TextStyle(
+                                            color: Colors.white38,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  height: 100,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: recent.length,
+                                    separatorBuilder: (context, index) => const SizedBox(width: 12),
+                                    itemBuilder: (context, index) {
+                                      final car = recent[index];
+                                      return _RecentCarCard(car: car);
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 32),
+                              ],
+                            );
+                          },
+                          orElse: () => const SizedBox.shrink(),
+                        );
+                      },
+                    ),
 
                     // Navigation Grid
+                    const Text(
+                      'MENU GŁÓWNE',
+                      style: TextStyle(
+                        color: Colors.white24,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -151,9 +227,85 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 140,
-                    ), // Bottom padding for command bar
+                    const SizedBox(height: 32),
+
+                    // Collection Stats Section
+                    BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) {
+                            if (stats.isEmpty) return const SizedBox.shrink();
+
+                            final sortedStats = stats.entries.toList()
+                              ..sort((a, b) => b.value.compareTo(a.value));
+                            final topStats = sortedStats.take(3).toList();
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'STATYSTYKI MARKI',
+                                  style: TextStyle(
+                                    color: Colors.white24,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                _GlassBox(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    children: [
+                                      for (int i = 0; i < topStats.length; i++) ...[
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '${i + 1}.',
+                                              style: const TextStyle(
+                                                color: Color(0xFFFFD700),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Text(
+                                                topStats[i].key.toUpperCase(),
+                                                style: const TextStyle(
+                                                  color: Colors.white70,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                  letterSpacing: 0.5,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${topStats[i].value} szt.',
+                                              style: const TextStyle(
+                                                color: Colors.white38,
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        if (i < topStats.length - 1)
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(vertical: 12),
+                                            child: Divider(color: Colors.white10, height: 1),
+                                          ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          orElse: () => const SizedBox.shrink(),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 140),
                   ],
                 ),
               ),
@@ -205,59 +357,60 @@ class _HomeScreenView extends StatelessWidget {
                         const SizedBox(width: 24),
                         _VIPStat(label: 'VALUE', value: value),
                         const Spacer(),
-                    // Stylish Add Button
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const CarFormScreen()),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFD700),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(
-                                0xFFFFD700,
-                              ).withValues(alpha: 0.4),
-                              blurRadius: 15,
-                              offset: const Offset(0, 4),
+                        // Stylish Add Button
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const CarFormScreen()),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
                             ),
-                          ],
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.add, color: Colors.black, size: 20),
-                            SizedBox(width: 8),
-                            Text(
-                              'DODAJ MODEL',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 11,
-                                letterSpacing: 1.0,
-                              ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFD700),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(
+                                    0xFFFFD700,
+                                  ).withValues(alpha: 0.4),
+                                  blurRadius: 15,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                          ],
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.add, color: Colors.black, size: 20),
+                                SizedBox(width: 8),
+                                Text(
+                                  'DODAJ MODEL',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 11,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-             },
+                  );
+                },
+              ),
             ),
-          ),
           ],
         ),
       ),
     );
   }
+
 
   void _showComingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -295,6 +448,85 @@ class _GlassBox extends StatelessWidget {
             ),
           ),
           child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _RecentCarCard extends StatelessWidget {
+  final CarModel car;
+  const _RecentCarCard({required this.car});
+
+  @override
+  Widget build(BuildContext context) {
+    final supabase = getIt<SupabaseClient>();
+    final photoUrl = car.photoPath != null 
+      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
+      : null;
+
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => CarDetailsScreen(car: car)),
+      ),
+      child: Container(
+        width: 100,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.1),
+            width: 0.5,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              if (photoUrl != null)
+                Image.network(
+                  photoUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (c, e, s) => Container(
+                    color: Colors.white10,
+                    child: const Icon(Icons.car_repair, color: Colors.white10),
+                  ),
+                )
+              else
+                Container(
+                  color: Colors.white10,
+                  child: const Icon(Icons.car_repair, color: Colors.white10),
+                ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.7),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                left: 8,
+                right: 8,
+                child: Text(
+                  car.brand.toUpperCase(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Color(0xFFFFD700),
+                    fontSize: 8,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
