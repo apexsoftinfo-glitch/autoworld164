@@ -14,9 +14,13 @@ sealed class CarFormState with _$CarFormState {
   const factory CarFormState.initial({
     @Default([]) List<String> availableSeries,
   }) = CarFormInitial;
-  const factory CarFormState.loading() = CarFormLoading;
+  const factory CarFormState.loading({
+    @Default([]) List<String> availableSeries,
+  }) = CarFormLoading;
   const factory CarFormState.success() = CarFormSuccess;
-  const factory CarFormState.error(String errorKey) = CarFormError;
+  const factory CarFormState.error(String errorKey, {
+    @Default([]) List<String> availableSeries,
+  }) = CarFormError;
 }
 
 @injectable
@@ -56,7 +60,13 @@ class CarFormCubit extends Cubit<CarFormState> {
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
-    emit(const CarFormState.loading());
+    final currentSeries = state.maybeWhen(
+      initial: (s) => s,
+      loading: (s) => s,
+      error: (ek, s) => s,
+      orElse: () => <String>[],
+    );
+    emit(CarFormState.loading(availableSeries: currentSeries));
     try {
       if (existingCar != null) {
         await _carsRepository.editCar(
@@ -88,7 +98,10 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit saveCar error: $e\n$stack');
-      emit(const CarFormState.error('errorUnknown'));
+      emit(CarFormState.error('errorUnknown', availableSeries: state.maybeWhen(
+        loading: (s) => s,
+        orElse: () => <String>[],
+      )));
     }
   }
 }

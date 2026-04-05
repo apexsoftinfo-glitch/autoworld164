@@ -781,7 +781,7 @@ class _GlassInputBase extends StatelessWidget {
         ),
       ),
     );
-  }
+   }
 }
 
 class _SaveButton extends StatelessWidget {
