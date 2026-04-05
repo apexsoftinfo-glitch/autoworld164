@@ -263,9 +263,19 @@ class _CarCard extends StatelessWidget {
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
+                          if (car.series != null)
+                             Text(
+                              car.series!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white38,
+                                fontSize: 10,
+                              ),
+                            ),
                         ],
                       ),
                       Row(
