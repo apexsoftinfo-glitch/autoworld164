@@ -146,6 +146,7 @@ class CarsRepositoryImpl implements CarsRepository {
   @override
   Future<List<String>> searchWebPhotos(String query) async {
     // Simulated search results for demo
+    // Providing real public URLs for a "WOW" effect
     if (query.toLowerCase().contains('porsche')) {
       return [
         'https://m.media-amazon.com/images/I/71X8f8E8q8L._AC_SL1500_.jpg',
@@ -153,10 +154,12 @@ class CarsRepositoryImpl implements CarsRepository {
         'https://m.media-amazon.com/images/I/71u9zHh0o4L._AC_SL1500_.jpg',
       ];
     }
+    
+    // Generic high-quality Diecast 1/64 images
     return [
-      'https://m.media-amazon.com/images/I/71u9zHh0o4L._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/61S-r0w873L._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/71X8f8E8q8L._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/81PByrZ6DlL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/719hUvR6ZNL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/71XQ6HqP0OL._AC_SL1500_.jpg',
     ];
   }
 
