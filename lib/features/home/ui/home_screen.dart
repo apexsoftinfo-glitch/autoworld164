@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -170,12 +171,24 @@ class _HomeScreenView extends StatelessWidget {
                   );
                   final value = state.maybeWhen(
                     data: (cars, purchasePrice, estimatedValue) {
-                      if (estimatedValue >= 1000) {
-                        return '\$${(estimatedValue / 1000).toStringAsFixed(1)}K';
+                      final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+                      final currencyFormat = NumberFormat.simpleCurrency(
+                        locale: isPolish ? 'pl_PL' : 'en_US',
+                        name: isPolish ? 'PLN' : 'USD',
+                        decimalDigits: 0,
+                      );
+                      
+                      if (estimatedValue >= 1000000) {
+                        return '${(estimatedValue / 1000000).toStringAsFixed(1)}M ${currencyFormat.currencySymbol}';
+                      } else if (estimatedValue >= 1000) {
+                        return '${(estimatedValue / 1000).toStringAsFixed(1)}K ${currencyFormat.currencySymbol}';
                       }
-                      return '\$${estimatedValue.toStringAsFixed(0)}';
+                      return currencyFormat.format(estimatedValue);
                     },
-                    orElse: () => '\$0',
+                    orElse: () {
+                      final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+                      return isPolish ? '0 PLN' : '\$0';
+                    },
                   );
 
                   return _GlassBox(
