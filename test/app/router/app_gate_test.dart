@@ -59,7 +59,7 @@ void main() {
     await tester.pump();
 
     expect(find.text('Witaj'), findsOneWidget);
-    expect(find.text('Kontynuuj jako gość'), findsOneWidget);
+    expect(find.text('KONTYNUUJ JAKO GOŚĆ'), findsOneWidget);
   });
 
   testWidgets('shows loading before first session emission', (tester) async {
@@ -101,8 +101,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('Variant'), findsOneWidget);
-    expect(find.text('Profil użytkownika'), findsOneWidget);
+    expect(find.text('MÓJ GARAŻ'), findsOneWidget);
   });
 
   testWidgets('shows shared users setup screen for schema error', (

@@ -4,7 +4,7 @@ import 'package:myapp/features/home/ui/home_screen.dart';
 import 'package:myapp/l10n/generated/app_localizations.dart';
 
 void main() {
-  testWidgets('shows default home preview variant with profile entry', (
+  testWidgets('shows VIP Showcase dashboard elements', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -16,7 +16,9 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('Variant'), findsOneWidget);
-    expect(find.text('Profil użytkownika'), findsOneWidget);
+    expect(find.text('MÓJ GARAŻ'), findsOneWidget);
+    expect(find.text('NOWOŚCI'), findsOneWidget);
+    expect(find.text('USTAWIENIA'), findsOneWidget);
+    expect(find.text('DODAJ MODEL'), findsOneWidget);
   });
 }

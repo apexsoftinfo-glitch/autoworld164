@@ -109,8 +109,8 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => _showComingSoon(context, 'Mój Garaż'),
                         ),
                         _VIPCard(
-                          label: 'UPDATES',
-                          icon: Icons.trending_up,
+                          label: 'NOWOŚCI',
+                          icon: Icons.new_releases,
                           color: Colors.white70,
                           onTap: () => _showComingSoon(context, 'Nowości'),
                         ),
@@ -121,7 +121,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => _showComingSoon(context, 'Hunting'),
                         ),
                         _VIPCard(
-                          label: 'SYSTEM',
+                          label: 'USTAWIENIA',
                           icon: Icons.tune,
                           color: Colors.white30,
                           onTap: () => _showComingSoon(context, 'Ustawienia'),
@@ -181,12 +181,12 @@ class HomeScreen extends StatelessWidget {
                             Icon(Icons.add, color: Colors.black, size: 20),
                             SizedBox(width: 8),
                             Text(
-                              'ADD',
+                              'DODAJ MODEL',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 13,
-                                letterSpacing: 1.5,
+                                letterSpacing: 1.0,
                               ),
                             ),
                           ],
