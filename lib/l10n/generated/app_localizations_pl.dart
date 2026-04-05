@@ -508,4 +508,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get carFormAddPhotoPlaceholder => 'Dodaj do 5 zdjęć';
+
+  @override
+  String get cameraButtonLabel => 'Aparat';
+
+  @override
+  String get galleryButtonLabel => 'Galeria';
 }

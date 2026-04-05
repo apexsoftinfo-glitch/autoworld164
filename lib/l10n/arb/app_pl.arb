@@ -194,5 +194,7 @@
   "carGalleryLabel": "Galeria zdjęć",
   "carSearchPhotosLabel": "Zdjecia z internetu",
   "carAiEstimateLabel": "Wycena AI",
-  "carFormAddPhotoPlaceholder": "Dodaj do 5 zdjęć"
+  "carFormAddPhotoPlaceholder": "Dodaj do 5 zdjęć",
+  "cameraButtonLabel": "Aparat",
+  "galleryButtonLabel": "Galeria"
 }

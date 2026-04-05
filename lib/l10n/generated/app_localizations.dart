@@ -1003,6 +1003,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Dodaj do 5 zdjęć'**
   String get carFormAddPhotoPlaceholder;
+
+  /// No description provided for @cameraButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Aparat'**
+  String get cameraButtonLabel;
+
+  /// No description provided for @galleryButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Galeria'**
+  String get galleryButtonLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -194,5 +194,7 @@
   "carGalleryLabel": "Photo Gallery",
   "carSearchPhotosLabel": "Search Internet Photos",
   "carAiEstimateLabel": "AI Valuation",
-  "carFormAddPhotoPlaceholder": "Add up to 5 photos"
+  "carFormAddPhotoPlaceholder": "Add up to 5 photos",
+  "cameraButtonLabel": "Camera",
+  "galleryButtonLabel": "Gallery"
 }

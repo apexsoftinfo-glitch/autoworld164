@@ -92,10 +92,46 @@ class _CarFormScreenState extends State<CarFormScreen> {
   }
 
   Future<void> _pickImage() async {
-    if (_newImages.length + _remainingPhotoPaths.length >= 5) return;
+    final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
+    if (total >= 5) return;
     
+    final l10n = context.l10n;
+    
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: const Color(0xFF1A120B),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined, color: Colors.white),
+                title: Text(l10n.cameraButtonLabel, style: const TextStyle(color: Colors.white)),
+                onTap: () => Navigator.pop(context, ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_outlined, color: Colors.white),
+                title: Text(l10n.galleryButtonLabel, style: const TextStyle(color: Colors.white)),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (source == null) return;
+
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+    final pickedFile = await picker.pickImage(
+      source: source,
+      imageQuality: 80,
+    );
 
     if (pickedFile != null) {
       setState(() {
