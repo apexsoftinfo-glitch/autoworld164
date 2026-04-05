@@ -22,10 +22,10 @@ class HomeVariantDScreen extends StatelessWidget {
           children: [
             // Warmer Background Image (Warm lighting diecast collection)
             Positioned.fill(
-              child: Image.network(
-                'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=2680&auto=format&fit=crop',
+              child: Image.asset(
+                'assets/images/warm_garage.png',
                 fit: BoxFit.cover,
-                color: const Color(0xFF2D1B0D).withValues(alpha: 0.6), // Warm Amber Overlay
+                color: const Color(0xFF2D1B0D).withValues(alpha: 0.4), // Warm Amber Overlay
                 colorBlendMode: BlendMode.darken,
               ),
             ),
