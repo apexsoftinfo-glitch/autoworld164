@@ -10,26 +10,27 @@ class HomeVariantDScreen extends StatelessWidget {
     return Theme(
       data: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: const Color(0xFF0C0C0C),
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFFF1F5F9), // White/Silver
-          secondary: Color(0xFF94A3B8), // Slate
+          primary: Color(0xFFFFD700), // Gold
+          secondary: Color(0xFFFF9800), // Amber
+          surface: Colors.black54,
         ),
       ),
       child: Scaffold(
         body: Stack(
           children: [
-            // Background Image (1/64 Collection vibe)
+            // Warmer Background Image (Warm lighting diecast collection)
             Positioned.fill(
               child: Image.network(
-                'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?q=80&w=2680&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=2680&auto=format&fit=crop',
                 fit: BoxFit.cover,
-                color: Colors.black45,
+                color: const Color(0xFF2D1B0D).withValues(alpha: 0.6), // Warm Amber Overlay
                 colorBlendMode: BlendMode.darken,
               ),
             ),
             
-            // Glassmorphism Overlay
+            // Premium VIP Content
             SafeArea(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -37,28 +38,56 @@ class HomeVariantDScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 32),
-                    // VIP Header
+                    // High-end Profile Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('PRIVATE COLLECTION', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 4, color: Colors.white70)),
-                            Text('ANATOL K.', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Serif', color: Colors.white)),
+                            Text(
+                              'VIP SHOWROOM', 
+                              style: TextStyle(
+                                fontSize: 10, 
+                                fontWeight: FontWeight.w900, 
+                                letterSpacing: 5, 
+                                color: Color(0xFFFFD700),
+                              ),
+                            ),
+                            Text(
+                              'GARAŻ ANATOLA', 
+                              style: TextStyle(
+                                fontSize: 26, 
+                                fontWeight: FontWeight.w200, 
+                                letterSpacing: -1,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
-                        IconButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
-                          icon: const CircleAvatar(radius: 20, backgroundColor: Colors.white12, child: Icon(Icons.person, color: Colors.white)),
+                        GestureDetector(
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: const Color(0xFFFFD700).withValues(alpha: 0.5), width: 1),
+                              boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
+                            ),
+                            child: const CircleAvatar(
+                              radius: 20, 
+                              backgroundColor: Colors.black26, 
+                              child: Icon(Icons.person, color: Color(0xFFFFD700)),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 48),
 
-                    // Translucent Stats Card
+                    // Golden Amber Stats Card (Translucent)
                     _GlassBox(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(28),
+                      borderColor: const Color(0xFFFFD700).withValues(alpha: 0.2),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -69,7 +98,7 @@ class HomeVariantDScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 48),
 
-                    // VIP Transparent Grid
+                    // Prestigious Navigation Grid
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -77,17 +106,23 @@ class HomeVariantDScreen extends StatelessWidget {
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       children: [
-                        _VIPCard(label: 'MY GARAGE', icon: Icons.auto_awesome, onTap: () {}),
-                        _VIPCard(label: 'LATEST', icon: Icons.trending_up, onTap: () {}),
-                        _VIPCard(label: 'HUNTING', icon: Icons.explore, onTap: () {}),
-                        _VIPCard(label: 'PROFILE', icon: Icons.manage_accounts, onTap: () {}),
+                        _VIPCard(label: 'MY GARAGE', icon: Icons.auto_awesome, color: const Color(0xFFFFD700)),
+                        _VIPCard(label: 'UPDATES', icon: Icons.trending_up, color: Colors.white70),
+                        _VIPCard(label: 'HOT HUNT', icon: Icons.explore, color: Colors.white70),
+                        _VIPCard(label: 'SYSTEM', icon: Icons.tune, color: Colors.white30),
                       ],
                     ),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: const Color(0xFFFFD700),
+          child: const Icon(Icons.add, color: Colors.black, size: 32),
         ),
       ),
     );
@@ -97,20 +132,21 @@ class HomeVariantDScreen extends StatelessWidget {
 class _GlassBox extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
-  const _GlassBox({required this.child, required this.padding});
+  final Color? borderColor;
+  const _GlassBox({required this.child, required this.padding, this.borderColor});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(28),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            color: Colors.black.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(28),
+            border: Border.all(color: borderColor ?? Colors.white.withValues(alpha: 0.1)),
           ),
           child: child,
         ),
@@ -128,8 +164,8 @@ class _VIPStat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
-        Text(label, style: const TextStyle(fontSize: 10, color: Colors.white60, letterSpacing: 2)),
+        Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFFFD700), letterSpacing: 1)),
+        Text(label, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: Colors.white38, letterSpacing: 3)),
       ],
     );
   }
@@ -138,23 +174,31 @@ class _VIPStat extends StatelessWidget {
 class _VIPCard extends StatelessWidget {
   final String label;
   final IconData icon;
-  final VoidCallback onTap;
+  final Color color;
 
-  const _VIPCard({required this.label, required this.icon, required this.onTap});
+  const _VIPCard({required this.label, required this.icon, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return _GlassBox(
       padding: const EdgeInsets.all(0),
       child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
+        onTap: () {},
+        borderRadius: BorderRadius.circular(28),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 36, color: Colors.white70),
+            Icon(icon, size: 40, color: color),
             const SizedBox(height: 12),
-            Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1.5, color: Colors.white)),
+            Text(
+              label, 
+              style: TextStyle(
+                fontSize: 11, 
+                fontWeight: FontWeight.w800, 
+                letterSpacing: 2, 
+                color: color.withValues(alpha: 0.8),
+              ),
+            ),
           ],
         ),
       ),
