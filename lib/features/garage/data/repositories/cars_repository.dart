@@ -33,16 +33,15 @@ class CarsRepositoryImpl implements CarsRepository {
 
   final CarsDataSource _dataSource;
 
+  Stream<List<CarModel>>? _cachedStream;
+
   @override
   Stream<List<CarModel>> get carsStream {
-    try {
-      return _dataSource.watchCars().map((items) {
-        return items.map((json) => CarModel.fromJson(json)).toList();
-      });
-    } catch (e, stack) {
-      debugPrint('CarsRepositoryImpl carsStream error: $e\n$stack');
-      rethrow;
-    }
+    _cachedStream ??= _dataSource.watchCars().map((items) {
+      return items.map((json) => CarModel.fromJson(json)).toList();
+    }).asBroadcastStream();
+    
+    return _cachedStream!;
   }
 
   @override
