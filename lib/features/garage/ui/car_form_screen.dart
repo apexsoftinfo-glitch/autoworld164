@@ -57,7 +57,8 @@ class _CarFormScreenState extends State<CarFormScreen> {
   }
 
   Future<void> _searchInternet(BuildContext context) async {
-    final query = '${_brandController.text} ${_nameController.text} 1/64'
+    final query = '${_toyMakerController.text} ${_brandController.text} ${_nameController.text} ${_seriesController.text} 1/64'
+        .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
     if (query.isEmpty) return;
     
