@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart';
 import 'package:myapp/features/garage/models/car_model.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class CarsRepository {
   Stream<List<CarModel>> get carsStream;
@@ -39,7 +40,7 @@ class CarsRepositoryImpl implements CarsRepository {
   Stream<List<CarModel>> get carsStream {
     _cachedStream ??= _dataSource.watchCars().map((items) {
       return items.map((json) => CarModel.fromJson(json)).toList();
-    }).asBroadcastStream();
+    }).shareReplay(maxSize: 1);
     
     return _cachedStream!;
   }
