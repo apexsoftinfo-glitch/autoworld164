@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../../profiles/presentation/ui/profile_screen.dart';
 
@@ -9,147 +10,83 @@ class HomeVariantDScreen extends StatelessWidget {
     return Theme(
       data: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF262626),
+        scaffoldBackgroundColor: Colors.black,
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFFFF6B00), // Safety Orange
-          surface: Color(0xFF333333),
-          onSurface: Color(0xFFE5E5E5),
+          primary: Color(0xFFF1F5F9), // White/Silver
+          secondary: Color(0xFF94A3B8), // Slate
         ),
       ),
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            border: Border.fromBorderSide(BorderSide(color: Color(0xFFFF6B00), width: 2)),
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Industrial Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'GARAGE ID: 0164-X',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontFamily: 'Courier',
-                              color: Color(0xFFFF6B00),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'OPERATOR: ANATOL',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Courier',
-                              letterSpacing: -1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 40,
-                        icon: const Icon(Icons.settings_input_component, color: Color(0xFFFF6B00)),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Bolt-style Stats Bar
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A1A1A),
-                      border: Border.all(color: Colors.white12),
-                    ),
-                    child: IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          _IndustrialStat(label: 'UNITS', value: '124'),
-                          const VerticalDivider(color: Colors.white12, width: 1),
-                          _IndustrialStat(label: 'ASSET VALUE', value: '2500 PLN'),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 48),
-
-                  // Stencil-style Grid
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
-                    children: [
-                      _IndustrialTile(
-                        label: 'GARAŻ',
-                        icon: Icons.inventory_2,
-                        number: '01',
-                        onTap: () {},
-                      ),
-                      _IndustrialTile(
-                        label: 'NOWOŚCI',
-                        icon: Icons.event,
-                        number: '02',
-                        onTap: () {},
-                      ),
-                      _IndustrialTile(
-                        label: 'HUNTING',
-                        icon: Icons.troubleshoot,
-                        number: '03',
-                        onTap: () {},
-                      ),
-                      _IndustrialTile(
-                        label: 'USTAWIENIA',
-                        icon: Icons.construction,
-                        number: '04',
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                ],
+        body: Stack(
+          children: [
+            // Background Image (1/64 Collection vibe)
+            Positioned.fill(
+              child: Image.network(
+                'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?q=80&w=2680&auto=format&fit=crop',
+                fit: BoxFit.cover,
+                color: Colors.black45,
+                colorBlendMode: BlendMode.darken,
               ),
             ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: const Color(0xFFFF6B00),
-          shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-          child: const Icon(Icons.add_shopping_cart, color: Colors.black, size: 30),
-        ),
-      ),
-    );
-  }
-}
+            
+            // Glassmorphism Overlay
+            SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 32),
+                    // VIP Header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('PRIVATE COLLECTION', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 4, color: Colors.white70)),
+                            Text('ANATOL K.', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, fontFamily: 'Serif', color: Colors.white)),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen())),
+                          icon: const CircleAvatar(radius: 20, backgroundColor: Colors.white12, child: Icon(Icons.person, color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 48),
 
-class _IndustrialStat extends StatelessWidget {
-  final String label;
-  final String value;
+                    // Translucent Stats Card
+                    _GlassBox(
+                      padding: const EdgeInsets.all(24),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _VIPStat(label: 'PIECES', value: '124'),
+                          _VIPStat(label: 'EST. VALUE', value: '2.5K PLN'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 48),
 
-  const _IndustrialStat({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, fontFamily: 'Courier')),
-            Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey, fontFamily: 'Courier')),
+                    // VIP Transparent Grid
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      children: [
+                        _VIPCard(label: 'MY GARAGE', icon: Icons.auto_awesome, onTap: () {}),
+                        _VIPCard(label: 'LATEST', icon: Icons.trending_up, onTap: () {}),
+                        _VIPCard(label: 'HUNTING', icon: Icons.explore, onTap: () {}),
+                        _VIPCard(label: 'PROFILE', icon: Icons.manage_accounts, onTap: () {}),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -157,44 +94,68 @@ class _IndustrialStat extends StatelessWidget {
   }
 }
 
-class _IndustrialTile extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final String number;
-  final VoidCallback onTap;
-
-  const _IndustrialTile({required this.label, required this.icon, required this.number, required this.onTap});
+class _GlassBox extends StatelessWidget {
+  final Widget child;
+  final EdgeInsets padding;
+  const _GlassBox({required this.child, required this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.05),
-      child: InkWell(
-        onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Operacja $label w toku...'))),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(border: Border.all(color: Colors.white10)),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Text(number, style: const TextStyle(fontSize: 10, color: Color(0xFFFF6B00), fontWeight: FontWeight.bold)),
-              ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon, size: 40, color: Colors.grey),
-                    const SizedBox(height: 12),
-                    Text(
-                      label,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Courier', letterSpacing: 1),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          padding: padding,
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
           ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _VIPStat extends StatelessWidget {
+  final String label;
+  final String value;
+  const _VIPStat({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+        Text(label, style: const TextStyle(fontSize: 10, color: Colors.white60, letterSpacing: 2)),
+      ],
+    );
+  }
+}
+
+class _VIPCard extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _VIPCard({required this.label, required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return _GlassBox(
+      padding: const EdgeInsets.all(0),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 36, color: Colors.white70),
+            const SizedBox(height: 12),
+            Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1.5, color: Colors.white)),
+          ],
         ),
       ),
     );
