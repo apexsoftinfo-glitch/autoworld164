@@ -21,7 +21,7 @@ class _HomePreviewShellState extends State<HomePreviewShell> {
 
   @override
   Widget build(BuildContext context) {
-    const variants = [
+    final variants = [
       HomeVariantAScreen(),
       HomeVariantBScreen(),
       HomeVariantCScreen(),
