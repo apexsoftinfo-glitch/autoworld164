@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -214,6 +215,13 @@ class _CarCard extends StatelessWidget {
       ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
       : null;
 
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+    final currencyFormat = NumberFormat.simpleCurrency(
+      locale: isPolish ? 'pl_PL' : 'en_US',
+      name: isPolish ? 'PLN' : 'USD',
+      decimalDigits: 0,
+    );
+
     return _GlassBox(
       padding: EdgeInsets.zero,
       child: Stack(
@@ -282,7 +290,7 @@ class _CarCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '\$${car.estimatedValue.toStringAsFixed(0)}',
+                            currencyFormat.format(car.estimatedValue),
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -450,6 +458,13 @@ class _CarListTile extends StatelessWidget {
       ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
       : null;
 
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+    final currencyFormat = NumberFormat.simpleCurrency(
+      locale: isPolish ? 'pl_PL' : 'en_US',
+      name: isPolish ? 'PLN' : 'USD',
+      decimalDigits: 0,
+    );
+
     return _GlassBox(
       padding: const EdgeInsets.all(12),
       child: InkWell(
@@ -491,7 +506,7 @@ class _CarListTile extends StatelessWidget {
               ),
             ),
             Text(
-              '\$${car.estimatedValue.toStringAsFixed(0)}',
+              currencyFormat.format(car.estimatedValue),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ],
