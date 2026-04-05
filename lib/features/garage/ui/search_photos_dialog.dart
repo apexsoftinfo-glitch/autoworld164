@@ -97,6 +97,9 @@ class SearchPhotosDialog extends StatelessWidget {
                                       if (progress == null) return child;
                                       return const Center(child: CircularProgressIndicator(strokeWidth: 2));
                                     },
+                                    errorBuilder: (context, error, stackTrace) => const Center(
+                                      child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                    ),
                                   ),
                                 ),
                               ),

@@ -159,7 +159,7 @@ class CarsRepositoryImpl implements CarsRepository {
     return [
       'https://m.media-amazon.com/images/I/81PByrZ6DlL._AC_SL1500_.jpg',
       'https://m.media-amazon.com/images/I/719hUvR6ZNL._AC_SL1500_.jpg',
-      'https://m.media-amazon.com/images/I/71XQ6HqP0OL._AC_SL1500_.jpg',
+      'https://m.media-amazon.com/images/I/61NAs2eZp6L._AC_SL1500_.jpg',
     ];
   }
 
