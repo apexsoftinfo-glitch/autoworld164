@@ -239,7 +239,7 @@ class _HomeScreenView extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w900,
-                                fontSize: 13,
+                                fontSize: 11,
                                 letterSpacing: 1.0,
                               ),
                             ),
@@ -315,7 +315,7 @@ class _VIPStat extends StatelessWidget {
         Text(
           value,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Color(0xFFFFD700),
             height: 1.0,
@@ -324,7 +324,7 @@ class _VIPStat extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 8,
+            fontSize: 7,
             fontWeight: FontWeight.w900,
             color: Colors.white38,
             letterSpacing: 1.5,
