@@ -8,132 +8,131 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Atmospheric Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/warm_garage.png',
-              fit: BoxFit.cover,
-              color: const Color(0xFF2D1B0D).withValues(alpha: 0.4),
-              colorBlendMode: BlendMode.darken,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage('assets/images/warm_garage.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              const Color(0xFF2D1B0D).withValues(alpha: 0.4),
+              BlendMode.darken,
             ),
           ),
-          
-          // VIP Dashboard Content
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 32),
-                  // Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'VIP SHOWROOM', 
-                            style: TextStyle(
-                              fontSize: 10, 
-                              fontWeight: FontWeight.w900, 
-                              letterSpacing: 5, 
-                              color: Color(0xFFFFD700),
-                            ),
-                          ),
-                          Text(
-                            'GARAŻ ANATOLA', 
-                            style: TextStyle(
-                              fontSize: 26, 
-                              fontWeight: FontWeight.w200, 
-                              letterSpacing: -1,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: const Color(0xFFFFD700).withValues(alpha: 0.5), 
-                              width: 1,
-                            ),
-                            boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
-                          ),
-                          child: const CircleAvatar(
-                            radius: 20, 
-                            backgroundColor: Colors.black26, 
-                            child: Icon(Icons.person, color: Color(0xFFFFD700)),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 48),
-
-                  // Stats Section
-                  _GlassBox(
-                    padding: const EdgeInsets.all(28),
-                    borderColor: const Color(0xFFFFD700).withValues(alpha: 0.2),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 32),
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _VIPStat(label: 'PIECES', value: '124'),
-                        _VIPStat(label: 'EST. VALUE', value: '2.5K PLN'),
+                        Text(
+                          'VIP SHOWROOM', 
+                          style: TextStyle(
+                            fontSize: 10, 
+                            fontWeight: FontWeight.w900, 
+                            letterSpacing: 5, 
+                            color: Color(0xFFFFD700),
+                          ),
+                        ),
+                        Text(
+                          'GARAŻ ANATOLA', 
+                          style: TextStyle(
+                            fontSize: 26, 
+                            fontWeight: FontWeight.w200, 
+                            letterSpacing: -1,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 48),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(0xFFFFD700).withValues(alpha: 0.5), 
+                            width: 1,
+                          ),
+                          boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
+                        ),
+                        child: const CircleAvatar(
+                          radius: 20, 
+                          backgroundColor: Colors.black26, 
+                          child: Icon(Icons.person, color: Color(0xFFFFD700)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 48),
 
-                  // Navigation Grid
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
+                // Stats Section
+                _GlassBox(
+                  padding: const EdgeInsets.all(28),
+                  borderColor: const Color(0xFFFFD700).withValues(alpha: 0.2),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _VIPCard(
-                        label: 'MÓJ GARAŻ', 
-                        icon: Icons.auto_awesome, 
-                        color: const Color(0xFFFFD700),
-                        onTap: () => _showComingSoon(context, 'Mój Garaż'),
-                      ),
-                      _VIPCard(
-                        label: 'UPDATES', 
-                        icon: Icons.trending_up, 
-                        color: Colors.white70,
-                        onTap: () => _showComingSoon(context, 'Nowości'),
-                      ),
-                      _VIPCard(
-                        label: 'HOT HUNT', 
-                        icon: Icons.explore, 
-                        color: Colors.white70,
-                        onTap: () => _showComingSoon(context, 'Hunting'),
-                      ),
-                      _VIPCard(
-                        label: 'SYSTEM', 
-                        icon: Icons.tune, 
-                        color: Colors.white30,
-                        onTap: () => _showComingSoon(context, 'Ustawienia'),
-                      ),
+                      _VIPStat(label: 'PIECES', value: '124'),
+                      _VIPStat(label: 'EST. VALUE', value: '2.5K PLN'),
                     ],
                   ),
-                  const SizedBox(height: 40),
-                ],
-              ),
+                ),
+                const SizedBox(height: 48),
+
+                // Navigation Grid
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  children: [
+                    _VIPCard(
+                      label: 'MÓJ GARAŻ', 
+                      icon: Icons.auto_awesome, 
+                      color: const Color(0xFFFFD700),
+                      onTap: () => _showComingSoon(context, 'Mój Garaż'),
+                    ),
+                    _VIPCard(
+                      label: 'UPDATES', 
+                      icon: Icons.trending_up, 
+                      color: Colors.white70,
+                      onTap: () => _showComingSoon(context, 'Nowości'),
+                    ),
+                    _VIPCard(
+                      label: 'HOT HUNT', 
+                      icon: Icons.explore, 
+                      color: Colors.white70,
+                      onTap: () => _showComingSoon(context, 'Hunting'),
+                    ),
+                    _VIPCard(
+                      label: 'SYSTEM', 
+                      icon: Icons.tune, 
+                      color: Colors.white30,
+                      onTap: () => _showComingSoon(context, 'Ustawienia'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showComingSoon(context, 'Dodawanie modelu'),
