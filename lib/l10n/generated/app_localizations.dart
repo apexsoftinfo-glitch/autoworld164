@@ -925,6 +925,48 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Model został usunięty'**
   String get garageSuccessDeleted;
+
+  /// No description provided for @carFormAddTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj model'**
+  String get carFormAddTitle;
+
+  /// No description provided for @carFormEditTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Edytuj model'**
+  String get carFormEditTitle;
+
+  /// No description provided for @carFormSaveButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zapisz'**
+  String get carFormSaveButton;
+
+  /// No description provided for @carFormAddPhotoLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj zdjęcie'**
+  String get carFormAddPhotoLabel;
+
+  /// No description provided for @carFormChangePhotoLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmień zdjęcie'**
+  String get carFormChangePhotoLabel;
+
+  /// No description provided for @carFormSuccessAdded.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pomyślnie dodano model'**
+  String get carFormSuccessAdded;
+
+  /// No description provided for @carFormSuccessEdited.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pomyślnie edytowano model'**
+  String get carFormSuccessEdited;
 }
 
 class _AppLocalizationsDelegate

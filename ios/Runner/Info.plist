@@ -63,5 +63,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Potrzebujemy dostępu do aparatu, abyś mógł robić zdjęcia swoim modelom.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Potrzebujemy dostępu do galerii, abyś mógł wybierać zdjęcia swoich modeli.</string>
 </dict>
 </plist>

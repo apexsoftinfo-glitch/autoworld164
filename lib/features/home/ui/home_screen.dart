@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
 import '../../garage/ui/garage_screen.dart';
+import '../../garage/ui/car_form_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -192,7 +193,10 @@ class _HomeScreenView extends StatelessWidget {
                         const Spacer(),
                     // Stylish Add Button
                     GestureDetector(
-                      onTap: () => _showComingSoon(context, 'Dodawanie modelu'),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CarFormScreen()),
+                      ),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,

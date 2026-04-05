@@ -469,4 +469,25 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get garageSuccessDeleted => 'Model został usunięty';
+
+  @override
+  String get carFormAddTitle => 'Dodaj model';
+
+  @override
+  String get carFormEditTitle => 'Edytuj model';
+
+  @override
+  String get carFormSaveButton => 'Zapisz';
+
+  @override
+  String get carFormAddPhotoLabel => 'Dodaj zdjęcie';
+
+  @override
+  String get carFormChangePhotoLabel => 'Zmień zdjęcie';
+
+  @override
+  String get carFormSuccessAdded => 'Pomyślnie dodano model';
+
+  @override
+  String get carFormSuccessEdited => 'Pomyślnie edytowano model';
 }

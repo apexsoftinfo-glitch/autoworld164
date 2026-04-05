@@ -181,5 +181,12 @@
   "garageTotalItems": "Sztuk w garażu",
   "garageCarDetails": "Szczegóły",
   "garageDeleteCarConfirm": "Czy na pewno chcesz usunąć ten model?",
-  "garageSuccessDeleted": "Model został usunięty"
+  "garageSuccessDeleted": "Model został usunięty",
+  "carFormAddTitle": "Dodaj model",
+  "carFormEditTitle": "Edytuj model",
+  "carFormSaveButton": "Zapisz",
+  "carFormAddPhotoLabel": "Dodaj zdjęcie",
+  "carFormChangePhotoLabel": "Zmień zdjęcie",
+  "carFormSuccessAdded": "Pomyślnie dodano model",
+  "carFormSuccessEdited": "Pomyślnie edytowano model"
 }

@@ -181,5 +181,12 @@
   "garageTotalItems": "Items in garage",
   "garageCarDetails": "Details",
   "garageDeleteCarConfirm": "Are you sure you want to delete this model?",
-  "garageSuccessDeleted": "Model has been deleted"
+  "garageSuccessDeleted": "Model has been deleted",
+  "carFormAddTitle": "Add model",
+  "carFormEditTitle": "Edit model",
+  "carFormSaveButton": "Save",
+  "carFormAddPhotoLabel": "Add photo",
+  "carFormChangePhotoLabel": "Change photo",
+  "carFormSuccessAdded": "Model added successfully",
+  "carFormSuccessEdited": "Model edited successfully"
 }

@@ -8,6 +8,8 @@ import '../../../l10n/l10n.dart';
 import '../models/car_model.dart';
 import '../presentation/cubit/cars_collection_cubit.dart';
 
+import 'car_form_screen.dart';
+
 class GarageScreen extends StatelessWidget {
   const GarageScreen({super.key});
 
@@ -337,9 +339,10 @@ class _EmptyGarageView extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
               child: FilledButton.icon(
-                onPressed: () {
-                  // Navigate to Add (will be connected later)
-                },
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CarFormScreen()),
+                ),
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFFFFD700),
                   foregroundColor: Colors.black,
