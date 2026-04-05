@@ -27,7 +27,13 @@ class App extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+              brightness: Brightness.dark,
+              scaffoldBackgroundColor: const Color(0xFF0C0C0C),
+              colorScheme: const ColorScheme.dark(
+                primary: Color(0xFFFFD700), // Gold
+                secondary: Color(0xFFFF9800), // Amber
+                surface: Colors.black54,
+              ),
               useMaterial3: true,
             ),
             home: _AppShell(hasSupabaseKeys: hasSupabaseKeys),
