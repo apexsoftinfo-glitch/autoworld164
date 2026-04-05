@@ -11,21 +11,27 @@ abstract class CarsRepository {
   Future<void> addCar({
     required String brand,
     required String modelName,
+    String? toyMaker,
     String? series,
-    double purchasePrice = 0.0,
-    double estimatedValue = 0.0,
-    File? photo,
+    DateTime? purchaseDate,
+    required double purchasePrice,
+    required double estimatedValue,
+    List<File> photos = const [],
   });
   Future<void> editCar({
     required CarModel oldModel,
     required String brand,
     required String modelName,
+    String? toyMaker,
     String? series,
+    DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
-    File? newPhoto,
+    List<File> newPhotos = const [],
+    List<String>? remainingPhotoPaths,
   });
   Future<void> deleteCar(CarModel car);
+  Future<List<String>> getSeries();
 }
 
 @LazySingleton(as: CarsRepository)
@@ -49,22 +55,28 @@ class CarsRepositoryImpl implements CarsRepository {
   Future<void> addCar({
     required String brand,
     required String modelName,
+    String? toyMaker,
     String? series,
-    double purchasePrice = 0.0,
-    double estimatedValue = 0.0,
-    File? photo,
+    DateTime? purchaseDate,
+    required double purchasePrice,
+    required double estimatedValue,
+    List<File> photos = const [],
   }) async {
     try {
       final data = {
         'brand': brand,
         'model_name': modelName,
-        // ignore: use_null_aware_elements
-        if (series != null) 'series': series,
+        'toy_maker': toyMaker,
+        'series': series,
+        'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
         'estimated_value': estimatedValue,
       };
 
-      await _dataSource.addCar(data, photo);
+      await _dataSource.addCar(data, photos);
+      if (series != null) {
+        await _dataSource.addSeries(series);
+      }
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl addCar error: $e\n$stack');
       rethrow;
@@ -76,26 +88,35 @@ class CarsRepositoryImpl implements CarsRepository {
     required CarModel oldModel,
     required String brand,
     required String modelName,
+    String? toyMaker,
     String? series,
+    DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
-    File? newPhoto,
+    List<File> newPhotos = const [],
+    List<String>? remainingPhotoPaths,
   }) async {
     try {
       final data = {
         'brand': brand,
         'model_name': modelName,
-        'series': series, // We pass null to remove optionally
+        'toy_maker': toyMaker,
+        'series': series,
+        'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
         'estimated_value': estimatedValue,
+        'photo_paths': remainingPhotoPaths ?? oldModel.photoPaths,
       };
 
       await _dataSource.editCar(
         oldModel.id,
         data,
-        newPhoto,
-        oldModel.photoPath,
+        newPhotos,
+        oldModel.photoPaths,
       );
+      if (series != null) {
+        await _dataSource.addSeries(series);
+      }
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl editCar error: $e\n$stack');
       rethrow;
@@ -105,10 +126,13 @@ class CarsRepositoryImpl implements CarsRepository {
   @override
   Future<void> deleteCar(CarModel car) async {
     try {
-      await _dataSource.deleteCar(car.id, car.photoPath);
+      await _dataSource.deleteCar(car.id, car.photoPaths);
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl deleteCar error: $e\n$stack');
       rethrow;
     }
   }
+
+  @override
+  Future<List<String>> getSeries() => _dataSource.fetchSeries();
 }

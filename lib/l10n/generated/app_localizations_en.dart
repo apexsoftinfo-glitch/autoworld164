@@ -491,4 +491,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get carFormSuccessEdited => 'Model edited successfully';
+
+  @override
+  String get carProducerLabel => 'Toy Producer (Logo)';
+
+  @override
+  String get carPurchaseDateLabel => 'Purchase Date';
+
+  @override
+  String get carGalleryLabel => 'Photo Gallery';
+
+  @override
+  String get carSearchPhotosLabel => 'Search Internet Photos';
+
+  @override
+  String get carAiEstimateLabel => 'AI Valuation';
+
+  @override
+  String get carFormAddPhotoPlaceholder => 'Add up to 5 photos';
 }

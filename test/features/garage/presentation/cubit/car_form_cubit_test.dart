@@ -17,6 +17,8 @@ void main() {
         userId: 'u1',
         brand: 'Dummy',
         modelName: 'Dummy',
+        toyMaker: 'Hot Wheels',
+        purchaseDate: DateTime.now(),
         createdAt: DateTime.now(),
       ),
     );
@@ -29,10 +31,12 @@ void main() {
         when(() => carsRepository.addCar(
               brand: any(named: 'brand'),
               modelName: any(named: 'modelName'),
+              toyMaker: any(named: 'toyMaker'),
               series: any(named: 'series'),
+              purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
-              photo: any(named: 'photo'),
+              photos: any(named: 'photos'),
             )).thenAnswer((_) async {});
         return CarFormCubit(carsRepository);
       },
@@ -54,10 +58,12 @@ void main() {
         when(() => carsRepository.addCar(
               brand: any(named: 'brand'),
               modelName: any(named: 'modelName'),
+              toyMaker: any(named: 'toyMaker'),
               series: any(named: 'series'),
+              purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
-              photo: any(named: 'photo'),
+              photos: any(named: 'photos'),
             )).thenThrow(Exception('database error'));
         return CarFormCubit(carsRepository);
       },

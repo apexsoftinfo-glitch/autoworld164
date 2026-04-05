@@ -10,10 +10,13 @@ abstract class CarModel with _$CarModel {
     @JsonKey(name: 'user_id') required String userId,
     required String brand,
     @JsonKey(name: 'model_name') required String modelName,
+    @JsonKey(name: 'toy_maker') String? toyMaker,
     String? series,
+    @JsonKey(name: 'purchase_date') DateTime? purchaseDate,
     @JsonKey(name: 'purchase_price') @Default(0.0) double purchasePrice,
     @JsonKey(name: 'estimated_value') @Default(0.0) double estimatedValue,
     @JsonKey(name: 'photo_path') String? photoPath,
+    @JsonKey(name: 'photo_paths') @Default([]) List<String> photoPaths,
     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _CarModel;
 

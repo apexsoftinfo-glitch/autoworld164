@@ -11,7 +11,9 @@ part 'car_form_cubit.freezed.dart';
 
 @freezed
 sealed class CarFormState with _$CarFormState {
-  const factory CarFormState.initial() = CarFormInitial;
+  const factory CarFormState.initial({
+    @Default([]) List<String> availableSeries,
+  }) = CarFormInitial;
   const factory CarFormState.loading() = CarFormLoading;
   const factory CarFormState.success() = CarFormSuccess;
   const factory CarFormState.error(String errorKey) = CarFormError;
@@ -23,14 +25,26 @@ class CarFormCubit extends Cubit<CarFormState> {
 
   final CarsRepository _carsRepository;
 
+  Future<void> loadInitialData() async {
+    try {
+      final series = await _carsRepository.getSeries();
+      emit(CarFormState.initial(availableSeries: series));
+    } catch (e) {
+      debugPrint('CarFormCubit loadInitialData error: $e');
+    }
+  }
+
   Future<void> saveCar({
     CarModel? existingCar,
     required String brand,
     required String modelName,
+    String? toyMaker,
     String? series,
+    DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
-    File? newPhoto,
+    List<File> newPhotos = const [],
+    List<String>? remainingPhotoPaths,
   }) async {
     emit(const CarFormState.loading());
     try {
@@ -39,19 +53,24 @@ class CarFormCubit extends Cubit<CarFormState> {
           oldModel: existingCar,
           brand: brand,
           modelName: modelName,
+          toyMaker: toyMaker,
           series: series,
+          purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
-          newPhoto: newPhoto,
+          newPhotos: newPhotos,
+          remainingPhotoPaths: remainingPhotoPaths,
         );
       } else {
         await _carsRepository.addCar(
           brand: brand,
           modelName: modelName,
+          toyMaker: toyMaker,
           series: series,
+          purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
-          photo: newPhoto,
+          photos: newPhotos,
         );
       }
       emit(const CarFormState.success());

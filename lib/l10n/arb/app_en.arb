@@ -188,5 +188,11 @@
   "carFormAddPhotoLabel": "Add photo",
   "carFormChangePhotoLabel": "Change photo",
   "carFormSuccessAdded": "Model added successfully",
-  "carFormSuccessEdited": "Model edited successfully"
+  "carFormSuccessEdited": "Model edited successfully",
+  "carProducerLabel": "Toy Producer (Logo)",
+  "carPurchaseDateLabel": "Purchase Date",
+  "carGalleryLabel": "Photo Gallery",
+  "carSearchPhotosLabel": "Search Internet Photos",
+  "carAiEstimateLabel": "AI Valuation",
+  "carFormAddPhotoPlaceholder": "Add up to 5 photos"
 }

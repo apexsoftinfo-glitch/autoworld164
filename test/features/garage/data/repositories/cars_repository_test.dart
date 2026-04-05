@@ -58,10 +58,13 @@ void main() {
             {
               'brand': 'Majorette',
               'model_name': 'Porsche',
+              'toy_maker': null,
+              'series': null,
+              'purchase_date': any(), // It defaults to now in repo if not passed
               'purchase_price': 10.0,
               'estimated_value': 20.0,
             },
-            null,
+            [],
           )).called(1);
     });
   });

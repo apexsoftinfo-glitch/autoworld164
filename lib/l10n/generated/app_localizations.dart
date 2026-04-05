@@ -967,6 +967,42 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Pomyślnie edytowano model'**
   String get carFormSuccessEdited;
+
+  /// No description provided for @carProducerLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Producent (Logo)'**
+  String get carProducerLabel;
+
+  /// No description provided for @carPurchaseDateLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Data zakupu'**
+  String get carPurchaseDateLabel;
+
+  /// No description provided for @carGalleryLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Galeria zdjęć'**
+  String get carGalleryLabel;
+
+  /// No description provided for @carSearchPhotosLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjecia z internetu'**
+  String get carSearchPhotosLabel;
+
+  /// No description provided for @carAiEstimateLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wycena AI'**
+  String get carAiEstimateLabel;
+
+  /// No description provided for @carFormAddPhotoPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj do 5 zdjęć'**
+  String get carFormAddPhotoPlaceholder;
 }
 
 class _AppLocalizationsDelegate

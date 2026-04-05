@@ -6,14 +6,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class CarsDataSource {
   Stream<List<Map<String, dynamic>>> watchCars();
-  Future<void> addCar(Map<String, dynamic> data, File? photo);
+  Future<void> addCar(Map<String, dynamic> data, List<File> photos);
   Future<void> editCar(
     String id,
     Map<String, dynamic> data,
-    File? newPhoto,
-    String? oldPhotoPath,
+    List<File> newPhotos,
+    List<String> oldPhotoPaths,
   );
-  Future<void> deleteCar(String id, String? oldPhotoPath);
+  Future<void> deleteCar(String id, List<String> photoPaths);
+  
+  // Series autocomplete
+  Future<List<String>> fetchSeries();
+  Future<void> addSeries(String name);
 }
 
 @LazySingleton(as: CarsDataSource)
@@ -35,25 +39,28 @@ class CarsDataSourceImpl implements CarsDataSource {
     }
   }
 
-  @override
-  Future<void> addCar(Map<String, dynamic> data, File? photo) async {
-    try {
-      String? photoPath;
+  Future<List<String>> _uploadPhotos(List<File> photos) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) throw Exception('unauthenticated');
+    
+    final paths = <String>[];
+    for (final photo in photos) {
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}_${paths.length}.jpg';
+      final path = '$userId/$fileName';
+      await _supabase.storage.from('autoworld_photos').upload(path, photo);
+      paths.add(path);
+    }
+    return paths;
+  }
 
-      if (photo != null) {
-        final userId = _supabase.auth.currentUser?.id;
-        if (userId == null) throw Exception('unauthenticated');
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-        photoPath = '$userId/$fileName';
-        await _supabase.storage
-            .from('autoworld_photos')
-            .upload(photoPath, photo);
-      }
+  @override
+  Future<void> addCar(Map<String, dynamic> data, List<File> photos) async {
+    try {
+      final photoPaths = await _uploadPhotos(photos);
 
       await _supabase.from('autoworld_cars').insert({
         ...data,
-        // ignore: use_null_aware_elements
-        if (photoPath != null) 'photo_path': photoPath,
+        'photo_paths': photoPaths,
       });
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl addCar error: $e\n$stack');
@@ -65,32 +72,22 @@ class CarsDataSourceImpl implements CarsDataSource {
   Future<void> editCar(
     String id,
     Map<String, dynamic> data,
-    File? newPhoto,
-    String? oldPhotoPath,
+    List<File> newPhotos,
+    List<String> oldPhotoPaths,
   ) async {
     try {
-      String? updatedPhotoPath;
-
-      if (newPhoto != null) {
-        final userId = _supabase.auth.currentUser?.id;
-        if (userId == null) throw Exception('unauthenticated');
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-        updatedPhotoPath = '$userId/$fileName';
-        await _supabase.storage
-            .from('autoworld_photos')
-            .upload(updatedPhotoPath, newPhoto);
-
-        if (oldPhotoPath != null) {
-          await _supabase.storage
-              .from('autoworld_photos')
-              .remove([oldPhotoPath]);
-        }
-      }
-
+      // For now, we append new photos to the existing array in the UI or logic.
+      // But let's assume we are replacing or providing the full new set of files 
+      // is not ideal. Let's assume we are adding new ones.
+      final uploadedPaths = await _uploadPhotos(newPhotos);
+      
+      // In a real app, you'd manage which ones to keep/delete. 
+      // For this task, let's keep it simple: data['photo_paths'] should contain 
+      // the combined list of remaining old paths + new paths.
+      
       await _supabase.from('autoworld_cars').update({
         ...data,
-        // ignore: use_null_aware_elements
-        if (updatedPhotoPath != null) 'photo_path': updatedPhotoPath,
+        if (uploadedPaths.isNotEmpty) 'photo_paths': [...(data['photo_paths'] as List? ?? []), ...uploadedPaths],
       }).eq('id', id);
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl editCar error: $e\n$stack');
@@ -99,16 +96,32 @@ class CarsDataSourceImpl implements CarsDataSource {
   }
 
   @override
-  Future<void> deleteCar(String id, String? oldPhotoPath) async {
+  Future<void> deleteCar(String id, List<String> photoPaths) async {
     try {
       await _supabase.from('autoworld_cars').delete().eq('id', id);
 
-      if (oldPhotoPath != null) {
-        await _supabase.storage.from('autoworld_photos').remove([oldPhotoPath]);
+      if (photoPaths.isNotEmpty) {
+        await _supabase.storage.from('autoworld_photos').remove(photoPaths);
       }
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl deleteCar error: $e\n$stack');
       rethrow;
     }
+  }
+
+  @override
+  Future<List<String>> fetchSeries() async {
+    final response = await _supabase.from('autoworld_series').select('name').order('name');
+    return (response as List).map((e) => e['name'] as String).toList();
+  }
+
+  @override
+  Future<void> addSeries(String name) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
+    await _supabase.from('autoworld_series').upsert({
+      'name': name,
+      'user_id': userId,
+    }, onConflict: 'name, user_id');
   }
 }

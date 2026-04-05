@@ -490,4 +490,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get carFormSuccessEdited => 'Pomyślnie edytowano model';
+
+  @override
+  String get carProducerLabel => 'Producent (Logo)';
+
+  @override
+  String get carPurchaseDateLabel => 'Data zakupu';
+
+  @override
+  String get carGalleryLabel => 'Galeria zdjęć';
+
+  @override
+  String get carSearchPhotosLabel => 'Zdjecia z internetu';
+
+  @override
+  String get carAiEstimateLabel => 'Wycena AI';
+
+  @override
+  String get carFormAddPhotoPlaceholder => 'Dodaj do 5 zdjęć';
 }

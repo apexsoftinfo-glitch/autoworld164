@@ -188,5 +188,11 @@
   "carFormAddPhotoLabel": "Dodaj zdjęcie",
   "carFormChangePhotoLabel": "Zmień zdjęcie",
   "carFormSuccessAdded": "Pomyślnie dodano model",
-  "carFormSuccessEdited": "Pomyślnie edytowano model"
+  "carFormSuccessEdited": "Pomyślnie edytowano model",
+  "carProducerLabel": "Producent (Logo)",
+  "carPurchaseDateLabel": "Data zakupu",
+  "carGalleryLabel": "Galeria zdjęć",
+  "carSearchPhotosLabel": "Zdjecia z internetu",
+  "carAiEstimateLabel": "Wycena AI",
+  "carFormAddPhotoPlaceholder": "Dodaj do 5 zdjęć"
 }
