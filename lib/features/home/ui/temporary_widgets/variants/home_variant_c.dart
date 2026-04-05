@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../../profiles/presentation/ui/profile_screen.dart';
 
@@ -6,175 +7,202 @@ class HomeVariantCScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text('AW164 HUB'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ProfileScreen()),
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Top Value Card (The "Financial Focus")
-            const _FinancialCard(),
-            const SizedBox(height: 24),
-
-            // Navigation Grid (Small, clean tiles)
-            const Row(
-              children: [
-                Expanded(child: _SmallActionCard(label: 'Mój garaż', icon: Icons.collections, color: Colors.grey)),
-                SizedBox(width: 12),
-                Expanded(child: _SmallActionCard(label: 'Nowości', icon: Icons.new_releases, color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 12),
-            const Row(
-              children: [
-                Expanded(child: _SmallActionCard(label: 'Hunting', icon: Icons.ads_click, color: Colors.grey)),
-                SizedBox(width: 12),
-                Expanded(child: _SmallActionCard(label: 'Ustawienia', icon: Icons.tune, color: Colors.grey)),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // Top Brands List (Another stats-like component)
-            const Text(
-              'Statystyki marek',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            const _BrandStatItem(label: 'Hot Wheels', count: 85, color: Colors.grey),
-            const _BrandStatItem(label: 'Majorette', count: 52, color: Colors.grey),
-            const _BrandStatItem(label: 'Matchbox', count: 12, color: Colors.grey),
-          ],
+    return Theme(
+      data: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0F172A), // Midnight Navy
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFFE2B25A), // Soft Gold
+          surface: Color(0xFF1E293B), // Slate Blue
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add_a_photo),
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment.topCenter,
+              radius: 1.5,
+              colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+            ),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 32),
+                  // Premium Profile Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'WIĘCEJ NIŻ KOLEKCJA',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 3,
+                              color: Color(0xFFE2B25A),
+                            ),
+                          ),
+                          Text(
+                            'WITAJ, ANATOL',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w300,
+                              fontFamily: 'Serif',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Color(0xFFE2B25A),
+                          child: Icon(Icons.person, color: Colors.black87),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
+
+                  // Glassmorphism Stats Card
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _GalleryStat(label: 'KURACJA', value: '124'),
+                            _GalleryStat(label: 'VALOR', value: '2.500 PLN'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 48),
+
+                  // Elegant Tile Grid
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: [
+                      _MuseumTile(
+                        label: 'MÓJ GARAŻ',
+                        icon: Icons.auto_awesome,
+                        onTap: () {},
+                      ),
+                      _MuseumTile(
+                        label: 'NOWOŚCI',
+                        icon: Icons.new_releases_outlined,
+                        onTap: () {},
+                      ),
+                      _MuseumTile(
+                        label: 'HUNTING',
+                        icon: Icons.explore_outlined,
+                        onTap: () {},
+                      ),
+                      _MuseumTile(
+                        label: 'USTAWIENIA',
+                        icon: Icons.tune_outlined,
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.large(
+          onPressed: () {},
+          backgroundColor: const Color(0xFFE2B25A),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: const Icon(Icons.add, color: Colors.black, size: 36),
+        ),
       ),
     );
   }
 }
 
-class _FinancialCard extends StatelessWidget {
-  const _FinancialCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey[300]!),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        children: [
-          const Text(
-            'ŁĄCZNA WARTOŚĆ',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            '12 450,00 zł',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          const Divider(height: 32),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _StatMiniItem(label: 'Modele', value: '149'),
-              _StatMiniItem(label: 'Wydano (mc)', value: '349 zł'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatMiniItem extends StatelessWidget {
+class _GalleryStat extends StatelessWidget {
   final String label;
   final String value;
 
-  const _StatMiniItem({required this.label, required this.value});
+  const _GalleryStat({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 10, color: Colors.white38, letterSpacing: 2),
+        ),
       ],
     );
   }
 }
 
-class _SmallActionCard extends StatelessWidget {
+class _MuseumTile extends StatelessWidget {
   final String label;
   final IconData icon;
-  final Color color;
+  final VoidCallback onTap;
 
-  const _SmallActionCard({required this.label, required this.icon, required this.color});
+  const _MuseumTile({required this.label, required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.white.withValues(alpha: 0.03),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Kurator Garażu zaraz wyświetli te sekcję...')),
+          );
+        },
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-}
-
-class _BrandStatItem extends StatelessWidget {
-  final String label;
-  final int count;
-  final Color color;
-
-  const _BrandStatItem({required this.label, required this.count, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: LinearProgressIndicator(
-        value: count / 100,
-        backgroundColor: Colors.grey[200],
-        valueColor: AlwaysStoppedAnimation<Color>(color),
-        minHeight: 12,
-        borderRadius: BorderRadius.circular(6),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 36, color: const Color(0xFFE2B25A)),
+              const SizedBox(height: 16),
+              Text(
+                label,
+                style: const TextStyle(fontSize: 12, letterSpacing: 1.5, color: Colors.white70),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
