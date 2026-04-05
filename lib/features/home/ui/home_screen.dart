@@ -38,19 +38,19 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'VIP SHOWROOM', 
+                              'VIP SHOWROOM',
                               style: TextStyle(
-                                fontSize: 10, 
-                                fontWeight: FontWeight.w900, 
-                                letterSpacing: 5, 
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 5,
                                 color: Color(0xFFFFD700),
                               ),
                             ),
                             Text(
-                              'GARAŻ ANATOLA', 
+                              'GARAŻ ANATOLA',
                               style: TextStyle(
-                                fontSize: 26, 
-                                fontWeight: FontWeight.w200, 
+                                fontSize: 26,
+                                fontWeight: FontWeight.w200,
                                 letterSpacing: -1,
                                 color: Colors.white,
                               ),
@@ -59,22 +59,34 @@ class HomeScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () => Navigator.push(
-                            context, 
-                            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ProfileScreen(),
+                            ),
                           ),
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: const Color(0xFFFFD700).withValues(alpha: 0.5), 
+                                color: const Color(
+                                  0xFFFFD700,
+                                ).withValues(alpha: 0.5),
                                 width: 1,
                               ),
-                              boxShadow: const [BoxShadow(color: Color(0x33FFD700), blurRadius: 10)],
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x33FFD700),
+                                  blurRadius: 10,
+                                ),
+                              ],
                             ),
                             child: const CircleAvatar(
-                              radius: 20, 
-                              backgroundColor: Colors.black26, 
-                              child: Icon(Icons.person, color: Color(0xFFFFD700)),
+                              radius: 20,
+                              backgroundColor: Colors.black26,
+                              child: Icon(
+                                Icons.person,
+                                color: Color(0xFFFFD700),
+                              ),
                             ),
                           ),
                         ),
@@ -91,44 +103,49 @@ class HomeScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       children: [
                         _VIPCard(
-                          label: 'MÓJ GARAŻ', 
-                          icon: Icons.auto_awesome, 
+                          label: 'MÓJ GARAŻ',
+                          icon: Icons.auto_awesome,
                           color: const Color(0xFFFFD700),
                           onTap: () => _showComingSoon(context, 'Mój Garaż'),
                         ),
                         _VIPCard(
-                          label: 'UPDATES', 
-                          icon: Icons.trending_up, 
+                          label: 'UPDATES',
+                          icon: Icons.trending_up,
                           color: Colors.white70,
                           onTap: () => _showComingSoon(context, 'Nowości'),
                         ),
                         _VIPCard(
-                          label: 'HOT HUNT', 
-                          icon: Icons.explore, 
+                          label: 'HOT HUNT',
+                          icon: Icons.explore,
                           color: Colors.white70,
                           onTap: () => _showComingSoon(context, 'Hunting'),
                         ),
                         _VIPCard(
-                          label: 'SYSTEM', 
-                          icon: Icons.tune, 
+                          label: 'SYSTEM',
+                          icon: Icons.tune,
                           color: Colors.white30,
                           onTap: () => _showComingSoon(context, 'Ustawienia'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 140), // Bottom padding for command bar
+                    const SizedBox(
+                      height: 140,
+                    ), // Bottom padding for command bar
                   ],
                 ),
               ),
             ),
-            
+
             // Unified Bottom Command Bar (Stats + Action)
             Positioned(
               bottom: 32,
               left: 20,
               right: 20,
               child: _GlassBox(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
                 child: Row(
                   children: [
@@ -141,13 +158,18 @@ class HomeScreen extends StatelessWidget {
                     GestureDetector(
                       onTap: () => _showComingSoon(context, 'Dodawanie modelu'),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFD700),
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFFFD700).withValues(alpha: 0.4),
+                              color: const Color(
+                                0xFFFFD700,
+                              ).withValues(alpha: 0.4),
                               blurRadius: 15,
                               offset: const Offset(0, 4),
                             ),
@@ -195,7 +217,11 @@ class _GlassBox extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
   final Color? borderColor;
-  const _GlassBox({required this.child, required this.padding, this.borderColor});
+  const _GlassBox({
+    required this.child,
+    required this.padding,
+    this.borderColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +234,9 @@ class _GlassBox extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: borderColor ?? Colors.white.withValues(alpha: 0.1)),
+            border: Border.all(
+              color: borderColor ?? Colors.white.withValues(alpha: 0.1),
+            ),
           ),
           child: child,
         ),
@@ -229,20 +257,20 @@ class _VIPStat extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          value, 
+          value,
           style: const TextStyle(
-            fontSize: 20, 
-            fontWeight: FontWeight.bold, 
-            color: Color(0xFFFFD700), 
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFFFD700),
             height: 1.0,
           ),
         ),
         Text(
-          label, 
+          label,
           style: const TextStyle(
-            fontSize: 8, 
-            fontWeight: FontWeight.w900, 
-            color: Colors.white38, 
+            fontSize: 8,
+            fontWeight: FontWeight.w900,
+            color: Colors.white38,
             letterSpacing: 1.5,
           ),
         ),
@@ -258,8 +286,8 @@ class _VIPCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const _VIPCard({
-    required this.label, 
-    required this.icon, 
+    required this.label,
+    required this.icon,
     required this.color,
     required this.onTap,
   });
@@ -277,11 +305,11 @@ class _VIPCard extends StatelessWidget {
             Icon(icon, size: 40, color: color),
             const SizedBox(height: 12),
             Text(
-              label, 
+              label,
               style: TextStyle(
-                fontSize: 11, 
-                fontWeight: FontWeight.w800, 
-                letterSpacing: 2, 
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2,
                 color: color.withValues(alpha: 0.8),
               ),
             ),

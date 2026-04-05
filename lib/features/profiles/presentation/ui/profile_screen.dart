@@ -107,148 +107,217 @@ class _ProfileViewState extends State<_ProfileView> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            appBar: AppBar(title: Text(l10n.profileTitle)),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 520),
-                    child: BlocBuilder<ProfileCubit, ProfileState>(
-                      builder: (context, profileState) {
-                        return BlocBuilder<
-                          AccountActionsCubit,
-                          AccountActionsState
-                        >(
-                          builder: (context, accountState) {
-                            final isSavingName = profileState.isSaving;
-                            final activeAccountAction =
-                                accountState.activeAction;
-                            final isInteractionLocked =
-                                isSavingName || activeAccountAction != null;
+            appBar: AppBar(
+              title: Text(
+                l10n.profileTitle,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                ),
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            extendBodyBehindAppBar: true,
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('assets/images/warm_garage.png'),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withValues(
+                      alpha: 0.8,
+                    ), // Very dark to keep form elements readable
+                    BlendMode.darken,
+                  ),
+                ),
+              ),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 520),
+                      child: BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, profileState) {
+                          return BlocBuilder<
+                            AccountActionsCubit,
+                            AccountActionsState
+                          >(
+                            builder: (context, accountState) {
+                              final isSavingName = profileState.isSaving;
+                              final activeAccountAction =
+                                  accountState.activeAction;
+                              final isInteractionLocked =
+                                  isSavingName || activeAccountAction != null;
 
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                if (session.shouldShowProtectProBanner) ...[
-                                  const _ProtectProBanner(),
-                                  const SizedBox(height: 24),
-                                ],
-                                TextField(
-                                  controller: _firstNameController,
-                                  focusNode: _firstNameFocusNode,
-                                  enabled: !isInteractionLocked,
-                                  keyboardType: TextInputType.name,
-                                  textCapitalization: TextCapitalization.words,
-                                  decoration: InputDecoration(
-                                    labelText: l10n.firstNameFieldLabel,
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  if (session.shouldShowProtectProBanner) ...[
+                                    const _ProtectProBanner(),
+                                    const SizedBox(height: 24),
+                                  ],
+                                  TextField(
+                                    controller: _firstNameController,
+                                    focusNode: _firstNameFocusNode,
+                                    enabled: !isInteractionLocked,
+                                    keyboardType: TextInputType.name,
+                                    textCapitalization:
+                                        TextCapitalization.words,
+                                    decoration: InputDecoration(
+                                      labelText: l10n.firstNameFieldLabel,
+                                    ),
+                                    textInputAction: TextInputAction.done,
+                                    onSubmitted: (_) =>
+                                        _saveFirstName(context, session),
                                   ),
-                                  textInputAction: TextInputAction.done,
-                                  onSubmitted: (_) =>
-                                      _saveFirstName(context, session),
-                                ),
-                                const SizedBox(height: 16),
-                                FilledButton(
-                                  onPressed: !isInteractionLocked
-                                      ? () => _saveFirstName(context, session)
-                                      : null,
-                                  child: isSavingName
-                                      ? const SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                      : Text(l10n.saveFirstNameButtonLabel),
-                                ),
-                                const SizedBox(height: 16),
-                                _AppLanguageDropdown(
-                                  isEnabled: !isInteractionLocked,
-                                ),
-                                if (profileState.errorKey != null) ...[
                                   const SizedBox(height: 16),
-                                  SelectableText(
-                                    messageForErrorKey(
-                                      l10n,
-                                      profileState.errorKey,
-                                    ),
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.error,
-                                    ),
-                                  ),
-                                ],
-                                if (accountState.errorKey != null) ...[
-                                  const SizedBox(height: 16),
-                                  SelectableText(
-                                    messageForErrorKey(
-                                      l10n,
-                                      accountState.errorKey,
-                                    ),
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.error,
-                                    ),
-                                  ),
-                                ],
-                                const SizedBox(height: 32),
-                                if (session.isAnonymousUser) ...[
-                                  FilledButton.tonal(
+                                  FilledButton(
                                     onPressed: !isInteractionLocked
-                                        ? () async {
-                                            final result =
-                                                await Navigator.of(
+                                        ? () => _saveFirstName(context, session)
+                                        : null,
+                                    child: isSavingName
+                                        ? const SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(l10n.saveFirstNameButtonLabel),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _AppLanguageDropdown(
+                                    isEnabled: !isInteractionLocked,
+                                  ),
+                                  if (profileState.errorKey != null) ...[
+                                    const SizedBox(height: 16),
+                                    SelectableText(
+                                      messageForErrorKey(
+                                        l10n,
+                                        profileState.errorKey,
+                                      ),
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                      ),
+                                    ),
+                                  ],
+                                  if (accountState.errorKey != null) ...[
+                                    const SizedBox(height: 16),
+                                    SelectableText(
+                                      messageForErrorKey(
+                                        l10n,
+                                        accountState.errorKey,
+                                      ),
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                      ),
+                                    ),
+                                  ],
+                                  const SizedBox(height: 32),
+                                  if (session.isAnonymousUser) ...[
+                                    FilledButton.tonal(
+                                      onPressed: !isInteractionLocked
+                                          ? () async {
+                                              final result =
+                                                  await Navigator.of(
+                                                    context,
+                                                  ).push<bool>(
+                                                    MaterialPageRoute<bool>(
+                                                      builder: (_) =>
+                                                          const RegisterScreen(),
+                                                    ),
+                                                  );
+                                              if (!context.mounted) return;
+                                              if (result == true) {
+                                                ScaffoldMessenger.of(
                                                   context,
-                                                ).push<bool>(
-                                                  MaterialPageRoute<bool>(
-                                                    builder: (_) =>
-                                                        const RegisterScreen(),
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      l10n.accountSecuredSnackbar,
+                                                    ),
                                                   ),
                                                 );
-                                            if (!context.mounted) return;
-                                            if (result == true) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    l10n.accountSecuredSnackbar,
-                                                  ),
-                                                ),
-                                              );
+                                              }
                                             }
-                                          }
-                                        : null,
-                                    child: Text(l10n.registerButtonLabel),
-                                  ),
-                                  const SizedBox(height: 12),
+                                          : null,
+                                      child: Text(l10n.registerButtonLabel),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    OutlinedButton(
+                                      onPressed: !isInteractionLocked
+                                          ? () => Navigator.of(context)
+                                                .push<void>(
+                                                  MaterialPageRoute<void>(
+                                                    builder: (_) =>
+                                                        const LoginScreen(),
+                                                  ),
+                                                )
+                                          : null,
+                                      child: Text(l10n.loginButtonLabel),
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
+                                  if (!session.isAnonymousUser) ...[
+                                    OutlinedButton(
+                                      onPressed: !isInteractionLocked
+                                          ? () => context
+                                                .read<AccountActionsCubit>()
+                                                .signOut()
+                                          : null,
+                                      child:
+                                          activeAccountAction ==
+                                              AccountAction.signOut
+                                          ? const SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          : Text(l10n.logoutButtonLabel),
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
+                                  if (!session.isProUser &&
+                                      RevenueCatConfig.isEnabled) ...[
+                                    FilledButton(
+                                      onPressed:
+                                          !isInteractionLocked &&
+                                              session.userIdOrNull != null
+                                          ? () => context
+                                                .read<AccountActionsCubit>()
+                                                .buyPro(session.userIdOrNull!)
+                                          : null,
+                                      child:
+                                          activeAccountAction ==
+                                              AccountAction.buyPro
+                                          ? const SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          : Text(l10n.buyProButtonLabel),
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
                                   OutlinedButton(
                                     onPressed: !isInteractionLocked
-                                        ? () =>
-                                              Navigator.of(context).push<void>(
-                                                MaterialPageRoute<void>(
-                                                  builder: (_) =>
-                                                      const LoginScreen(),
-                                                ),
-                                              )
-                                        : null,
-                                    child: Text(l10n.loginButtonLabel),
-                                  ),
-                                  const SizedBox(height: 12),
-                                ],
-                                if (!session.isAnonymousUser) ...[
-                                  OutlinedButton(
-                                    onPressed: !isInteractionLocked
-                                        ? () => context
-                                              .read<AccountActionsCubit>()
-                                              .signOut()
+                                        ? () => _confirmDeleteAccount(context)
                                         : null,
                                     child:
                                         activeAccountAction ==
-                                            AccountAction.signOut
+                                            AccountAction.deleteAccount
                                         ? const SizedBox(
                                             width: 20,
                                             height: 20,
@@ -256,73 +325,32 @@ class _ProfileViewState extends State<_ProfileView> {
                                               strokeWidth: 2,
                                             ),
                                           )
-                                        : Text(l10n.logoutButtonLabel),
+                                        : Text(l10n.deleteAccountButtonLabel),
                                   ),
-                                  const SizedBox(height: 12),
+                                  if (kDebugMode) ...[
+                                    const Divider(height: 48),
+                                    _ProfileSummary(session: session),
+                                    const SizedBox(height: 12),
+                                    OutlinedButton.icon(
+                                      onPressed: !isInteractionLocked
+                                          ? () => Navigator.of(context)
+                                                .push<void>(
+                                                  MaterialPageRoute<void>(
+                                                    builder: (_) =>
+                                                        const DeveloperScreen(),
+                                                  ),
+                                                )
+                                          : null,
+                                      icon: const Icon(Icons.developer_mode),
+                                      label: Text(l10n.developerToolsTitle),
+                                    ),
+                                  ],
                                 ],
-                                if (!session.isProUser &&
-                                    RevenueCatConfig.isEnabled) ...[
-                                  FilledButton(
-                                    onPressed:
-                                        !isInteractionLocked &&
-                                            session.userIdOrNull != null
-                                        ? () => context
-                                              .read<AccountActionsCubit>()
-                                              .buyPro(session.userIdOrNull!)
-                                        : null,
-                                    child:
-                                        activeAccountAction ==
-                                            AccountAction.buyPro
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          )
-                                        : Text(l10n.buyProButtonLabel),
-                                  ),
-                                  const SizedBox(height: 12),
-                                ],
-                                OutlinedButton(
-                                  onPressed: !isInteractionLocked
-                                      ? () => _confirmDeleteAccount(context)
-                                      : null,
-                                  child:
-                                      activeAccountAction ==
-                                          AccountAction.deleteAccount
-                                      ? const SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                      : Text(l10n.deleteAccountButtonLabel),
-                                ),
-                                if (kDebugMode) ...[
-                                  const Divider(height: 48),
-                                  _ProfileSummary(session: session),
-                                  const SizedBox(height: 12),
-                                  OutlinedButton.icon(
-                                    onPressed: !isInteractionLocked
-                                        ? () =>
-                                              Navigator.of(context).push<void>(
-                                                MaterialPageRoute<void>(
-                                                  builder: (_) =>
-                                                      const DeveloperScreen(),
-                                                ),
-                                              )
-                                        : null,
-                                    icon: const Icon(Icons.developer_mode),
-                                    label: Text(l10n.developerToolsTitle),
-                                  ),
-                                ],
-                              ],
-                            );
-                          },
-                        );
-                      },
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
