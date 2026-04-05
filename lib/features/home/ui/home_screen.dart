@@ -111,7 +111,45 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 32),
+                    // Stats chips
+                    BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          data: (cars, purchaseTotal, estimatedTotal, stats) {
+                             if (stats.isEmpty) return const SizedBox.shrink();
+                             final sortedBrands = stats.entries.toList()
+                               ..sort((a, b) => b.value.compareTo(a.value));
+                             
+                             return Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 const Text(
+                                   'TWOJE TOP MARKI',
+                                   style: TextStyle(
+                                     fontSize: 9,
+                                     fontWeight: FontWeight.w900,
+                                     letterSpacing: 2,
+                                     color: Colors.white38,
+                                   ),
+                                 ),
+                                 const SizedBox(height: 12),
+                                 SingleChildScrollView(
+                                   scrollDirection: Axis.horizontal,
+                                   child: Row(
+                                     children: sortedBrands.map((e) => _BrandChip(label: e.key, count: e.value)).toList(),
+                                   ),
+                                 ),
+                                 const SizedBox(height: 32),
+                               ],
+                             );
+                          },
+                          orElse: () => const SizedBox.shrink(),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
 
                     // Navigation Grid
                     GridView.count(
@@ -166,11 +204,11 @@ class _HomeScreenView extends StatelessWidget {
               child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
                 builder: (context, state) {
                   final pieces = state.maybeWhen(
-                    data: (cars, purchasePrice, estimatedValue) => cars.length.toString(),
+                    data: (cars, purchasePrice, estimatedValue, stats) => cars.length.toString(),
                     orElse: () => '0',
                   );
                   final value = state.maybeWhen(
-                    data: (cars, purchasePrice, estimatedValue) {
+                    data: (cars, purchasePrice, estimatedValue, stats) {
                       final isPolish = Localizations.localeOf(context).languageCode == 'pl';
                       final currencyFormat = NumberFormat.simpleCurrency(
                         locale: isPolish ? 'pl_PL' : 'en_US',
@@ -295,6 +333,55 @@ class _GlassBox extends StatelessWidget {
           ),
           child: child,
         ),
+      ),
+    );
+  }
+}
+
+class _BrandChip extends StatelessWidget {
+  final String label;
+  final int count;
+  const _BrandChip({required this.label, required this.count});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              'X$count',
+              style: const TextStyle(
+                color: Color(0xFFFFD700),
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

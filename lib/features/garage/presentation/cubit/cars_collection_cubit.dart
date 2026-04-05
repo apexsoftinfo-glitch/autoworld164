@@ -18,6 +18,7 @@ sealed class CarsCollectionState with _$CarsCollectionState {
     required List<CarModel> cars,
     required double totalPurchasePrice,
     required double totalEstimatedValue,
+    @Default({}) Map<String, int> brandStats,
   }) = CarsCollectionData;
 }
 
@@ -37,15 +38,23 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
       (cars) {
         double purchaseTotal = 0;
         double estimatedTotal = 0;
+        final stats = <String, int>{};
+
         for (final car in cars) {
           purchaseTotal += car.purchasePrice;
           estimatedTotal += car.estimatedValue;
+          
+          final key = (car.toyMaker ?? car.brand).trim();
+          if (key.isNotEmpty) {
+            stats[key] = (stats[key] ?? 0) + 1;
+          }
         }
 
         emit(CarsCollectionState.data(
           cars: cars,
           totalPurchasePrice: purchaseTotal,
           totalEstimatedValue: estimatedTotal,
+          brandStats: stats,
         ));
       },
       onError: (error) {

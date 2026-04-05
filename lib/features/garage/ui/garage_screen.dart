@@ -74,7 +74,7 @@ class _GarageScreenView extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-              data: (cars, purchaseTotal, estimatedTotal) {
+              data: (cars, purchaseTotal, estimatedTotal, stats) {
                 if (cars.isEmpty) {
                   return const _EmptyGarageView();
                 }

@@ -131,13 +131,13 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String errorKey)?  error,TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue)?  data,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String errorKey)?  error,TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)?  data,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial() when initial != null:
 return initial();case CarsCollectionLoading() when loading != null:
 return loading();case CarsCollectionError() when error != null:
 return error(_that.errorKey);case CarsCollectionData() when data != null:
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue);case _:
+return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);case _:
   return orElse();
 
 }
@@ -155,13 +155,13 @@ return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String errorKey)  error,required TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue)  data,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String errorKey)  error,required TResult Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)  data,}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial():
 return initial();case CarsCollectionLoading():
 return loading();case CarsCollectionError():
 return error(_that.errorKey);case CarsCollectionData():
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue);}
+return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -175,13 +175,13 @@ return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String errorKey)?  error,TResult? Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue)?  data,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String errorKey)?  error,TResult? Function( List<CarModel> cars,  double totalPurchasePrice,  double totalEstimatedValue,  Map<String, int> brandStats)?  data,}) {final _that = this;
 switch (_that) {
 case CarsCollectionInitial() when initial != null:
 return initial();case CarsCollectionLoading() when loading != null:
 return loading();case CarsCollectionError() when error != null:
 return error(_that.errorKey);case CarsCollectionData() when data != null:
-return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue);case _:
+return data(_that.cars,_that.totalPurchasePrice,_that.totalEstimatedValue,_that.brandStats);case _:
   return null;
 
 }
@@ -341,7 +341,7 @@ as String,
 
 
 class CarsCollectionData with DiagnosticableTreeMixin implements CarsCollectionState {
-  const CarsCollectionData({required final  List<CarModel> cars, required this.totalPurchasePrice, required this.totalEstimatedValue}): _cars = cars;
+  const CarsCollectionData({required final  List<CarModel> cars, required this.totalPurchasePrice, required this.totalEstimatedValue, final  Map<String, int> brandStats = const {}}): _cars = cars,_brandStats = brandStats;
   
 
  final  List<CarModel> _cars;
@@ -353,6 +353,13 @@ class CarsCollectionData with DiagnosticableTreeMixin implements CarsCollectionS
 
  final  double totalPurchasePrice;
  final  double totalEstimatedValue;
+ final  Map<String, int> _brandStats;
+@JsonKey() Map<String, int> get brandStats {
+  if (_brandStats is EqualUnmodifiableMapView) return _brandStats;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_brandStats);
+}
+
 
 /// Create a copy of CarsCollectionState
 /// with the given fields replaced by the non-null parameter values.
@@ -365,21 +372,21 @@ $CarsCollectionDataCopyWith<CarsCollectionData> get copyWith => _$CarsCollection
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CarsCollectionState.data'))
-    ..add(DiagnosticsProperty('cars', cars))..add(DiagnosticsProperty('totalPurchasePrice', totalPurchasePrice))..add(DiagnosticsProperty('totalEstimatedValue', totalEstimatedValue));
+    ..add(DiagnosticsProperty('cars', cars))..add(DiagnosticsProperty('totalPurchasePrice', totalPurchasePrice))..add(DiagnosticsProperty('totalEstimatedValue', totalEstimatedValue))..add(DiagnosticsProperty('brandStats', brandStats));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarsCollectionData&&const DeepCollectionEquality().equals(other._cars, _cars)&&(identical(other.totalPurchasePrice, totalPurchasePrice) || other.totalPurchasePrice == totalPurchasePrice)&&(identical(other.totalEstimatedValue, totalEstimatedValue) || other.totalEstimatedValue == totalEstimatedValue));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarsCollectionData&&const DeepCollectionEquality().equals(other._cars, _cars)&&(identical(other.totalPurchasePrice, totalPurchasePrice) || other.totalPurchasePrice == totalPurchasePrice)&&(identical(other.totalEstimatedValue, totalEstimatedValue) || other.totalEstimatedValue == totalEstimatedValue)&&const DeepCollectionEquality().equals(other._brandStats, _brandStats));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cars),totalPurchasePrice,totalEstimatedValue);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cars),totalPurchasePrice,totalEstimatedValue,const DeepCollectionEquality().hash(_brandStats));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CarsCollectionState.data(cars: $cars, totalPurchasePrice: $totalPurchasePrice, totalEstimatedValue: $totalEstimatedValue)';
+  return 'CarsCollectionState.data(cars: $cars, totalPurchasePrice: $totalPurchasePrice, totalEstimatedValue: $totalEstimatedValue, brandStats: $brandStats)';
 }
 
 
@@ -390,7 +397,7 @@ abstract mixin class $CarsCollectionDataCopyWith<$Res> implements $CarsCollectio
   factory $CarsCollectionDataCopyWith(CarsCollectionData value, $Res Function(CarsCollectionData) _then) = _$CarsCollectionDataCopyWithImpl;
 @useResult
 $Res call({
- List<CarModel> cars, double totalPurchasePrice, double totalEstimatedValue
+ List<CarModel> cars, double totalPurchasePrice, double totalEstimatedValue, Map<String, int> brandStats
 });
 
 
@@ -407,12 +414,13 @@ class _$CarsCollectionDataCopyWithImpl<$Res>
 
 /// Create a copy of CarsCollectionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? cars = null,Object? totalPurchasePrice = null,Object? totalEstimatedValue = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? cars = null,Object? totalPurchasePrice = null,Object? totalEstimatedValue = null,Object? brandStats = null,}) {
   return _then(CarsCollectionData(
 cars: null == cars ? _self._cars : cars // ignore: cast_nullable_to_non_nullable
 as List<CarModel>,totalPurchasePrice: null == totalPurchasePrice ? _self.totalPurchasePrice : totalPurchasePrice // ignore: cast_nullable_to_non_nullable
 as double,totalEstimatedValue: null == totalEstimatedValue ? _self.totalEstimatedValue : totalEstimatedValue // ignore: cast_nullable_to_non_nullable
-as double,
+as double,brandStats: null == brandStats ? _self._brandStats : brandStats // ignore: cast_nullable_to_non_nullable
+as Map<String, int>,
   ));
 }
 
