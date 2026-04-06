@@ -10,7 +10,14 @@ _SharedUserModel _$SharedUserModelFromJson(Map<String, dynamic> json) =>
     _SharedUserModel(
       id: json['id'] as String,
       firstName: json['first_name'] as String?,
+      username: json['username'] as String?,
+      photoUrl: json['photo_url'] as String?,
     );
 
 Map<String, dynamic> _$SharedUserModelToJson(_SharedUserModel instance) =>
-    <String, dynamic>{'id': instance.id, 'first_name': instance.firstName};
+    <String, dynamic>{
+      'id': instance.id,
+      'first_name': instance.firstName,
+      'username': instance.username,
+      'photo_url': instance.photoUrl,
+    };

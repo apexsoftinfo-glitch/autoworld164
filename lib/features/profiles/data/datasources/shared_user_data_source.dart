@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SharedUserDataSource {
@@ -10,6 +12,7 @@ abstract class SharedUserDataSource {
   Future<void> upsertSharedUser(Map<String, dynamic> sharedUser);
 
   Future<Map<String, dynamic>> ensureSharedUser(String userId);
+  Future<String> uploadProfilePhoto(String userId, List<int> bytes, String extension);
 }
 
 @LazySingleton(as: SharedUserDataSource)
@@ -96,12 +99,43 @@ class SupabaseSharedUserDataSource implements SharedUserDataSource {
       return existingSharedUser;
     }
 
-    final shellSharedUser = <String, dynamic>{'id': userId, 'first_name': null};
+    final shellSharedUser = <String, dynamic>{
+      'id': userId,
+      'first_name': null,
+      'username': null,
+      'photo_url': null,
+    };
 
     await upsertSharedUser(shellSharedUser);
     debugPrint(
       '✅ [SharedUserDataSource] ensureSharedUser created shell row userId=$userId',
     );
     return shellSharedUser;
+  }
+
+  @override
+  Future<String> uploadProfilePhoto(String userId, List<int> bytes, String extension) async {
+    final path = '$userId/profile_${DateTime.now().millisecondsSinceEpoch}.$extension';
+    
+    // Create temp file because upload might strictly expect File in this version
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp_profile_upload.$extension');
+    await tempFile.writeAsBytes(bytes);
+
+    await _supabaseClient.storage.from('autoworld_profiles').upload(
+          path,
+          tempFile,
+          fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+        );
+
+    // Clean up
+    try {
+      await tempFile.delete();
+    } catch (e) {
+      debugPrint('Warning: Could not delete temp file: $e');
+    }
+
+    final url = _supabaseClient.storage.from('autoworld_profiles').getPublicUrl(path);
+    return url;
   }
 }

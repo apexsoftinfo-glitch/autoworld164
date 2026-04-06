@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
 import '../../news/ui/news_screen.dart';
+import '../../settings/ui/settings_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
@@ -160,8 +161,11 @@ class _HomeScreenView extends StatelessWidget {
                         _VIPCard(
                           label: 'USTAWIENIA',
                           icon: Icons.tune,
-                          color: Colors.white30,
-                          onTap: () => _showComingSoon(context, 'Ustawienia'),
+                          color: Colors.white,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                          ),
                         ),
                       ],
                     ),

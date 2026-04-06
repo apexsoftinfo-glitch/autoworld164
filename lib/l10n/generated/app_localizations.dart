@@ -1027,6 +1027,210 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Nie udało się wczytać nowości ze świata 1/64.'**
   String get errorLoadingNews;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Ustawienia'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSectionProfile.
+  ///
+  /// In pl, this message translates to:
+  /// **'Profil'**
+  String get settingsSectionProfile;
+
+  /// No description provided for @settingsSectionCurrency.
+  ///
+  /// In pl, this message translates to:
+  /// **'Waluta'**
+  String get settingsSectionCurrency;
+
+  /// No description provided for @settingsSectionLanguage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Język'**
+  String get settingsSectionLanguage;
+
+  /// No description provided for @settingsSectionBackup.
+  ///
+  /// In pl, this message translates to:
+  /// **'Backup garażu'**
+  String get settingsSectionBackup;
+
+  /// No description provided for @settingsUsernameLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nazwa użytkownika'**
+  String get settingsUsernameLabel;
+
+  /// No description provided for @settingsGarageNameLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nazwa garażu'**
+  String get settingsGarageNameLabel;
+
+  /// No description provided for @settingsProfilePhotoLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zdjęcie profilowe'**
+  String get settingsProfilePhotoLabel;
+
+  /// No description provided for @settingsChangeLoginLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmień login'**
+  String get settingsChangeLoginLabel;
+
+  /// No description provided for @settingsChangePasswordLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmień hasło'**
+  String get settingsChangePasswordLabel;
+
+  /// No description provided for @settingsBackupCreate.
+  ///
+  /// In pl, this message translates to:
+  /// **'Utwórz kopię zapasową'**
+  String get settingsBackupCreate;
+
+  /// No description provided for @settingsBackupRestore.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wgraj kopię zapasową'**
+  String get settingsBackupRestore;
+
+  /// No description provided for @settingsBackupDescription.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kopia zawiera wszystkie dane oraz zdjęcia modeli. Zdjęcia są przechowywane lokalnie na urządzeniu.'**
+  String get settingsBackupDescription;
+
+  /// No description provided for @settingsCurrencyPLN.
+  ///
+  /// In pl, this message translates to:
+  /// **'PLN (Złoty)'**
+  String get settingsCurrencyPLN;
+
+  /// No description provided for @settingsCurrencyUSD.
+  ///
+  /// In pl, this message translates to:
+  /// **'USD (Dolar)'**
+  String get settingsCurrencyUSD;
+
+  /// No description provided for @settingsCurrencyEUR.
+  ///
+  /// In pl, this message translates to:
+  /// **'EUR (Euro)'**
+  String get settingsCurrencyEUR;
+
+  /// No description provided for @error_loading_settings.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się załadować ustawień.'**
+  String get error_loading_settings;
+
+  /// No description provided for @error_updating_garage_name.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zaktualizować nazwy garażu.'**
+  String get error_updating_garage_name;
+
+  /// No description provided for @error_updating_profile.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zaktualizować profilu.'**
+  String get error_updating_profile;
+
+  /// No description provided for @error_updating_currency.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zaktualizować waluty.'**
+  String get error_updating_currency;
+
+  /// No description provided for @error_updating_language.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zaktualizować języka.'**
+  String get error_updating_language;
+
+  /// No description provided for @saveSuccess.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmiany zostały zapisane'**
+  String get saveSuccess;
+
+  /// No description provided for @error_exporting_backup.
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd podczas tworzenia kopii zapasowej.'**
+  String get error_exporting_backup;
+
+  /// No description provided for @error_importing_backup.
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd podczas wczytywania kopii zapasowej.'**
+  String get error_importing_backup;
+
+  /// No description provided for @backup_restored_successfully.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kopia zapasowa została przywrócona.'**
+  String get backup_restored_successfully;
+
+  /// No description provided for @backup_restore_confirm_title.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przywrócić kopię zapasową?'**
+  String get backup_restore_confirm_title;
+
+  /// No description provided for @backup_restore_confirm_body.
+  ///
+  /// In pl, this message translates to:
+  /// **'To nadpisze obecne dane w tym garażu. Czy chcesz kontynuować?'**
+  String get backup_restore_confirm_body;
+
+  /// No description provided for @error_unauthenticated.
+  ///
+  /// In pl, this message translates to:
+  /// **'Musisz być zalogowany, aby wykonać tę operację.'**
+  String get error_unauthenticated;
+
+  /// No description provided for @error_invalid_backup_file.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nieprawidłowy plik kopii zapasowej.'**
+  String get error_invalid_backup_file;
+
+  /// No description provided for @settingsEmailLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'ADRES E-MAIL'**
+  String get settingsEmailLabel;
+
+  /// No description provided for @settingsPasswordLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'HASŁO'**
+  String get settingsPasswordLabel;
+
+  /// No description provided for @settingsRegisterButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZAREJESTRUJ KONTO'**
+  String get settingsRegisterButton;
+
+  /// No description provided for @account_upgraded_successfully.
+  ///
+  /// In pl, this message translates to:
+  /// **'Konto zostało pomyślnie ulepszone!'**
+  String get account_upgraded_successfully;
+
+  /// No description provided for @error_upgrading_account.
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd podczas ulepszania konta.'**
+  String get error_upgrading_account;
 }
 
 class _AppLocalizationsDelegate

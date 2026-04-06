@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SharedUserModel {
 
- String get id; String? get firstName;
+ String get id; String? get firstName; String? get username; String? get photoUrl;
 /// Create a copy of SharedUserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SharedUserModelCopyWith<SharedUserModel> get copyWith => _$SharedUserModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.username, username) || other.username == username)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName);
+int get hashCode => Object.hash(runtimeType,id,firstName,username,photoUrl);
 
 @override
 String toString() {
-  return 'SharedUserModel(id: $id, firstName: $firstName)';
+  return 'SharedUserModel(id: $id, firstName: $firstName, username: $username, photoUrl: $photoUrl)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SharedUserModelCopyWith<$Res>  {
   factory $SharedUserModelCopyWith(SharedUserModel value, $Res Function(SharedUserModel) _then) = _$SharedUserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String? firstName
+ String id, String? firstName, String? username, String? photoUrl
 });
 
 
@@ -65,10 +65,12 @@ class _$SharedUserModelCopyWithImpl<$Res>
 
 /// Create a copy of SharedUserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = freezed,Object? username = freezed,Object? photoUrl = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -154,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? firstName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? firstName,  String? username,  String? photoUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SharedUserModel() when $default != null:
-return $default(_that.id,_that.firstName);case _:
+return $default(_that.id,_that.firstName,_that.username,_that.photoUrl);case _:
   return orElse();
 
 }
@@ -175,10 +177,10 @@ return $default(_that.id,_that.firstName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? firstName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? firstName,  String? username,  String? photoUrl)  $default,) {final _that = this;
 switch (_that) {
 case _SharedUserModel():
-return $default(_that.id,_that.firstName);case _:
+return $default(_that.id,_that.firstName,_that.username,_that.photoUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +197,10 @@ return $default(_that.id,_that.firstName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? firstName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? firstName,  String? username,  String? photoUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _SharedUserModel() when $default != null:
-return $default(_that.id,_that.firstName);case _:
+return $default(_that.id,_that.firstName,_that.username,_that.photoUrl);case _:
   return null;
 
 }
@@ -210,11 +212,13 @@ return $default(_that.id,_that.firstName);case _:
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _SharedUserModel extends SharedUserModel {
-  const _SharedUserModel({required this.id, this.firstName}): super._();
+  const _SharedUserModel({required this.id, this.firstName, this.username, this.photoUrl}): super._();
   factory _SharedUserModel.fromJson(Map<String, dynamic> json) => _$SharedUserModelFromJson(json);
 
 @override final  String id;
 @override final  String? firstName;
+@override final  String? username;
+@override final  String? photoUrl;
 
 /// Create a copy of SharedUserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedUserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.username, username) || other.username == username)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName);
+int get hashCode => Object.hash(runtimeType,id,firstName,username,photoUrl);
 
 @override
 String toString() {
-  return 'SharedUserModel(id: $id, firstName: $firstName)';
+  return 'SharedUserModel(id: $id, firstName: $firstName, username: $username, photoUrl: $photoUrl)';
 }
 
 
@@ -249,7 +253,7 @@ abstract mixin class _$SharedUserModelCopyWith<$Res> implements $SharedUserModel
   factory _$SharedUserModelCopyWith(_SharedUserModel value, $Res Function(_SharedUserModel) _then) = __$SharedUserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? firstName
+ String id, String? firstName, String? username, String? photoUrl
 });
 
 
@@ -266,10 +270,12 @@ class __$SharedUserModelCopyWithImpl<$Res>
 
 /// Create a copy of SharedUserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = freezed,Object? username = freezed,Object? photoUrl = freezed,}) {
   return _then(_SharedUserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as String?,username: freezed == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

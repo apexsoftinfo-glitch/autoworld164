@@ -52,6 +52,12 @@ import 'package:myapp/features/profiles/data/repositories/shared_user_repository
     as _i636;
 import 'package:myapp/features/profiles/presentation/cubit/profile_cubit.dart'
     as _i463;
+import 'package:myapp/features/settings/data/datasources/settings_data_source.dart'
+    as _i0;
+import 'package:myapp/features/settings/data/repositories/settings_repository.dart'
+    as _i145;
+import 'package:myapp/features/settings/presentation/settings_cubit.dart'
+    as _i336;
 import 'package:myapp/features/subscription/data/datasources/subscription_data_source.dart'
     as _i138;
 import 'package:myapp/features/subscription/data/repositories/subscription_repository.dart'
@@ -96,6 +102,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i381.SharedUserDataSource>(
       () => _i381.SupabaseSharedUserDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i0.SettingsDataSource>(
+      () => _i0.SupabaseSettingsDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i538.AuthDataSource>(
       () => _i538.SupabaseAuthDataSource(gh<_i454.SupabaseClient>()),
     );
@@ -104,6 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i910.AppLocaleRepository>(
       () => _i910.AppLocaleRepositoryImpl(gh<_i634.AppLocaleDataSource>()),
+    );
+    gh.lazySingleton<_i145.SettingsRepository>(
+      () => _i145.SettingsRepositoryImpl(gh<_i0.SettingsDataSource>()),
     );
     gh.lazySingleton<_i630.CarsRepository>(
       () => _i630.CarsRepositoryImpl(gh<_i491.CarsDataSource>()),
@@ -116,6 +128,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i37.AuthRepository>(
       () => _i37.AuthRepositoryImpl(gh<_i538.AuthDataSource>()),
+    );
+    gh.factory<_i336.SettingsCubit>(
+      () => _i336.SettingsCubit(
+        gh<_i145.SettingsRepository>(),
+        gh<_i636.SharedUserRepository>(),
+        gh<_i37.AuthRepository>(),
+      ),
     );
     gh.lazySingleton<_i686.AppLocaleCubit>(
       () => _i686.AppLocaleCubit(gh<_i910.AppLocaleRepository>()),

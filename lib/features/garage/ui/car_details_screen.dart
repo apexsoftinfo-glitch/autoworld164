@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'dart:io';
 import '../../../core/di/injection.dart';
 import '../models/car_model.dart';
 import 'car_form_screen.dart';
@@ -140,6 +143,30 @@ class _PhotoGallery extends StatefulWidget {
 
 class _PhotoGalleryState extends State<_PhotoGallery> {
   int _currentIndex = 0;
+  String? _docsPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPath();
+  }
+
+  Future<void> _initPath() async {
+    final docs = await getApplicationDocumentsDirectory();
+    if (mounted) {
+      setState(() => _docsPath = docs.path);
+    }
+  }
+
+  ImageProvider _getImageProvider(String path) {
+    if (path.startsWith('http')) return NetworkImage(path);
+    if (path.contains('/')) {
+      final url = widget.supabase.storage.from('autoworld_photos').getPublicUrl(path);
+      return NetworkImage(url);
+    }
+    if (_docsPath == null) return const AssetImage('assets/images/placeholder.png') as ImageProvider;
+    return FileImage(File(p.join(_docsPath!, 'autoworld_photos', path)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,11 +182,8 @@ class _PhotoGalleryState extends State<_PhotoGallery> {
           child: PhotoViewGallery.builder(
             itemCount: photoPaths.length,
             builder: (context, index) {
-              final url = widget.supabase.storage
-                  .from('autoworld_photos')
-                  .getPublicUrl(photoPaths[index]);
               return PhotoViewGalleryPageOptions(
-                imageProvider: NetworkImage(url),
+                imageProvider: _getImageProvider(photoPaths[index]),
                 initialScale: PhotoViewComputedScale.covered,
                 minScale: PhotoViewComputedScale.contained,
                 maxScale: PhotoViewComputedScale.covered * 2,

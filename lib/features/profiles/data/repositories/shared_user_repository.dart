@@ -15,6 +15,22 @@ abstract class SharedUserRepository {
     required String userId,
     required String firstName,
   });
+
+  Future<void> updateUsername({
+    required String userId,
+    required String username,
+  });
+
+  Future<void> updatePhotoUrl({
+    required String userId,
+    required String photoUrl,
+  });
+
+  Future<void> uploadProfilePhoto({
+    required String userId,
+    required List<int> bytes,
+    required String extension,
+  });
 }
 
 @LazySingleton(as: SharedUserRepository)
@@ -61,6 +77,57 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] updateFirstName error: $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateUsername({
+    required String userId,
+    required String username,
+  }) async {
+    try {
+      final currentSharedUser = await ensureSharedUser(userId);
+      final updatedSharedUser = currentSharedUser.copyWith(
+        username: username.trim().isEmpty ? null : username.trim(),
+      );
+
+      await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+    } catch (error) {
+      debugPrint('❌ [SharedUserRepository] updateUsername error: $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updatePhotoUrl({
+    required String userId,
+    required String photoUrl,
+  }) async {
+    try {
+      final currentSharedUser = await ensureSharedUser(userId);
+      final updatedSharedUser = currentSharedUser.copyWith(
+        photoUrl: photoUrl.trim().isEmpty ? null : photoUrl.trim(),
+      );
+
+      await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+    } catch (error) {
+      debugPrint('❌ [SharedUserRepository] updatePhotoUrl error: $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> uploadProfilePhoto({
+    required String userId,
+    required List<int> bytes,
+    required String extension,
+  }) async {
+    try {
+      final url = await _sharedUserDataSource.uploadProfilePhoto(userId, bytes, extension);
+      await updatePhotoUrl(userId: userId, photoUrl: url);
+    } catch (error) {
+      debugPrint('❌ [SharedUserRepository] uploadProfilePhoto error: $error');
       rethrow;
     }
   }

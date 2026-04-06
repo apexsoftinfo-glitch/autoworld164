@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../models/car_model.dart';
@@ -11,6 +10,7 @@ import '../presentation/cubit/cars_collection_cubit.dart';
 
 import 'car_form_screen.dart';
 import 'car_details_screen.dart';
+import 'widgets/car_photo.dart';
 
 class GarageScreen extends StatelessWidget {
   const GarageScreen({super.key});
@@ -213,10 +213,7 @@ class _CarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabase = getIt<SupabaseClient>();
-    final photoUrl = car.displayPhotoPath != null 
-      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.displayPhotoPath!)
-      : null;
+    final photoPath = car.displayPhotoPath;
 
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
     final currencyFormat = NumberFormat.simpleCurrency(
@@ -236,11 +233,11 @@ class _CarCard extends StatelessWidget {
                 flex: 3,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                  child: photoUrl != null
-                      ? Image.network(
-                          photoUrl,
+                  child: photoPath != null
+                      ? CarPhoto(
+                          path: photoPath,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => _ImagePlaceholder(),
+                          placeholder: _ImagePlaceholder(),
                         )
                       : _ImagePlaceholder(),
                 ),
@@ -456,10 +453,7 @@ class _CarListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabase = getIt<SupabaseClient>();
-    final photoUrl = car.displayPhotoPath != null 
-      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.displayPhotoPath!)
-      : null;
+    final photoPath = car.displayPhotoPath;
 
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
     final currencyFormat = NumberFormat.simpleCurrency(
@@ -482,8 +476,8 @@ class _CarListTile extends StatelessWidget {
               child: SizedBox(
                 width: 60,
                 height: 60,
-                child: photoUrl != null
-                  ? Image.network(photoUrl, fit: BoxFit.cover, errorBuilder: (c, e, s) => _ImagePlaceholder())
+                child: photoPath != null
+                  ? CarPhoto(path: photoPath, fit: BoxFit.cover, placeholder: _ImagePlaceholder())
                   : _ImagePlaceholder(),
               ),
             ),

@@ -10,6 +10,7 @@ import '../../../l10n/l10n.dart';
 import '../models/car_model.dart';
 import '../presentation/cubit/car_form_cubit.dart';
 import 'search_photos_dialog.dart';
+import 'widgets/car_photo.dart';
 
 class CarFormScreen extends StatefulWidget {
   final CarModel? car;
@@ -492,16 +493,9 @@ class _Thumbnail extends StatelessWidget {
   Widget _buildImage() {
     if (image != null) return Image.file(image!, fit: BoxFit.cover);
     if (url != null) {
-      return Image.network(
-        url!,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Center(child: Icon(Icons.error_outline, color: Colors.white24)),
-      );
+      return CarPhoto(path: url!, fit: BoxFit.cover);
     }
-    return Image.network(
-      'https://laapoqdayvmszqcijyob.supabase.co/storage/v1/object/public/autoworld_photos/$path',
-      fit: BoxFit.cover,
-    );
+    return CarPhoto(path: path!, fit: BoxFit.cover);
   }
 }
 

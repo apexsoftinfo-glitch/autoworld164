@@ -517,9 +517,113 @@ class AppLocalizationsEn extends AppLocalizations {
   String get galleryButtonLabel => 'Gallery';
 
   @override
-  String get newsTitle => 'Nowości';
+  String get newsTitle => 'News';
 
   @override
-  String get errorLoadingNews =>
-      'Nie udało się wczytać nowości ze świata 1/64.';
+  String get errorLoadingNews => 'Could not load 1/64 news.';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSectionProfile => 'Profile';
+
+  @override
+  String get settingsSectionCurrency => 'Currency';
+
+  @override
+  String get settingsSectionLanguage => 'Language';
+
+  @override
+  String get settingsSectionBackup => 'Garage Backup';
+
+  @override
+  String get settingsUsernameLabel => 'Username';
+
+  @override
+  String get settingsGarageNameLabel => 'Garage Name';
+
+  @override
+  String get settingsProfilePhotoLabel => 'Profile Photo';
+
+  @override
+  String get settingsChangeLoginLabel => 'Change Login';
+
+  @override
+  String get settingsChangePasswordLabel => 'Change Password';
+
+  @override
+  String get settingsBackupCreate => 'Create Backup';
+
+  @override
+  String get settingsBackupRestore => 'Restore Backup';
+
+  @override
+  String get settingsBackupDescription =>
+      'The backup includes all data and model photos. Photos are stored locally on your device.';
+
+  @override
+  String get settingsCurrencyPLN => 'PLN (Zloty)';
+
+  @override
+  String get settingsCurrencyUSD => 'USD (Dollar)';
+
+  @override
+  String get settingsCurrencyEUR => 'EUR (Euro)';
+
+  @override
+  String get error_loading_settings => 'Could not load settings.';
+
+  @override
+  String get error_updating_garage_name => 'Could not update garage name.';
+
+  @override
+  String get error_updating_profile => 'Could not update profile.';
+
+  @override
+  String get error_updating_currency => 'Could not update currency.';
+
+  @override
+  String get error_updating_language => 'Could not update language.';
+
+  @override
+  String get saveSuccess => 'Changes saved successfully';
+
+  @override
+  String get error_exporting_backup => 'Error creating backup.';
+
+  @override
+  String get error_importing_backup => 'Error restoring backup.';
+
+  @override
+  String get backup_restored_successfully => 'Backup restored successfully.';
+
+  @override
+  String get backup_restore_confirm_title => 'Restore backup?';
+
+  @override
+  String get backup_restore_confirm_body =>
+      'This will overwrite current data in this garage. Do you want to continue?';
+
+  @override
+  String get error_unauthenticated =>
+      'You must be logged in to perform this operation.';
+
+  @override
+  String get error_invalid_backup_file => 'Invalid backup file.';
+
+  @override
+  String get settingsEmailLabel => 'EMAIL ADDRESS';
+
+  @override
+  String get settingsPasswordLabel => 'PASSWORD';
+
+  @override
+  String get settingsRegisterButton => 'REGISTER ACCOUNT';
+
+  @override
+  String get account_upgraded_successfully => 'Account upgraded successfully!';
+
+  @override
+  String get error_upgrading_account => 'Error upgrading account.';
 }

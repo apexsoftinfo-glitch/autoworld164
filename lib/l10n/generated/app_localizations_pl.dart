@@ -521,4 +521,114 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get errorLoadingNews =>
       'Nie udało się wczytać nowości ze świata 1/64.';
+
+  @override
+  String get settingsTitle => 'Ustawienia';
+
+  @override
+  String get settingsSectionProfile => 'Profil';
+
+  @override
+  String get settingsSectionCurrency => 'Waluta';
+
+  @override
+  String get settingsSectionLanguage => 'Język';
+
+  @override
+  String get settingsSectionBackup => 'Backup garażu';
+
+  @override
+  String get settingsUsernameLabel => 'Nazwa użytkownika';
+
+  @override
+  String get settingsGarageNameLabel => 'Nazwa garażu';
+
+  @override
+  String get settingsProfilePhotoLabel => 'Zdjęcie profilowe';
+
+  @override
+  String get settingsChangeLoginLabel => 'Zmień login';
+
+  @override
+  String get settingsChangePasswordLabel => 'Zmień hasło';
+
+  @override
+  String get settingsBackupCreate => 'Utwórz kopię zapasową';
+
+  @override
+  String get settingsBackupRestore => 'Wgraj kopię zapasową';
+
+  @override
+  String get settingsBackupDescription =>
+      'Kopia zawiera wszystkie dane oraz zdjęcia modeli. Zdjęcia są przechowywane lokalnie na urządzeniu.';
+
+  @override
+  String get settingsCurrencyPLN => 'PLN (Złoty)';
+
+  @override
+  String get settingsCurrencyUSD => 'USD (Dolar)';
+
+  @override
+  String get settingsCurrencyEUR => 'EUR (Euro)';
+
+  @override
+  String get error_loading_settings => 'Nie udało się załadować ustawień.';
+
+  @override
+  String get error_updating_garage_name =>
+      'Nie udało się zaktualizować nazwy garażu.';
+
+  @override
+  String get error_updating_profile => 'Nie udało się zaktualizować profilu.';
+
+  @override
+  String get error_updating_currency => 'Nie udało się zaktualizować waluty.';
+
+  @override
+  String get error_updating_language => 'Nie udało się zaktualizować języka.';
+
+  @override
+  String get saveSuccess => 'Zmiany zostały zapisane';
+
+  @override
+  String get error_exporting_backup =>
+      'Błąd podczas tworzenia kopii zapasowej.';
+
+  @override
+  String get error_importing_backup =>
+      'Błąd podczas wczytywania kopii zapasowej.';
+
+  @override
+  String get backup_restored_successfully =>
+      'Kopia zapasowa została przywrócona.';
+
+  @override
+  String get backup_restore_confirm_title => 'Przywrócić kopię zapasową?';
+
+  @override
+  String get backup_restore_confirm_body =>
+      'To nadpisze obecne dane w tym garażu. Czy chcesz kontynuować?';
+
+  @override
+  String get error_unauthenticated =>
+      'Musisz być zalogowany, aby wykonać tę operację.';
+
+  @override
+  String get error_invalid_backup_file => 'Nieprawidłowy plik kopii zapasowej.';
+
+  @override
+  String get settingsEmailLabel => 'ADRES E-MAIL';
+
+  @override
+  String get settingsPasswordLabel => 'HASŁO';
+
+  @override
+  String get settingsRegisterButton => 'ZAREJESTRUJ KONTO';
+
+  @override
+  String get account_upgraded_successfully =>
+      'Konto zostało pomyślnie ulepszone!';
+
+  @override
+  String get error_upgrading_account => 'Błąd podczas ulepszania konta.';
 }
