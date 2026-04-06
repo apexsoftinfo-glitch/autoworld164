@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 
 abstract class CarsDataSource {
   Stream<List<Map<String, dynamic>>> watchCars();
+  Future<List<Map<String, dynamic>>> fetchCars();
   Future<void> addCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls);
   Future<void> editCar(
     String id,
@@ -39,6 +40,20 @@ class CarsDataSourceImpl implements CarsDataSource {
           .order('created_at', ascending: false);
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl watchCars error: $e\n$stack');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchCars() async {
+    try {
+      final response = await _supabase
+          .from('autoworld_cars')
+          .select()
+          .order('created_at', ascending: false);
+      return (response as List).map((e) => e as Map<String, dynamic>).toList();
+    } catch (e, stack) {
+      debugPrint('CarsDataSourceImpl fetchCars error: $e\n$stack');
       rethrow;
     }
   }

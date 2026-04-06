@@ -95,28 +95,35 @@ class _GarageScreenView extends StatelessWidget {
                       onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
                     ),
                     Expanded(
-                      child: viewType == CollectionViewType.grid 
-                        ? GridView.builder(
-                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: 0.75,
+                      child: RefreshIndicator(
+                        backgroundColor: const Color(0xFF2D1B0D),
+                        color: const Color(0xFFFFD700),
+                        onRefresh: () async {
+                           context.read<CarsCollectionCubit>().retry();
+                        },
+                        child: viewType == CollectionViewType.grid 
+                          ? GridView.builder(
+                              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: filtered.length,
+                              itemBuilder: (context, index) {
+                                return _CarCard(car: filtered[index]);
+                              },
+                            )
+                          : ListView.separated(
+                              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                              itemCount: filtered.length,
+                              separatorBuilder: (context, index) => const SizedBox(height: 12),
+                              itemBuilder: (context, index) {
+                                return _CarListTile(car: filtered[index]);
+                              },
                             ),
-                            itemCount: filtered.length,
-                            itemBuilder: (context, index) {
-                              return _CarCard(car: filtered[index]);
-                            },
-                          )
-                        : ListView.separated(
-                            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                            itemCount: filtered.length,
-                            separatorBuilder: (context, index) => const SizedBox(height: 12),
-                            itemBuilder: (context, index) {
-                              return _CarListTile(car: filtered[index]);
-                            },
-                          ),
+                      ),
                     ),
                     const _BottomAddButton(),
                   ],

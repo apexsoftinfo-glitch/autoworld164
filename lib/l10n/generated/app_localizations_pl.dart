@@ -23,10 +23,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get errorEmail => 'Sprawdź adres email i spróbuj ponownie.';
 
   @override
+  String get errorEmailAlreadyInUse =>
+      'Ten adres e-mail jest już zajęty przez inne konto.';
+
+  @override
   String get errorPassword => 'Sprawdź hasło i spróbuj ponownie.';
 
   @override
   String get errorNetwork => 'Problem z połączeniem. Spróbuj ponownie.';
+
+  @override
+  String get errorRateLimitExceeded =>
+      'Zbyt wiele prób wysłania e-maila. Spróbuj ponownie za chwilę.';
 
   @override
   String get errorDeleteAccountSetupRequired =>

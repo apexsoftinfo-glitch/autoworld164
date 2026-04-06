@@ -32,9 +32,9 @@ class NewsCubit extends Cubit<NewsState> {
     _newsSubscription?.cancel();
     _newsSubscription = _repository.watchNews().listen(
       (news) {
-        final lastWeek = DateTime.now().subtract(const Duration(days: 7));
+        final lastMonth = DateTime.now().subtract(const Duration(days: 30));
         final filteredNews = news
-            .where((item) => item.createdAt.isAfter(lastWeek))
+            .where((item) => item.createdAt.isAfter(lastMonth))
             .toList();
         
         // Ensure we log if some news items are missing images for debugging

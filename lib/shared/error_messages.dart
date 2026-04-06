@@ -11,6 +11,10 @@ String mapErrorToKey(Object error) {
     return 'anonymous_auth_disabled';
   }
 
+  if (message.contains('email already in use') || message.contains('user already registered')) {
+    return 'email_already_in_use';
+  }
+
   if (message.contains('email')) {
     return 'email_error';
   }
@@ -38,6 +42,10 @@ String mapErrorToKey(Object error) {
     return 'shared_users_setup_required';
   }
 
+  if (message.contains('rate limit')) {
+    return 'rate_limit_exceeded';
+  }
+
   return 'unknown_error';
 }
 
@@ -46,12 +54,14 @@ String messageForErrorKey(AppLocalizations l10n, String? errorKey) {
     'invalid_credentials' => l10n.errorInvalidCredentials,
     'anonymous_auth_disabled' => l10n.errorAnonymousAuthDisabled,
     'email_error' => l10n.errorEmail,
+    'email_already_in_use' => l10n.errorEmailAlreadyInUse,
     'password_error' => l10n.errorPassword,
     'network_error' => l10n.errorNetwork,
     'delete_account_setup_required' => l10n.errorDeleteAccountSetupRequired,
     'delete_account_failed' => l10n.errorDeleteAccountFailed,
     'shared_users_setup_required' => l10n.errorSharedUsersSetupRequired,
     'delete_account_not_implemented' => l10n.errorDeleteAccountNotImplemented,
+    'rate_limit_exceeded' => l10n.errorRateLimitExceeded,
     'unknown_error' || null => l10n.errorUnknown,
     _ => l10n.errorWithKey(errorKey),
   };

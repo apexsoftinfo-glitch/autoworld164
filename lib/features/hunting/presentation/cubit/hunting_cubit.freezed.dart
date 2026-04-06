@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'news_cubit.dart';
+part of 'hunting_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,21 +12,15 @@ part of 'news_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$NewsState implements DiagnosticableTreeMixin {
+mixin _$HuntingState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'NewsState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HuntingState);
 }
 
 
@@ -34,21 +28,21 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'NewsState()';
+String toString() {
+  return 'HuntingState()';
 }
 
 
 }
 
 /// @nodoc
-class $NewsStateCopyWith<$Res>  {
-$NewsStateCopyWith(NewsState _, $Res Function(NewsState) __);
+class $HuntingStateCopyWith<$Res>  {
+$HuntingStateCopyWith(HuntingState _, $Res Function(HuntingState) __);
 }
 
 
-/// Adds pattern-matching-related methods to [NewsState].
-extension NewsStatePatterns on NewsState {
+/// Adds pattern-matching-related methods to [HuntingState].
+extension HuntingStatePatterns on HuntingState {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -131,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<NewsModel> news)?  data,TResult Function( String errorKey)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<HuntingResult> results,  String query)?  data,TResult Function( String errorKey)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Data() when data != null:
-return data(_that.news);case Error() when error != null:
+return data(_that.results,_that.query);case Error() when error != null:
 return error(_that.errorKey);case _:
   return orElse();
 
@@ -155,12 +149,12 @@ return error(_that.errorKey);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<NewsModel> news)  data,required TResult Function( String errorKey)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<HuntingResult> results,  String query)  data,required TResult Function( String errorKey)  error,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
 return loading();case Data():
-return data(_that.news);case Error():
+return data(_that.results,_that.query);case Error():
 return error(_that.errorKey);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -175,12 +169,12 @@ return error(_that.errorKey);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<NewsModel> news)?  data,TResult? Function( String errorKey)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<HuntingResult> results,  String query)?  data,TResult? Function( String errorKey)?  error,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Data() when data != null:
-return data(_that.news);case Error() when error != null:
+return data(_that.results,_that.query);case Error() when error != null:
 return error(_that.errorKey);case _:
   return null;
 
@@ -192,7 +186,7 @@ return error(_that.errorKey);case _:
 /// @nodoc
 
 
-class Initial with DiagnosticableTreeMixin implements NewsState {
+class Initial implements HuntingState {
   const Initial();
   
 
@@ -200,12 +194,6 @@ class Initial with DiagnosticableTreeMixin implements NewsState {
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'NewsState.initial'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -217,8 +205,8 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'NewsState.initial()';
+String toString() {
+  return 'HuntingState.initial()';
 }
 
 
@@ -230,7 +218,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class Loading with DiagnosticableTreeMixin implements NewsState {
+class Loading implements HuntingState {
   const Loading();
   
 
@@ -238,12 +226,6 @@ class Loading with DiagnosticableTreeMixin implements NewsState {
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'NewsState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -255,8 +237,8 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'NewsState.loading()';
+String toString() {
+  return 'HuntingState.loading()';
 }
 
 
@@ -268,55 +250,50 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class Data with DiagnosticableTreeMixin implements NewsState {
-  const Data({required final  List<NewsModel> news}): _news = news;
+class Data implements HuntingState {
+  const Data({required final  List<HuntingResult> results, this.query = ''}): _results = results;
   
 
- final  List<NewsModel> _news;
- List<NewsModel> get news {
-  if (_news is EqualUnmodifiableListView) return _news;
+ final  List<HuntingResult> _results;
+ List<HuntingResult> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_news);
+  return EqualUnmodifiableListView(_results);
 }
 
+@JsonKey() final  String query;
 
-/// Create a copy of NewsState
+/// Create a copy of HuntingState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $DataCopyWith<Data> get copyWith => _$DataCopyWithImpl<Data>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'NewsState.data'))
-    ..add(DiagnosticsProperty('news', news));
-}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Data&&const DeepCollectionEquality().equals(other._news, _news));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Data&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_news));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_results),query);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'NewsState.data(news: $news)';
+String toString() {
+  return 'HuntingState.data(results: $results, query: $query)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DataCopyWith<$Res> implements $NewsStateCopyWith<$Res> {
+abstract mixin class $DataCopyWith<$Res> implements $HuntingStateCopyWith<$Res> {
   factory $DataCopyWith(Data value, $Res Function(Data) _then) = _$DataCopyWithImpl;
 @useResult
 $Res call({
- List<NewsModel> news
+ List<HuntingResult> results, String query
 });
 
 
@@ -331,12 +308,13 @@ class _$DataCopyWithImpl<$Res>
   final Data _self;
   final $Res Function(Data) _then;
 
-/// Create a copy of NewsState
+/// Create a copy of HuntingState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? news = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? results = null,Object? query = null,}) {
   return _then(Data(
-news: null == news ? _self._news : news // ignore: cast_nullable_to_non_nullable
-as List<NewsModel>,
+results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<HuntingResult>,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -346,25 +324,19 @@ as List<NewsModel>,
 /// @nodoc
 
 
-class Error with DiagnosticableTreeMixin implements NewsState {
+class Error implements HuntingState {
   const Error({required this.errorKey});
   
 
  final  String errorKey;
 
-/// Create a copy of NewsState
+/// Create a copy of HuntingState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'NewsState.error'))
-    ..add(DiagnosticsProperty('errorKey', errorKey));
-}
 
 @override
 bool operator ==(Object other) {
@@ -376,15 +348,15 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,errorKey);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'NewsState.error(errorKey: $errorKey)';
+String toString() {
+  return 'HuntingState.error(errorKey: $errorKey)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<$Res> implements $NewsStateCopyWith<$Res> {
+abstract mixin class $ErrorCopyWith<$Res> implements $HuntingStateCopyWith<$Res> {
   factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
 @useResult
 $Res call({
@@ -403,7 +375,7 @@ class _$ErrorCopyWithImpl<$Res>
   final Error _self;
   final $Res Function(Error) _then;
 
-/// Create a copy of NewsState
+/// Create a copy of HuntingState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? errorKey = null,}) {
   return _then(Error(

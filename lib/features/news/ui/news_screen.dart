@@ -37,8 +37,13 @@ class _NewsScreenView extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () => context.read<NewsCubit>().loadNews(),
+            icon: const Icon(Icons.refresh, color: Color(0xFFFFD700)),
+            tooltip: 'Odśwież nowości',
+          ),
+        ],
         flexibleSpace: ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
@@ -101,22 +106,32 @@ class _NewsScreenView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  Data(news: final newsList) => newsList.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Brak nowych wiadomości',
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        )
-                      : ListView.separated(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
-                          itemCount: newsList.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 20),
-                          itemBuilder: (context, index) {
-                            return _NewsCard(news: newsList[index]);
-                          },
-                        ),
+                  Data(news: final newsList) => RefreshIndicator(
+                      onRefresh: () => context.read<NewsCubit>().loadNews(),
+                      color: const Color(0xFFFFD700),
+                      backgroundColor: const Color(0xFF1C1C1E),
+                      child: newsList.isEmpty
+                          ? ListView(
+                              children: const [
+                                SizedBox(height: 100),
+                                Center(
+                                  child: Text(
+                                    'Brak nowych wiadomości',
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : ListView.separated(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
+                              itemCount: newsList.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 20),
+                              itemBuilder: (context, index) {
+                                return _NewsCard(news: newsList[index]);
+                              },
+                            ),
+                    ),
                 };
               },
             ),

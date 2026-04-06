@@ -43,16 +43,23 @@ class CarsRepositoryImpl implements CarsRepository {
   CarsRepositoryImpl(this._dataSource);
 
   final CarsDataSource _dataSource;
-
-  Stream<List<CarModel>>? _cachedStream;
+  final _carsSubject = BehaviorSubject<List<CarModel>>();
 
   @override
   Stream<List<CarModel>> get carsStream {
-    _cachedStream ??= _dataSource.watchCars().map((items) {
-      return items.map((json) => CarModel.fromJson(json)).toList();
-    }).shareReplay(maxSize: 1);
-    
-    return _cachedStream!;
+    if (!_carsSubject.hasValue) {
+      _refresh();
+    }
+    return _carsSubject.stream;
+  }
+
+  Future<void> _refresh() async {
+    try {
+      final items = await _dataSource.fetchCars();
+      _carsSubject.add(items.map((json) => CarModel.fromJson(json)).toList());
+    } catch (e) {
+      debugPrint('CarsRepositoryImpl _refresh error: $e');
+    }
   }
 
   @override
@@ -82,6 +89,7 @@ class CarsRepositoryImpl implements CarsRepository {
       if (series != null) {
         await _dataSource.addSeries(series);
       }
+      await _refresh();
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl addCar error: $e\n$stack');
       rethrow;
@@ -124,6 +132,7 @@ class CarsRepositoryImpl implements CarsRepository {
       if (series != null) {
         await _dataSource.addSeries(series);
       }
+      await _refresh();
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl editCar error: $e\n$stack');
       rethrow;
@@ -134,6 +143,7 @@ class CarsRepositoryImpl implements CarsRepository {
   Future<void> deleteCar(CarModel car) async {
     try {
       await _dataSource.deleteCar(car.id, car.photoPaths);
+      await _refresh();
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl deleteCar error: $e\n$stack');
       rethrow;

@@ -44,6 +44,10 @@ import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.d
     as _i182;
 import 'package:myapp/features/garage/presentation/cubit/search_photos_cubit.dart'
     as _i537;
+import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart'
+    as _i988;
+import 'package:myapp/features/hunting/presentation/cubit/hunting_cubit.dart'
+    as _i361;
 import 'package:myapp/features/news/data/news_repository.dart' as _i897;
 import 'package:myapp/features/news/presentation/news_cubit.dart' as _i11;
 import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
@@ -94,6 +98,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i897.NewsRepository>(
       () => _i897.NewsRepositoryImpl(gh<_i897.NewsDataSource>()),
     );
+    gh.lazySingleton<_i988.HuntingRepository>(
+      () => _i988.HuntingRepositoryImpl(),
+    );
     gh.lazySingleton<_i634.AppLocaleDataSource>(
       () => _i634.SharedPreferencesAppLocaleDataSource(
         gh<_i460.SharedPreferences>(),
@@ -128,6 +135,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i37.AuthRepository>(
       () => _i37.AuthRepositoryImpl(gh<_i538.AuthDataSource>()),
+    );
+    gh.factory<_i361.HuntingCubit>(
+      () => _i361.HuntingCubit(gh<_i988.HuntingRepository>()),
     );
     gh.factory<_i336.SettingsCubit>(
       () => _i336.SettingsCubit(

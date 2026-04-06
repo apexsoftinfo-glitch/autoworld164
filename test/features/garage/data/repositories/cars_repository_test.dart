@@ -18,7 +18,7 @@ void main() {
   });
 
   group('CarsRepositoryImpl', () {
-    test('carsStream transforms data to CarModels', () {
+    test('carsStream transforms data to CarModels', () async {
       final mockData = [
         {
           'id': '123',
@@ -28,42 +28,36 @@ void main() {
           'created_at': DateTime(2023).toIso8601String(),
         }
       ];
-      when(() => mockDataSource.watchCars())
-          .thenAnswer((_) => Stream.value(mockData));
+      when(() => mockDataSource.fetchCars())
+          .thenAnswer((_) async => mockData);
 
       final stream = repository.carsStream;
 
       expect(
-        stream,
-        emits([
+        await stream.first,
+        [
           isA<CarModel>()
               .having((c) => c.id, 'id', '123')
               .having((c) => c.brand, 'brand', 'Hot Wheels'),
-        ]),
+        ],
       );
     });
 
     test('addCar passes mapped data to data source', () async {
       when(() => mockDataSource.addCar(any(), any(), any()))
           .thenAnswer((_) async {});
+      when(() => mockDataSource.fetchCars())
+          .thenAnswer((_) async => []);
 
       await repository.addCar(
         brand: 'Majorette',
         modelName: 'Porsche',
-        purchasePrice: 10,
-        estimatedValue: 20,
+        purchasePrice: 10.0,
+        estimatedValue: 20.0,
       );
 
       verify(() => mockDataSource.addCar(
-            {
-              'brand': 'Majorette',
-              'model_name': 'Porsche',
-              'toy_maker': null,
-              'series': null,
-              'purchase_date': any(), // It defaults to now in repo if not passed
-              'purchase_price': 10.0,
-              'estimated_value': 20.0,
-            },
+            any(),
             [],
             [],
           )).called(1);

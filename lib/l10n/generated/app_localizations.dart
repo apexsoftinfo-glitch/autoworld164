@@ -122,6 +122,12 @@ abstract class AppLocalizations {
   /// **'Sprawdź adres email i spróbuj ponownie.'**
   String get errorEmail;
 
+  /// No description provided for @errorEmailAlreadyInUse.
+  ///
+  /// In pl, this message translates to:
+  /// **'Ten adres e-mail jest już zajęty przez inne konto.'**
+  String get errorEmailAlreadyInUse;
+
   /// No description provided for @errorPassword.
   ///
   /// In pl, this message translates to:
@@ -133,6 +139,12 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Problem z połączeniem. Spróbuj ponownie.'**
   String get errorNetwork;
+
+  /// No description provided for @errorRateLimitExceeded.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zbyt wiele prób wysłania e-maila. Spróbuj ponownie za chwilę.'**
+  String get errorRateLimitExceeded;
 
   /// No description provided for @errorDeleteAccountSetupRequired.
   ///

@@ -9,14 +9,24 @@ import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
 import '../../garage/ui/garage_screen.dart';
 import '../../garage/ui/car_form_screen.dart';
+import '../../../app/session/presentation/cubit/session_cubit.dart';
+import '../../hunting/ui/hunting_screen.dart';
+import '../../settings/presentation/settings_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<CarsCollectionCubit>(),
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<CarsCollectionCubit>()),
+        BlocProvider.value(value: getIt<SessionCubit>()),
+        if (userId != null)
+          BlocProvider(create: (context) => getIt<SettingsCubit>()..init(userId)),
+      ],
       child: const _HomeScreenView(),
     );
   }
@@ -54,26 +64,28 @@ class _HomeScreenView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'VIP SHOWROOM',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 5,
-                                color: Color(0xFFFFD700),
-                              ),
-                            ),
-                            Text(
-                              'Moja Kolekcja',
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w200,
-                                letterSpacing: -1,
-                                color: Colors.white,
-                              ),
+                            BlocBuilder<SettingsCubit, SettingsState>(
+                              builder: (context, state) {
+                                final garageName = state.maybeWhen(
+                                  data: (settings, profile, isGuest) => settings.garageName,
+                                  orElse: () => null,
+                                );
+                                final title = garageName != null && garageName.isNotEmpty 
+                                  ? 'GARAŻ $garageName' 
+                                  : 'GARAŻ';
+                                return Text(
+                                  title.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w200,
+                                    letterSpacing: -1,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -84,30 +96,34 @@ class _HomeScreenView extends StatelessWidget {
                               builder: (_) => const ProfileScreen(),
                             ),
                           ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(
-                                  0xFFFFD700,
-                                ).withValues(alpha: 0.5),
-                                width: 1,
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0x33FFD700),
-                                  blurRadius: 10,
+                          child: BlocBuilder<SessionCubit, SessionState>(
+                            builder: (context, state) {
+                              final photoUrl = state.sharedUserOrNull?.photoUrl;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color(0xFFFFD700).withValues(alpha: 0.5),
+                                    width: 1,
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0x33FFD700),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: const CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black26,
-                              child: Icon(
-                                Icons.person,
-                                color: Color(0xFFFFD700),
-                              ),
-                            ),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.black26,
+                                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                                  child: photoUrl == null ? const Icon(
+                                    Icons.person,
+                                    color: Color(0xFFFFD700),
+                                  ) : null,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -155,8 +171,11 @@ class _HomeScreenView extends StatelessWidget {
                         _VIPCard(
                           label: 'HOT HUNT',
                           icon: Icons.explore,
-                          color: Colors.white70,
-                          onTap: () => _showComingSoon(context, 'Hunting'),
+                          color: const Color(0xFFFFD700),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HuntingScreen()),
+                          ),
                         ),
                         _VIPCard(
                           label: 'USTAWIENIA',
@@ -273,16 +292,6 @@ class _HomeScreenView extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-
-  void _showComingSoon(BuildContext context, String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Funkcja "$feature" będzie dostępna wkrótce!'),
-        backgroundColor: const Color(0xFF1E293B),
       ),
     );
   }
