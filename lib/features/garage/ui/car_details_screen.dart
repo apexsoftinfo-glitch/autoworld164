@@ -12,6 +12,7 @@ import '../models/car_model.dart';
 import 'car_form_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../presentation/cubit/car_form_cubit.dart';
+import '../utils/car_pdf_generator.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   final CarModel car;
@@ -119,7 +120,7 @@ class CarDetailsScreen extends StatelessWidget {
                     
                     const SizedBox(height: 48),
                     
-                    _EditButton(car: car),
+                    _ActionButtons(car: car, supabase: supabase),
                   ],
                 ),
               ),
@@ -319,38 +320,83 @@ class _DetailItem extends StatelessWidget {
   }
 }
 
-class _EditButton extends StatelessWidget {
+class _ActionButtons extends StatelessWidget {
   final CarModel car;
-  const _EditButton({required this.car});
+  final SupabaseClient supabase;
+  const _ActionButtons({required this.car, required this.supabase});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 60,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Container(
+            height: 60,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: OutlinedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CarFormScreen(car: car)),
+              ),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.white24),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+              child: const Text(
+                'REDAGUJ DANE',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13),
+              ),
+            ),
           ),
-        ],
-      ),
-      child: OutlinedButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => CarFormScreen(car: car)),
         ),
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Colors.white24),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        const SizedBox(width: 12),
+        Container(
+          width: 80,
+          height: 60,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFFFD700).withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: OutlinedButton(
+            onPressed: () => CarPdfGenerator.generateAndShare(
+              car,
+              isPolish: isPolish,
+              supabase: supabase,
+            ),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: const Color(0xFFFFD700).withValues(alpha: 0.4)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              padding: EdgeInsets.zero,
+            ),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.picture_as_pdf, color: Color(0xFFFFD700), size: 20),
+                Text(
+                  'PDF',
+                  style: TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+                ),
+              ],
+            ),
+          ),
         ),
-        child: const Text(
-          'REDAGUJ DANE',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2),
-        ),
-      ),
+      ],
     );
   }
 }
