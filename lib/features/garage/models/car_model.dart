@@ -5,6 +5,7 @@ part 'car_model.g.dart';
 
 @freezed
 abstract class CarModel with _$CarModel {
+  const CarModel._();
   const factory CarModel({
     required String id,
     @JsonKey(name: 'user_id') required String userId,
@@ -22,4 +23,19 @@ abstract class CarModel with _$CarModel {
 
   factory CarModel.fromJson(Map<String, dynamic> json) =>
       _$CarModelFromJson(json);
+
+  String? get displayPhotoPath {
+    if (photoPaths.isNotEmpty) return photoPaths.first;
+    return photoPath;
+  }
+
+  List<String> get allPhotoPaths {
+    final paths = <String>[...photoPaths];
+    if (photoPath != null && !paths.contains(photoPath)) {
+      paths.insert(0, photoPath!);
+    }
+    return paths;
+  }
 }
+
+

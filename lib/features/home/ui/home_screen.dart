@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
-
+import '../../news/ui/news_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
@@ -145,8 +145,11 @@ class _HomeScreenView extends StatelessWidget {
                         _VIPCard(
                           label: 'NOWOŚCI',
                           icon: Icons.new_releases,
-                          color: Colors.white70,
-                          onTap: () => _showComingSoon(context, 'Nowości'),
+                          color: const Color(0xFFFFD700),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const NewsScreen()),
+                          ),
                         ),
                         _VIPCard(
                           label: 'HOT HUNT',
@@ -164,82 +167,6 @@ class _HomeScreenView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    // Collection Stats Section
-                    BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
-                      builder: (context, state) {
-                        return state.maybeWhen(
-                          data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) {
-                            if (stats.isEmpty) return const SizedBox.shrink();
-
-                            final sortedStats = stats.entries.toList()
-                              ..sort((a, b) => b.value.compareTo(a.value));
-                            final topStats = sortedStats.take(3).toList();
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'STATYSTYKI MARKI',
-                                  style: TextStyle(
-                                    color: Colors.white24,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                _GlassBox(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    children: [
-                                      for (int i = 0; i < topStats.length; i++) ...[
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '${i + 1}.',
-                                              style: const TextStyle(
-                                                color: Color(0xFFFFD700),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 12),
-                                            Expanded(
-                                              child: Text(
-                                                topStats[i].key.toUpperCase(),
-                                                style: const TextStyle(
-                                                  color: Colors.white70,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12,
-                                                  letterSpacing: 0.5,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              '${topStats[i].value} szt.',
-                                              style: const TextStyle(
-                                                color: Colors.white38,
-                                                fontSize: 11,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (i < topStats.length - 1)
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 12),
-                                            child: Divider(color: Colors.white10, height: 1),
-                                          ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                          orElse: () => const SizedBox.shrink(),
-                        );
-                      },
-                    ),
                     const SizedBox(height: 140),
                   ],
                 ),

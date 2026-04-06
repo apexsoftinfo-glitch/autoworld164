@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import '../../../core/di/injection.dart';
 import '../models/car_model.dart';
 import 'car_form_screen.dart';
@@ -79,7 +81,7 @@ class CarDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _HeroImage(car: car, supabase: supabase),
+                    _PhotoGallery(car: car, supabase: supabase),
                     const SizedBox(height: 32),
                     Text(
                       car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
@@ -126,18 +128,84 @@ class CarDetailsScreen extends StatelessWidget {
   }
 }
 
-class _HeroImage extends StatelessWidget {
+class _PhotoGallery extends StatefulWidget {
   final CarModel car;
   final SupabaseClient supabase;
 
-  const _HeroImage({required this.car, required this.supabase});
+  const _PhotoGallery({required this.car, required this.supabase});
+
+  @override
+  State<_PhotoGallery> createState() => _PhotoGalleryState();
+}
+
+class _PhotoGalleryState extends State<_PhotoGallery> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final photoUrl = car.photoPath != null 
-      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
-      : null;
+    final photoPaths = widget.car.allPhotoPaths;
+    
+    if (photoPaths.isEmpty) {
+      return const _HeroContainer(child: _Placeholder());
+    }
 
+    return Stack(
+      children: [
+        _HeroContainer(
+          child: PhotoViewGallery.builder(
+            itemCount: photoPaths.length,
+            builder: (context, index) {
+              final url = widget.supabase.storage
+                  .from('autoworld_photos')
+                  .getPublicUrl(photoPaths[index]);
+              return PhotoViewGalleryPageOptions(
+                imageProvider: NetworkImage(url),
+                initialScale: PhotoViewComputedScale.covered,
+                minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.covered * 2,
+              );
+            },
+            onPageChanged: (index) => setState(() => _currentIndex = index),
+            backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+            scrollPhysics: const BouncingScrollPhysics(),
+            loadingBuilder: (context, event) => const Center(
+              child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+            ),
+          ),
+        ),
+        if (photoPaths.length > 1)
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: photoPaths.asMap().entries.map((entry) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentIndex == entry.key
+                        ? const Color(0xFFFFD700)
+                        : Colors.white.withValues(alpha: 0.3),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _HeroContainer extends StatelessWidget {
+  final Widget child;
+  const _HeroContainer({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 300,
       width: double.infinity,
@@ -153,13 +221,7 @@ class _HeroImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(32),
-        child: photoUrl != null
-            ? Image.network(
-                photoUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const _Placeholder(),
-              )
-            : const _Placeholder(),
+        child: child,
       ),
     );
   }

@@ -514,4 +514,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get galleryButtonLabel => 'Galeria';
+
+  @override
+  String get newsTitle => 'Nowości';
+
+  @override
+  String get errorLoadingNews =>
+      'Nie udało się wczytać nowości ze świata 1/64.';
 }

@@ -44,6 +44,8 @@ import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.d
     as _i182;
 import 'package:myapp/features/garage/presentation/cubit/search_photos_cubit.dart'
     as _i537;
+import 'package:myapp/features/news/data/news_repository.dart' as _i897;
+import 'package:myapp/features/news/presentation/news_cubit.dart' as _i11;
 import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
     as _i381;
 import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart'
@@ -70,6 +72,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
+    gh.lazySingleton<_i897.NewsDataSource>(
+      () => _i897.NewsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i138.SubscriptionDataSource>(
       () => _i138.FakeSubscriptionDataSource(),
     );
@@ -79,6 +84,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i491.CarsDataSource>(
       () => _i491.CarsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i897.NewsRepository>(
+      () => _i897.NewsRepositoryImpl(gh<_i897.NewsDataSource>()),
     );
     gh.lazySingleton<_i634.AppLocaleDataSource>(
       () => _i634.SharedPreferencesAppLocaleDataSource(
@@ -90,6 +98,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i538.AuthDataSource>(
       () => _i538.SupabaseAuthDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i11.NewsCubit>(
+      () => _i11.NewsCubit(gh<_i897.NewsRepository>()),
     );
     gh.lazySingleton<_i910.AppLocaleRepository>(
       () => _i910.AppLocaleRepositoryImpl(gh<_i634.AppLocaleDataSource>()),

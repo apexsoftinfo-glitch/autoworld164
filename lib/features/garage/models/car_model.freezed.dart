@@ -219,8 +219,8 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 /// @nodoc
 @JsonSerializable()
 
-class _CarModel implements CarModel {
-  const _CarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, @JsonKey(name: 'purchase_date') this.purchaseDate, @JsonKey(name: 'purchase_price') this.purchasePrice = 0.0, @JsonKey(name: 'estimated_value') this.estimatedValue = 0.0, @JsonKey(name: 'photo_path') this.photoPath, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths;
+class _CarModel extends CarModel {
+  const _CarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, @JsonKey(name: 'purchase_date') this.purchaseDate, @JsonKey(name: 'purchase_price') this.purchasePrice = 0.0, @JsonKey(name: 'estimated_value') this.estimatedValue = 0.0, @JsonKey(name: 'photo_path') this.photoPath, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths,super._();
   factory _CarModel.fromJson(Map<String, dynamic> json) => _$CarModelFromJson(json);
 
 @override final  String id;

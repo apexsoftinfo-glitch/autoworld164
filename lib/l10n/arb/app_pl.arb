@@ -196,5 +196,7 @@
   "carAiEstimateLabel": "Wycena AI",
   "carFormAddPhotoPlaceholder": "Dodaj do 5 zdjęć",
   "cameraButtonLabel": "Aparat",
-  "galleryButtonLabel": "Galeria"
+  "galleryButtonLabel": "Galeria",
+  "newsTitle": "Nowości",
+  "errorLoadingNews": "Nie udało się wczytać nowości ze świata 1/64."
 }

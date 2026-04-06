@@ -1015,6 +1015,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Galeria'**
   String get galleryButtonLabel;
+
+  /// No description provided for @newsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowości'**
+  String get newsTitle;
+
+  /// No description provided for @errorLoadingNews.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się wczytać nowości ze świata 1/64.'**
+  String get errorLoadingNews;
 }
 
 class _AppLocalizationsDelegate

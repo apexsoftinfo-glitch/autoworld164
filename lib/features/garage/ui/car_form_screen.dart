@@ -93,20 +93,35 @@ class _CarFormScreenState extends State<CarFormScreen> {
 
   Future<void> _pickImage(ImageSource source) async {
     final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
-    if (total >= 5) return;
+    if (total >= 5) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Maksymalnie 5 zdjęć')),
+      );
+      return;
+    }
     
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: source,
-      imageQuality: 80,
-    );
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(
+        source: source,
+        imageQuality: 80,
+      );
 
-    if (pickedFile != null) {
-      setState(() {
-        _newImages.add(File(pickedFile.path));
-      });
+      if (pickedFile != null) {
+        setState(() {
+          _newImages.add(File(pickedFile.path));
+        });
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Błąd podczas otwierania galerii/aparatu: $e')),
+        );
+      }
     }
   }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -501,40 +516,205 @@ class _ProducerInput extends StatelessWidget {
     required this.onChanged,
   });
 
+  static const _producers = [
+    ('Hot Wheels', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Hot_Wheels_logo.svg/512px-Hot_Wheels_logo.svg.png'),
+    ('Matchbox', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Matchbox_Logo.svg/512px-Matchbox_Logo.svg.png'),
+    ('Majorette', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Majorette_logo.svg/512px-Majorette_logo.svg.png'),
+    ('Mini GT', 'https://minigt.com/assets/images/logo.png'),
+    ('Tomica', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Tomica_logo.svg/512px-Tomica_logo.svg.png'),
+    ('Maisto', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Maisto_logo.svg/512px-Maisto_logo.svg.png'),
+    ('Jada', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Jada_Toys_logo.svg/512px-Jada_Toys_logo.svg.png'),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final producer = controller.text.toLowerCase();
-    Widget? logo;
-    
-    if (producer.contains('hot wheels') || producer.contains('hotwheels')) {
-      logo = const Icon(Icons.local_fire_department, color: Colors.orange, size: 20); // Simplified logo for demo
-    } else if (producer.contains('matchbox')) {
-      logo = const Icon(Icons.square, color: Colors.blueAccent, size: 16);
-    }
-
-    return _GlassInput(
-      controller: controller,
-      label: label,
-      onChanged: onChanged,
-      suffix: logo != null ? Container(
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.black26, 
-          borderRadius: BorderRadius.circular(8),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 12),
+          child: Text(
+            label.toUpperCase(),
+            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+          ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        SizedBox(
+          height: 60,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            itemCount: _producers.length + 1,
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              if (index == _producers.length) {
+                return _InnyProducerBox(
+                  controller: controller,
+                  onChanged: onChanged,
+                );
+              }
+
+              final p = _producers[index];
+              final isSelected = controller.text == p.$1;
+
+              return _ProducerLogoBox(
+                logoUrl: p.$2,
+                name: p.$1,
+                isSelected: isSelected,
+                onTap: () {
+                  controller.text = p.$1;
+                  onChanged(p.$1);
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ProducerLogoBox extends StatelessWidget {
+  final String logoUrl;
+  final String name;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ProducerLogoBox({
+    required this.logoUrl,
+    required this.name,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 80,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: logoUrl.endsWith('.png') || logoUrl.endsWith('.jpg')
+            ? Image.network(
+                logoUrl,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => _FallbackText(name: name),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white24)));
+                },
+              )
+            : _FallbackText(name: name),
+      ),
+    );
+  }
+}
+
+class _FallbackText extends StatelessWidget {
+  final String name;
+  const _FallbackText({required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        name.toUpperCase(),
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.white70, fontSize: 8, fontWeight: FontWeight.w900),
+      ),
+    );
+  }
+}
+
+class _InnyProducerBox extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const _InnyProducerBox({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    final isCustom = !['Hot Wheels', 'Matchbox', 'Majorette', 'Mini GT', 'Tomica', 'Maisto', 'Jada'].contains(controller.text) && controller.text.isNotEmpty;
+
+    return GestureDetector(
+      onTap: () async {
+        final result = await _showCustomProducerDialog(context, controller.text);
+        if (result != null) {
+          controller.text = result;
+          onChanged(result);
+        }
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 80,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isCustom ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isCustom ? const Color(0xFFFFD700) : Colors.white12,
+            width: isCustom ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            logo,
-            const SizedBox(width: 4),
+            Icon(Icons.more_horiz, color: isCustom ? const Color(0xFFFFD700) : Colors.white38),
+            const SizedBox(height: 2),
             Text(
-              producer.toUpperCase(), 
-              style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+              isCustom ? controller.text.toUpperCase() : 'INNY',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: isCustom ? Colors.white : Colors.white38,
+                fontSize: 8,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ],
         ),
-      ) : null,
+      ),
+    );
+  }
+
+  Future<String?> _showCustomProducerDialog(BuildContext context, String current) async {
+    final textController = TextEditingController(text: current);
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A120B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
+        title: const Text('PODAJ PRODUCENTA', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+        content: TextField(
+          controller: textController,
+          autofocus: true,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(
+            hintText: 'np. Inno64',
+            hintStyle: TextStyle(color: Colors.white24),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ANULUJ', style: TextStyle(color: Colors.white38)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, textController.text),
+            child: const Text('ZAPISZ', style: TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -573,7 +753,6 @@ class _SeriesAutocomplete extends StatelessWidget {
             return _GlassInputBase(
               controller: controller,
               focusNode: focusNode,
-              onChanged: (v) {},
             );
           },
           optionsViewBuilder: (context, onSelected, options) {
@@ -668,7 +847,6 @@ class _GlassInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Widget? suffix;
-  final ValueChanged<String>? onChanged;
 
   const _GlassInput({
     required this.controller,
@@ -677,7 +855,6 @@ class _GlassInput extends StatelessWidget {
     this.keyboardType,
     this.validator,
     this.suffix,
-    this.onChanged,
   });
 
   @override
@@ -698,7 +875,6 @@ class _GlassInput extends StatelessWidget {
           keyboardType: keyboardType,
           validator: validator,
           suffix: suffix,
-          onChanged: onChanged,
         ),
       ],
     );
@@ -712,7 +888,6 @@ class _GlassInputBase extends StatelessWidget {
   final String? Function(String?)? validator;
   final Widget? suffix;
   final FocusNode? focusNode;
-  final ValueChanged<String>? onChanged;
 
   const _GlassInputBase({
     required this.controller,
@@ -721,7 +896,6 @@ class _GlassInputBase extends StatelessWidget {
     this.validator,
     this.suffix,
     this.focusNode,
-    this.onChanged,
   });
 
   @override
@@ -735,7 +909,6 @@ class _GlassInputBase extends StatelessWidget {
           focusNode: focusNode,
           keyboardType: keyboardType,
           validator: validator,
-          onChanged: onChanged,
           style: const TextStyle(color: Colors.white, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,

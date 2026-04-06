@@ -118,6 +118,7 @@ class _GarageScreenView extends StatelessWidget {
                             },
                           ),
                     ),
+                    const _BottomAddButton(),
                   ],
                 );
               },
@@ -142,6 +143,8 @@ class _GarageSummaryHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+    
     final valueStr = totalValue >= 1000 
       ? '${(totalValue / 1000).toStringAsFixed(1)}K' 
       : totalValue.toStringAsFixed(0);
@@ -161,7 +164,7 @@ class _GarageSummaryHeader extends StatelessWidget {
           ),
           _Stat(
             label: l10n.garageTotalValue.toUpperCase(),
-            value: '\$$valueStr',
+            value: isPolish ? '$valueStr PLN' : '\$$valueStr',
             valueColor: const Color(0xFFFFD700),
           ),
         ],
@@ -211,8 +214,8 @@ class _CarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final supabase = getIt<SupabaseClient>();
-    final photoUrl = car.photoPath != null 
-      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
+    final photoUrl = car.displayPhotoPath != null 
+      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.displayPhotoPath!)
       : null;
 
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
@@ -254,7 +257,7 @@ class _CarCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            car.brand.toUpperCase(),
+                            (car.toyMaker ?? 'PRODUCENT').toUpperCase(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -265,7 +268,7 @@ class _CarCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            car.modelName,
+                            '${car.brand} ${car.modelName}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -454,8 +457,8 @@ class _CarListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final supabase = getIt<SupabaseClient>();
-    final photoUrl = car.photoPath != null 
-      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.photoPath!)
+    final photoUrl = car.displayPhotoPath != null 
+      ? supabase.storage.from('autoworld_photos').getPublicUrl(car.displayPhotoPath!)
       : null;
 
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
@@ -490,11 +493,11 @@ class _CarListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    car.brand.toUpperCase(),
+                    (car.toyMaker ?? 'PRODUCENT').toUpperCase(),
                     style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
                   ),
                   Text(
-                    car.modelName,
+                    '${car.brand} ${car.modelName}',
                     style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w300),
                   ),
                   if (car.series != null)
@@ -510,6 +513,46 @@ class _CarListTile extends StatelessWidget {
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomAddButton extends StatelessWidget {
+  const _BottomAddButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+      child: Container(
+        width: double.infinity,
+        height: 56,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: FilledButton.icon(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const CarFormScreen()),
+          ),
+          style: FilledButton.styleFrom(
+            backgroundColor: const Color(0xFFFFD700),
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+          icon: const Icon(Icons.add),
+          label: const Text(
+            'DODAJ NOWY MODEL',
+            style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
+          ),
         ),
       ),
     );
