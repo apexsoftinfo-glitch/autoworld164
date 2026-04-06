@@ -8,13 +8,13 @@ Ten dokument zawiera gotowe dane ASO oraz techniczne informacje potrzebne do pub
 
 - **App Name**: AutoWorld164
 - **Bundle ID**: com.anatolkaramanyan.autoworld
-- **Support Email**: 🛑 [TODO: UZUPEŁNIJ]
-- **Privacy Policy URL**: 🛑 [TODO: UZUPEŁNIJ]
-- **Delete Account URL**: 🛑 [TODO: UZUPEŁNIJ]
+- **Support Email**: apex.soft.info@gmail.com
+- **Privacy Policy URL**: https://twelveappschallenge-platform.web.app/legal/eb984589-f6a7-4fcb-8f86-727cb6940105/privacy-policy
+- **Delete Account URL**: https://twelveappschallenge-platform.web.app/legal/eb984589-f6a7-4fcb-8f86-727cb6940105/delete-account
 - **Konto Testowe (dla recenzentów)**:
-  - **Email**: 🛑 [TODO: UZUPEŁNIJ]
-  - **Hasło**: 🛑 [TODO: UZUPEŁNIJ]
-  - **Notes**: 🛑 [TODO: UZUPEŁNIJ]
+  - **Email**: -
+  - **Hasło**: -
+  - **Notes**: Aplikacja posiada tryb gościa (Guest Mode). Weryfikacja nie wymaga podawania danych logowania.
 
 ---
 
@@ -38,7 +38,7 @@ Key Features:
 Take control of your passion. Download AutoWorld164 and turn your collection into a professional portfolio.
 ---
 - **Keywords**: 1/64,diecast,hotwheels,collection,tracker,value,portfolio,matchbox,majorette,limit,garage,toy,rarity
-- **Copyright**: 🛑 [TODO: UZUPEŁNIJ]
+- **Copyright**: 2026 Anatol Karamanyan
 
 ### Teksty Android (Google Play) - ENGLISH
 - **Nazwa aplikacji**: AutoWorld164: Diecast Tracker
