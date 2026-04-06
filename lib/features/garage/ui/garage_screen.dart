@@ -590,7 +590,14 @@ class _GlassBox extends StatelessWidget {
           child: Container(
             padding: padding,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.white.withValues(alpha: 0.1),
+                  Colors.white.withValues(alpha: 0.01),
+                ],
+              ),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: borderColor ?? Colors.white.withValues(alpha: 0.1),
