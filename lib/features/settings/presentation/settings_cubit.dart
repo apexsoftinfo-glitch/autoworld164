@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import '../../../shared/error_messages.dart';
 import '../../auth/data/repositories/auth_repository.dart';
 import '../../profiles/data/repositories/shared_user_repository.dart';
 import '../../profiles/models/shared_user_model.dart';
@@ -186,13 +187,13 @@ class SettingsCubit extends Cubit<SettingsState> {
         email: email,
         password: password,
       );
-      // After upgrade, auth state will change, _watchAuth will update isGuest.
-      // The userId remains the same, so no need to re-init everything.
+      // Wait a bit for the auth change to propagate
+      await Future.delayed(const Duration(milliseconds: 500));
       emit(const Success(messageKey: 'account_upgraded_successfully'));
       emit(currentState.copyWith(isGuest: false));
     } catch (e) {
       debugPrint('Error upgrading account: $e');
-      emit(const Error(errorKey: 'error_upgrading_account'));
+      emit(Error(errorKey: mapErrorToKey(e)));
       emit(currentState);
     }
   }

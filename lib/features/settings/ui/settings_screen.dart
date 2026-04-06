@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
+import '../../../shared/error_messages.dart';
 import '../../profiles/models/shared_user_model.dart';
 import '../models/settings_model.dart';
 import '../presentation/settings_cubit.dart';
@@ -81,9 +82,7 @@ class _SettingsView extends StatelessWidget {
                 );
               }
               if (state is Error && state.errorKey != null) {
-                final error = state.errorKey == 'error_upgrading_account'
-                  ? l10n.error_upgrading_account
-                  : l10n.errorUnknown;
+                final error = messageForErrorKey(l10n, state.errorKey);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(error), backgroundColor: Colors.red),
                 );
@@ -97,7 +96,7 @@ class _SettingsView extends StatelessWidget {
                     ),
                   Error(errorKey: final key) => Center(
                       child: Text(
-                        key ?? l10n.errorUnknown,
+                        messageForErrorKey(l10n, key),
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
@@ -390,6 +389,7 @@ class _ProfileSectionState extends State<_ProfileSection> {
             label: l10n.settingsEmailLabel,
             icon: Icons.email_outlined,
             controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
             onChanged: (val) {},
           ),
           const SizedBox(height: 16),
@@ -397,6 +397,7 @@ class _ProfileSectionState extends State<_ProfileSection> {
             label: l10n.settingsPasswordLabel,
             icon: Icons.lock_outline,
             controller: _passwordController,
+            obscureText: true,
             onChanged: (val) {},
           ),
           const SizedBox(height: 24),
@@ -450,12 +451,16 @@ class _SettingsTextField extends StatelessWidget {
   final IconData icon;
   final TextEditingController controller;
   final Function(String) onChanged;
+  final bool obscureText;
+  final TextInputType? keyboardType;
 
   const _SettingsTextField({
     required this.label,
     required this.icon,
     required this.controller,
     required this.onChanged,
+    this.obscureText = false,
+    this.keyboardType,
   });
 
   @override
@@ -478,6 +483,8 @@ class _SettingsTextField extends StatelessWidget {
         TextField(
           controller: controller,
           onChanged: onChanged,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: Colors.white38, size: 18),
