@@ -9,12 +9,16 @@ import 'package:myapp/features/profiles/data/repositories/shared_user_repository
 import 'package:myapp/features/profiles/models/shared_user_model.dart';
 import 'package:myapp/features/subscription/data/repositories/subscription_repository.dart';
 import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
+import 'package:myapp/features/news/data/news_repository.dart';
+import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart';
 
 import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 class MockCarsRepository extends Mock implements CarsRepository {}
 class MockCarsCollectionCubit extends Mock implements CarsCollectionCubit {}
+class MockNewsRepository extends Mock implements NewsRepository {}
+class MockHuntingRepository extends Mock implements HuntingRepository {}
 
 
 class MockSharedUserRepository extends Mock implements SharedUserRepository {}
