@@ -194,10 +194,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: const AssetImage('assets/images/warm_garage.png'),
+                        image: AssetImage(
+                          isEditing ? 'assets/images/warm_garage.png' : 'assets/images/add_model_bg.png',
+                        ),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                          const Color(0xFF2D1B0D).withValues(alpha: 0.7),
+                          const Color(0xFF2D1B0D).withValues(alpha: isEditing ? 0.7 : 0.4),
                           BlendMode.darken,
                         ),
                       ),
