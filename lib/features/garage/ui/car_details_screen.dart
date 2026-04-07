@@ -69,14 +69,15 @@ class CarDetailsScreen extends StatelessWidget {
           body: Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: const AssetImage('assets/images/warm_garage.png'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  const Color(0xFF2D1B0D).withValues(alpha: 0.6),
-                  BlendMode.darken,
-                ),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF0C0C0C), // Deep black
+                  Color(0xFF2D1B0D), // Warm garage dark brown
+                  Color(0xFF0C0C0C), // Deep black at bottom
+                ],
               ),
             ),
             child: SafeArea(
