@@ -11,16 +11,10 @@ part 'car_form_cubit.freezed.dart';
 
 @freezed
 sealed class CarFormState with _$CarFormState {
-  const factory CarFormState.initial({
-    @Default([]) List<String> availableSeries,
-  }) = CarFormInitial;
-  const factory CarFormState.loading({
-    @Default([]) List<String> availableSeries,
-  }) = CarFormLoading;
+  const factory CarFormState.initial() = CarFormInitial;
+  const factory CarFormState.loading() = CarFormLoading;
   const factory CarFormState.success() = CarFormSuccess;
-  const factory CarFormState.error(String errorKey, {
-    @Default([]) List<String> availableSeries,
-  }) = CarFormError;
+  const factory CarFormState.error(String errorKey) = CarFormError;
 }
 
 @injectable
@@ -30,12 +24,7 @@ class CarFormCubit extends Cubit<CarFormState> {
   final CarsRepository _carsRepository;
 
   Future<void> loadInitialData() async {
-    try {
-      final series = await _carsRepository.getSeries();
-      emit(CarFormState.initial(availableSeries: series));
-    } catch (e) {
-      debugPrint('CarFormCubit loadInitialData error: $e');
-    }
+    emit(const CarFormState.initial());
   }
 
   Future<double?> estimateValue(String query) async {
@@ -61,13 +50,7 @@ class CarFormCubit extends Cubit<CarFormState> {
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
-    final currentSeries = state.maybeWhen(
-      initial: (s) => s,
-      loading: (s) => s,
-      error: (ek, s) => s,
-      orElse: () => <String>[],
-    );
-    emit(CarFormState.loading(availableSeries: currentSeries));
+    emit(const CarFormState.loading());
     try {
       if (existingCar != null) {
         await _carsRepository.editCar(
@@ -101,21 +84,12 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit saveCar error: $e\n$stack');
-      emit(CarFormState.error('errorUnknown', availableSeries: state.maybeWhen(
-        loading: (s) => s,
-        orElse: () => <String>[],
-      )));
+      emit(const CarFormState.error('errorUnknown'));
     }
   }
 
   Future<void> deleteCar(String carId) async {
-    final currentSeries = state.maybeWhen(
-      initial: (s) => s,
-      loading: (s) => s,
-      error: (ek, s) => s,
-      orElse: () => <String>[],
-    );
-    emit(CarFormState.loading(availableSeries: currentSeries));
+    emit(const CarFormState.loading());
     try {
       final cars = await _carsRepository.carsStream.first;
       final car = cars.firstWhere((c) => c.id == carId);
@@ -123,7 +97,7 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit deleteCar error: $e\n$stack');
-      emit(CarFormState.error('errorUnknown', availableSeries: currentSeries));
+      emit(const CarFormState.error('errorUnknown'));
     }
   }
 }

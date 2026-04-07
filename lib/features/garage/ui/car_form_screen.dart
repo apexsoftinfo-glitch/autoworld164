@@ -168,7 +168,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
         child: BlocBuilder<CarFormCubit, CarFormState>(
           builder: (context, state) {
             final isLoading = state is CarFormLoading;
-            final availableSeries = state is CarFormInitial ? state.availableSeries : <String>[];
 
             return Stack(
               children: [
@@ -241,10 +240,10 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              _SeriesAutocomplete(
+                              _SeriesSelector(
                                 controller: _seriesController,
                                 label: l10n.carSeriesLabel,
-                                options: availableSeries,
+                                onChanged: (v) => setState(() {}),
                               ),
                               const SizedBox(height: 16),
 
@@ -724,74 +723,90 @@ class _InnyProducerBox extends StatelessWidget {
     );
   }
 }
-
-class _SeriesAutocomplete extends StatelessWidget {
+class _SeriesSelector extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final List<String> options;
+  final ValueChanged<String> onChanged;
 
-  const _SeriesAutocomplete({
+  const _SeriesSelector({
     required this.controller,
     required this.label,
-    required this.options,
+    required this.onChanged,
   });
+
+  static const _fixedOptions = [
+    'Main',
+    'Premium',
+    'Boulevard',
+    'TH',
+    'STH',
+    'RLC',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(
-            label.toUpperCase(),
-            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+    final current = controller.text;
+    final isCustom = current.isNotEmpty && !_fixedOptions.contains(current);
+    
+    // Create list of items for dropdown
+    final List<String> items = List.from(_fixedOptions);
+    if (isCustom) {
+      items.add(current);
+    }
+    items.add('Inne...');
+
+    return _GlassDropdown<String>(
+      label: label,
+      value: isCustom ? current : (current.isEmpty ? null : current),
+      items: items.map((s) => DropdownMenuItem(
+        value: s,
+        child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+      )).toList(),
+      onChanged: (val) async {
+        if (val == 'Inne...') {
+          final result = await _showCustomSeriesDialog(context, isCustom ? current : '');
+          if (result != null && result.isNotEmpty) {
+            controller.text = result;
+            onChanged(result);
+          }
+        } else if (val != null) {
+          controller.text = val;
+          onChanged(val);
+        }
+      },
+    );
+  }
+
+  Future<String?> _showCustomSeriesDialog(BuildContext context, String current) async {
+    final textController = TextEditingController(text: current);
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A120B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
+        title: const Text('PODAJ NAZWĘ SERII', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+        content: TextField(
+          controller: textController,
+          autofocus: true,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(
+            hintText: 'np. Team Transport',
+            hintStyle: TextStyle(color: Colors.white24),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
           ),
         ),
-        Autocomplete<String>(
-          optionsBuilder: (textEditingValue) {
-            if (textEditingValue.text.isEmpty) return const Iterable<String>.empty();
-            return options.where((o) => o.toLowerCase().contains(textEditingValue.text.toLowerCase()));
-          },
-          onSelected: (selection) => controller.text = selection,
-          fieldViewBuilder: (context, textController, focusNode, onFieldSubmitted) {
-            // Sync with parent controller if needed, but here parent provides controller
-            return _GlassInputBase(
-              controller: controller,
-              focusNode: focusNode,
-            );
-          },
-          optionsViewBuilder: (context, onSelected, options) {
-            return Align(
-              alignment: Alignment.topLeft,
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  width: MediaQuery.of(context).size.width - 48,
-                  margin: const EdgeInsets.only(top: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2D1B0D),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white12),
-                  ),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: options.length,
-                    itemBuilder: (context, i) {
-                      final option = options.elementAt(i);
-                      return ListTile(
-                        title: Text(option, style: const TextStyle(color: Colors.white70, fontSize: 13)),
-                        onTap: () => onSelected(option),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ],
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ANULUJ', style: TextStyle(color: Colors.white38)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, textController.text),
+            child: const Text('ZAPISZ', style: TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -817,45 +832,64 @@ class _StatusInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _GlassDropdown<String>(
+      label: label,
+      value: selectedStatus,
+      items: _options.map((s) => DropdownMenuItem(
+        value: s,
+        child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+      )).toList(),
+      onChanged: (val) {
+        if (val != null) onChanged(val);
+      },
+    );
+  }
+}
+
+class _GlassDropdown<T> extends StatelessWidget {
+  final String label;
+  final T? value;
+  final List<DropdownMenuItem<T>> items;
+  final ValueChanged<T?> onChanged;
+
+  const _GlassDropdown({
+    required this.label,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 12),
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
           child: Text(
             label.toUpperCase(),
             style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _options.map((opt) {
-            final isSelected = selectedStatus == opt;
-            return GestureDetector(
-              onTap: () => onChanged(opt),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
-                    width: isSelected ? 2 : 1,
-                  ),
-                ),
-                child: Text(
-                  opt.toUpperCase(),
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.white60,
-                    fontSize: 10,
-                    fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<T>(
+              value: value,
+              items: items,
+              onChanged: onChanged,
+              dropdownColor: const Color(0xFF2D1B0D),
+              borderRadius: BorderRadius.circular(16),
+              icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xFFFFD700)),
+              isExpanded: true,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+          ),
         ),
       ],
     );

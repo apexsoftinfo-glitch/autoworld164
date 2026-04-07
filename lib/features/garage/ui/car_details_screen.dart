@@ -43,7 +43,7 @@ class CarDetailsScreen extends StatelessWidget {
                 ),
               );
             },
-            error: (key, _) {
+            error: (key) {
                ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(key),

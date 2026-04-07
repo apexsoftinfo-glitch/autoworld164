@@ -131,13 +131,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<String> availableSeries)?  initial,TResult Function( List<String> availableSeries)?  loading,TResult Function()?  success,TResult Function( String errorKey,  List<String> availableSeries)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String errorKey)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CarFormInitial() when initial != null:
-return initial(_that.availableSeries);case CarFormLoading() when loading != null:
-return loading(_that.availableSeries);case CarFormSuccess() when success != null:
+return initial();case CarFormLoading() when loading != null:
+return loading();case CarFormSuccess() when success != null:
 return success();case CarFormError() when error != null:
-return error(_that.errorKey,_that.availableSeries);case _:
+return error(_that.errorKey);case _:
   return orElse();
 
 }
@@ -155,13 +155,13 @@ return error(_that.errorKey,_that.availableSeries);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<String> availableSeries)  initial,required TResult Function( List<String> availableSeries)  loading,required TResult Function()  success,required TResult Function( String errorKey,  List<String> availableSeries)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String errorKey)  error,}) {final _that = this;
 switch (_that) {
 case CarFormInitial():
-return initial(_that.availableSeries);case CarFormLoading():
-return loading(_that.availableSeries);case CarFormSuccess():
+return initial();case CarFormLoading():
+return loading();case CarFormSuccess():
 return success();case CarFormError():
-return error(_that.errorKey,_that.availableSeries);}
+return error(_that.errorKey);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -175,13 +175,13 @@ return error(_that.errorKey,_that.availableSeries);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<String> availableSeries)?  initial,TResult? Function( List<String> availableSeries)?  loading,TResult? Function()?  success,TResult? Function( String errorKey,  List<String> availableSeries)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String errorKey)?  error,}) {final _that = this;
 switch (_that) {
 case CarFormInitial() when initial != null:
-return initial(_that.availableSeries);case CarFormLoading() when loading != null:
-return loading(_that.availableSeries);case CarFormSuccess() when success != null:
+return initial();case CarFormLoading() when loading != null:
+return loading();case CarFormSuccess() when success != null:
 return success();case CarFormError() when error != null:
-return error(_that.errorKey,_that.availableSeries);case _:
+return error(_that.errorKey);case _:
   return null;
 
 }
@@ -193,157 +193,77 @@ return error(_that.errorKey,_that.availableSeries);case _:
 
 
 class CarFormInitial with DiagnosticableTreeMixin implements CarFormState {
-  const CarFormInitial({final  List<String> availableSeries = const []}): _availableSeries = availableSeries;
+  const CarFormInitial();
   
 
- final  List<String> _availableSeries;
-@JsonKey() List<String> get availableSeries {
-  if (_availableSeries is EqualUnmodifiableListView) return _availableSeries;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_availableSeries);
-}
 
 
-/// Create a copy of CarFormState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CarFormInitialCopyWith<CarFormInitial> get copyWith => _$CarFormInitialCopyWithImpl<CarFormInitial>(this, _$identity);
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CarFormState.initial'))
-    ..add(DiagnosticsProperty('availableSeries', availableSeries));
+    ;
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormInitial&&const DeepCollectionEquality().equals(other._availableSeries, _availableSeries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormInitial);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_availableSeries));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CarFormState.initial(availableSeries: $availableSeries)';
+  return 'CarFormState.initial()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $CarFormInitialCopyWith<$Res> implements $CarFormStateCopyWith<$Res> {
-  factory $CarFormInitialCopyWith(CarFormInitial value, $Res Function(CarFormInitial) _then) = _$CarFormInitialCopyWithImpl;
-@useResult
-$Res call({
- List<String> availableSeries
-});
 
 
-
-
-}
-/// @nodoc
-class _$CarFormInitialCopyWithImpl<$Res>
-    implements $CarFormInitialCopyWith<$Res> {
-  _$CarFormInitialCopyWithImpl(this._self, this._then);
-
-  final CarFormInitial _self;
-  final $Res Function(CarFormInitial) _then;
-
-/// Create a copy of CarFormState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? availableSeries = null,}) {
-  return _then(CarFormInitial(
-availableSeries: null == availableSeries ? _self._availableSeries : availableSeries // ignore: cast_nullable_to_non_nullable
-as List<String>,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
 
 class CarFormLoading with DiagnosticableTreeMixin implements CarFormState {
-  const CarFormLoading({final  List<String> availableSeries = const []}): _availableSeries = availableSeries;
+  const CarFormLoading();
   
 
- final  List<String> _availableSeries;
-@JsonKey() List<String> get availableSeries {
-  if (_availableSeries is EqualUnmodifiableListView) return _availableSeries;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_availableSeries);
-}
 
 
-/// Create a copy of CarFormState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CarFormLoadingCopyWith<CarFormLoading> get copyWith => _$CarFormLoadingCopyWithImpl<CarFormLoading>(this, _$identity);
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CarFormState.loading'))
-    ..add(DiagnosticsProperty('availableSeries', availableSeries));
+    ;
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormLoading&&const DeepCollectionEquality().equals(other._availableSeries, _availableSeries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormLoading);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_availableSeries));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CarFormState.loading(availableSeries: $availableSeries)';
+  return 'CarFormState.loading()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $CarFormLoadingCopyWith<$Res> implements $CarFormStateCopyWith<$Res> {
-  factory $CarFormLoadingCopyWith(CarFormLoading value, $Res Function(CarFormLoading) _then) = _$CarFormLoadingCopyWithImpl;
-@useResult
-$Res call({
- List<String> availableSeries
-});
 
 
-
-
-}
-/// @nodoc
-class _$CarFormLoadingCopyWithImpl<$Res>
-    implements $CarFormLoadingCopyWith<$Res> {
-  _$CarFormLoadingCopyWithImpl(this._self, this._then);
-
-  final CarFormLoading _self;
-  final $Res Function(CarFormLoading) _then;
-
-/// Create a copy of CarFormState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? availableSeries = null,}) {
-  return _then(CarFormLoading(
-availableSeries: null == availableSeries ? _self._availableSeries : availableSeries // ignore: cast_nullable_to_non_nullable
-as List<String>,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -387,17 +307,10 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 class CarFormError with DiagnosticableTreeMixin implements CarFormState {
-  const CarFormError(this.errorKey, {final  List<String> availableSeries = const []}): _availableSeries = availableSeries;
+  const CarFormError(this.errorKey);
   
 
  final  String errorKey;
- final  List<String> _availableSeries;
-@JsonKey() List<String> get availableSeries {
-  if (_availableSeries is EqualUnmodifiableListView) return _availableSeries;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_availableSeries);
-}
-
 
 /// Create a copy of CarFormState
 /// with the given fields replaced by the non-null parameter values.
@@ -410,21 +323,21 @@ $CarFormErrorCopyWith<CarFormError> get copyWith => _$CarFormErrorCopyWithImpl<C
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'CarFormState.error'))
-    ..add(DiagnosticsProperty('errorKey', errorKey))..add(DiagnosticsProperty('availableSeries', availableSeries));
+    ..add(DiagnosticsProperty('errorKey', errorKey));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormError&&(identical(other.errorKey, errorKey) || other.errorKey == errorKey)&&const DeepCollectionEquality().equals(other._availableSeries, _availableSeries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarFormError&&(identical(other.errorKey, errorKey) || other.errorKey == errorKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,errorKey,const DeepCollectionEquality().hash(_availableSeries));
+int get hashCode => Object.hash(runtimeType,errorKey);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'CarFormState.error(errorKey: $errorKey, availableSeries: $availableSeries)';
+  return 'CarFormState.error(errorKey: $errorKey)';
 }
 
 
@@ -435,7 +348,7 @@ abstract mixin class $CarFormErrorCopyWith<$Res> implements $CarFormStateCopyWit
   factory $CarFormErrorCopyWith(CarFormError value, $Res Function(CarFormError) _then) = _$CarFormErrorCopyWithImpl;
 @useResult
 $Res call({
- String errorKey, List<String> availableSeries
+ String errorKey
 });
 
 
@@ -452,11 +365,10 @@ class _$CarFormErrorCopyWithImpl<$Res>
 
 /// Create a copy of CarFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? errorKey = null,Object? availableSeries = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? errorKey = null,}) {
   return _then(CarFormError(
 null == errorKey ? _self.errorKey : errorKey // ignore: cast_nullable_to_non_nullable
-as String,availableSeries: null == availableSeries ? _self._availableSeries : availableSeries // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,
   ));
 }
 
