@@ -134,12 +134,12 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest)?  data,TResult Function( String? errorKey)?  error,TResult Function( String? messageKey)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest,  String? pendingEmail)?  data,TResult Function( String? errorKey)?  error,TResult Function( String? messageKey)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Data() when data != null:
-return data(_that.settings,_that.profile,_that.isGuest);case Error() when error != null:
+return data(_that.settings,_that.profile,_that.isGuest,_that.pendingEmail);case Error() when error != null:
 return error(_that.errorKey);case Success() when success != null:
 return success(_that.messageKey);case _:
   return orElse();
@@ -159,12 +159,12 @@ return success(_that.messageKey);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest)  data,required TResult Function( String? errorKey)  error,required TResult Function( String? messageKey)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest,  String? pendingEmail)  data,required TResult Function( String? errorKey)  error,required TResult Function( String? messageKey)  success,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
 return loading();case Data():
-return data(_that.settings,_that.profile,_that.isGuest);case Error():
+return data(_that.settings,_that.profile,_that.isGuest,_that.pendingEmail);case Error():
 return error(_that.errorKey);case Success():
 return success(_that.messageKey);}
 }
@@ -180,12 +180,12 @@ return success(_that.messageKey);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest)?  data,TResult? Function( String? errorKey)?  error,TResult? Function( String? messageKey)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SettingsModel settings,  SharedUserModel? profile,  bool isGuest,  String? pendingEmail)?  data,TResult? Function( String? errorKey)?  error,TResult? Function( String? messageKey)?  success,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Data() when data != null:
-return data(_that.settings,_that.profile,_that.isGuest);case Error() when error != null:
+return data(_that.settings,_that.profile,_that.isGuest,_that.pendingEmail);case Error() when error != null:
 return error(_that.errorKey);case Success() when success != null:
 return success(_that.messageKey);case _:
   return null;
@@ -275,12 +275,13 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 class Data with DiagnosticableTreeMixin implements SettingsState {
-  const Data({required this.settings, this.profile, this.isGuest = false});
+  const Data({required this.settings, this.profile, this.isGuest = false, this.pendingEmail});
   
 
  final  SettingsModel settings;
  final  SharedUserModel? profile;
 @JsonKey() final  bool isGuest;
+ final  String? pendingEmail;
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
@@ -293,21 +294,21 @@ $DataCopyWith<Data> get copyWith => _$DataCopyWithImpl<Data>(this, _$identity);
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'SettingsState.data'))
-    ..add(DiagnosticsProperty('settings', settings))..add(DiagnosticsProperty('profile', profile))..add(DiagnosticsProperty('isGuest', isGuest));
+    ..add(DiagnosticsProperty('settings', settings))..add(DiagnosticsProperty('profile', profile))..add(DiagnosticsProperty('isGuest', isGuest))..add(DiagnosticsProperty('pendingEmail', pendingEmail));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Data&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.profile, profile) || other.profile == profile)&&(identical(other.isGuest, isGuest) || other.isGuest == isGuest));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Data&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.profile, profile) || other.profile == profile)&&(identical(other.isGuest, isGuest) || other.isGuest == isGuest)&&(identical(other.pendingEmail, pendingEmail) || other.pendingEmail == pendingEmail));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,settings,profile,isGuest);
+int get hashCode => Object.hash(runtimeType,settings,profile,isGuest,pendingEmail);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'SettingsState.data(settings: $settings, profile: $profile, isGuest: $isGuest)';
+  return 'SettingsState.data(settings: $settings, profile: $profile, isGuest: $isGuest, pendingEmail: $pendingEmail)';
 }
 
 
@@ -318,7 +319,7 @@ abstract mixin class $DataCopyWith<$Res> implements $SettingsStateCopyWith<$Res>
   factory $DataCopyWith(Data value, $Res Function(Data) _then) = _$DataCopyWithImpl;
 @useResult
 $Res call({
- SettingsModel settings, SharedUserModel? profile, bool isGuest
+ SettingsModel settings, SharedUserModel? profile, bool isGuest, String? pendingEmail
 });
 
 
@@ -335,12 +336,13 @@ class _$DataCopyWithImpl<$Res>
 
 /// Create a copy of SettingsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? settings = null,Object? profile = freezed,Object? isGuest = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? settings = null,Object? profile = freezed,Object? isGuest = null,Object? pendingEmail = freezed,}) {
   return _then(Data(
 settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
 as SettingsModel,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
 as SharedUserModel?,isGuest: null == isGuest ? _self.isGuest : isGuest // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,pendingEmail: freezed == pendingEmail ? _self.pendingEmail : pendingEmail // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

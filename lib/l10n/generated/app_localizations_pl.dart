@@ -24,7 +24,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get errorEmailAlreadyInUse =>
-      'Ten adres e-mail jest już zajęty przez inne konto.';
+      'Ten adres e-mail jest już zajęty. Jeśli masz już konto, użyj opcji \'Zaloguj\'.';
 
   @override
   String get errorPassword => 'Sprawdź hasło i spróbuj ponownie.';
@@ -635,7 +635,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get account_upgraded_successfully =>
-      'Konto zostało pomyślnie ulepszone!';
+      'Konto zostało ulepszone! Sprawdź e-mail, aby potwierdzić rejestrację.';
 
   @override
   String get error_upgrading_account => 'Błąd podczas ulepszania konta.';

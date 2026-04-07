@@ -101,8 +101,8 @@ class _SettingsView extends StatelessWidget {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                  Data(settings: final settings, profile: final profile, isGuest: final isGuest) =>
-                    _SettingsList(settings: settings, profile: profile, isGuest: isGuest),
+                  Data(settings: final settings, profile: final profile, isGuest: final isGuest, pendingEmail: final pendingEmail) =>
+                    _SettingsList(settings: settings, profile: profile, isGuest: isGuest, pendingEmail: pendingEmail),
                 };
               },
             ),
@@ -117,11 +117,13 @@ class _SettingsList extends StatelessWidget {
   final SettingsModel settings;
   final SharedUserModel? profile;
   final bool isGuest;
+  final String? pendingEmail;
 
   const _SettingsList({
     required this.settings, 
     this.profile,
     required this.isGuest,
+    this.pendingEmail,
   });
 
   @override
@@ -146,6 +148,7 @@ class _SettingsList extends StatelessWidget {
               settings: settings, 
               userId: userId,
               isGuest: isGuest,
+              pendingEmail: pendingEmail,
             ),
           ),
           const SizedBox(height: 20),
@@ -267,12 +270,14 @@ class _ProfileSection extends StatefulWidget {
   final SettingsModel settings;
   final String userId;
   final bool isGuest;
+  final String? pendingEmail;
 
   const _ProfileSection({
     this.profile, 
     required this.settings, 
     required this.userId,
     required this.isGuest,
+    this.pendingEmail,
   });
 
   @override
@@ -388,7 +393,35 @@ class _ProfileSectionState extends State<_ProfileSection> {
           controller: _garageNameController,
           onChanged: (val) => context.read<SettingsCubit>().updateGarageName(widget.userId, val),
         ),
-        if (widget.isGuest) ...[
+        if (widget.pendingEmail != null) ...[
+          const SizedBox(height: 24),
+          const Divider(color: Colors.white12, height: 1),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.blue.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
+            ),
+            child: Column(
+              children: [
+                const Icon(Icons.mark_email_read_outlined, color: Colors.blue, size: 32),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.account_upgraded_successfully,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.pendingEmail!,
+                  style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w800),
+                ),
+              ],
+            ),
+          ),
+        ] else if (widget.isGuest) ...[
           const SizedBox(height: 24),
           const Divider(color: Colors.white12, height: 1),
           const SizedBox(height: 24),
@@ -452,23 +485,9 @@ class _ProfileSectionState extends State<_ProfileSection> {
               ),
               child: Text(
                 l10n.loginButtonLabel.toUpperCase(),
-                style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+                style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1),
               ),
             ),
-          ),
-        ],
-        if (!widget.isGuest) ...[
-          const SizedBox(height: 24),
-          _ActionTile(
-            label: l10n.settingsChangeLoginLabel,
-            icon: Icons.login,
-            onTap: () {},
-          ),
-          const SizedBox(height: 12),
-          _ActionTile(
-            label: l10n.settingsChangePasswordLabel,
-            icon: Icons.lock_outline,
-            onTap: () {},
           ),
         ],
       ],

@@ -127,6 +127,7 @@ class AuthRepositoryImpl implements AuthRepository {
       userId: raw['user_id'] as String,
       email: raw['email'] as String?,
       isAnonymous: raw['is_anonymous'] as bool? ?? false,
+      emailConfirmedAt: raw['email_confirmed_at'] as String?,
     );
   }
 

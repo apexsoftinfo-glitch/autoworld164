@@ -70,7 +70,7 @@ class _HomeScreenView extends StatelessWidget {
                             BlocBuilder<SettingsCubit, SettingsState>(
                               builder: (context, state) {
                                 final garageName = state.maybeWhen(
-                                  data: (settings, profile, isGuest) => settings.garageName,
+                                  data: (settings, profile, isGuest, pendingEmail) => settings.garageName,
                                   orElse: () => null,
                                 );
                                 final title = garageName != null && garageName.isNotEmpty 

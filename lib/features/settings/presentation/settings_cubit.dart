@@ -20,6 +20,7 @@ sealed class SettingsState with _$SettingsState {
     required SettingsModel settings,
     SharedUserModel? profile,
     @Default(false) bool isGuest,
+    String? pendingEmail,
   }) = Data;
   const factory SettingsState.error({String? errorKey}) = Error;
   const factory SettingsState.success({String? messageKey}) = Success;
@@ -77,7 +78,15 @@ class SettingsCubit extends Cubit<SettingsState> {
     _authSub?.cancel();
     _authSub = _authRepository.watchPrincipal().listen((principal) {
       if (state is Data) {
-        emit((state as Data).copyWith(isGuest: principal?.isAnonymous ?? false));
+        final data = state as Data;
+        final isAnonymous = principal?.isAnonymous ?? true;
+        final email = principal?.email;
+        final isConfirmed = principal?.emailConfirmedAt != null;
+
+        emit(data.copyWith(
+          isGuest: isAnonymous,
+          pendingEmail: (isAnonymous && email != null && !isConfirmed) ? email : null,
+        ));
       }
     });
   }

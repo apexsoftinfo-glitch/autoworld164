@@ -128,6 +128,7 @@ class SupabaseAuthDataSource implements AuthDataSource {
       'user_id': user.id,
       'email': user.email,
       'is_anonymous': user.isAnonymous,
+      'email_confirmed_at': user.emailConfirmedAt,
     };
   }
 

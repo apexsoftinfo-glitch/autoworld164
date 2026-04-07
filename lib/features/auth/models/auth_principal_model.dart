@@ -10,5 +10,6 @@ abstract class AuthPrincipalModel with _$AuthPrincipalModel {
     required String userId,
     required String? email,
     required bool isAnonymous,
+    String? emailConfirmedAt,
   }) = _AuthPrincipalModel;
 }

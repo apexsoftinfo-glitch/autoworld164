@@ -125,7 +125,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorEmailAlreadyInUse.
   ///
   /// In pl, this message translates to:
-  /// **'Ten adres e-mail jest już zajęty przez inne konto.'**
+  /// **'Ten adres e-mail jest już zajęty. Jeśli masz już konto, użyj opcji \'Zaloguj\'.'**
   String get errorEmailAlreadyInUse;
 
   /// No description provided for @errorPassword.
@@ -1235,7 +1235,7 @@ abstract class AppLocalizations {
   /// No description provided for @account_upgraded_successfully.
   ///
   /// In pl, this message translates to:
-  /// **'Konto zostało pomyślnie ulepszone!'**
+  /// **'Konto zostało ulepszone! Sprawdź e-mail, aby potwierdzić rejestrację.'**
   String get account_upgraded_successfully;
 
   /// No description provided for @error_upgrading_account.

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthPrincipalModel {
 
- String get userId; String? get email; bool get isAnonymous;
+ String get userId; String? get email; bool get isAnonymous; String? get emailConfirmedAt;
 /// Create a copy of AuthPrincipalModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AuthPrincipalModelCopyWith<AuthPrincipalModel> get copyWith => _$AuthPrincipalM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthPrincipalModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthPrincipalModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous)&&(identical(other.emailConfirmedAt, emailConfirmedAt) || other.emailConfirmedAt == emailConfirmedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,email,isAnonymous);
+int get hashCode => Object.hash(runtimeType,userId,email,isAnonymous,emailConfirmedAt);
 
 @override
 String toString() {
-  return 'AuthPrincipalModel(userId: $userId, email: $email, isAnonymous: $isAnonymous)';
+  return 'AuthPrincipalModel(userId: $userId, email: $email, isAnonymous: $isAnonymous, emailConfirmedAt: $emailConfirmedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AuthPrincipalModelCopyWith<$Res>  {
   factory $AuthPrincipalModelCopyWith(AuthPrincipalModel value, $Res Function(AuthPrincipalModel) _then) = _$AuthPrincipalModelCopyWithImpl;
 @useResult
 $Res call({
- String userId, String? email, bool isAnonymous
+ String userId, String? email, bool isAnonymous, String? emailConfirmedAt
 });
 
 
@@ -62,12 +62,13 @@ class _$AuthPrincipalModelCopyWithImpl<$Res>
 
 /// Create a copy of AuthPrincipalModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? email = freezed,Object? isAnonymous = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? email = freezed,Object? isAnonymous = null,Object? emailConfirmedAt = freezed,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,isAnonymous: null == isAnonymous ? _self.isAnonymous : isAnonymous // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,emailConfirmedAt: freezed == emailConfirmedAt ? _self.emailConfirmedAt : emailConfirmedAt // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String? email,  bool isAnonymous)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String? email,  bool isAnonymous,  String? emailConfirmedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthPrincipalModel() when $default != null:
-return $default(_that.userId,_that.email,_that.isAnonymous);case _:
+return $default(_that.userId,_that.email,_that.isAnonymous,_that.emailConfirmedAt);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.userId,_that.email,_that.isAnonymous);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String? email,  bool isAnonymous)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String? email,  bool isAnonymous,  String? emailConfirmedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AuthPrincipalModel():
-return $default(_that.userId,_that.email,_that.isAnonymous);case _:
+return $default(_that.userId,_that.email,_that.isAnonymous,_that.emailConfirmedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.userId,_that.email,_that.isAnonymous);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String? email,  bool isAnonymous)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String? email,  bool isAnonymous,  String? emailConfirmedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthPrincipalModel() when $default != null:
-return $default(_that.userId,_that.email,_that.isAnonymous);case _:
+return $default(_that.userId,_that.email,_that.isAnonymous,_that.emailConfirmedAt);case _:
   return null;
 
 }
@@ -208,12 +209,13 @@ return $default(_that.userId,_that.email,_that.isAnonymous);case _:
 
 
 class _AuthPrincipalModel extends AuthPrincipalModel {
-  const _AuthPrincipalModel({required this.userId, required this.email, required this.isAnonymous}): super._();
+  const _AuthPrincipalModel({required this.userId, required this.email, required this.isAnonymous, this.emailConfirmedAt}): super._();
   
 
 @override final  String userId;
 @override final  String? email;
 @override final  bool isAnonymous;
+@override final  String? emailConfirmedAt;
 
 /// Create a copy of AuthPrincipalModel
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ _$AuthPrincipalModelCopyWith<_AuthPrincipalModel> get copyWith => __$AuthPrincip
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthPrincipalModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthPrincipalModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAnonymous, isAnonymous) || other.isAnonymous == isAnonymous)&&(identical(other.emailConfirmedAt, emailConfirmedAt) || other.emailConfirmedAt == emailConfirmedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,email,isAnonymous);
+int get hashCode => Object.hash(runtimeType,userId,email,isAnonymous,emailConfirmedAt);
 
 @override
 String toString() {
-  return 'AuthPrincipalModel(userId: $userId, email: $email, isAnonymous: $isAnonymous)';
+  return 'AuthPrincipalModel(userId: $userId, email: $email, isAnonymous: $isAnonymous, emailConfirmedAt: $emailConfirmedAt)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$AuthPrincipalModelCopyWith<$Res> implements $AuthPrincipa
   factory _$AuthPrincipalModelCopyWith(_AuthPrincipalModel value, $Res Function(_AuthPrincipalModel) _then) = __$AuthPrincipalModelCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, String? email, bool isAnonymous
+ String userId, String? email, bool isAnonymous, String? emailConfirmedAt
 });
 
 
@@ -262,12 +264,13 @@ class __$AuthPrincipalModelCopyWithImpl<$Res>
 
 /// Create a copy of AuthPrincipalModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? email = freezed,Object? isAnonymous = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? email = freezed,Object? isAnonymous = null,Object? emailConfirmedAt = freezed,}) {
   return _then(_AuthPrincipalModel(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,isAnonymous: null == isAnonymous ? _self.isAnonymous : isAnonymous // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,emailConfirmedAt: freezed == emailConfirmedAt ? _self.emailConfirmedAt : emailConfirmedAt // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
