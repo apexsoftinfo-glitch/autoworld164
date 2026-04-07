@@ -11,6 +11,7 @@ abstract class NewsModel with _$NewsModel {
     required String title,
     required String content,
     @JsonKey(name: 'image_url') String? imageUrl,
+    @JsonKey(name: 'image_urls') @Default([]) List<String> imageUrls,
     String? author,
     String? category,
   }) = _NewsModel;

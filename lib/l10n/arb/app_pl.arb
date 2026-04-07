@@ -234,5 +234,8 @@
   "settingsPasswordLabel": "HASŁO",
   "settingsRegisterButton": "ZAREJESTRUJ KONTO",
   "account_upgraded_successfully": "Konto zostało pomyślnie ulepszone!",
-  "error_upgrading_account": "Błąd podczas ulepszania konta."
+  "error_upgrading_account": "Błąd podczas ulepszania konta.",
+  "settingsSectionAppearance": "Wygląd garażu",
+  "settingsGarageBackgroundLabel": "Tło garażu",
+  "error_updating_background": "Nie udało się zaktualizować tła garażu."
 }

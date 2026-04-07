@@ -993,7 +993,6 @@ class _GlassInputBase extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Widget? suffix;
-  final FocusNode? focusNode;
 
   const _GlassInputBase({
     required this.controller,
@@ -1001,7 +1000,6 @@ class _GlassInputBase extends StatelessWidget {
     this.keyboardType,
     this.validator,
     this.suffix,
-    this.focusNode,
   });
 
   @override
@@ -1012,7 +1010,6 @@ class _GlassInputBase extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: TextFormField(
           controller: controller,
-          focusNode: focusNode,
           keyboardType: keyboardType,
           validator: validator,
           style: const TextStyle(color: Colors.white, fontSize: 15),

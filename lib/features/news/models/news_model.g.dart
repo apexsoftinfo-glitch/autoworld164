@@ -12,6 +12,11 @@ _NewsModel _$NewsModelFromJson(Map<String, dynamic> json) => _NewsModel(
   title: json['title'] as String,
   content: json['content'] as String,
   imageUrl: json['image_url'] as String?,
+  imageUrls:
+      (json['image_urls'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
   author: json['author'] as String?,
   category: json['category'] as String?,
 );
@@ -23,6 +28,7 @@ Map<String, dynamic> _$NewsModelToJson(_NewsModel instance) =>
       'title': instance.title,
       'content': instance.content,
       'image_url': instance.imageUrl,
+      'image_urls': instance.imageUrls,
       'author': instance.author,
       'category': instance.category,
     };

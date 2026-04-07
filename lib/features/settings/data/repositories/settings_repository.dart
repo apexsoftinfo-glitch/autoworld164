@@ -16,6 +16,7 @@ abstract class SettingsRepository {
   Future<void> updateGarageName(String userId, String? name);
   Future<void> updateCurrency(String userId, AppCurrency currency);
   Future<void> updateLanguage(String userId, AppLanguage language);
+  Future<void> updateGarageBackground(String userId, String backgroundPath);
   Future<String> exportBackup();
   Future<void> importBackup(String filePath);
 }
@@ -59,6 +60,13 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<void> updateLanguage(String userId, AppLanguage language) async {
     final current = await _settingsDataSource.ensureSettings(userId);
     final updated = {...current, 'language': language.name};
+    await _settingsDataSource.upsertSettings(updated);
+  }
+
+  @override
+  Future<void> updateGarageBackground(String userId, String backgroundPath) async {
+    final current = await _settingsDataSource.ensureSettings(userId);
+    final updated = {...current, 'garage_background': backgroundPath};
     await _settingsDataSource.upsertSettings(updated);
   }
 

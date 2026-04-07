@@ -152,6 +152,48 @@ class NewsDetailScreen extends StatelessWidget {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
+                  if (news.imageUrls.isNotEmpty) ...[
+                    const SizedBox(height: 48),
+                    Text(
+                      'GALERIA ZDJĘĆ',
+                      style: TextStyle(
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.8),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 200,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: news.imageUrls.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 16),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Optional: Show full screen image
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.network(
+                                news.imageUrls[index],
+                                width: 280,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                  width: 280,
+                                  color: Colors.white10,
+                                  child: const Icon(Icons.broken_image, color: Colors.white24),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 100), // Space at bottom
                 ],
               ),

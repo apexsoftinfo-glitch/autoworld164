@@ -639,4 +639,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get error_upgrading_account => 'Błąd podczas ulepszania konta.';
+
+  @override
+  String get settingsSectionAppearance => 'Wygląd garażu';
+
+  @override
+  String get settingsGarageBackgroundLabel => 'Tło garażu';
+
+  @override
+  String get error_updating_background =>
+      'Nie udało się zaktualizować tła garażu.';
 }

@@ -16,6 +16,9 @@ _SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
       language:
           $enumDecodeNullable(_$AppLanguageEnumMap, json['language']) ??
           AppLanguage.pl,
+      garageBackground:
+          json['garage_background'] as String? ??
+          'assets/images/warm_garage.png',
     );
 
 Map<String, dynamic> _$SettingsModelToJson(_SettingsModel instance) =>
@@ -24,6 +27,7 @@ Map<String, dynamic> _$SettingsModelToJson(_SettingsModel instance) =>
       'garage_name': instance.garageName,
       'currency': _$AppCurrencyEnumMap[instance.currency]!,
       'language': _$AppLanguageEnumMap[instance.language]!,
+      'garage_background': instance.garageBackground,
     };
 
 const _$AppCurrencyEnumMap = {

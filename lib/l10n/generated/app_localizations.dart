@@ -1243,6 +1243,24 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Błąd podczas ulepszania konta.'**
   String get error_upgrading_account;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wygląd garażu'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsGarageBackgroundLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'Tło garażu'**
+  String get settingsGarageBackgroundLabel;
+
+  /// No description provided for @error_updating_background.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie udało się zaktualizować tła garażu.'**
+  String get error_updating_background;
 }
 
 class _AppLocalizationsDelegate

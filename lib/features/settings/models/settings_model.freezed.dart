@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SettingsModel {
 
- String get id; String? get garageName; AppCurrency get currency; AppLanguage get language;
+ String get id; String? get garageName; AppCurrency get currency; AppLanguage get language; String get garageBackground;
 /// Create a copy of SettingsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SettingsModelCopyWith<SettingsModel> get copyWith => _$SettingsModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.garageName, garageName) || other.garageName == garageName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.language, language) || other.language == language));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SettingsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.garageName, garageName) || other.garageName == garageName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.language, language) || other.language == language)&&(identical(other.garageBackground, garageBackground) || other.garageBackground == garageBackground));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,garageName,currency,language);
+int get hashCode => Object.hash(runtimeType,id,garageName,currency,language,garageBackground);
 
 @override
 String toString() {
-  return 'SettingsModel(id: $id, garageName: $garageName, currency: $currency, language: $language)';
+  return 'SettingsModel(id: $id, garageName: $garageName, currency: $currency, language: $language, garageBackground: $garageBackground)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SettingsModelCopyWith<$Res>  {
   factory $SettingsModelCopyWith(SettingsModel value, $Res Function(SettingsModel) _then) = _$SettingsModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String? garageName, AppCurrency currency, AppLanguage language
+ String id, String? garageName, AppCurrency currency, AppLanguage language, String garageBackground
 });
 
 
@@ -65,13 +65,14 @@ class _$SettingsModelCopyWithImpl<$Res>
 
 /// Create a copy of SettingsModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? garageName = freezed,Object? currency = null,Object? language = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? garageName = freezed,Object? currency = null,Object? language = null,Object? garageBackground = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,garageName: freezed == garageName ? _self.garageName : garageName // ignore: cast_nullable_to_non_nullable
 as String?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as AppCurrency,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
-as AppLanguage,
+as AppLanguage,garageBackground: null == garageBackground ? _self.garageBackground : garageBackground // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language,  String garageBackground)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SettingsModel() when $default != null:
-return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
+return $default(_that.id,_that.garageName,_that.currency,_that.language,_that.garageBackground);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language,  String garageBackground)  $default,) {final _that = this;
 switch (_that) {
 case _SettingsModel():
-return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
+return $default(_that.id,_that.garageName,_that.currency,_that.language,_that.garageBackground);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? garageName,  AppCurrency currency,  AppLanguage language,  String garageBackground)?  $default,) {final _that = this;
 switch (_that) {
 case _SettingsModel() when $default != null:
-return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
+return $default(_that.id,_that.garageName,_that.currency,_that.language,_that.garageBackground);case _:
   return null;
 
 }
@@ -212,13 +213,14 @@ return $default(_that.id,_that.garageName,_that.currency,_that.language);case _:
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _SettingsModel extends SettingsModel {
-  const _SettingsModel({required this.id, this.garageName, this.currency = AppCurrency.usd, this.language = AppLanguage.pl}): super._();
+  const _SettingsModel({required this.id, this.garageName, this.currency = AppCurrency.usd, this.language = AppLanguage.pl, this.garageBackground = 'assets/images/warm_garage.png'}): super._();
   factory _SettingsModel.fromJson(Map<String, dynamic> json) => _$SettingsModelFromJson(json);
 
 @override final  String id;
 @override final  String? garageName;
 @override@JsonKey() final  AppCurrency currency;
 @override@JsonKey() final  AppLanguage language;
+@override@JsonKey() final  String garageBackground;
 
 /// Create a copy of SettingsModel
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.garageName, garageName) || other.garageName == garageName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.language, language) || other.language == language));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.garageName, garageName) || other.garageName == garageName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.language, language) || other.language == language)&&(identical(other.garageBackground, garageBackground) || other.garageBackground == garageBackground));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,garageName,currency,language);
+int get hashCode => Object.hash(runtimeType,id,garageName,currency,language,garageBackground);
 
 @override
 String toString() {
-  return 'SettingsModel(id: $id, garageName: $garageName, currency: $currency, language: $language)';
+  return 'SettingsModel(id: $id, garageName: $garageName, currency: $currency, language: $language, garageBackground: $garageBackground)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$SettingsModelCopyWith<$Res> implements $SettingsModelCopy
   factory _$SettingsModelCopyWith(_SettingsModel value, $Res Function(_SettingsModel) _then) = __$SettingsModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? garageName, AppCurrency currency, AppLanguage language
+ String id, String? garageName, AppCurrency currency, AppLanguage language, String garageBackground
 });
 
 
@@ -270,13 +272,14 @@ class __$SettingsModelCopyWithImpl<$Res>
 
 /// Create a copy of SettingsModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? garageName = freezed,Object? currency = null,Object? language = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? garageName = freezed,Object? currency = null,Object? language = null,Object? garageBackground = null,}) {
   return _then(_SettingsModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,garageName: freezed == garageName ? _self.garageName : garageName // ignore: cast_nullable_to_non_nullable
 as String?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as AppCurrency,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
-as AppLanguage,
+as AppLanguage,garageBackground: null == garageBackground ? _self.garageBackground : garageBackground // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

@@ -3,8 +3,10 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
+import '../../settings/presentation/settings_cubit.dart' as settings;
 import '../models/car_model.dart';
 import '../presentation/cubit/cars_collection_cubit.dart';
 
@@ -17,8 +19,14 @@ class GarageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<CarsCollectionCubit>(),
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<CarsCollectionCubit>()),
+        if (userId != null)
+          BlocProvider(create: (context) => getIt<settings.SettingsCubit>()..init(userId)),
+      ],
       child: const _GarageScreenView(),
     );
   }
@@ -51,88 +59,96 @@ class _GarageScreenView extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('assets/images/warm_garage.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              const Color(0xFF2D1B0D).withValues(alpha: 0.5),
-              BlendMode.darken,
-            ),
-          ),
-        ),
-        child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              loading: () => const Center(
-                child: CircularProgressIndicator(color: Color(0xFFFFD700)),
-              ),
-              error: (key) => Center(
-                child: Text(
-                  key,
-                  style: const TextStyle(color: Colors.white),
+      body: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(
+        builder: (context, settingsState) {
+          final background = settingsState is settings.Data 
+              ? settingsState.settings.garageBackground 
+              : 'assets/images/warm_garage.png';
+
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(background),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  const Color(0xFF2D1B0D).withValues(alpha: 0.5),
+                  BlendMode.darken,
                 ),
               ),
-              data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
-                if (cars.isEmpty) {
-                  return const _EmptyGarageView();
-                }
+            ),
+            child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+                  ),
+                  error: (key) => Center(
+                    child: Text(
+                      key,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
+                    if (cars.isEmpty) {
+                      return const _EmptyGarageView();
+                    }
 
-                return Column(
-                  children: [
-                    _GarageSummaryHeader(
-                      pieces: filtered.length,
-                      totalValue: estimatedTotal,
-                    ),
-                    const SizedBox(height: 16),
-                    _SearchAndToggleBar(
-                      query: query,
-                      viewType: viewType,
-                      onSearch: (v) => context.read<CarsCollectionCubit>().search(v),
-                      onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
-                    ),
-                    Expanded(
-                      child: RefreshIndicator(
-                        backgroundColor: const Color(0xFF2D1B0D),
-                        color: const Color(0xFFFFD700),
-                        onRefresh: () async {
-                           context.read<CarsCollectionCubit>().retry();
-                        },
-                        child: viewType == CollectionViewType.grid 
-                          ? GridView.builder(
-                              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                                childAspectRatio: 0.75,
-                              ),
-                              itemCount: filtered.length,
-                              itemBuilder: (context, index) {
-                                return _CarCard(car: filtered[index]);
-                              },
-                            )
-                          : ListView.separated(
-                              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                              itemCount: filtered.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: 12),
-                              itemBuilder: (context, index) {
-                                return _CarListTile(car: filtered[index]);
-                              },
-                            ),
-                      ),
-                    ),
-                    const _BottomAddButton(),
-                  ],
+                    return Column(
+                      children: [
+                        _GarageSummaryHeader(
+                          pieces: filtered.length,
+                          totalValue: estimatedTotal,
+                        ),
+                        const SizedBox(height: 16),
+                        _SearchAndToggleBar(
+                          query: query,
+                          viewType: viewType,
+                          onSearch: (v) => context.read<CarsCollectionCubit>().search(v),
+                          onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
+                        ),
+                        Expanded(
+                          child: RefreshIndicator(
+                            backgroundColor: const Color(0xFF2D1B0D),
+                            color: const Color(0xFFFFD700),
+                            onRefresh: () async {
+                               context.read<CarsCollectionCubit>().retry();
+                            },
+                            child: viewType == CollectionViewType.grid 
+                              ? GridView.builder(
+                                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 16,
+                                    mainAxisSpacing: 16,
+                                    childAspectRatio: 0.75,
+                                  ),
+                                  itemCount: filtered.length,
+                                  itemBuilder: (context, index) {
+                                    return _CarCard(car: filtered[index]);
+                                  },
+                                )
+                              : ListView.separated(
+                                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                                  itemCount: filtered.length,
+                                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                  itemBuilder: (context, index) {
+                                    return _CarListTile(car: filtered[index]);
+                                  },
+                                ),
+                          ),
+                        ),
+                        const _BottomAddButton(),
+                      ],
+                    );
+                  },
+                  orElse: () => const SizedBox.shrink(),
                 );
               },
-              orElse: () => const SizedBox.shrink(),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

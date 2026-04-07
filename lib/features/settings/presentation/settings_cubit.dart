@@ -150,6 +150,14 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
+  Future<void> updateGarageBackground(String userId, String backgroundPath) async {
+    try {
+      await _settingsRepository.updateGarageBackground(userId, backgroundPath);
+    } catch (e) {
+      emit(const Error(errorKey: 'error_updating_background'));
+    }
+  }
+
   Future<String?> exportBackup() async {
     try {
       return await _settingsRepository.exportBackup();

@@ -634,4 +634,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get error_upgrading_account => 'Error upgrading account.';
+
+  @override
+  String get settingsSectionAppearance => 'Appearance';
+
+  @override
+  String get settingsGarageBackgroundLabel => 'Garage background';
+
+  @override
+  String get error_updating_background => 'Could not update garage background.';
 }

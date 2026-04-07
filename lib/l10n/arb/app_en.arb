@@ -234,5 +234,8 @@
   "settingsPasswordLabel": "PASSWORD",
   "settingsRegisterButton": "REGISTER ACCOUNT",
   "account_upgraded_successfully": "Account upgraded successfully!",
-  "error_upgrading_account": "Error upgrading account."
+  "error_upgrading_account": "Error upgrading account.",
+  "settingsSectionAppearance": "Appearance",
+  "settingsGarageBackgroundLabel": "Garage background",
+  "error_updating_background": "Could not update garage background."
 }

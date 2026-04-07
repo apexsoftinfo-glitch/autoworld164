@@ -24,6 +24,7 @@ abstract class SettingsModel with _$SettingsModel {
     String? garageName,
     @Default(AppCurrency.usd) AppCurrency currency,
     @Default(AppLanguage.pl) AppLanguage language,
+    @Default('assets/images/warm_garage.png') String garageBackground,
   }) = _SettingsModel;
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) =>

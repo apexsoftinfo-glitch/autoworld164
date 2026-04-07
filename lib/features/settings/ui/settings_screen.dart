@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../../../shared/error_messages.dart';
+import '../../auth/presentation/ui/login_screen.dart';
 import '../../profiles/models/shared_user_model.dart';
 import '../models/settings_model.dart';
 import '../presentation/settings_cubit.dart';
@@ -158,6 +159,12 @@ class _SettingsList extends StatelessWidget {
             title: l10n.settingsSectionLanguage,
             icon: Icons.language_outlined,
             child: _LanguageSection(settings: settings, userId: userId),
+          ),
+          const SizedBox(height: 20),
+          _SettingsCategoryCard(
+            title: l10n.settingsSectionAppearance,
+            icon: Icons.palette_outlined,
+            child: _AppearanceSection(settings: settings, userId: userId),
           ),
           const SizedBox(height: 20),
           _SettingsCategoryCard(
@@ -422,6 +429,29 @@ class _ProfileSectionState extends State<_ProfileSection> {
               ),
               child: Text(
                 l10n.settingsRegisterButton.toUpperCase(),
+                style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).push<void>(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const LoginScreen(),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFFFFD700),
+                side: const BorderSide(color: Color(0xFFFFD700)),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              child: Text(
+                l10n.loginButtonLabel.toUpperCase(),
                 style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
               ),
             ),
@@ -718,6 +748,94 @@ class _BackupSection extends StatelessWidget {
               }
             }
           },
+        ),
+      ],
+    );
+  }
+}
+
+class _AppearanceSection extends StatelessWidget {
+  final SettingsModel settings;
+  final String userId;
+
+  const _AppearanceSection({required this.settings, required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    final backgrounds = [
+      {'path': 'assets/images/warm_garage.png', 'name': 'Klasyczny'},
+      {'path': 'assets/images/add_model_bg.png', 'name': 'Nowoczesny'},
+      {'path': 'assets/images/settings_bg.png', 'name': 'Abstrakcyjny'},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 140,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: backgrounds.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final bg = backgrounds[index];
+              final isSelected = settings.garageBackground == bg['path'];
+              
+              return GestureDetector(
+                onTap: () => context.read<SettingsCubit>().updateGarageBackground(userId, bg['path']!),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
+                          width: isSelected ? 3 : 1,
+                        ),
+                        boxShadow: isSelected ? [
+                          BoxShadow(
+                            color: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                            blurRadius: 10,
+                          )
+                        ] : null,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(bg['path']!, fit: BoxFit.cover),
+                          if (isSelected) 
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFFFD700),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.check, size: 12, color: Colors.black),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      bg['name']!,
+                      style: TextStyle(
+                        color: isSelected ? const Color(0xFFFFD700) : Colors.white54,
+                        fontSize: 10,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
