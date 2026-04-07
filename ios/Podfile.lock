@@ -40,6 +40,8 @@ PODS:
     - Flutter
   - integration_test (0.0.1):
     - Flutter
+  - printing (1.0.0):
+    - Flutter
   - purchases_flutter (9.13.1):
     - Flutter
     - PurchasesHybridCommon (= 17.42.0)
@@ -72,6 +74,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - printing (from `.symlinks/plugins/printing/ios`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - purchases_ui_flutter (from `.symlinks/plugins/purchases_ui_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
@@ -100,6 +103,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
+  printing:
+    :path: ".symlinks/plugins/printing/ios"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
   purchases_ui_flutter:
@@ -119,6 +124,7 @@ SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
+  printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
   purchases_flutter: 0c05be8e6d5afbd2dc581ce7f823015ff1b5831a
   purchases_ui_flutter: acbcb4cbb7f1670c9c884a8f850b4f9ad388b8dc
   PurchasesHybridCommon: c0a62a03bd15e40af1c3cd111f5f4f50cac751c7
