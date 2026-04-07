@@ -24,6 +24,7 @@ _CarModel _$CarModelFromJson(Map<String, dynamic> json) => _CarModel(
           ?.map((e) => e as String)
           .toList() ??
       const [],
+  status: json['status'] as String? ?? 'Nowy',
   createdAt: DateTime.parse(json['created_at'] as String),
 );
 
@@ -39,5 +40,6 @@ Map<String, dynamic> _$CarModelToJson(_CarModel instance) => <String, dynamic>{
   'estimated_value': instance.estimatedValue,
   'photo_path': instance.photoPath,
   'photo_paths': instance.photoPaths,
+  'status': instance.status,
   'created_at': instance.createdAt.toIso8601String(),
 };

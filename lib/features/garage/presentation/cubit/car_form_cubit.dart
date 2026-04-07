@@ -56,6 +56,7 @@ class CarFormCubit extends Cubit<CarFormState> {
     DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
+    required String status,
     List<File> newPhotos = const [],
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
@@ -78,6 +79,7 @@ class CarFormCubit extends Cubit<CarFormState> {
           purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
+          status: status,
           newPhotos: newPhotos,
           internetUrls: photoUrls,
           remainingPhotoPaths: remainingPhotoPaths,
@@ -91,6 +93,7 @@ class CarFormCubit extends Cubit<CarFormState> {
           purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
           estimatedValue: estimatedValue,
+          status: status,
           photos: newPhotos,
           internetUrls: photoUrls,
         );

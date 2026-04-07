@@ -54,6 +54,7 @@ void main() {
         modelName: 'Porsche',
         purchasePrice: 10.0,
         estimatedValue: 20.0,
+        status: 'Nowy',
       );
 
       verify(() => mockDataSource.addCar(

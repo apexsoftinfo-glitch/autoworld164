@@ -16,6 +16,7 @@ abstract class CarsRepository {
     DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
+    required String status,
     List<File> photos = const [],
     List<String> internetUrls = const [],
   });
@@ -28,6 +29,7 @@ abstract class CarsRepository {
     DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
+    required String status,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
@@ -71,6 +73,7 @@ class CarsRepositoryImpl implements CarsRepository {
     DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
+    required String status,
     List<File> photos = const [],
     List<String> internetUrls = const [],
   }) async {
@@ -83,6 +86,7 @@ class CarsRepositoryImpl implements CarsRepository {
         'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
         'estimated_value': estimatedValue,
+        'status': status,
       };
  
       await _dataSource.addCar(data, photos, internetUrls);
@@ -106,6 +110,7 @@ class CarsRepositoryImpl implements CarsRepository {
     DateTime? purchaseDate,
     required double purchasePrice,
     required double estimatedValue,
+    required String status,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
@@ -119,6 +124,7 @@ class CarsRepositoryImpl implements CarsRepository {
         'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
         'estimated_value': estimatedValue,
+        'status': status,
         'photo_paths': remainingPhotoPaths ?? oldModel.photoPaths,
       };
 

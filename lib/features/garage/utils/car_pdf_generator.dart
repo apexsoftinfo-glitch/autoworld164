@@ -101,6 +101,7 @@ class CarPdfGenerator {
                         pw.Text('${car.brand} ${car.modelName}',
                             style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
                         pw.SizedBox(height: 10),
+                        _buildDetail(isPolish ? 'STAN' : 'STATUS', car.status.toUpperCase()),
                         _buildDetail(isPolish ? 'SERIA' : 'SERIES', car.series ?? '-'),
                         _buildDetail(isPolish ? 'DATA ZAKUPU' : 'PURCHASE DATE', 
                             car.purchaseDate != null ? dateFormat.format(car.purchaseDate!) : '-'),

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CarModel {
 
- String get id;@JsonKey(name: 'user_id') String get userId; String get brand;@JsonKey(name: 'model_name') String get modelName;@JsonKey(name: 'toy_maker') String? get toyMaker; String? get series;@JsonKey(name: 'purchase_date') DateTime? get purchaseDate;@JsonKey(name: 'purchase_price') double get purchasePrice;@JsonKey(name: 'estimated_value') double get estimatedValue;@JsonKey(name: 'photo_path') String? get photoPath;@JsonKey(name: 'photo_paths') List<String> get photoPaths;@JsonKey(name: 'created_at') DateTime get createdAt;
+ String get id;@JsonKey(name: 'user_id') String get userId; String get brand;@JsonKey(name: 'model_name') String get modelName;@JsonKey(name: 'toy_maker') String? get toyMaker; String? get series;@JsonKey(name: 'purchase_date') DateTime? get purchaseDate;@JsonKey(name: 'purchase_price') double get purchasePrice;@JsonKey(name: 'estimated_value') double get estimatedValue;@JsonKey(name: 'photo_path') String? get photoPath;@JsonKey(name: 'photo_paths') List<String> get photoPaths; String get status;@JsonKey(name: 'created_at') DateTime get createdAt;
 /// Create a copy of CarModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CarModelCopyWith<CarModel> get copyWith => _$CarModelCopyWithImpl<CarModel>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.purchaseDate, purchaseDate) || other.purchaseDate == purchaseDate)&&(identical(other.purchasePrice, purchasePrice) || other.purchasePrice == purchasePrice)&&(identical(other.estimatedValue, estimatedValue) || other.estimatedValue == estimatedValue)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other.photoPaths, photoPaths)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.purchaseDate, purchaseDate) || other.purchaseDate == purchaseDate)&&(identical(other.purchasePrice, purchasePrice) || other.purchasePrice == purchasePrice)&&(identical(other.estimatedValue, estimatedValue) || other.estimatedValue == estimatedValue)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other.photoPaths, photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,purchaseDate,purchasePrice,estimatedValue,photoPath,const DeepCollectionEquality().hash(photoPaths),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,purchaseDate,purchasePrice,estimatedValue,photoPath,const DeepCollectionEquality().hash(photoPaths),status,createdAt);
 
 @override
 String toString() {
-  return 'CarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, purchaseDate: $purchaseDate, purchasePrice: $purchasePrice, estimatedValue: $estimatedValue, photoPath: $photoPath, photoPaths: $photoPaths, createdAt: $createdAt)';
+  return 'CarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, purchaseDate: $purchaseDate, purchasePrice: $purchasePrice, estimatedValue: $estimatedValue, photoPath: $photoPath, photoPaths: $photoPaths, status: $status, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CarModelCopyWith<$Res>  {
   factory $CarModelCopyWith(CarModel value, $Res Function(CarModel) _then) = _$CarModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series,@JsonKey(name: 'purchase_date') DateTime? purchaseDate,@JsonKey(name: 'purchase_price') double purchasePrice,@JsonKey(name: 'estimated_value') double estimatedValue,@JsonKey(name: 'photo_path') String? photoPath,@JsonKey(name: 'photo_paths') List<String> photoPaths,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series,@JsonKey(name: 'purchase_date') DateTime? purchaseDate,@JsonKey(name: 'purchase_price') double purchasePrice,@JsonKey(name: 'estimated_value') double estimatedValue,@JsonKey(name: 'photo_path') String? photoPath,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$CarModelCopyWithImpl<$Res>
 
 /// Create a copy of CarModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? purchaseDate = freezed,Object? purchasePrice = null,Object? estimatedValue = null,Object? photoPath = freezed,Object? photoPaths = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? purchaseDate = freezed,Object? purchasePrice = null,Object? estimatedValue = null,Object? photoPath = freezed,Object? photoPaths = null,Object? status = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,8 @@ as DateTime?,purchasePrice: null == purchasePrice ? _self.purchasePrice : purcha
 as double,estimatedValue: null == estimatedValue ? _self.estimatedValue : estimatedValue // ignore: cast_nullable_to_non_nullable
 as double,photoPath: freezed == photoPath ? _self.photoPath : photoPath // ignore: cast_nullable_to_non_nullable
 as String?,photoPaths: null == photoPaths ? _self.photoPaths : photoPaths // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<String>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CarModel() when $default != null:
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.status,_that.createdAt);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _CarModel():
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.status,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series, @JsonKey(name: 'purchase_date')  DateTime? purchaseDate, @JsonKey(name: 'purchase_price')  double purchasePrice, @JsonKey(name: 'estimated_value')  double estimatedValue, @JsonKey(name: 'photo_path')  String? photoPath, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _CarModel() when $default != null:
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.purchaseDate,_that.purchasePrice,_that.estimatedValue,_that.photoPath,_that.photoPaths,_that.status,_that.createdAt);case _:
   return null;
 
 }
@@ -220,7 +221,7 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 @JsonSerializable()
 
 class _CarModel extends CarModel {
-  const _CarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, @JsonKey(name: 'purchase_date') this.purchaseDate, @JsonKey(name: 'purchase_price') this.purchasePrice = 0.0, @JsonKey(name: 'estimated_value') this.estimatedValue = 0.0, @JsonKey(name: 'photo_path') this.photoPath, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths,super._();
+  const _CarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, @JsonKey(name: 'purchase_date') this.purchaseDate, @JsonKey(name: 'purchase_price') this.purchasePrice = 0.0, @JsonKey(name: 'estimated_value') this.estimatedValue = 0.0, @JsonKey(name: 'photo_path') this.photoPath, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], this.status = 'Nowy', @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths,super._();
   factory _CarModel.fromJson(Map<String, dynamic> json) => _$CarModelFromJson(json);
 
 @override final  String id;
@@ -240,6 +241,7 @@ class _CarModel extends CarModel {
   return EqualUnmodifiableListView(_photoPaths);
 }
 
+@override@JsonKey() final  String status;
 @override@JsonKey(name: 'created_at') final  DateTime createdAt;
 
 /// Create a copy of CarModel
@@ -255,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.purchaseDate, purchaseDate) || other.purchaseDate == purchaseDate)&&(identical(other.purchasePrice, purchasePrice) || other.purchasePrice == purchasePrice)&&(identical(other.estimatedValue, estimatedValue) || other.estimatedValue == estimatedValue)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other._photoPaths, _photoPaths)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.purchaseDate, purchaseDate) || other.purchaseDate == purchaseDate)&&(identical(other.purchasePrice, purchasePrice) || other.purchasePrice == purchasePrice)&&(identical(other.estimatedValue, estimatedValue) || other.estimatedValue == estimatedValue)&&(identical(other.photoPath, photoPath) || other.photoPath == photoPath)&&const DeepCollectionEquality().equals(other._photoPaths, _photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,purchaseDate,purchasePrice,estimatedValue,photoPath,const DeepCollectionEquality().hash(_photoPaths),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,purchaseDate,purchasePrice,estimatedValue,photoPath,const DeepCollectionEquality().hash(_photoPaths),status,createdAt);
 
 @override
 String toString() {
-  return 'CarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, purchaseDate: $purchaseDate, purchasePrice: $purchasePrice, estimatedValue: $estimatedValue, photoPath: $photoPath, photoPaths: $photoPaths, createdAt: $createdAt)';
+  return 'CarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, purchaseDate: $purchaseDate, purchasePrice: $purchasePrice, estimatedValue: $estimatedValue, photoPath: $photoPath, photoPaths: $photoPaths, status: $status, createdAt: $createdAt)';
 }
 
 
@@ -275,7 +277,7 @@ abstract mixin class _$CarModelCopyWith<$Res> implements $CarModelCopyWith<$Res>
   factory _$CarModelCopyWith(_CarModel value, $Res Function(_CarModel) _then) = __$CarModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series,@JsonKey(name: 'purchase_date') DateTime? purchaseDate,@JsonKey(name: 'purchase_price') double purchasePrice,@JsonKey(name: 'estimated_value') double estimatedValue,@JsonKey(name: 'photo_path') String? photoPath,@JsonKey(name: 'photo_paths') List<String> photoPaths,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series,@JsonKey(name: 'purchase_date') DateTime? purchaseDate,@JsonKey(name: 'purchase_price') double purchasePrice,@JsonKey(name: 'estimated_value') double estimatedValue,@JsonKey(name: 'photo_path') String? photoPath,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -292,7 +294,7 @@ class __$CarModelCopyWithImpl<$Res>
 
 /// Create a copy of CarModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? purchaseDate = freezed,Object? purchasePrice = null,Object? estimatedValue = null,Object? photoPath = freezed,Object? photoPaths = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? purchaseDate = freezed,Object? purchasePrice = null,Object? estimatedValue = null,Object? photoPath = freezed,Object? photoPaths = null,Object? status = null,Object? createdAt = null,}) {
   return _then(_CarModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -305,7 +307,8 @@ as DateTime?,purchasePrice: null == purchasePrice ? _self.purchasePrice : purcha
 as double,estimatedValue: null == estimatedValue ? _self.estimatedValue : estimatedValue // ignore: cast_nullable_to_non_nullable
 as double,photoPath: freezed == photoPath ? _self.photoPath : photoPath // ignore: cast_nullable_to_non_nullable
 as String?,photoPaths: null == photoPaths ? _self._photoPaths : photoPaths // ignore: cast_nullable_to_non_nullable
-as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<String>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }

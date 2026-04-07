@@ -36,6 +36,7 @@ void main() {
               purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
+              status: any(named: 'status'),
               photos: any(named: 'photos'),
               internetUrls: any(named: 'internetUrls'),
             )).thenAnswer((_) async {});
@@ -46,6 +47,7 @@ void main() {
         modelName: 'Speedster',
         purchasePrice: 10,
         estimatedValue: 15,
+        status: 'Nowy',
       ),
       expect: () => [
         const CarFormState.loading(),
@@ -64,6 +66,7 @@ void main() {
               purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
               estimatedValue: any(named: 'estimatedValue'),
+              status: any(named: 'status'),
               photos: any(named: 'photos'),
               internetUrls: any(named: 'internetUrls'),
             )).thenThrow(Exception('database error'));
@@ -74,6 +77,7 @@ void main() {
         modelName: 'Speedster',
         purchasePrice: 10,
         estimatedValue: 15,
+        status: 'Nowy',
       ),
       expect: () => [
         const CarFormState.loading(),

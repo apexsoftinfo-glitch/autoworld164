@@ -282,6 +282,7 @@ class _DetailGrid extends StatelessWidget {
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       children: [
+        _DetailItem(label: 'STAN', value: car.status.toUpperCase()),
         _DetailItem(label: 'SERIA', value: car.series ?? '-'),
         _DetailItem(label: 'DATA ZAKUPU', value: car.purchaseDate != null ? DateFormat('dd.MM.yyyy').format(car.purchaseDate!) : '-'),
         _DetailItem(label: 'CENA ZAKUPU', value: currencyFormat.format(car.purchasePrice)),

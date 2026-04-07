@@ -34,6 +34,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
   final List<String> _remainingPhotoPaths = [];
   final List<String> _internetPhotoUrls = [];
   DateTime? _purchaseDate;
+  late String _status;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
     }
     
     _purchaseDate = widget.car?.purchaseDate ?? DateTime.now();
+    _status = widget.car?.status ?? 'Nowy';
   }
 
   Future<void> _searchInternet(BuildContext context) async {
@@ -278,6 +280,13 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                   ),
                                 ],
                               ),
+                              const SizedBox(height: 16),
+
+                              _StatusInput(
+                                label: 'STAN',
+                                selectedStatus: _status,
+                                onChanged: (v) => setState(() => _status = v),
+                              ),
                               
                               if (state is CarFormError) ...[
                                 const SizedBox(height: 24),
@@ -301,6 +310,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                       purchaseDate: _purchaseDate,
                                       purchasePrice: double.parse(_purchasePriceController.text),
                                       estimatedValue: double.parse(_estimatedValueController.text),
+                                      status: _status,
                                       newPhotos: _newImages,
                                       photoUrls: _internetPhotoUrls,
                                       remainingPhotoPaths: _remainingPhotoPaths,
@@ -780,6 +790,72 @@ class _SeriesAutocomplete extends StatelessWidget {
               ),
             );
           },
+        ),
+      ],
+    );
+  }
+}
+
+class _StatusInput extends StatelessWidget {
+  final String label;
+  final String selectedStatus;
+  final ValueChanged<String> onChanged;
+
+  const _StatusInput({
+    required this.label,
+    required this.selectedStatus,
+    required this.onChanged,
+  });
+
+  static const _options = [
+    'Nowy',
+    'Lekko uszkodzony',
+    'Uszkodzony',
+    'Luzak (bez opakowania)',
+    'Inne',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 12),
+          child: Text(
+            label.toUpperCase(),
+            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+          ),
+        ),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: _options.map((opt) {
+            final isSelected = selectedStatus == opt;
+            return GestureDetector(
+              onTap: () => onChanged(opt),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
+                    width: isSelected ? 2 : 1,
+                  ),
+                ),
+                child: Text(
+                  opt.toUpperCase(),
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.white60,
+                    fontSize: 10,
+                    fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ],
     );
