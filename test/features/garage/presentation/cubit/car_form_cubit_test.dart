@@ -81,7 +81,7 @@ void main() {
       ),
       expect: () => [
         const CarFormState.loading(),
-        const CarFormState.error('errorUnknown'),
+        const CarFormState.error('errorNetwork'),
       ],
     );
   });
