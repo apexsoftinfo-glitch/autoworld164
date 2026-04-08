@@ -11,6 +11,7 @@ import 'package:myapp/features/subscription/data/repositories/subscription_repos
 import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
 import 'package:myapp/features/news/data/news_repository.dart';
 import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart';
+import 'package:myapp/features/settings/data/repositories/settings_repository.dart';
 
 import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
@@ -29,6 +30,7 @@ class MockSubscriptionRepository extends Mock
 class MockAppLocaleRepository extends Mock implements AppLocaleRepository {}
 
 class MockSessionRepository extends Mock implements SessionRepository {}
+class MockSettingsRepository extends Mock implements SettingsRepository {}
 
 AuthPrincipalModel buildPrincipal({
   required String userId,

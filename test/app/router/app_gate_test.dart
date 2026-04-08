@@ -9,6 +9,8 @@ import 'package:myapp/app/session/models/session_status_model.dart';
 import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
 import 'package:myapp/core/di/injection.dart';
 import 'package:myapp/features/auth/presentation/cubit/welcome_cubit.dart';
+import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:myapp/features/settings/presentation/settings_cubit.dart';
 import 'package:myapp/l10n/generated/app_localizations.dart';
 
 import '../../support/mocks.dart';
@@ -34,6 +36,16 @@ void main() {
 
     await getIt.reset();
     getIt.registerFactory<WelcomeCubit>(() => WelcomeCubit(authRepository));
+    final mockCarsCollectionCubit = MockCarsCollectionCubit();
+    when(() => mockCarsCollectionCubit.state).thenReturn(const CarsCollectionState.initial());
+    when(() => mockCarsCollectionCubit.stream).thenAnswer((_) => const Stream.empty());
+
+    getIt.registerFactory<CarsCollectionCubit>(() => mockCarsCollectionCubit);
+    getIt.registerLazySingleton<SettingsCubit>( (() => SettingsCubit(
+      MockSettingsRepository(),
+      MockSharedUserRepository(),
+      authRepository,
+    )));
   });
 
   tearDown(() async {

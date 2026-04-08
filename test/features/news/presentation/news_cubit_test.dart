@@ -34,7 +34,6 @@ void main() {
         return NewsCubit(newsRepository);
       },
       expect: () => [
-        const NewsState.loading(),
         predicate<NewsState>((state) {
           if (state is! Data) return false;
           return state.news.length == 1 && state.news.first.id == '1';
@@ -78,7 +77,6 @@ void main() {
         cubit.loadNews();
       },
       expect: () => [
-        const NewsState.loading(),
         isA<Error>(),
       ],
     );

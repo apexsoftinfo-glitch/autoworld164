@@ -51,7 +51,7 @@ void main() {
           filteredCars: mockCars,
           totalPurchasePrice: 15.0,
           totalEstimatedValue: 20.0,
-          brandStats: {'Hot Wheels': 1, 'Matchbox': 1},
+          brandStats: const {'Hot Wheels': 1, 'Matchbox': 1},
           query: '',
           viewType: CollectionViewType.grid,
         ),
