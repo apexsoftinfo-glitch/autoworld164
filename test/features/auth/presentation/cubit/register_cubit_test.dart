@@ -46,7 +46,7 @@ void main() {
         cubit.register(email: 'guest@example.com', password: 'secret123'),
     expect: () => [
       const RegisterState.initial(isLoading: true),
-      const RegisterState.initial(isLoading: false, errorKey: 'email_error'),
+      const RegisterState.initial(isLoading: false, errorKey: 'email_already_in_use'),
     ],
   );
 }

@@ -72,12 +72,15 @@ void main() {
             .thenAnswer((_) => Stream.value(<NewsModel>[]));
         return NewsCubit(newsRepository);
       },
-      act: (cubit) => cubit.loadNews(),
+      act: (cubit) {
+        when(() => newsRepository.watchNews())
+            .thenAnswer((_) => Stream.error(Exception('fail')));
+        cubit.loadNews();
+      },
       expect: () => [
-        // Using contains instead of exact list if I could, but here I'll just check Error
+        const NewsState.loading(),
         isA<Error>(),
       ],
-      // We skip exact expect list to avoid sync/async race condition with Loading
     );
   });
 }
