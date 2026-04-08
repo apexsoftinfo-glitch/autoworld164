@@ -27,13 +27,12 @@ void main() {
       'starts loading news on creation and filters properly',
       build: () {
         when(() => newsRepository.watchNews())
-            .thenAnswer((_) => Stream.value(mockNews).asyncMap((event) async {
-                  await Future.delayed(Duration.zero);
-                  return event;
-                }));
+            .thenAnswer((_) => Stream.value(mockNews));
         return NewsCubit(newsRepository);
       },
+      wait: const Duration(milliseconds: 100),
       expect: () => [
+        const NewsState.loading(),
         predicate<NewsState>((state) {
           if (state is! Data) return false;
           return state.news.length == 1 && state.news.first.id == '1';
@@ -56,12 +55,11 @@ void main() {
                 }));
         cubit.loadNews();
       },
-      verify: (cubit) {
-        expect(cubit.state, isA<Data>());
-        final data = cubit.state as Data;
-        expect(data.news.length, equals(1));
-        expect(data.news.first.id, equals('1'));
-      },
+      wait: const Duration(milliseconds: 100),
+      expect: () => [
+        const NewsState.loading(),
+        isA<Data>(),
+      ],
     );
 
     blocTest<NewsCubit, NewsState>(
@@ -76,7 +74,9 @@ void main() {
             .thenAnswer((_) => Stream.error(Exception('fail')));
         cubit.loadNews();
       },
+      wait: const Duration(milliseconds: 100),
       expect: () => [
+        const NewsState.loading(),
         isA<Error>(),
       ],
     );

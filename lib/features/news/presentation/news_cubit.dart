@@ -15,7 +15,7 @@ class NewsCubit extends Cubit<NewsState> {
   Timer? _refreshTimer;
 
   NewsCubit(this._repository) : super(const NewsState.initial()) {
-    loadNews();
+    Future.microtask(() => loadNews());
     _startRefreshTimer();
   }
 

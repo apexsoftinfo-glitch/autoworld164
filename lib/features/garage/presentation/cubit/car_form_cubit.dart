@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
 import 'package:myapp/features/garage/models/car_model.dart';
+import '../../../../shared/error_messages.dart';
 import 'package:flutter/foundation.dart';
 
 part 'car_form_cubit.freezed.dart';
@@ -84,7 +85,7 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit saveCar error: $e\n$stack');
-      emit(const CarFormState.error('errorUnknown'));
+      emit(CarFormState.error(mapErrorToKey(e)));
     }
   }
 
@@ -97,7 +98,7 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit deleteCar error: $e\n$stack');
-      emit(const CarFormState.error('errorUnknown'));
+      emit(CarFormState.error(mapErrorToKey(e)));
     }
   }
 }

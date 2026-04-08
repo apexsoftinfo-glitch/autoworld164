@@ -12,18 +12,17 @@ import '../../garage/ui/car_form_screen.dart';
 import '../../../app/session/presentation/cubit/session_cubit.dart';
 import '../../hunting/ui/hunting_screen.dart';
 import '../../settings/presentation/settings_cubit.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userId = Supabase.instance.client.auth.currentUser?.id;
+    final userId = context.read<SessionCubit>().state.sessionOrNull?.userId;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<CarsCollectionCubit>()),
-        BlocProvider.value(value: getIt<SessionCubit>()),
+        BlocProvider.value(value: context.read<SessionCubit>()),
         if (userId != null)
           BlocProvider(create: (context) => getIt<SettingsCubit>()..init(userId)),
       ],

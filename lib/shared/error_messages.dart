@@ -23,7 +23,7 @@ String mapErrorToKey(Object error) {
     return 'password_error';
   }
 
-  if (message.contains('network')) {
+  if (message.contains('network') || message.contains('database') || message.contains('postgres')) {
     return 'network_error';
   }
 
