@@ -2,7 +2,7 @@
 
 ## Identity
 - **APP_DISPLAY_NAME**: AutoWorld164
-- **APP_BUNDLE_ID**: `com.anatolkaramanyan.autoworld`
+- **APP_BUNDLE_ID**: `com.anatolkaramanyan.autoworld164`
 - **SUPABASE_TABLE_PREFIX**: `autoworld_`
 - **Autor**: Anatol Karamanyan
 

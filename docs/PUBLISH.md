@@ -7,7 +7,7 @@ Ten dokument zawiera gotowe dane ASO oraz techniczne informacje potrzebne do pub
 ## 📌 1. Informacje Uniwersalne (General Info)
 
 - **App Name**: AutoWorld164
-- **Bundle ID**: com.anatolkaramanyan.autoworld
+- **Bundle ID**: com.anatolkaramanyan.autoworld164
 - **Support Email**: apex.soft.info@gmail.com
 - **Privacy Policy URL**: https://twelveappschallenge-platform.web.app/legal/eb984589-f6a7-4fcb-8f86-727cb6940105/privacy-policy
 - **Delete Account URL**: https://twelveappschallenge-platform.web.app/legal/eb984589-f6a7-4fcb-8f86-727cb6940105/delete-account
