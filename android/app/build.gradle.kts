@@ -55,14 +55,22 @@ android {
     //      to prevent silent debug-signed builds that Google Play rejects.
     signingConfigs {
         create("release") {
-            val kStoreFile = keystoreProperties["storeFile"] as? String
-                ?: System.getenv("CM_KEYSTORE_PATH")
-            val kStorePassword = keystoreProperties["storePassword"] as? String
-                ?: System.getenv("CM_KEYSTORE_PASSWORD")
-            val kKeyAlias = keystoreProperties["keyAlias"] as? String
-                ?: System.getenv("CM_KEY_ALIAS")
-            val kKeyPassword = keystoreProperties["keyPassword"] as? String
-                ?: System.getenv("CM_KEY_PASSWORD")
+            fun getVal(key: String, env: String): String? {
+                val p = keystoreProperties[key] as? String
+                val e = System.getenv(env)
+                val isCI = System.getenv("CI") == "true"
+
+                // In CI, prioritize environment variables to ensure Codemagic settings win.
+                if (isCI && e != null && e.isNotEmpty()) return e
+                // Otherwise use property if it's not the template placeholder.
+                if (p != null && p.isNotEmpty() && p != "TWOJE_HASLO") return p
+                return e
+            }
+
+            val kStoreFile = getVal("storeFile", "CM_KEYSTORE_PATH")
+            val kStorePassword = getVal("storePassword", "CM_KEYSTORE_PASSWORD")
+            val kKeyAlias = getVal("keyAlias", "CM_KEY_ALIAS")
+            val kKeyPassword = getVal("keyPassword", "CM_KEY_PASSWORD")
 
             if (kStoreFile != null && kStorePassword != null
                 && kKeyAlias != null && kKeyPassword != null
