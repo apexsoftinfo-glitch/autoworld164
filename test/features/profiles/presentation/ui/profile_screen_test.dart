@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/locale/models/app_locale_option_model.dart';
-import 'package:myapp/app/locale/presentation/cubit/app_locale_cubit.dart';
-import 'package:myapp/app/profile/presentation/cubit/account_actions_cubit.dart';
-import 'package:myapp/app/session/models/session_status_model.dart';
-import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
-import 'package:myapp/core/di/injection.dart';
-import 'package:myapp/features/profiles/presentation/cubit/profile_cubit.dart';
-import 'package:myapp/features/profiles/presentation/ui/profile_screen.dart';
-import 'package:myapp/l10n/generated/app_localizations.dart';
+import 'package:autoworld164/app/locale/models/app_locale_option_model.dart';
+import 'package:autoworld164/app/locale/presentation/cubit/app_locale_cubit.dart';
+import 'package:autoworld164/app/profile/presentation/cubit/account_actions_cubit.dart';
+import 'package:autoworld164/app/session/models/session_status_model.dart';
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
+import 'package:autoworld164/core/di/injection.dart';
+import 'package:autoworld164/features/profiles/presentation/cubit/profile_cubit.dart';
+import 'package:autoworld164/features/profiles/presentation/ui/profile_screen.dart';
+import 'package:autoworld164/l10n/generated/app_localizations.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../support/mocks.dart';

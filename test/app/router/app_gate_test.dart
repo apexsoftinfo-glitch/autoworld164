@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/router/app_gate.dart';
-import 'package:myapp/app/session/models/session_status_model.dart';
-import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
-import 'package:myapp/core/di/injection.dart';
-import 'package:myapp/features/auth/presentation/cubit/welcome_cubit.dart';
-import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
-import 'package:myapp/features/settings/presentation/settings_cubit.dart';
-import 'package:myapp/l10n/generated/app_localizations.dart';
+import 'package:autoworld164/app/router/app_gate.dart';
+import 'package:autoworld164/app/session/models/session_status_model.dart';
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
+import 'package:autoworld164/core/di/injection.dart';
+import 'package:autoworld164/features/auth/presentation/cubit/welcome_cubit.dart';
+import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/features/settings/presentation/settings_cubit.dart';
+import 'package:autoworld164/l10n/generated/app_localizations.dart';
 
 import '../../support/mocks.dart';
 

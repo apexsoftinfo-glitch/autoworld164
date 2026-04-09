@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/session/data/repositories/session_repository.dart';
-import 'package:myapp/app/session/models/session_status_model.dart';
+import 'package:autoworld164/app/session/data/repositories/session_repository.dart';
+import 'package:autoworld164/app/session/models/session_status_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../support/mocks.dart';

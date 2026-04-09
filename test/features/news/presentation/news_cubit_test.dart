@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/features/news/models/news_model.dart';
-import 'package:myapp/features/news/presentation/news_cubit.dart';
+import 'package:autoworld164/features/news/models/news_model.dart';
+import 'package:autoworld164/features/news/presentation/news_cubit.dart';
 
 import '../../../support/mocks.dart';
 

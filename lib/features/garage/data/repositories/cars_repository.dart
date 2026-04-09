@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart';
-import 'package:myapp/features/garage/models/car_model.dart';
+import 'package:autoworld164/features/garage/data/data_sources/cars_data_source.dart';
+import 'package:autoworld164/features/garage/models/car_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class CarsRepository {

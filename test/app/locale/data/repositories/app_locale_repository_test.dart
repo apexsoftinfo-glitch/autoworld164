@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myapp/app/locale/data/datasources/app_locale_data_source.dart';
-import 'package:myapp/app/locale/data/repositories/app_locale_repository.dart';
-import 'package:myapp/app/locale/models/app_locale_option_model.dart';
+import 'package:autoworld164/app/locale/data/datasources/app_locale_data_source.dart';
+import 'package:autoworld164/app/locale/data/repositories/app_locale_repository.dart';
+import 'package:autoworld164/app/locale/models/app_locale_option_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

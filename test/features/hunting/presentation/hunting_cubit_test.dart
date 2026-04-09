@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart';
-import 'package:myapp/features/hunting/presentation/cubit/hunting_cubit.dart';
+import 'package:autoworld164/features/hunting/data/repositories/hunting_repository.dart';
+import 'package:autoworld164/features/hunting/presentation/cubit/hunting_cubit.dart';
 
 import '../../../support/mocks.dart';
 

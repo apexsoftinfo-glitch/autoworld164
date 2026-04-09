@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/session/models/session_status_model.dart';
-import 'package:myapp/app/session/presentation/cubit/session_cubit.dart';
+import 'package:autoworld164/app/session/models/session_status_model.dart';
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
 
 import '../../../../support/mocks.dart';
 

@@ -1,19 +1,19 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/locale/data/repositories/app_locale_repository.dart';
-import 'package:myapp/app/session/data/repositories/session_repository.dart';
-import 'package:myapp/app/session/models/session_status_model.dart';
-import 'package:myapp/app/session/models/user_session_model.dart';
-import 'package:myapp/features/auth/data/repositories/auth_repository.dart';
-import 'package:myapp/features/auth/models/auth_principal_model.dart';
-import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart';
-import 'package:myapp/features/profiles/models/shared_user_model.dart';
-import 'package:myapp/features/subscription/data/repositories/subscription_repository.dart';
-import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
-import 'package:myapp/features/news/data/news_repository.dart';
-import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart';
-import 'package:myapp/features/settings/data/repositories/settings_repository.dart';
+import 'package:autoworld164/app/locale/data/repositories/app_locale_repository.dart';
+import 'package:autoworld164/app/session/data/repositories/session_repository.dart';
+import 'package:autoworld164/app/session/models/session_status_model.dart';
+import 'package:autoworld164/app/session/models/user_session_model.dart';
+import 'package:autoworld164/features/auth/data/repositories/auth_repository.dart';
+import 'package:autoworld164/features/auth/models/auth_principal_model.dart';
+import 'package:autoworld164/features/profiles/data/repositories/shared_user_repository.dart';
+import 'package:autoworld164/features/profiles/models/shared_user_model.dart';
+import 'package:autoworld164/features/subscription/data/repositories/subscription_repository.dart';
+import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
+import 'package:autoworld164/features/news/data/news_repository.dart';
+import 'package:autoworld164/features/hunting/data/repositories/hunting_repository.dart';
+import 'package:autoworld164/features/settings/data/repositories/settings_repository.dart';
 
-import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 class MockCarsRepository extends Mock implements CarsRepository {}

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/features/auth/presentation/cubit/login_cubit.dart';
+import 'package:autoworld164/features/auth/presentation/cubit/login_cubit.dart';
 
 import '../../../../support/mocks.dart';
 

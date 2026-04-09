@@ -9,63 +9,64 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:autoworld164/app/locale/data/datasources/app_locale_data_source.dart'
+    as _i953;
+import 'package:autoworld164/app/locale/data/repositories/app_locale_repository.dart'
+    as _i186;
+import 'package:autoworld164/app/locale/presentation/cubit/app_locale_cubit.dart'
+    as _i1011;
+import 'package:autoworld164/app/profile/presentation/cubit/account_actions_cubit.dart'
+    as _i492;
+import 'package:autoworld164/app/session/data/repositories/session_repository.dart'
+    as _i769;
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart'
+    as _i161;
+import 'package:autoworld164/core/di/app_module.dart' as _i68;
+import 'package:autoworld164/features/auth/data/datasources/auth_data_source.dart'
+    as _i683;
+import 'package:autoworld164/features/auth/data/repositories/auth_repository.dart'
+    as _i31;
+import 'package:autoworld164/features/auth/presentation/cubit/login_cubit.dart'
+    as _i91;
+import 'package:autoworld164/features/auth/presentation/cubit/register_cubit.dart'
+    as _i122;
+import 'package:autoworld164/features/auth/presentation/cubit/welcome_cubit.dart'
+    as _i948;
+import 'package:autoworld164/features/garage/data/data_sources/cars_data_source.dart'
+    as _i482;
+import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart'
+    as _i421;
+import 'package:autoworld164/features/garage/presentation/cubit/car_form_cubit.dart'
+    as _i158;
+import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart'
+    as _i615;
+import 'package:autoworld164/features/garage/presentation/cubit/search_photos_cubit.dart'
+    as _i1018;
+import 'package:autoworld164/features/hunting/data/repositories/hunting_repository.dart'
+    as _i813;
+import 'package:autoworld164/features/hunting/presentation/cubit/hunting_cubit.dart'
+    as _i328;
+import 'package:autoworld164/features/news/data/news_repository.dart' as _i225;
+import 'package:autoworld164/features/news/presentation/news_cubit.dart'
+    as _i537;
+import 'package:autoworld164/features/profiles/data/datasources/shared_user_data_source.dart'
+    as _i956;
+import 'package:autoworld164/features/profiles/data/repositories/shared_user_repository.dart'
+    as _i832;
+import 'package:autoworld164/features/profiles/presentation/cubit/profile_cubit.dart'
+    as _i146;
+import 'package:autoworld164/features/settings/data/datasources/settings_data_source.dart'
+    as _i1022;
+import 'package:autoworld164/features/settings/data/repositories/settings_repository.dart'
+    as _i173;
+import 'package:autoworld164/features/settings/presentation/settings_cubit.dart'
+    as _i496;
+import 'package:autoworld164/features/subscription/data/datasources/subscription_data_source.dart'
+    as _i604;
+import 'package:autoworld164/features/subscription/data/repositories/subscription_repository.dart'
+    as _i461;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:myapp/app/locale/data/datasources/app_locale_data_source.dart'
-    as _i634;
-import 'package:myapp/app/locale/data/repositories/app_locale_repository.dart'
-    as _i910;
-import 'package:myapp/app/locale/presentation/cubit/app_locale_cubit.dart'
-    as _i686;
-import 'package:myapp/app/profile/presentation/cubit/account_actions_cubit.dart'
-    as _i639;
-import 'package:myapp/app/session/data/repositories/session_repository.dart'
-    as _i526;
-import 'package:myapp/app/session/presentation/cubit/session_cubit.dart'
-    as _i934;
-import 'package:myapp/core/di/app_module.dart' as _i832;
-import 'package:myapp/features/auth/data/datasources/auth_data_source.dart'
-    as _i538;
-import 'package:myapp/features/auth/data/repositories/auth_repository.dart'
-    as _i37;
-import 'package:myapp/features/auth/presentation/cubit/login_cubit.dart'
-    as _i918;
-import 'package:myapp/features/auth/presentation/cubit/register_cubit.dart'
-    as _i27;
-import 'package:myapp/features/auth/presentation/cubit/welcome_cubit.dart'
-    as _i491;
-import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart'
-    as _i491;
-import 'package:myapp/features/garage/data/repositories/cars_repository.dart'
-    as _i630;
-import 'package:myapp/features/garage/presentation/cubit/car_form_cubit.dart'
-    as _i885;
-import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart'
-    as _i182;
-import 'package:myapp/features/garage/presentation/cubit/search_photos_cubit.dart'
-    as _i537;
-import 'package:myapp/features/hunting/data/repositories/hunting_repository.dart'
-    as _i988;
-import 'package:myapp/features/hunting/presentation/cubit/hunting_cubit.dart'
-    as _i361;
-import 'package:myapp/features/news/data/news_repository.dart' as _i897;
-import 'package:myapp/features/news/presentation/news_cubit.dart' as _i11;
-import 'package:myapp/features/profiles/data/datasources/shared_user_data_source.dart'
-    as _i381;
-import 'package:myapp/features/profiles/data/repositories/shared_user_repository.dart'
-    as _i636;
-import 'package:myapp/features/profiles/presentation/cubit/profile_cubit.dart'
-    as _i463;
-import 'package:myapp/features/settings/data/datasources/settings_data_source.dart'
-    as _i0;
-import 'package:myapp/features/settings/data/repositories/settings_repository.dart'
-    as _i145;
-import 'package:myapp/features/settings/presentation/settings_cubit.dart'
-    as _i336;
-import 'package:myapp/features/subscription/data/datasources/subscription_data_source.dart'
-    as _i138;
-import 'package:myapp/features/subscription/data/repositories/subscription_repository.dart'
-    as _i894;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
@@ -82,109 +83,109 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
-    gh.lazySingleton<_i897.NewsDataSource>(
-      () => _i897.NewsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    gh.lazySingleton<_i813.HuntingRepository>(
+      () => _i813.HuntingRepositoryImpl(),
     );
-    gh.lazySingleton<_i138.SubscriptionDataSource>(
-      () => _i138.FakeSubscriptionDataSource(),
+    gh.lazySingleton<_i604.SubscriptionDataSource>(
+      () => _i604.FakeSubscriptionDataSource(),
     );
-    gh.lazySingleton<_i894.SubscriptionRepository>(
+    gh.lazySingleton<_i461.SubscriptionRepository>(
       () =>
-          _i894.SubscriptionRepositoryImpl(gh<_i138.SubscriptionDataSource>()),
+          _i461.SubscriptionRepositoryImpl(gh<_i604.SubscriptionDataSource>()),
     );
-    gh.lazySingleton<_i491.CarsDataSource>(
-      () => _i491.CarsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    gh.factory<_i328.HuntingCubit>(
+      () => _i328.HuntingCubit(gh<_i813.HuntingRepository>()),
     );
-    gh.lazySingleton<_i897.NewsRepository>(
-      () => _i897.NewsRepositoryImpl(gh<_i897.NewsDataSource>()),
+    gh.lazySingleton<_i482.CarsDataSource>(
+      () => _i482.CarsDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i988.HuntingRepository>(
-      () => _i988.HuntingRepositoryImpl(),
+    gh.lazySingleton<_i421.CarsRepository>(
+      () => _i421.CarsRepositoryImpl(gh<_i482.CarsDataSource>()),
     );
-    gh.lazySingleton<_i634.AppLocaleDataSource>(
-      () => _i634.SharedPreferencesAppLocaleDataSource(
+    gh.lazySingleton<_i225.NewsDataSource>(
+      () => _i225.NewsDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i1018.SearchPhotosCubit>(
+      () => _i1018.SearchPhotosCubit(gh<_i421.CarsRepository>()),
+    );
+    gh.lazySingleton<_i953.AppLocaleDataSource>(
+      () => _i953.SharedPreferencesAppLocaleDataSource(
         gh<_i460.SharedPreferences>(),
       ),
     );
-    gh.lazySingleton<_i381.SharedUserDataSource>(
-      () => _i381.SupabaseSharedUserDataSource(gh<_i454.SupabaseClient>()),
+    gh.lazySingleton<_i1022.SettingsDataSource>(
+      () => _i1022.SupabaseSettingsDataSource(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i0.SettingsDataSource>(
-      () => _i0.SupabaseSettingsDataSource(gh<_i454.SupabaseClient>()),
+    gh.factory<_i158.CarFormCubit>(
+      () => _i158.CarFormCubit(gh<_i421.CarsRepository>()),
     );
-    gh.lazySingleton<_i538.AuthDataSource>(
-      () => _i538.SupabaseAuthDataSource(gh<_i454.SupabaseClient>()),
+    gh.factory<_i615.CarsCollectionCubit>(
+      () => _i615.CarsCollectionCubit(gh<_i421.CarsRepository>()),
     );
-    gh.factory<_i11.NewsCubit>(
-      () => _i11.NewsCubit(gh<_i897.NewsRepository>()),
+    gh.lazySingleton<_i956.SharedUserDataSource>(
+      () => _i956.SupabaseSharedUserDataSource(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i910.AppLocaleRepository>(
-      () => _i910.AppLocaleRepositoryImpl(gh<_i634.AppLocaleDataSource>()),
+    gh.lazySingleton<_i683.AuthDataSource>(
+      () => _i683.SupabaseAuthDataSource(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i145.SettingsRepository>(
-      () => _i145.SettingsRepositoryImpl(gh<_i0.SettingsDataSource>()),
+    gh.lazySingleton<_i31.AuthRepository>(
+      () => _i31.AuthRepositoryImpl(gh<_i683.AuthDataSource>()),
     );
-    gh.lazySingleton<_i630.CarsRepository>(
-      () => _i630.CarsRepositoryImpl(gh<_i491.CarsDataSource>()),
+    gh.factory<_i91.LoginCubit>(
+      () => _i91.LoginCubit(gh<_i31.AuthRepository>()),
     );
-    gh.lazySingleton<_i636.SharedUserRepository>(
-      () => _i636.SharedUserRepositoryImpl(gh<_i381.SharedUserDataSource>()),
+    gh.factory<_i122.RegisterCubit>(
+      () => _i122.RegisterCubit(gh<_i31.AuthRepository>()),
     );
-    gh.factory<_i463.ProfileCubit>(
-      () => _i463.ProfileCubit(gh<_i636.SharedUserRepository>()),
+    gh.factory<_i948.WelcomeCubit>(
+      () => _i948.WelcomeCubit(gh<_i31.AuthRepository>()),
     );
-    gh.lazySingleton<_i37.AuthRepository>(
-      () => _i37.AuthRepositoryImpl(gh<_i538.AuthDataSource>()),
-    );
-    gh.factory<_i361.HuntingCubit>(
-      () => _i361.HuntingCubit(gh<_i988.HuntingRepository>()),
-    );
-    gh.factory<_i336.SettingsCubit>(
-      () => _i336.SettingsCubit(
-        gh<_i145.SettingsRepository>(),
-        gh<_i636.SharedUserRepository>(),
-        gh<_i37.AuthRepository>(),
+    gh.factory<_i492.AccountActionsCubit>(
+      () => _i492.AccountActionsCubit(
+        gh<_i31.AuthRepository>(),
+        gh<_i461.SubscriptionRepository>(),
       ),
     );
-    gh.lazySingleton<_i686.AppLocaleCubit>(
-      () => _i686.AppLocaleCubit(gh<_i910.AppLocaleRepository>()),
+    gh.lazySingleton<_i173.SettingsRepository>(
+      () => _i173.SettingsRepositoryImpl(gh<_i1022.SettingsDataSource>()),
     );
-    gh.factory<_i885.CarFormCubit>(
-      () => _i885.CarFormCubit(gh<_i630.CarsRepository>()),
+    gh.lazySingleton<_i225.NewsRepository>(
+      () => _i225.NewsRepositoryImpl(gh<_i225.NewsDataSource>()),
     );
-    gh.factory<_i182.CarsCollectionCubit>(
-      () => _i182.CarsCollectionCubit(gh<_i630.CarsRepository>()),
+    gh.lazySingleton<_i186.AppLocaleRepository>(
+      () => _i186.AppLocaleRepositoryImpl(gh<_i953.AppLocaleDataSource>()),
     );
-    gh.lazySingleton<_i526.SessionRepository>(
-      () => _i526.SessionRepositoryImpl(
-        gh<_i37.AuthRepository>(),
-        gh<_i636.SharedUserRepository>(),
-        gh<_i894.SubscriptionRepository>(),
+    gh.factory<_i537.NewsCubit>(
+      () => _i537.NewsCubit(gh<_i225.NewsRepository>()),
+    );
+    gh.lazySingleton<_i832.SharedUserRepository>(
+      () => _i832.SharedUserRepositoryImpl(gh<_i956.SharedUserDataSource>()),
+    );
+    gh.lazySingleton<_i769.SessionRepository>(
+      () => _i769.SessionRepositoryImpl(
+        gh<_i31.AuthRepository>(),
+        gh<_i832.SharedUserRepository>(),
+        gh<_i461.SubscriptionRepository>(),
       ),
     );
-    gh.factory<_i918.LoginCubit>(
-      () => _i918.LoginCubit(gh<_i37.AuthRepository>()),
+    gh.lazySingleton<_i161.SessionCubit>(
+      () => _i161.SessionCubit(gh<_i769.SessionRepository>()),
     );
-    gh.factory<_i27.RegisterCubit>(
-      () => _i27.RegisterCubit(gh<_i37.AuthRepository>()),
+    gh.lazySingleton<_i1011.AppLocaleCubit>(
+      () => _i1011.AppLocaleCubit(gh<_i186.AppLocaleRepository>()),
     );
-    gh.factory<_i491.WelcomeCubit>(
-      () => _i491.WelcomeCubit(gh<_i37.AuthRepository>()),
+    gh.factory<_i146.ProfileCubit>(
+      () => _i146.ProfileCubit(gh<_i832.SharedUserRepository>()),
     );
-    gh.factory<_i537.SearchPhotosCubit>(
-      () => _i537.SearchPhotosCubit(gh<_i630.CarsRepository>()),
-    );
-    gh.factory<_i639.AccountActionsCubit>(
-      () => _i639.AccountActionsCubit(
-        gh<_i37.AuthRepository>(),
-        gh<_i894.SubscriptionRepository>(),
+    gh.factory<_i496.SettingsCubit>(
+      () => _i496.SettingsCubit(
+        gh<_i173.SettingsRepository>(),
+        gh<_i832.SharedUserRepository>(),
+        gh<_i31.AuthRepository>(),
       ),
-    );
-    gh.lazySingleton<_i934.SessionCubit>(
-      () => _i934.SessionCubit(gh<_i526.SessionRepository>()),
     );
     return this;
   }
 }
 
-class _$AppModule extends _i832.AppModule {}
+class _$AppModule extends _i68.AppModule {}

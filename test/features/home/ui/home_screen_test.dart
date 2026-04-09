@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myapp/features/home/ui/home_screen.dart';
-import 'package:myapp/l10n/generated/app_localizations.dart';
+import 'package:autoworld164/features/home/ui/home_screen.dart';
+import 'package:autoworld164/l10n/generated/app_localizations.dart';
 
-import 'package:myapp/core/di/injection.dart';
-import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/core/di/injection.dart';
+import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../support/mocks.dart';

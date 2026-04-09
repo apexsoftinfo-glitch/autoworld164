@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/features/garage/data/data_sources/cars_data_source.dart';
-import 'package:myapp/features/garage/data/repositories/cars_repository.dart';
-import 'package:myapp/features/garage/models/car_model.dart';
+import 'package:autoworld164/features/garage/data/data_sources/cars_data_source.dart';
+import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
+import 'package:autoworld164/features/garage/models/car_model.dart';
 import 'dart:io';
 
 class MockCarsDataSource extends Mock implements CarsDataSource {}

@@ -2,8 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/app/locale/models/app_locale_option_model.dart';
-import 'package:myapp/app/locale/presentation/cubit/app_locale_cubit.dart';
+import 'package:autoworld164/app/locale/models/app_locale_option_model.dart';
+import 'package:autoworld164/app/locale/presentation/cubit/app_locale_cubit.dart';
 
 import '../../../../support/mocks.dart';
 

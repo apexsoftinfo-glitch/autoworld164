@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:myapp/features/garage/models/car_model.dart';
-import 'package:myapp/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/features/garage/models/car_model.dart';
+import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
 import '../../../../support/mocks.dart';
 
