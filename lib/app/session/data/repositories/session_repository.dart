@@ -125,7 +125,18 @@ class SessionRepositoryImpl implements SessionRepository {
 
   void _startSessionStream() {
     _sessionSubscription?.cancel();
-    _sessionSubscription = _buildSessionStream().listen(
+    _sessionSubscription = RetryWhenStream<SessionStatusModel>(
+      () => _buildSessionStream(),
+      (Object error, StackTrace stackTrace) {
+        final errorStr = error.toString();
+        if (errorStr.contains('RealtimeSubscribeException') || 
+            errorStr.contains('timedOut')) {
+          debugPrint('ℹ️ [SessionRepository] Realtime timeout detected, retrying session stream in 2s...');
+          return Stream<void>.value(null).delay(const Duration(seconds: 2));
+        }
+        return Stream<void>.error(error, stackTrace);
+      },
+    ).listen(
       _controller.add,
       onError: (Object error, StackTrace stackTrace) {
         debugPrint('❌ [SessionRepository] stream error: $error');
