@@ -215,8 +215,8 @@ return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUr
 /// @nodoc
 @JsonSerializable()
 
-class _NewsModel implements NewsModel {
-  const _NewsModel({required this.id, @JsonKey(name: 'created_at') required this.createdAt, required this.title, required this.content, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'image_urls') final  List<String> imageUrls = const [], this.author, this.category}): _imageUrls = imageUrls;
+class _NewsModel extends NewsModel {
+  const _NewsModel({required this.id, @JsonKey(name: 'created_at') required this.createdAt, required this.title, required this.content, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'image_urls') final  List<String> imageUrls = const [], this.author, this.category}): _imageUrls = imageUrls,super._();
   factory _NewsModel.fromJson(Map<String, dynamic> json) => _$NewsModelFromJson(json);
 
 @override final  String id;

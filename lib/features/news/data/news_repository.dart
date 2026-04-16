@@ -1,6 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/news_model.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class NewsDataSource {
   Future<List<Map<String, dynamic>>> getNews();
@@ -24,10 +26,23 @@ class NewsDataSourceImpl implements NewsDataSource {
 
   @override
   Stream<List<Map<String, dynamic>>> watchNews() {
-    return _supabase
-        .from('autoworld_news')
-        .stream(primaryKey: ['id'])
-        .order('created_at', ascending: false);
+    return RetryWhenStream<List<Map<String, dynamic>>>(
+      () => _supabase
+          .from('autoworld_news')
+          .stream(primaryKey: ['id'])
+          .order('created_at', ascending: false),
+      (Object error, StackTrace stackTrace) {
+        final errorStr = error.toString();
+        if (errorStr.contains('RealtimeSubscribeException') ||
+            errorStr.contains('timedOut')) {
+          debugPrint(
+            'ℹ️ [NewsDataSource] Realtime timeout detected, retrying watchNews in 2s...',
+          );
+          return Stream<void>.value(null).delay(const Duration(seconds: 2));
+        }
+        return Stream<void>.error(error, stackTrace);
+      },
+    );
   }
 }
 

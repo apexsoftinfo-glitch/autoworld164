@@ -32,15 +32,18 @@ class NewsCubit extends Cubit<NewsState> {
     _newsSubscription?.cancel();
     _newsSubscription = _repository.watchNews().listen(
       (news) {
-        final lastMonth = DateTime.now().subtract(const Duration(days: 30));
+        // Show news from the last year to be safe
+        final cutoffDate = DateTime.now().subtract(const Duration(days: 365));
         final filteredNews = news
-            .where((item) => item.createdAt.isAfter(lastMonth))
+            .where((item) => item.createdAt.isAfter(cutoffDate))
             .toList();
         
         // Ensure we log if some news items are missing images for debugging
         for (final item in filteredNews) {
-          if (item.imageUrl == null) {
-            debugPrint('⚠️ News item ${item.id} ("${item.title}") has no image_url');
+          if (item.imageUrl == null && item.imageUrls.isEmpty) {
+            debugPrint('⚠️ News item ${item.id} ("${item.title}") has NO images at all');
+          } else if (item.imageUrl == null) {
+            debugPrint('ℹ️ News item ${item.id} ("${item.title}") has no primary image_url but has image_urls list');
           }
         }
 

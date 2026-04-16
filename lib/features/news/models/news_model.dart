@@ -5,6 +5,8 @@ part 'news_model.g.dart';
 
 @freezed
 abstract class NewsModel with _$NewsModel {
+  const NewsModel._();
+
   const factory NewsModel({
     required String id,
     @JsonKey(name: 'created_at') required DateTime createdAt,
@@ -18,4 +20,6 @@ abstract class NewsModel with _$NewsModel {
 
   factory NewsModel.fromJson(Map<String, dynamic> json) =>
       _$NewsModelFromJson(json);
+
+  String? get effectiveImageUrl => imageUrl ?? imageUrls.firstOrNull;
 }

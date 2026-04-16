@@ -39,11 +39,11 @@ class NewsDetailScreen extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  if (news.imageUrl != null)
+                  if (news.effectiveImageUrl != null)
                     Hero(
                       tag: 'news_image_${news.id}',
                       child: Image.network(
-                        news.imageUrl!,
+                        news.effectiveImageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             Container(color: Colors.white10),

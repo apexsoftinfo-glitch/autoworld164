@@ -179,13 +179,13 @@ class _NewsCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (news.imageUrl != null)
+                  if (news.effectiveImageUrl != null)
                     Stack(
                       children: [
                         Hero(
                           tag: 'news_image_${news.id}',
                           child: Image.network(
-                            news.imageUrl!,
+                            news.effectiveImageUrl!,
                             height: 200,
                             width: double.infinity,
                             fit: BoxFit.cover,
