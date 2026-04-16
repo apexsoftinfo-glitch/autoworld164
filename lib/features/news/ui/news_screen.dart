@@ -128,7 +128,11 @@ class _NewsScreenView extends StatelessWidget {
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 20),
                               itemBuilder: (context, index) {
-                                return _NewsCard(news: newsList[index]);
+                                final item = newsList[index];
+                                return _NewsCard(
+                                  key: ValueKey(item.id),
+                                  news: item,
+                                );
                               },
                             ),
                     ),
@@ -145,7 +149,7 @@ class _NewsScreenView extends StatelessWidget {
 class _NewsCard extends StatelessWidget {
   final NewsModel news;
 
-  const _NewsCard({required this.news});
+  const _NewsCard({super.key, required this.news});
 
   @override
   Widget build(BuildContext context) {
@@ -207,11 +211,11 @@ class _NewsCard extends StatelessWidget {
                               );
                             },
                             errorBuilder: (context, error, stackTrace) =>
-                                Container(
+                                Image.asset(
+                              'assets/images/placeholder.png',
                               height: 200,
-                              color: Colors.white10,
-                              child: const Icon(Icons.broken_image,
-                                  color: Colors.white24),
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),

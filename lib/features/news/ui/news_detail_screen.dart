@@ -46,7 +46,10 @@ class NewsDetailScreen extends StatelessWidget {
                         news.effectiveImageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                            Container(color: Colors.white10),
+                            Image.asset(
+                          'assets/images/placeholder.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     )
                   else

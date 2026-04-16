@@ -21,5 +21,12 @@ abstract class NewsModel with _$NewsModel {
   factory NewsModel.fromJson(Map<String, dynamic> json) =>
       _$NewsModelFromJson(json);
 
-  String? get effectiveImageUrl => imageUrl ?? imageUrls.firstOrNull;
+  String? get effectiveImageUrl {
+    if (imageUrl != null && imageUrl!.trim().isNotEmpty) return imageUrl;
+    if (imageUrls.isNotEmpty) {
+      final first = imageUrls.first;
+      if (first.trim().isNotEmpty) return first;
+    }
+    return null;
+  }
 }
