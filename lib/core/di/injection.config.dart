@@ -86,6 +86,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i813.HuntingRepository>(
       () => _i813.HuntingRepositoryImpl(),
     );
+    gh.lazySingleton<_i225.NewsDataSource>(() => _i225.NewsDataSourceImpl());
     gh.lazySingleton<_i604.SubscriptionDataSource>(
       () => _i604.FakeSubscriptionDataSource(),
     );
@@ -101,9 +102,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i421.CarsRepository>(
       () => _i421.CarsRepositoryImpl(gh<_i482.CarsDataSource>()),
-    );
-    gh.lazySingleton<_i225.NewsDataSource>(
-      () => _i225.NewsDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.factory<_i1018.SearchPhotosCubit>(
       () => _i1018.SearchPhotosCubit(gh<_i421.CarsRepository>()),
