@@ -131,18 +131,30 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> updateFirstName(String userId, String name) async {
+    final currentState = state;
+    if (currentState is Data) {
+      final updatedProfile = currentState.profile?.copyWith(firstName: name);
+      emit(currentState.copyWith(profile: updatedProfile));
+    }
     try {
       await _sharedUserRepository.updateFirstName(userId: userId, firstName: name);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_profile'));
+      if (currentState is Data) emit(currentState);
     }
   }
 
   Future<void> updateUsername(String userId, String username) async {
+    final currentState = state;
+    if (currentState is Data) {
+      final updatedProfile = currentState.profile?.copyWith(username: username);
+      emit(currentState.copyWith(profile: updatedProfile));
+    }
     try {
       await _sharedUserRepository.updateUsername(userId: userId, username: username);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_profile'));
+      if (currentState is Data) emit(currentState);
     }
   }
 
@@ -151,14 +163,21 @@ class SettingsCubit extends Cubit<SettingsState> {
     required List<int> bytes,
     required String extension,
   }) async {
+    final currentState = state;
     try {
-      await _sharedUserRepository.uploadProfilePhoto(
+      final newUrl = await _sharedUserRepository.uploadProfilePhoto(
         userId: userId,
         bytes: bytes,
         extension: extension,
       );
+      
+      if (currentState is Data) {
+        final updatedProfile = currentState.profile?.copyWith(photoUrl: newUrl);
+        emit(currentState.copyWith(profile: updatedProfile));
+      }
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_profile_photo'));
+      if (currentState is Data) emit(currentState);
     }
   }
 

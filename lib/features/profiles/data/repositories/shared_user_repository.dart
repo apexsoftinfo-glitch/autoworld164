@@ -26,7 +26,7 @@ abstract class SharedUserRepository {
     required String photoUrl,
   });
 
-  Future<void> uploadProfilePhoto({
+  Future<String> uploadProfilePhoto({
     required String userId,
     required List<int> bytes,
     required String extension,
@@ -118,7 +118,7 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
   }
 
   @override
-  Future<void> uploadProfilePhoto({
+  Future<String> uploadProfilePhoto({
     required String userId,
     required List<int> bytes,
     required String extension,
@@ -126,6 +126,7 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
     try {
       final url = await _sharedUserDataSource.uploadProfilePhoto(userId, bytes, extension);
       await updatePhotoUrl(userId: userId, photoUrl: url);
+      return url;
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] uploadProfilePhoto error: $error');
       rethrow;
