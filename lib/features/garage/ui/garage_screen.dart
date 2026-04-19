@@ -48,6 +48,22 @@ class _GarageScreenView extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                data: (cars, filtered, pt, et, stats, q, vt) => IconButton(
+                  icon: Icon(
+                    q.isNotEmpty ? Icons.filter_list_off : Icons.search, 
+                    color: q.isNotEmpty ? const Color(0xFFFFD700) : Colors.white70,
+                  ),
+                  onPressed: () => _showBrandFilter(context, stats, q),
+                ),
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(
         builder: (context, settingsState) {
@@ -128,6 +144,26 @@ class _GarageScreenView extends StatelessWidget {
               },
             ),
           );
+        },
+      ),
+    );
+  }
+
+  void _showBrandFilter(BuildContext context, Map<String, int> stats, String currentQuery) {
+    final brands = stats.keys.toList()..sort();
+    final cubit = context.read<CarsCollectionCubit>();
+    
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => _BrandFilterSheet(
+        brands: brands,
+        stats: stats,
+        currentQuery: currentQuery,
+        onSelect: (brand) {
+          cubit.search(brand ?? '');
+          Navigator.pop(context);
         },
       ),
     );
@@ -551,6 +587,129 @@ class _BottomAddButton extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BrandFilterSheet extends StatelessWidget {
+  final List<String> brands;
+  final Map<String, int> stats;
+  final String currentQuery;
+  final Function(String?) onSelect;
+
+  const _BrandFilterSheet({
+    required this.brands,
+    required this.stats,
+    required this.currentQuery,
+    required this.onSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.white12,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'PRODUCENCI',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w200,
+                    letterSpacing: 2,
+                  ),
+                ),
+                if (currentQuery.isNotEmpty)
+                  TextButton(
+                    onPressed: () => onSelect(null),
+                    child: Text(
+                      'USUŃ FILTR',
+                      style: TextStyle(
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.7),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
+              itemCount: brands.length,
+              itemBuilder: (context, index) {
+                final brand = brands[index];
+                final count = stats[brand] ?? 0;
+                final isSelected = currentQuery.toLowerCase() == brand.toLowerCase();
+                
+                return ListTile(
+                  onTap: () => onSelect(brand),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.directions_car, 
+                      size: 16, 
+                      color: isSelected ? const Color(0xFFFFD700) : Colors.white38,
+                    ),
+                  ),
+                  title: Text(
+                    brand.toUpperCase(),
+                    style: TextStyle(
+                      color: isSelected ? const Color(0xFFFFD700) : Colors.white70,
+                      fontSize: 13,
+                      fontWeight: isSelected ? FontWeight.w900 : FontWeight.w500,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  trailing: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      count.toString(),
+                      style: const TextStyle(
+                        color: Colors.white38,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
