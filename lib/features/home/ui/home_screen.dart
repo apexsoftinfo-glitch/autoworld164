@@ -190,21 +190,27 @@ class _HomeScreenView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    const SizedBox(height: 64),
-                    Center(
-                      child: Text(
-                        context.l10n.homeMadeInPoland,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white12,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 120),
+                    const SizedBox(height: 140),
                   ],
+                ),
+              ),
+            ),
+
+            // Credits - Fixed above bottom bar
+            Positioned(
+              bottom: 110,
+              left: 24,
+              right: 24,
+              child: Center(
+                child: Text(
+                  context.l10n.homeMadeInPoland,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.25),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
             ),
