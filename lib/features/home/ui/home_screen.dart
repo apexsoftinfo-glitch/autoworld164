@@ -131,16 +131,6 @@ class _HomeScreenView extends StatelessWidget {
 
 
                     // Navigation Grid
-                    const Text(
-                      'MENU GŁÓWNE',
-                      style: TextStyle(
-                        color: Colors.white24,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
