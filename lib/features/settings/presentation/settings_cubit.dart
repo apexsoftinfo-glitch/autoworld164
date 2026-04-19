@@ -104,10 +104,19 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> updateGarageName(String userId, String name) async {
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(
+        settings: currentState.settings.copyWith(garageName: name),
+      ));
+    }
     try {
       await _settingsRepository.updateGarageName(userId, name);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_garage_name'));
+      if (currentState is Data) {
+        emit(currentState);
+      }
     }
   }
 
@@ -144,26 +153,53 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> updateCurrency(String userId, AppCurrency currency) async {
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(
+        settings: currentState.settings.copyWith(currency: currency),
+      ));
+    }
     try {
       await _settingsRepository.updateCurrency(userId, currency);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_currency'));
+      if (currentState is Data) {
+        emit(currentState);
+      }
     }
   }
 
   Future<void> updateLanguage(String userId, AppLanguage language) async {
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(
+        settings: currentState.settings.copyWith(language: language),
+      ));
+    }
     try {
       await _settingsRepository.updateLanguage(userId, language);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_language'));
+      if (currentState is Data) {
+        emit(currentState);
+      }
     }
   }
 
   Future<void> updateGarageBackground(String userId, String backgroundPath) async {
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(
+        settings: currentState.settings.copyWith(garageBackground: backgroundPath),
+      ));
+    }
     try {
       await _settingsRepository.updateGarageBackground(userId, backgroundPath);
     } catch (e) {
       emit(const Error(errorKey: 'error_updating_background'));
+      if (currentState is Data) {
+        emit(currentState);
+      }
     }
   }
 
