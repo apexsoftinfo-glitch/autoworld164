@@ -41,6 +41,12 @@ class SettingsCubit extends Cubit<SettingsState> {
   StreamSubscription? _settingsSub;
   StreamSubscription? _profileSub;
   StreamSubscription? _authSub;
+  final _debounceTimers = <String, Timer>{};
+
+  void _debounce(String key, Future<void> Function() action) {
+    _debounceTimers[key]?.cancel();
+    _debounceTimers[key] = Timer(const Duration(milliseconds: 500), action);
+  }
 
   void init(String userId) {
     if (state is Data) {
@@ -114,14 +120,14 @@ class SettingsCubit extends Cubit<SettingsState> {
         settings: currentState.settings.copyWith(garageName: name),
       ));
     }
-    try {
-      await _settingsRepository.updateGarageName(userId, name);
-    } catch (e) {
-      emit(const Error(errorKey: 'error_updating_garage_name'));
-      if (currentState is Data) {
-        emit(currentState);
+    _debounce('garage_name', () async {
+      try {
+        await _settingsRepository.updateGarageName(userId, name);
+      } catch (e) {
+        emit(const Error(errorKey: 'error_updating_garage_name'));
+        if (currentState is Data) emit(currentState);
       }
-    }
+    });
   }
 
   Future<void> updateFirstName(String userId, String name) async {
@@ -163,14 +169,14 @@ class SettingsCubit extends Cubit<SettingsState> {
         settings: currentState.settings.copyWith(currency: currency),
       ));
     }
-    try {
-      await _settingsRepository.updateCurrency(userId, currency);
-    } catch (e) {
-      emit(const Error(errorKey: 'error_updating_currency'));
-      if (currentState is Data) {
-        emit(currentState);
+    _debounce('currency', () async {
+      try {
+        await _settingsRepository.updateCurrency(userId, currency);
+      } catch (e) {
+        emit(const Error(errorKey: 'error_updating_currency'));
+        if (currentState is Data) emit(currentState);
       }
-    }
+    });
   }
 
   Future<void> updateLanguage(String userId, AppLanguage language) async {
@@ -180,14 +186,14 @@ class SettingsCubit extends Cubit<SettingsState> {
         settings: currentState.settings.copyWith(language: language),
       ));
     }
-    try {
-      await _settingsRepository.updateLanguage(userId, language);
-    } catch (e) {
-      emit(const Error(errorKey: 'error_updating_language'));
-      if (currentState is Data) {
-        emit(currentState);
+    _debounce('language', () async {
+      try {
+        await _settingsRepository.updateLanguage(userId, language);
+      } catch (e) {
+        emit(const Error(errorKey: 'error_updating_language'));
+        if (currentState is Data) emit(currentState);
       }
-    }
+    });
   }
 
   Future<void> updateGarageBackground(String userId, String backgroundPath) async {
@@ -197,14 +203,14 @@ class SettingsCubit extends Cubit<SettingsState> {
         settings: currentState.settings.copyWith(garageBackground: backgroundPath),
       ));
     }
-    try {
-      await _settingsRepository.updateGarageBackground(userId, backgroundPath);
-    } catch (e) {
-      emit(const Error(errorKey: 'error_updating_background'));
-      if (currentState is Data) {
-        emit(currentState);
+    _debounce('garage_background', () async {
+      try {
+        await _settingsRepository.updateGarageBackground(userId, backgroundPath);
+      } catch (e) {
+        emit(const Error(errorKey: 'error_updating_background'));
+        if (currentState is Data) emit(currentState);
       }
-    }
+    });
   }
 
   Future<String?> exportBackup() async {
@@ -260,6 +266,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     _settingsSub?.cancel();
     _profileSub?.cancel();
     _authSub?.cancel();
+    for (final timer in _debounceTimers.values) {
+      timer.cancel();
+    }
     return super.close();
   }
 }
