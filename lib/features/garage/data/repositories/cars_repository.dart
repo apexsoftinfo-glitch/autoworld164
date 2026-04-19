@@ -181,7 +181,30 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<double> estimateValue(String query) async {
-    // Simulated AI valuation
-    return 35.0;
+    // Simulated AI valuation with realistic delay
+    await Future.delayed(const Duration(seconds: 3));
+    
+    final lowerQuery = query.toLowerCase();
+    double baseValue = 15.0; // Default base for a common 1/64 car
+
+    if (lowerQuery.contains('rlc') || lowerQuery.contains('special edition')) {
+      baseValue = 150.0;
+    } else if (lowerQuery.contains('sth') || lowerQuery.contains('super treasure hunt')) {
+      baseValue = 120.0;
+    } else if (lowerQuery.contains('premium') || lowerQuery.contains('boulevard') || lowerQuery.contains('team transport')) {
+      baseValue = 45.0;
+    } else if (lowerQuery.contains('th') || lowerQuery.contains('treasure hunt')) {
+      baseValue = 25.0;
+    } else if (lowerQuery.contains('main')) {
+      baseValue = 10.0;
+    }
+    
+    if (lowerQuery.contains('porsche') || lowerQuery.contains('ferrari') || lowerQuery.contains('lamborghini') || lowerQuery.contains('nissan')) {
+      baseValue += 15.0;
+    }
+
+    // Add some "AI randomness" (+/- 15%) to make it feel dynamic
+    final randomFactor = 0.85 + (DateTime.now().millisecond % 300) / 1000.0;
+    return double.parse((baseValue * randomFactor).toStringAsFixed(2));
   }
 }
