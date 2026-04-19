@@ -66,7 +66,7 @@ class _HomeScreenView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 64),
                     // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +135,7 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 140),
 
 
 
