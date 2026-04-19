@@ -9,6 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get homeMadeInPoland =>
+      'Made in 🇵🇱 Poland with love for car collecting.';
+
+  @override
   String get newsOriginalArticle => 'Original Article';
 
   @override

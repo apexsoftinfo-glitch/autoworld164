@@ -98,6 +98,12 @@ abstract class AppLocalizations {
     Locale('pl'),
   ];
 
+  /// No description provided for @homeMadeInPoland.
+  ///
+  /// In pl, this message translates to:
+  /// **'Made in 🇵🇱 Poland with love for car collecting.'**
+  String get homeMadeInPoland;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:

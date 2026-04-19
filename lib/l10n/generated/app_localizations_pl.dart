@@ -9,6 +9,10 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
+  String get homeMadeInPoland =>
+      'Made in 🇵🇱 Poland with love for car collecting.';
+
+  @override
   String get newsOriginalArticle => 'Oryginalny artykuł';
 
   @override

@@ -12,6 +12,7 @@ import '../../garage/ui/car_form_screen.dart';
 import '../../../app/session/presentation/cubit/session_cubit.dart';
 import '../../hunting/ui/hunting_screen.dart';
 import '../../settings/presentation/settings_cubit.dart';
+import '../../../l10n/l10n.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -189,7 +190,20 @@ class _HomeScreenView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    const SizedBox(height: 140),
+                    const SizedBox(height: 64),
+                    Center(
+                      child: Text(
+                        context.l10n.homeMadeInPoland,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white12,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 120),
                   ],
                 ),
               ),
