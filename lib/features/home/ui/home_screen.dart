@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider(create: (context) => getIt<CarsCollectionCubit>()),
         BlocProvider.value(value: context.read<SessionCubit>()),
         if (userId != null)
-          BlocProvider(create: (context) => getIt<SettingsCubit>()..init(userId)),
+          BlocProvider.value(value: getIt<SettingsCubit>()..init(userId)),
       ],
       child: const _HomeScreenView(),
     );

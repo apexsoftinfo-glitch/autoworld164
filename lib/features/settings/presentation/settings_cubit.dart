@@ -26,7 +26,7 @@ sealed class SettingsState with _$SettingsState {
   const factory SettingsState.success({String? messageKey}) = Success;
 }
 
-@injectable
+@lazySingleton
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(
     this._settingsRepository,
@@ -49,6 +49,10 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void init(String userId) {
+    if (state is Data) {
+      final currentData = state as Data;
+      if (currentData.settings.id == userId) return;
+    }
     emit(const Loading());
     
     _settingsSub?.cancel();

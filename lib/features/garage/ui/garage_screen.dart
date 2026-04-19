@@ -25,7 +25,7 @@ class GarageScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<CarsCollectionCubit>()),
         if (userId != null)
-          BlocProvider(create: (context) => getIt<settings.SettingsCubit>()..init(userId)),
+          BlocProvider.value(value: getIt<settings.SettingsCubit>()..init(userId)),
       ],
       child: const _GarageScreenView(),
     );

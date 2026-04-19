@@ -21,8 +21,8 @@ class SettingsScreen extends StatelessWidget {
     final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId == null) return const Scaffold(body: Center(child: Text('No user')));
 
-    return BlocProvider(
-      create: (context) => getIt<SettingsCubit>()..init(userId),
+    return BlocProvider.value(
+      value: getIt<SettingsCubit>()..init(userId),
       child: const _SettingsView(),
     );
   }
