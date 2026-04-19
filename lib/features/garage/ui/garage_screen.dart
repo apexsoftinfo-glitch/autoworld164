@@ -562,34 +562,51 @@ class _BottomAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-      child: Container(
-        width: double.infinity,
-        height: 56,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFFFD700).withValues(alpha: 0.2),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+      child: Row(
+        children: [
+          _GlassBox(
+            padding: EdgeInsets.zero,
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 20),
+              ),
             ),
-          ],
-        ),
-        child: FilledButton.icon(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const CarFormScreen()),
           ),
-          style: FilledButton.styleFrom(
-            backgroundColor: const Color(0xFFFFD700),
-            foregroundColor: Colors.black,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              height: 56,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: FilledButton.icon(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CarFormScreen()),
+                ),
+                style: FilledButton.styleFrom(
+                  backgroundColor: const Color(0xFFFFD700),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                ),
+                icon: const Icon(Icons.add),
+                label: const Text(
+                  'DODAJ NOWY MODEL',
+                  style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                ),
+              ),
+            ),
           ),
-          icon: const Icon(Icons.add),
-          label: const Text(
-            'DODAJ NOWY MODEL',
-            style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
-          ),
-        ),
+        ],
       ),
     );
   }
