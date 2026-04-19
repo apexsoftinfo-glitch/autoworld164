@@ -48,22 +48,6 @@ class _GarageScreenView extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                data: (cars, filtered, pt, et, stats, q, vt) => IconButton(
-                  icon: Icon(
-                    q.isNotEmpty ? Icons.filter_list_off : Icons.search, 
-                    color: q.isNotEmpty ? const Color(0xFFFFD700) : Colors.white70,
-                  ),
-                  onPressed: () => _showBrandFilter(context, stats, q),
-                ),
-                orElse: () => const SizedBox.shrink(),
-              );
-            },
-          ),
-        ],
       ),
       body: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(
         builder: (context, settingsState) {
@@ -103,6 +87,7 @@ class _GarageScreenView extends StatelessWidget {
                           viewType: viewType,
                           onSearch: (v) => context.read<CarsCollectionCubit>().search(v),
                           onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
+                          onFilter: () => _showBrandFilter(context, stats, query),
                         ),
                         Expanded(
                           child: RefreshIndicator(
@@ -439,12 +424,14 @@ class _SearchAndToggleBar extends StatelessWidget {
   final CollectionViewType viewType;
   final ValueChanged<String> onSearch;
   final VoidCallback onToggle;
+  final VoidCallback onFilter;
 
   const _SearchAndToggleBar({
     required this.query,
     required this.viewType,
     required this.onSearch,
     required this.onToggle,
+    required this.onFilter,
   });
 
   @override
@@ -459,16 +446,32 @@ class _SearchAndToggleBar extends StatelessWidget {
               child: TextField(
                 onChanged: onSearch,
                 style: const TextStyle(color: Colors.white, fontSize: 13),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Szukaj modelu...',
-                  hintStyle: TextStyle(color: Colors.white24, fontSize: 12),
+                  hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
                   border: InputBorder.none,
-                  icon: Icon(Icons.search, size: 18, color: Colors.white38),
+                  icon: Icon(
+                    Icons.directions_car, 
+                    size: 18, 
+                    color: query.isNotEmpty ? const Color(0xFFFFD700) : Colors.white12,
+                  ),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 12),
+          _GlassBox(
+            padding: EdgeInsets.zero,
+            child: IconButton(
+              icon: Icon(
+                query.isNotEmpty ? Icons.filter_list_off : Icons.filter_list,
+                color: query.isNotEmpty ? const Color(0xFFFFD700) : Colors.white70,
+                size: 18,
+              ),
+              onPressed: onFilter,
+            ),
+          ),
+          const SizedBox(width: 8),
           _GlassBox(
             padding: EdgeInsets.zero,
             child: IconButton(
