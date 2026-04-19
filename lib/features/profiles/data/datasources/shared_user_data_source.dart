@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -129,27 +130,16 @@ class SupabaseSharedUserDataSource implements SharedUserDataSource {
 
   @override
   Future<String> uploadProfilePhoto(String userId, List<int> bytes, String extension) async {
-    final path = '$userId/profile_${DateTime.now().millisecondsSinceEpoch}.$extension';
-    
-    // Create temp file because upload might strictly expect File in this version
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/temp_profile_upload.$extension');
-    await tempFile.writeAsBytes(bytes);
-
-    await _supabaseClient.storage.from('autoworld_profiles').upload(
-          path,
-          tempFile,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
-        );
-
-    // Clean up
-    try {
-      await tempFile.delete();
-    } catch (e) {
-      debugPrint('Warning: Could not delete temp file: $e');
+    final docs = await getApplicationDocumentsDirectory();
+    final photosDir = Directory(p.join(docs.path, 'autoworld_photos'));
+    if (!await photosDir.exists()) {
+      await photosDir.create(recursive: true);
     }
-
-    final url = _supabaseClient.storage.from('autoworld_profiles').getPublicUrl(path);
-    return url;
+    
+    final filename = 'profile_${userId}_${DateTime.now().millisecondsSinceEpoch}.$extension';
+    final file = File(p.join(photosDir.path, filename));
+    await file.writeAsBytes(bytes);
+    
+    return filename;
   }
 }

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../profiles/presentation/ui/profile_screen.dart';
+import '../../profiles/ui/widgets/profile_photo.dart';
 import '../../news/ui/news_screen.dart';
 import '../../settings/ui/settings_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,14 +121,13 @@ class _HomeScreenView extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child: CircleAvatar(
+                                child: ProfilePhoto(
                                   radius: 20,
-                                  backgroundColor: Colors.black26,
-                                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-                                  child: photoUrl == null ? const Icon(
+                                  url: photoUrl,
+                                  placeholder: const Icon(
                                     Icons.person,
                                     color: Color(0xFFFFD700),
-                                  ) : null,
+                                  ),
                                 ),
                               );
                             },

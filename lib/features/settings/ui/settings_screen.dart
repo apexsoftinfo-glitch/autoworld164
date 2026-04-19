@@ -11,6 +11,7 @@ import '../../../l10n/l10n.dart';
 import '../../../shared/error_messages.dart';
 import '../../auth/presentation/ui/login_screen.dart';
 import '../../profiles/models/shared_user_model.dart';
+import '../../profiles/ui/widgets/profile_photo.dart';
 import '../models/settings_model.dart';
 import '../presentation/settings_cubit.dart';
 
@@ -375,17 +376,10 @@ class _ProfileSectionState extends State<_ProfileSection> {
                         width: 2,
                       ),
                     ),
-                    child: CircleAvatar(
+                    child: ProfilePhoto(
                       radius: 40,
-                      backgroundColor: Colors.white10,
-                      backgroundImage: widget.localPhotoBytes != null
-                        ? MemoryImage(widget.localPhotoBytes!) as ImageProvider
-                        : (widget.profile?.photoUrl != null 
-                           ? NetworkImage(widget.profile!.photoUrl!) 
-                           : null),
-                      child: (widget.profile?.photoUrl == null && widget.localPhotoBytes == null) 
-                        ? const Icon(Icons.person, size: 40, color: Colors.white38) 
-                        : null,
+                      url: widget.profile?.photoUrl,
+                      memoryImage: widget.localPhotoBytes != null ? MemoryImage(widget.localPhotoBytes!) : null,
                     ),
                   ),
                   if (widget.isUploadingPhoto)
