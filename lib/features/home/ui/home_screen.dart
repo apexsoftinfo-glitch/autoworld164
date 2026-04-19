@@ -206,9 +206,9 @@ class _HomeScreenView extends StatelessWidget {
                   context.l10n.homeMadeInPoland,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.25),
+                    color: Colors.white.withValues(alpha: 0.5),
                     fontSize: 10,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                     letterSpacing: 0.5,
                   ),
                 ),
