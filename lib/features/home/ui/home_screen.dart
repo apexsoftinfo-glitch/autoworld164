@@ -5,6 +5,7 @@ import '../../profiles/presentation/ui/profile_screen.dart';
 import '../../profiles/ui/widgets/profile_photo.dart';
 import '../../news/ui/news_screen.dart';
 import '../../settings/ui/settings_screen.dart';
+import '../../../shared/ui/widgets/garage_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart';
@@ -46,19 +47,9 @@ class _HomeScreenView extends StatelessWidget {
             orElse: () => 'assets/images/warm_garage.png',
           );
 
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(background),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  const Color(0xFF2D1B0D).withValues(alpha: 0.4),
-                  BlendMode.darken,
-                ),
-              ),
-            ),
+          return GarageBackground(
+            path: background,
+            alpha: 0.4,
             child: Stack(
           children: [
             SafeArea(

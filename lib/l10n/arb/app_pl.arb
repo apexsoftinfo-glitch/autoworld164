@@ -242,5 +242,6 @@
   "settingsGarageBackgroundLabel": "Tło garażu",
   "error_updating_background": "Nie udało się zaktualizować tła garażu.",
   "settingsUploadingPhoto": "Trwa zmiana zdjęcia...",
-  "settingsPhotoOptimisticNotice": "Zmiana pojawi się za chwilę w całej aplikacji."
+  "settingsPhotoOptimisticNotice": "Zmiana pojawi się za chwilę w całej aplikacji.",
+  "settingsAddCustomBackground": "Dodaj tło"
 }

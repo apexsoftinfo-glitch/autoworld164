@@ -655,9 +655,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_updating_background => 'Could not update garage background.';
 
   @override
-  String get settingsUploadingPhoto => 'Trwa zmiana zdjęcia...';
+  String get settingsUploadingPhoto => 'Changing photo...';
 
   @override
   String get settingsPhotoOptimisticNotice =>
-      'Zmiana pojawi się za chwilę w całej aplikacji.';
+      'Changes will appear across the app in a moment.';
+
+  @override
+  String get settingsAddCustomBackground => 'Add background';
 }

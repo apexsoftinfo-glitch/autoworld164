@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../../settings/presentation/settings_cubit.dart' as settings;
+import '../../../shared/ui/widgets/garage_background.dart';
 import '../models/car_model.dart';
 import '../presentation/cubit/cars_collection_cubit.dart';
 
@@ -65,19 +66,9 @@ class _GarageScreenView extends StatelessWidget {
               ? settingsState.settings.garageBackground 
               : 'assets/images/warm_garage.png';
 
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(background),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  const Color(0xFF2D1B0D).withValues(alpha: 0.5),
-                  BlendMode.darken,
-                ),
-              ),
-            ),
+          return GarageBackground(
+            path: background,
+            alpha: 0.5,
             child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
               builder: (context, state) {
                 return state.maybeWhen(

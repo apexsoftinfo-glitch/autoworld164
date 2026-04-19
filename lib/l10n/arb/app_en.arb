@@ -240,5 +240,8 @@
   "error_upgrading_account": "Error upgrading account.",
   "settingsSectionAppearance": "Appearance",
   "settingsGarageBackgroundLabel": "Garage background",
-  "error_updating_background": "Could not update garage background."
+  "error_updating_background": "Could not update garage background.",
+  "settingsUploadingPhoto": "Changing photo...",
+  "settingsPhotoOptimisticNotice": "Changes will appear across the app in a moment.",
+  "settingsAddCustomBackground": "Add background"
 }

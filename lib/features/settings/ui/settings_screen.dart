@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart' as fp;
@@ -846,6 +849,8 @@ class _AppearanceSection extends StatelessWidget {
       {'path': 'assets/images/settings_bg.png', 'name': 'Abstrakcyjny'},
     ];
 
+    final isCustomBg = settings.garageBackground.isNotEmpty && !settings.garageBackground.startsWith('assets/');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -853,11 +858,18 @@ class _AppearanceSection extends StatelessWidget {
           height: 140,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: backgrounds.length,
+            itemCount: backgrounds.length + 1,
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final bg = backgrounds[index];
-              final isSelected = settings.garageBackground == bg['path'];
+              if (index == 0) {
+                return _CustomBackgroundTile(
+                  userId: userId, 
+                  isSelected: isCustomBg,
+                  path: isCustomBg ? settings.garageBackground : null,
+                );
+              }
+              final bg = backgrounds[index - 1];
+              final isSelected = !isCustomBg && settings.garageBackground == bg['path'];
               
               return GestureDetector(
                 onTap: () => context.read<SettingsCubit>().updateGarageBackground(userId, bg['path']!),
@@ -917,5 +929,89 @@ class _AppearanceSection extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _CustomBackgroundTile extends StatelessWidget {
+  final String userId;
+  final bool isSelected;
+  final String? path;
+
+  const _CustomBackgroundTile({
+    required this.userId,
+    required this.isSelected,
+    this.path,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        final picker = ImagePicker();
+        final image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+        if (image != null) {
+          final bytes = await image.readAsBytes();
+          final extension = p.extension(image.path).replaceAll('.', '');
+          if (context.mounted) {
+            context.read<SettingsCubit>().updateCustomBackground(
+              userId: userId,
+              bytes: bytes,
+              extension: extension,
+            );
+          }
+        }
+      },
+      child: Column(
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
+                width: isSelected ? 3 : 1,
+              ),
+              color: Colors.white.withValues(alpha: 0.05),
+              boxShadow: isSelected ? [
+                BoxShadow(
+                  color: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                  blurRadius: 10,
+                )
+              ] : null,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: path != null 
+              ? FutureBuilder<String>(
+                  future: _getLocalPath(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final file = File(snapshot.data!);
+                      if (file.existsSync()) {
+                        return Image.file(file, fit: BoxFit.cover);
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFFFD700)));
+                  },
+                )
+              : const Center(child: Icon(Icons.add_photo_alternate_outlined, color: Colors.white24, size: 32)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            context.l10n.settingsAddCustomBackground.toUpperCase(),
+            style: TextStyle(
+              color: isSelected ? const Color(0xFFFFD700) : Colors.white54,
+              fontSize: 10,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<String> _getLocalPath() async {
+    final docs = await getApplicationDocumentsDirectory();
+    return p.join(docs.path, 'autoworld_photos', path!);
   }
 }

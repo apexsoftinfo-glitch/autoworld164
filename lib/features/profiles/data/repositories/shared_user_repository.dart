@@ -32,6 +32,12 @@ abstract class SharedUserRepository {
     required List<int> bytes,
     required String extension,
   });
+
+  Future<String> uploadLocalFile({
+    required List<int> bytes,
+    required String extension,
+    String prefix = 'file',
+  });
 }
 
 @LazySingleton(as: SharedUserRepository)
@@ -154,11 +160,25 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
     required String extension,
   }) async {
     try {
-      final url = await _sharedUserDataSource.uploadProfilePhoto(userId, bytes, extension);
+      final url = await _sharedUserDataSource.saveLocalImage(bytes, extension, prefix: 'profile_$userId');
       await updatePhotoUrl(userId: userId, photoUrl: url);
       return url;
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] uploadProfilePhoto error: $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadLocalFile({
+    required List<int> bytes,
+    required String extension,
+    String prefix = 'file',
+  }) async {
+    try {
+      return await _sharedUserDataSource.saveLocalImage(bytes, extension, prefix: prefix);
+    } catch (error) {
+      debugPrint('❌ [SharedUserRepository] uploadLocalFile error: $error');
       rethrow;
     }
   }

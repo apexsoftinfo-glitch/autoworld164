@@ -14,7 +14,7 @@ abstract class SharedUserDataSource {
   Future<void> upsertSharedUser(Map<String, dynamic> sharedUser);
 
   Future<Map<String, dynamic>> ensureSharedUser(String userId);
-  Future<String> uploadProfilePhoto(String userId, List<int> bytes, String extension);
+  Future<String> saveLocalImage(List<int> bytes, String extension, {String prefix = 'img'});
 }
 
 @LazySingleton(as: SharedUserDataSource)
@@ -129,14 +129,14 @@ class SupabaseSharedUserDataSource implements SharedUserDataSource {
   }
 
   @override
-  Future<String> uploadProfilePhoto(String userId, List<int> bytes, String extension) async {
+  Future<String> saveLocalImage(List<int> bytes, String extension, {String prefix = 'img'}) async {
     final docs = await getApplicationDocumentsDirectory();
     final photosDir = Directory(p.join(docs.path, 'autoworld_photos'));
     if (!await photosDir.exists()) {
       await photosDir.create(recursive: true);
     }
     
-    final filename = 'profile_${userId}_${DateTime.now().millisecondsSinceEpoch}.$extension';
+    final filename = '${prefix}_${DateTime.now().millisecondsSinceEpoch}.$extension';
     final file = File(p.join(photosDir.path, filename));
     await file.writeAsBytes(bytes);
     

@@ -1291,6 +1291,12 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Zmiana pojawi się za chwilę w całej aplikacji.'**
   String get settingsPhotoOptimisticNotice;
+
+  /// No description provided for @settingsAddCustomBackground.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dodaj tło'**
+  String get settingsAddCustomBackground;
 }
 
 class _AppLocalizationsDelegate

@@ -234,6 +234,27 @@ class SettingsCubit extends Cubit<SettingsState> {
     });
   }
 
+  Future<void> updateCustomBackground({
+    required String userId,
+    required List<int> bytes,
+    required String extension,
+  }) async {
+    final currentState = state;
+    try {
+      final filename = await _sharedUserRepository.uploadLocalFile(
+        bytes: bytes,
+        extension: extension,
+        prefix: 'background',
+      );
+      
+      // Update background with the local filename
+      await updateGarageBackground(userId, filename);
+    } catch (e) {
+      emit(const Error(errorKey: 'error_updating_background'));
+      if (currentState is Data) emit(currentState);
+    }
+  }
+
   Future<String?> exportBackup() async {
     try {
       return await _settingsRepository.exportBackup();

@@ -666,4 +666,7 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get settingsPhotoOptimisticNotice =>
       'Zmiana pojawi się za chwilę w całej aplikacji.';
+
+  @override
+  String get settingsAddCustomBackground => 'Dodaj tło';
 }
