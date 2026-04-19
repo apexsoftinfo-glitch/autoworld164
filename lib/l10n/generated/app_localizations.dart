@@ -1279,6 +1279,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Nie udało się zaktualizować tła garażu.'**
   String get error_updating_background;
+
+  /// No description provided for @settingsUploadingPhoto.
+  ///
+  /// In pl, this message translates to:
+  /// **'Trwa zmiana zdjęcia...'**
+  String get settingsUploadingPhoto;
+
+  /// No description provided for @settingsPhotoOptimisticNotice.
+  ///
+  /// In pl, this message translates to:
+  /// **'Zmiana pojawi się za chwilę w całej aplikacji.'**
+  String get settingsPhotoOptimisticNotice;
 }
 
 class _AppLocalizationsDelegate

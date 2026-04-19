@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,8 +102,15 @@ class _SettingsView extends StatelessWidget {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                  Data(settings: final settings, profile: final profile, isGuest: final isGuest, pendingEmail: final pendingEmail) =>
-                    _SettingsList(settings: settings, profile: profile, isGuest: isGuest, pendingEmail: pendingEmail),
+                  Data(settings: final settings, profile: final profile, isGuest: final isGuest, pendingEmail: final pendingEmail, isUploadingPhoto: final isUploadingPhoto, localPhotoBytes: final localPhotoBytes) =>
+                    _SettingsList(
+                      settings: settings, 
+                      profile: profile, 
+                      isGuest: isGuest, 
+                      pendingEmail: pendingEmail,
+                      isUploadingPhoto: isUploadingPhoto,
+                      localPhotoBytes: localPhotoBytes,
+                    ),
                 };
               },
             ),
@@ -119,11 +127,16 @@ class _SettingsList extends StatelessWidget {
   final bool isGuest;
   final String? pendingEmail;
 
+  final bool isUploadingPhoto;
+  final Uint8List? localPhotoBytes;
+
   const _SettingsList({
     required this.settings, 
     this.profile,
     required this.isGuest,
     this.pendingEmail,
+    required this.isUploadingPhoto,
+    this.localPhotoBytes,
   });
 
   @override
@@ -144,11 +157,13 @@ class _SettingsList extends StatelessWidget {
             title: l10n.settingsSectionProfile,
             icon: Icons.person_outline,
             child: _ProfileSection(
-              profile: profile, 
-              settings: settings, 
-              userId: userId,
-              isGuest: isGuest,
-              pendingEmail: pendingEmail,
+            userId: userId, 
+            settings: settings,
+            profile: profile, 
+            isGuest: isGuest, 
+            pendingEmail: pendingEmail,
+            isUploadingPhoto: isUploadingPhoto,
+            localPhotoBytes: localPhotoBytes,
             ),
           ),
           const SizedBox(height: 20),
@@ -266,18 +281,22 @@ class _SettingsCategoryCardState extends State<_SettingsCategoryCard> {
 }
 
 class _ProfileSection extends StatefulWidget {
-  final SharedUserModel? profile;
-  final SettingsModel settings;
   final String userId;
+  final SettingsModel settings;
+  final SharedUserModel? profile;
   final bool isGuest;
   final String? pendingEmail;
+  final bool isUploadingPhoto;
+  final Uint8List? localPhotoBytes;
 
   const _ProfileSection({
-    this.profile, 
-    required this.settings, 
     required this.userId,
+    required this.settings,
+    this.profile,
     required this.isGuest,
     this.pendingEmail,
+    required this.isUploadingPhoto,
+    this.localPhotoBytes,
   });
 
   @override
@@ -343,39 +362,83 @@ class _ProfileSectionState extends State<_ProfileSection> {
     return Column(
       children: [
         Center(
-          child: Stack(
+          child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFFFD700), width: 2),
-                ),
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white10,
-                  backgroundImage: widget.profile?.photoUrl != null 
-                    ? NetworkImage(widget.profile!.photoUrl!) 
-                    : null,
-                  child: widget.profile?.photoUrl == null 
-                    ? const Icon(Icons.person, size: 40, color: Colors.white38) 
-                    : null,
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFFFD700),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
+                      border: Border.all(
+                        color: widget.isUploadingPhoto ? const Color(0xFFFFD700) : const Color(0xFFFFD700).withValues(alpha: 0.3), 
+                        width: 2,
+                      ),
                     ),
-                    child: const Icon(Icons.camera_alt, size: 14, color: Colors.black),
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.white10,
+                      backgroundImage: widget.localPhotoBytes != null
+                        ? MemoryImage(widget.localPhotoBytes!) as ImageProvider
+                        : (widget.profile?.photoUrl != null 
+                           ? NetworkImage(widget.profile!.photoUrl!) 
+                           : null),
+                      child: (widget.profile?.photoUrl == null && widget.localPhotoBytes == null) 
+                        ? const Icon(Icons.person, size: 40, color: Colors.white38) 
+                        : null,
+                    ),
+                  ),
+                  if (widget.isUploadingPhoto)
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFFFD700),
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                  if (!widget.isUploadingPhoto)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFFFD700),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.camera_alt, size: 14, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              if (widget.isUploadingPhoto) ...[
+                const SizedBox(height: 12),
+                Text(
+                  l10n.settingsUploadingPhoto,
+                  style: const TextStyle(
+                    color: Color(0xFFFFD700),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+                Text(
+                  l10n.settingsPhotoOptimisticNotice,
+                  style: const TextStyle(
+                    color: Colors.white38,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

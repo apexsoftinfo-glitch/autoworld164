@@ -20,6 +20,8 @@ sealed class SettingsState with _$SettingsState {
     required SettingsModel settings,
     SharedUserModel? profile,
     @Default(false) bool isGuest,
+    @Default(false) bool isUploadingPhoto,
+    Uint8List? localPhotoBytes,
     String? pendingEmail,
   }) = Data;
   const factory SettingsState.error({String? errorKey}) = Error;

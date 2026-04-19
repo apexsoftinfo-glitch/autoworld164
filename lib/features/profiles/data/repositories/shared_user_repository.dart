@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../models/shared_user_model.dart';
 import '../datasources/shared_user_data_source.dart';
@@ -38,16 +39,35 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
   SharedUserRepositoryImpl(this._sharedUserDataSource);
 
   final SharedUserDataSource _sharedUserDataSource;
+  final _photoOverrides = BehaviorSubject<Map<String, String>>.seeded({});
 
   @override
   Stream<SharedUserModel?> watchSharedUser(String userId) {
-    return _sharedUserDataSource.watchSharedUser(userId).map(_mapSharedUser);
+    return Rx.combineLatest2<Map<String, dynamic>?, Map<String, String>, SharedUserModel?>(
+      _sharedUserDataSource.watchSharedUser(userId),
+      _photoOverrides.stream,
+      (raw, overrides) {
+        final model = _mapSharedUser(raw);
+        if (model == null) return null;
+        final overrideUrl = overrides[userId];
+        if (overrideUrl != null) {
+          return model.copyWith(photoUrl: overrideUrl);
+        }
+        return model;
+      },
+    ).distinct();
   }
 
   @override
   Future<SharedUserModel?> getSharedUser(String userId) async {
     final rawSharedUser = await _sharedUserDataSource.getSharedUser(userId);
-    return _mapSharedUser(rawSharedUser);
+    final model = _mapSharedUser(rawSharedUser);
+    if (model == null) return null;
+    final overrideUrl = _photoOverrides.value[userId];
+    if (overrideUrl != null) {
+      return model.copyWith(photoUrl: overrideUrl);
+    }
+    return model;
   }
 
   @override
@@ -56,7 +76,12 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       final rawSharedUser = await _sharedUserDataSource.ensureSharedUser(
         userId,
       );
-      return _mapSharedUser(rawSharedUser)!;
+      final model = _mapSharedUser(rawSharedUser)!;
+      final overrideUrl = _photoOverrides.value[userId];
+      if (overrideUrl != null) {
+        return model.copyWith(photoUrl: overrideUrl);
+      }
+      return model;
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] ensureSharedUser error: $error');
       rethrow;
@@ -111,6 +136,11 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       );
 
       await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+      
+      // Update local override for instant UI feedback across app
+      final currentOverrides = Map<String, String>.from(_photoOverrides.value);
+      currentOverrides[userId] = photoUrl;
+      _photoOverrides.add(currentOverrides);
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] updatePhotoUrl error: $error');
       rethrow;

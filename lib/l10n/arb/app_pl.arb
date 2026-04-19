@@ -240,5 +240,7 @@
   "error_upgrading_account": "Błąd podczas ulepszania konta.",
   "settingsSectionAppearance": "Wygląd garażu",
   "settingsGarageBackgroundLabel": "Tło garażu",
-  "error_updating_background": "Nie udało się zaktualizować tła garażu."
+  "error_updating_background": "Nie udało się zaktualizować tła garażu.",
+  "settingsUploadingPhoto": "Trwa zmiana zdjęcia...",
+  "settingsPhotoOptimisticNotice": "Zmiana pojawi się za chwilę w całej aplikacji."
 }
