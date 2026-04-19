@@ -22,6 +22,7 @@ import 'package:autoworld164/app/session/data/repositories/session_repository.da
 import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart'
     as _i161;
 import 'package:autoworld164/core/di/app_module.dart' as _i68;
+import 'package:autoworld164/core/services/translation_service.dart' as _i80;
 import 'package:autoworld164/features/auth/data/datasources/auth_data_source.dart'
     as _i683;
 import 'package:autoworld164/features/auth/data/repositories/auth_repository.dart'
@@ -83,10 +84,10 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
+    gh.lazySingleton<_i80.TranslationService>(() => _i80.TranslationService());
     gh.lazySingleton<_i813.HuntingRepository>(
       () => _i813.HuntingRepositoryImpl(),
     );
-    gh.lazySingleton<_i225.NewsDataSource>(() => _i225.NewsDataSourceImpl());
     gh.lazySingleton<_i604.SubscriptionDataSource>(
       () => _i604.FakeSubscriptionDataSource(),
     );
@@ -125,6 +126,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i683.AuthDataSource>(
       () => _i683.SupabaseAuthDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i225.NewsDataSource>(
+      () => _i225.NewsDataSourceImpl(gh<_i80.TranslationService>()),
     );
     gh.lazySingleton<_i31.AuthRepository>(
       () => _i31.AuthRepositoryImpl(gh<_i683.AuthDataSource>()),

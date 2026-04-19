@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../core/services/translation_service.dart';
 import '../models/news_model.dart';
 
 abstract class NewsDataSource {
@@ -15,6 +16,9 @@ abstract class NewsDataSource {
 @LazySingleton(as: NewsDataSource)
 class NewsDataSourceImpl implements NewsDataSource {
   final http.Client _client = http.Client();
+  final TranslationService _translationService;
+
+  NewsDataSourceImpl(this._translationService);
 
   @override
   Future<List<Map<String, dynamic>>> getNews() async {
@@ -25,7 +29,7 @@ class NewsDataSourceImpl implements NewsDataSource {
       final document = XmlDocument.parse(response.body);
       final items = document.findAllElements('item').take(10);
 
-      return items.map((item) {
+      final futureItems = items.map((item) async {
         final title = item.findElements('title').firstOrNull?.innerText ?? '';
         final link = item.findElements('link').firstOrNull?.innerText ?? '';
         final pubDateStr =
@@ -38,17 +42,23 @@ class NewsDataSourceImpl implements NewsDataSource {
 
         final imageUrls = _extractImageUrls(content);
 
+        final translatedTitle = await _translationService.translate(title);
+        final translatedDescription =
+            await _translationService.translate(description);
+
         return {
           'id': guid,
           'created_at': _parsePubDate(pubDateStr).toIso8601String(),
-          'title': title,
-          'content': description,
+          'title': translatedTitle,
+          'content': translatedDescription,
           'image_url': imageUrls.isNotEmpty ? imageUrls.first : null,
           'image_urls': imageUrls,
           'author': item.findElements('dc:creator').firstOrNull?.innerText,
           'category': item.findElements('category').firstOrNull?.innerText,
         };
       }).toList();
+
+      return await Future.wait(futureItems);
     } catch (e) {
       debugPrint('❌ [NewsDataSource] Error fetching Lamley Group news: $e');
       return [];
