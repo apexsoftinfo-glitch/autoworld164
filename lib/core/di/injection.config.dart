@@ -179,7 +179,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i146.ProfileCubit>(
       () => _i146.ProfileCubit(gh<_i832.SharedUserRepository>()),
     );
-    gh.lazySingleton<_i496.SettingsCubit>(
+    gh.factory<_i496.SettingsCubit>(
       () => _i496.SettingsCubit(
         gh<_i173.SettingsRepository>(),
         gh<_i832.SharedUserRepository>(),
