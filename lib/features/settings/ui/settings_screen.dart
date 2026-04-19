@@ -783,6 +783,8 @@ class _AppearanceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final backgrounds = [
       {'path': 'assets/images/warm_garage.png', 'name': 'Klasyczny'},
+      {'path': 'assets/images/industrial_dark_garage.png', 'name': 'Industrialny'},
+      {'path': 'assets/images/modern_carbon_garage.png', 'name': 'Ciemny Carbon'},
       {'path': 'assets/images/add_model_bg.png', 'name': 'Nowoczesny'},
       {'path': 'assets/images/settings_bg.png', 'name': 'Abstrakcyjny'},
     ];

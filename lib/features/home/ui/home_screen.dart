@@ -38,20 +38,27 @@ class _HomeScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('assets/images/warm_garage.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              const Color(0xFF2D1B0D).withValues(alpha: 0.4),
-              BlendMode.darken,
+      body: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          final background = state.maybeWhen(
+            data: (settings, profile, isGuest, pendingEmail) => settings.garageBackground,
+            orElse: () => 'assets/images/warm_garage.png',
+          );
+
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(background),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  const Color(0xFF2D1B0D).withValues(alpha: 0.4),
+                  BlendMode.darken,
+                ),
+              ),
             ),
-          ),
-        ),
-        child: Stack(
+            child: Stack(
           children: [
             SafeArea(
               child: SingleChildScrollView(
@@ -316,10 +323,12 @@ class _HomeScreenView extends StatelessWidget {
                 },
               ),
             ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        );
+      },
+    ),
+  );
   }
 }
 
