@@ -252,9 +252,9 @@ class _HomeScreenView extends StatelessWidget {
                     child: Row(
                       children: [
                         const SizedBox(width: 8),
-                        _VIPStat(label: 'PIECES', value: pieces),
+                        _VIPStat(label: 'sztuk.', value: pieces),
                         const SizedBox(width: 24),
-                        _VIPStat(label: 'VALUE', value: value),
+                        _VIPStat(label: 'Wartość.', value: value),
                         const Spacer(),
                         // Stylish Add Button
                         GestureDetector(
