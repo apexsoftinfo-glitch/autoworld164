@@ -38,20 +38,9 @@ class _GarageScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(
-          l10n.garageTitle.toUpperCase(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w200,
-            letterSpacing: 4,
-            fontSize: 16,
-          ),
-        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
