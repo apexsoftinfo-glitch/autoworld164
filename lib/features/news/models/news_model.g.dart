@@ -19,6 +19,7 @@ _NewsModel _$NewsModelFromJson(Map<String, dynamic> json) => _NewsModel(
       const [],
   author: json['author'] as String?,
   category: json['category'] as String?,
+  link: json['link'] as String?,
 );
 
 Map<String, dynamic> _$NewsModelToJson(_NewsModel instance) =>
@@ -31,4 +32,5 @@ Map<String, dynamic> _$NewsModelToJson(_NewsModel instance) =>
       'image_urls': instance.imageUrls,
       'author': instance.author,
       'category': instance.category,
+      'link': instance.link,
     };

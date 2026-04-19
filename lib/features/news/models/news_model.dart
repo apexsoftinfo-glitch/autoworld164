@@ -16,6 +16,7 @@ abstract class NewsModel with _$NewsModel {
     @JsonKey(name: 'image_urls') @Default([]) List<String> imageUrls,
     String? author,
     String? category,
+    String? link,
   }) = _NewsModel;
 
   factory NewsModel.fromJson(Map<String, dynamic> json) =>

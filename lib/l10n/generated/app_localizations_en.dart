@@ -9,6 +9,12 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get newsOriginalArticle => 'Original Article';
+
+  @override
+  String get newsReadMore => 'READ MORE';
+
+  @override
   String get localizationBootstrap => 'App localization is configured.';
 
   @override

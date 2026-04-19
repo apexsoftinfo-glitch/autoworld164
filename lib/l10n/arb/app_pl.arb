@@ -1,5 +1,7 @@
 {
   "@@locale": "pl",
+  "newsOriginalArticle": "Oryginalny artykuł",
+  "newsReadMore": "CZYTAJ WIĘCEJ",
   "localizationBootstrap": "Lokalizacja aplikacji jest skonfigurowana.",
   "@localizationBootstrap": {
     "description": "Technical placeholder used to bootstrap Flutter localization before migrating existing UI strings."

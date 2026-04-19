@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('pl'),
   ];
 
+  /// No description provided for @newsOriginalArticle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Oryginalny artykuł'**
+  String get newsOriginalArticle;
+
+  /// No description provided for @newsReadMore.
+  ///
+  /// In pl, this message translates to:
+  /// **'CZYTAJ WIĘCEJ'**
+  String get newsReadMore;
+
   /// Technical placeholder used to bootstrap Flutter localization before migrating existing UI strings.
   ///
   /// In pl, this message translates to:

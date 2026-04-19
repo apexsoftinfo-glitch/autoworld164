@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NewsModel {
 
- String get id;@JsonKey(name: 'created_at') DateTime get createdAt; String get title; String get content;@JsonKey(name: 'image_url') String? get imageUrl;@JsonKey(name: 'image_urls') List<String> get imageUrls; String? get author; String? get category;
+ String get id;@JsonKey(name: 'created_at') DateTime get createdAt; String get title; String get content;@JsonKey(name: 'image_url') String? get imageUrl;@JsonKey(name: 'image_urls') List<String> get imageUrls; String? get author; String? get category; String? get link;
 /// Create a copy of NewsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $NewsModelCopyWith<NewsModel> get copyWith => _$NewsModelCopyWithImpl<NewsModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls)&&(identical(other.author, author) || other.author == author)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls)&&(identical(other.author, author) || other.author == author)&&(identical(other.category, category) || other.category == category)&&(identical(other.link, link) || other.link == link));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,title,content,imageUrl,const DeepCollectionEquality().hash(imageUrls),author,category);
+int get hashCode => Object.hash(runtimeType,id,createdAt,title,content,imageUrl,const DeepCollectionEquality().hash(imageUrls),author,category,link);
 
 @override
 String toString() {
-  return 'NewsModel(id: $id, createdAt: $createdAt, title: $title, content: $content, imageUrl: $imageUrl, imageUrls: $imageUrls, author: $author, category: $category)';
+  return 'NewsModel(id: $id, createdAt: $createdAt, title: $title, content: $content, imageUrl: $imageUrl, imageUrls: $imageUrls, author: $author, category: $category, link: $link)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $NewsModelCopyWith<$Res>  {
   factory $NewsModelCopyWith(NewsModel value, $Res Function(NewsModel) _then) = _$NewsModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'created_at') DateTime createdAt, String title, String content,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'image_urls') List<String> imageUrls, String? author, String? category
+ String id,@JsonKey(name: 'created_at') DateTime createdAt, String title, String content,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'image_urls') List<String> imageUrls, String? author, String? category, String? link
 });
 
 
@@ -65,7 +65,7 @@ class _$NewsModelCopyWithImpl<$Res>
 
 /// Create a copy of NewsModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? title = null,Object? content = null,Object? imageUrl = freezed,Object? imageUrls = null,Object? author = freezed,Object? category = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? title = null,Object? content = null,Object? imageUrl = freezed,Object? imageUrls = null,Object? author = freezed,Object? category = freezed,Object? link = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -75,6 +75,7 @@ as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: c
 as String?,imageUrls: null == imageUrls ? _self.imageUrls : imageUrls // ignore: cast_nullable_to_non_nullable
 as List<String>,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,link: freezed == link ? _self.link : link // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -160,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category,  String? link)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NewsModel() when $default != null:
-return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category,_that.link);case _:
   return orElse();
 
 }
@@ -181,10 +182,10 @@ return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category,  String? link)  $default,) {final _that = this;
 switch (_that) {
 case _NewsModel():
-return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category,_that.link);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +202,10 @@ return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'created_at')  DateTime createdAt,  String title,  String content, @JsonKey(name: 'image_url')  String? imageUrl, @JsonKey(name: 'image_urls')  List<String> imageUrls,  String? author,  String? category,  String? link)?  $default,) {final _that = this;
 switch (_that) {
 case _NewsModel() when $default != null:
-return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUrl,_that.imageUrls,_that.author,_that.category,_that.link);case _:
   return null;
 
 }
@@ -216,7 +217,7 @@ return $default(_that.id,_that.createdAt,_that.title,_that.content,_that.imageUr
 @JsonSerializable()
 
 class _NewsModel extends NewsModel {
-  const _NewsModel({required this.id, @JsonKey(name: 'created_at') required this.createdAt, required this.title, required this.content, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'image_urls') final  List<String> imageUrls = const [], this.author, this.category}): _imageUrls = imageUrls,super._();
+  const _NewsModel({required this.id, @JsonKey(name: 'created_at') required this.createdAt, required this.title, required this.content, @JsonKey(name: 'image_url') this.imageUrl, @JsonKey(name: 'image_urls') final  List<String> imageUrls = const [], this.author, this.category, this.link}): _imageUrls = imageUrls,super._();
   factory _NewsModel.fromJson(Map<String, dynamic> json) => _$NewsModelFromJson(json);
 
 @override final  String id;
@@ -233,6 +234,7 @@ class _NewsModel extends NewsModel {
 
 @override final  String? author;
 @override final  String? category;
+@override final  String? link;
 
 /// Create a copy of NewsModel
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls)&&(identical(other.author, author) || other.author == author)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewsModel&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls)&&(identical(other.author, author) || other.author == author)&&(identical(other.category, category) || other.category == category)&&(identical(other.link, link) || other.link == link));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,title,content,imageUrl,const DeepCollectionEquality().hash(_imageUrls),author,category);
+int get hashCode => Object.hash(runtimeType,id,createdAt,title,content,imageUrl,const DeepCollectionEquality().hash(_imageUrls),author,category,link);
 
 @override
 String toString() {
-  return 'NewsModel(id: $id, createdAt: $createdAt, title: $title, content: $content, imageUrl: $imageUrl, imageUrls: $imageUrls, author: $author, category: $category)';
+  return 'NewsModel(id: $id, createdAt: $createdAt, title: $title, content: $content, imageUrl: $imageUrl, imageUrls: $imageUrls, author: $author, category: $category, link: $link)';
 }
 
 
@@ -267,7 +269,7 @@ abstract mixin class _$NewsModelCopyWith<$Res> implements $NewsModelCopyWith<$Re
   factory _$NewsModelCopyWith(_NewsModel value, $Res Function(_NewsModel) _then) = __$NewsModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'created_at') DateTime createdAt, String title, String content,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'image_urls') List<String> imageUrls, String? author, String? category
+ String id,@JsonKey(name: 'created_at') DateTime createdAt, String title, String content,@JsonKey(name: 'image_url') String? imageUrl,@JsonKey(name: 'image_urls') List<String> imageUrls, String? author, String? category, String? link
 });
 
 
@@ -284,7 +286,7 @@ class __$NewsModelCopyWithImpl<$Res>
 
 /// Create a copy of NewsModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? title = null,Object? content = null,Object? imageUrl = freezed,Object? imageUrls = null,Object? author = freezed,Object? category = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? title = null,Object? content = null,Object? imageUrl = freezed,Object? imageUrls = null,Object? author = freezed,Object? category = freezed,Object? link = freezed,}) {
   return _then(_NewsModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -294,6 +296,7 @@ as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: c
 as String?,imageUrls: null == imageUrls ? _self._imageUrls : imageUrls // ignore: cast_nullable_to_non_nullable
 as List<String>,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,link: freezed == link ? _self.link : link // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

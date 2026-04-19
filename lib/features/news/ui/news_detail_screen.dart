@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../models/news_model.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../l10n/l10n.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final NewsModel news;
@@ -194,6 +196,40 @@ class NewsDetailScreen extends StatelessWidget {
                             ),
                           );
                         },
+                      ),
+                    ),
+                  ],
+                  if (news.link != null) ...[
+                    const SizedBox(height: 48),
+                    Text(
+                      context.l10n.newsOriginalArticle.toUpperCase(),
+                      style: TextStyle(
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.8),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    InkWell(
+                      onTap: () => launchUrl(Uri.parse(news.link!)),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.link, color: Color(0xFFFFD700), size: 18),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              news.link!,
+                              style: const TextStyle(
+                                color: Color(0xFFFFD700),
+                                fontSize: 14,
+                                decoration: TextDecoration.underline,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

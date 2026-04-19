@@ -55,6 +55,7 @@ class NewsDataSourceImpl implements NewsDataSource {
           'image_urls': imageUrls,
           'author': item.findElements('dc:creator').firstOrNull?.innerText,
           'category': item.findElements('category').firstOrNull?.innerText,
+          'link': link,
         };
       }).toList();
 

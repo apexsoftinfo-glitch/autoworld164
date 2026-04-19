@@ -9,6 +9,12 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
+  String get newsOriginalArticle => 'Oryginalny artykuł';
+
+  @override
+  String get newsReadMore => 'CZYTAJ WIĘCEJ';
+
+  @override
   String get localizationBootstrap =>
       'Lokalizacja aplikacji jest skonfigurowana.';
 
