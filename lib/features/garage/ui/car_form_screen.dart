@@ -35,6 +35,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
   final List<String> _internetPhotoUrls = [];
   DateTime? _purchaseDate;
   late String _status;
+  bool _isEstimating = false;
 
   @override
   void initState() {
@@ -72,13 +73,24 @@ class _CarFormScreenState extends State<CarFormScreen> {
   }
 
   Future<void> _aiEstimate(BuildContext context, CarFormCubit cubit) async {
-    final query = '${_brandController.text} ${_nameController.text} ${_seriesController.text}'
+    final query = '${_toyMakerController.text} ${_brandController.text} ${_nameController.text} ${_seriesController.text}'
+        .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
     if (query.isEmpty) return;
     
-    final value = await cubit.estimateValue(query);
-    if (value != null) {
-      _estimatedValueController.text = value.toStringAsFixed(2);
+    setState(() => _isEstimating = true);
+    
+    try {
+      final value = await cubit.estimateValue(query);
+      if (mounted && _isEstimating) {
+        if (value != null) {
+          _estimatedValueController.text = value.toStringAsFixed(2);
+        }
+      }
+    } catch (e) {
+      debugPrint('Valuation error: $e');
+    } finally {
+      if (mounted) setState(() => _isEstimating = false);
     }
   }
 
@@ -335,6 +347,10 @@ class _CarFormScreenState extends State<CarFormScreen> {
                         ),
                       ),
                     ),
+                  ),
+                if (_isEstimating)
+                  _ValuationOverlay(
+                    onCancel: () => setState(() => _isEstimating = false),
                   ),
               ],
             );
@@ -824,6 +840,8 @@ class _StatusInput extends StatelessWidget {
 
   static const _options = [
     'Nowy',
+    'Idealny',
+    'Dobry',
     'Lekko uszkodzony',
     'Uszkodzony',
     'Luzak (bez opakowania)',
@@ -1066,3 +1084,64 @@ class _SaveButton extends StatelessWidget {
   }
 }
 
+
+class _ValuationOverlay extends StatelessWidget {
+  final VoidCallback onCancel;
+
+  const _ValuationOverlay({required this.onCancel});
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          color: Colors.black54,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.auto_fix_high, color: Color(0xFFFFD700), size: 48),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'SZUKANIE SZACUNKOWEJ WARTOŚCI',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w200,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Przeszukujemy bazy danych, aby podać Ci jak najdokładniejszą cenę rynkową...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white38, fontSize: 12),
+                  ),
+                  const SizedBox(height: 32),
+                  const CircularProgressIndicator(color: Color(0xFFFFD700)),
+                  const SizedBox(height: 48),
+                  TextButton(
+                    onPressed: onCancel,
+                    child: Text(
+                      'ZREZYGNUJ I WPISZ RĘCZNIE',
+                      style: TextStyle(
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.6),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
