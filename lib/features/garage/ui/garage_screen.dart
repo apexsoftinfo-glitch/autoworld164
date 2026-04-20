@@ -331,12 +331,6 @@ class _CarCard extends StatelessWidget {
               ),
             ],
           ),
-          // Share button overlay — bottom right
-          Positioned(
-            bottom: 8,
-            right: 8,
-            child: _ShareButton(car: car),
-          ),
           Material(
             color: Colors.transparent,
             child: InkWell(
@@ -346,6 +340,12 @@ class _CarCard extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(20),
             ),
+          ),
+          // Share button LAST in Stack = on top, receives taps first
+          Positioned(
+            bottom: 8,
+            right: 8,
+            child: _ShareButton(car: car),
           ),
         ],
       ),
