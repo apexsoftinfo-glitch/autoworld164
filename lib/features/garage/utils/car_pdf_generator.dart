@@ -35,20 +35,20 @@ class CarPdfGenerator {
 
     final dateFormat = DateFormat('dd.MM.yyyy');
 
-    // Load Image
-    pw.ImageProvider? carImage;
-    final photoPath = car.displayPhotoPath;
-    
-    if (photoPath != null) {
+    // Load ALL photos
+    final allPaths = car.allPhotoPaths;
+    final List<pw.ImageProvider> allImages = [];
+
+    for (final photoPath in allPaths) {
       try {
         Uint8List? imageBytes;
         if (photoPath.startsWith('http')) {
-          final response = await NetworkAssetBundle(Uri.parse(photoPath)).load("");
+          final response = await NetworkAssetBundle(Uri.parse(photoPath)).load('');
           imageBytes = response.buffer.asUint8List();
         } else if (photoPath.contains('/')) {
-          // Supabase path
+          // Supabase storage path
           final url = supabase.storage.from('autoworld_photos').getPublicUrl(photoPath);
-          final response = await NetworkAssetBundle(Uri.parse(url)).load("");
+          final response = await NetworkAssetBundle(Uri.parse(url)).load('');
           imageBytes = response.buffer.asUint8List();
         } else {
           // Local file
@@ -58,78 +58,127 @@ class CarPdfGenerator {
             imageBytes = await file.readAsBytes();
           }
         }
-
         if (imageBytes != null) {
-          carImage = pw.MemoryImage(imageBytes);
+          allImages.add(pw.MemoryImage(imageBytes));
         }
-      } catch (e) {
-        // Fallback or ignore image
+      } catch (_) {
+        // Skip unloadable image
       }
     }
+
+    final pw.ImageProvider? mainImage = allImages.isNotEmpty ? allImages.first : null;
+    final List<pw.ImageProvider> additionalImages = allImages.length > 1 ? allImages.sublist(1) : [];
 
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         theme: theme,
+        margin: const pw.EdgeInsets.all(32),
         build: (pw.Context context) {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Header(
-                level: 0,
+              // ── Header ──────────────────────────────────────────────────
+              pw.Container(
+                padding: const pw.EdgeInsets.only(bottom: 8),
+                decoration: const pw.BoxDecoration(
+                  border: pw.Border(bottom: pw.BorderSide(color: PdfColors.amber700, width: 2)),
+                ),
                 child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text('AutoWorld164 - Collection Export', style: pw.TextStyle(font: fontBold, fontSize: 10)),
-                    pw.Text(dateFormat.format(DateTime.now()), style: pw.TextStyle(font: fontRegular, fontSize: 10)),
+                    pw.Text('AutoWorld164', style: pw.TextStyle(font: fontBold, fontSize: 11, color: PdfColors.amber700)),
+                    pw.Text(dateFormat.format(DateTime.now()), style: pw.TextStyle(font: fontRegular, fontSize: 9, color: PdfColors.grey600)),
                   ],
                 ),
               ),
-              pw.SizedBox(height: 20),
+              pw.SizedBox(height: 16),
+
+              // ── Main photo + Details ─────────────────────────────────────
               pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  if (carImage != null)
+                  if (mainImage != null)
                     pw.Container(
-                      width: 200,
-                      height: 150,
+                      width: 190,
+                      height: 145,
                       decoration: pw.BoxDecoration(
                         border: pw.Border.all(color: PdfColors.grey300),
-                        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+                        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(6)),
                       ),
                       child: pw.ClipRRect(
-                        horizontalRadius: 8,
-                        verticalRadius: 8,
-                        child: pw.Image(carImage, fit: pw.BoxFit.cover),
+                        horizontalRadius: 6,
+                        verticalRadius: 6,
+                        child: pw.Image(mainImage, fit: pw.BoxFit.cover),
                       ),
                     ),
-                  pw.SizedBox(width: 20),
+                  pw.SizedBox(width: mainImage != null ? 16 : 0),
                   pw.Expanded(
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        pw.Text(car.toyMaker?.toUpperCase() ?? 'UNKNOWN TOY MAKER',
-                            style: pw.TextStyle(font: fontBold, color: PdfColors.amber700, fontSize: 10)),
+                        if (car.toyMaker != null)
+                          pw.Text(car.toyMaker!.toUpperCase(),
+                              style: pw.TextStyle(font: fontBold, color: PdfColors.amber700, fontSize: 9)),
                         pw.Text('${car.brand} ${car.modelName}',
-                            style: pw.TextStyle(font: fontBold, fontSize: 24)),
-                        pw.SizedBox(height: 10),
-                        _buildDetail(isPolish ? 'STAN' : 'STATUS', car.status.toUpperCase(), fontRegular: fontRegular, fontBold: fontBold),
+                            style: pw.TextStyle(font: fontBold, fontSize: 20)),
+                        pw.SizedBox(height: 8),
+                        _buildDetail(isPolish ? 'STAN' : 'STATUS', car.status, fontRegular: fontRegular, fontBold: fontBold),
                         _buildDetail(isPolish ? 'SERIA' : 'SERIES', car.series ?? '-', fontRegular: fontRegular, fontBold: fontBold),
-                        _buildDetail(isPolish ? 'DATA ZAKUPU' : 'PURCHASE DATE', 
-                            car.purchaseDate != null ? dateFormat.format(car.purchaseDate!) : '-', fontRegular: fontRegular, fontBold: fontBold),
+                        _buildDetail(
+                          isPolish ? 'DATA ZAKUPU' : 'PURCHASE DATE',
+                          car.purchaseDate != null ? dateFormat.format(car.purchaseDate!) : '-',
+                          fontRegular: fontRegular,
+                          fontBold: fontBold,
+                        ),
                         pw.Divider(color: PdfColors.grey200),
                         _buildDetail(isPolish ? 'CENA ZAKUPU' : 'PURCHASE PRICE', currencyFormat.format(car.purchasePrice), fontRegular: fontRegular, fontBold: fontBold),
-                        _buildDetail(isPolish ? 'SZAC. WARTOŚĆ' : 'ESTIMATED VALUE', currencyFormat.format(car.estimatedValue), highlight: true, fontRegular: fontRegular, fontBold: fontBold),
+                        _buildDetail(isPolish ? 'SZAC. WARTOŚĆ' : 'EST. VALUE', currencyFormat.format(car.estimatedValue), highlight: true, fontRegular: fontRegular, fontBold: fontBold),
                       ],
                     ),
                   ),
                 ],
               ),
+
+              // ── Additional photos grid ───────────────────────────────────
+              if (additionalImages.isNotEmpty) ...[
+                pw.SizedBox(height: 20),
+                pw.Text(
+                  isPolish ? 'GALERIA ZDJĘĆ' : 'PHOTO GALLERY',
+                  style: pw.TextStyle(font: fontBold, fontSize: 9, color: PdfColors.grey600, letterSpacing: 1.5),
+                ),
+                pw.SizedBox(height: 8),
+                pw.Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: additionalImages.map((img) {
+                    return pw.Container(
+                      width: 120,
+                      height: 90,
+                      decoration: pw.BoxDecoration(
+                        border: pw.Border.all(color: PdfColors.grey300),
+                        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(6)),
+                      ),
+                      child: pw.ClipRRect(
+                        horizontalRadius: 6,
+                        verticalRadius: 6,
+                        child: pw.Image(img, fit: pw.BoxFit.cover),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+
               pw.Spacer(),
-              pw.Divider(color: PdfColors.grey400),
+
+              // ── Footer ──────────────────────────────────────────────────
+              pw.Divider(color: PdfColors.grey300),
               pw.Align(
                 alignment: pw.Alignment.center,
-                child: pw.Text('Generated by AutoWorld164', style: pw.TextStyle(font: fontRegular, fontSize: 8, color: PdfColors.grey500)),
+                child: pw.Text(
+                  'Generated by AutoWorld164  •  ${allImages.length} ${isPolish ? 'zdjęć' : 'photo(s)'}',
+                  style: pw.TextStyle(font: fontRegular, fontSize: 8, color: PdfColors.grey500),
+                ),
               ),
             ],
           );
@@ -143,7 +192,6 @@ class CarPdfGenerator {
     );
   }
 
-
   static pw.Widget _buildDetail(
     String label,
     String value, {
@@ -156,14 +204,16 @@ class CarPdfGenerator {
       child: pw.Row(
         children: [
           pw.SizedBox(
-            width: 100,
-            child: pw.Text(label, style: pw.TextStyle(font: fontRegular, fontSize: 10, color: PdfColors.grey700)),
+            width: 95,
+            child: pw.Text(label, style: pw.TextStyle(font: fontRegular, fontSize: 9, color: PdfColors.grey600)),
           ),
-          pw.Text(value, style: pw.TextStyle(
-            font: highlight ? fontBold : fontRegular,
-            fontSize: 11,
-            color: highlight ? PdfColors.amber900 : PdfColors.black,
-          )),
+          pw.Expanded(
+            child: pw.Text(value, style: pw.TextStyle(
+              font: highlight ? fontBold : fontRegular,
+              fontSize: 10,
+              color: highlight ? PdfColors.amber900 : PdfColors.black,
+            )),
+          ),
         ],
       ),
     );
