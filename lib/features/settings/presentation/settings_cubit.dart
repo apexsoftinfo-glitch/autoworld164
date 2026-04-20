@@ -271,7 +271,8 @@ class SettingsCubit extends Cubit<SettingsState> {
       await _settingsRepository.importBackup(filePath);
       init(userId);
       emit(const Success(messageKey: 'backup_restored_successfully'));
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('SettingsCubit.importBackup error: $e\n$stack');
       emit(const Error(errorKey: 'error_importing_backup'));
       if (previousState is Data) {
         emit(previousState);

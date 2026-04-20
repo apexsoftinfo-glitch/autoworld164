@@ -176,13 +176,15 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
     if (settings != null) {
       final s = Map<String, dynamic>.from(settings);
-      s['user_id'] = userId;
+      s['id'] = userId; // settings table uses 'id' as user identifier (PK)
+      // Remove user_id if it mistakenly exists in the map
+      s.remove('user_id');
       await supabase.from('autoworld_settings').upsert(s);
     }
 
     if (profile != null) {
       final pData = Map<String, dynamic>.from(profile);
-      pData['id'] = userId;
+      pData['id'] = userId; // shared_users uses 'id' as PK
       await supabase.from('shared_users').upsert(pData);
     }
   }
