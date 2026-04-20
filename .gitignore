@@ -21,3 +21,12 @@ pubspec.lock
 # OS
 .DS_Store
 Thumbs.db
+
+# Screenshots
+skriny/
+
+# Signing certificates
+*.pem
+*.p12
+*.jks
+*.keystore
