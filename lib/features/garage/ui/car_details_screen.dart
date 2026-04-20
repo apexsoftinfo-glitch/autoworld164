@@ -91,7 +91,7 @@ class CarDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _PhotoGallery(car: car, supabase: supabase),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 16),
                           Text(
                             car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
                             style: const TextStyle(
@@ -101,7 +101,7 @@ class CarDetailsScreen extends StatelessWidget {
                               letterSpacing: 2,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 4),
                           Text(
                             car.brand,
                             style: const TextStyle(
@@ -119,9 +119,9 @@ class CarDetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 16),
                           _DetailGrid(car: car, currencyFormat: currencyFormat),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 8),
                         ],
                       ),
                     ),
@@ -294,9 +294,9 @@ class _DetailGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
-      childAspectRatio: 2.5,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
+      childAspectRatio: 2.8,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 8,
       children: [
         _DetailItem(label: 'STAN', value: car.status.toUpperCase()),
         _DetailItem(label: 'SERIA', value: car.series ?? '-'),
