@@ -14,6 +14,7 @@ import '../presentation/cubit/cars_collection_cubit.dart';
 import 'car_form_screen.dart';
 import 'car_details_screen.dart';
 import 'widgets/car_photo.dart';
+import '../utils/garage_card_pdf_generator.dart';
 
 class GarageScreen extends StatelessWidget {
   const GarageScreen({super.key});
@@ -330,6 +331,12 @@ class _CarCard extends StatelessWidget {
               ),
             ],
           ),
+          // Share button overlay — bottom right
+          Positioned(
+            bottom: 8,
+            right: 8,
+            child: _ShareButton(car: car),
+          ),
           Material(
             color: Colors.transparent,
             child: InkWell(
@@ -547,6 +554,49 @@ class _CarListTile extends StatelessWidget {
             Text(
               currencyFormat.format(car.estimatedValue),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 8),
+            _ShareButton(car: car),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShareButton extends StatelessWidget {
+  final CarModel car;
+  const _ShareButton({required this.car});
+
+  @override
+  Widget build(BuildContext context) {
+    final supabase = getIt<SupabaseClient>();
+    final settingsState = context.watch<settings.SettingsCubit>().state;
+    final garageName = settingsState is settings.Data
+        ? settingsState.settings.garageName
+        : null;
+
+    return GestureDetector(
+      onTap: () => GarageCardPdfGenerator.generateAndShare(
+        car,
+        garageName: garageName,
+        supabase: supabase,
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.black54,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.ios_share, size: 11, color: Colors.white60),
+            SizedBox(width: 3),
+            Text(
+              'PDF',
+              style: TextStyle(color: Colors.white60, fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 0.5),
             ),
           ],
         ),
