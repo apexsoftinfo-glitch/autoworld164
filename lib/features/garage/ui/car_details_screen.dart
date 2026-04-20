@@ -74,59 +74,75 @@ class CarDetailsScreen extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF0C0C0C), // Deep black
-                  Color(0xFF2D1B0D), // Warm garage dark brown
-                  Color(0xFF0C0C0C), // Deep black at bottom
+                  Color(0xFF0C0C0C),
+                  Color(0xFF2D1B0D),
+                  Color(0xFF0C0C0C),
                 ],
               ),
             ),
             child: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _PhotoGallery(car: car, supabase: supabase),
-                    const SizedBox(height: 32),
-                    Text(
-                      car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
-                      style: const TextStyle(
-                        color: Color(0xFFFFD700),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 2,
+              child: Column(
+                children: [
+                  // ── Scrollable content ───────────────────────────────────
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _PhotoGallery(car: car, supabase: supabase),
+                          const SizedBox(height: 32),
+                          Text(
+                            car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
+                            style: const TextStyle(
+                              color: Color(0xFFFFD700),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            car.brand,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w200,
+                              letterSpacing: -1,
+                            ),
+                          ),
+                          Text(
+                            car.modelName,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                          _DetailGrid(car: car, currencyFormat: currencyFormat),
+                          const SizedBox(height: 24),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      car.brand,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w200,
-                        letterSpacing: -1,
+                  ),
+
+                  // ── Action buttons — always visible at bottom ────────────
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.4),
+                      border: Border(
+                        top: BorderSide(color: Colors.white.withValues(alpha: 0.07)),
                       ),
                     ),
-                    Text(
-                      car.modelName,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    _DetailGrid(car: car, currencyFormat: currencyFormat),
-                    
-                    const SizedBox(height: 48),
-                    
-                    _ActionButtons(car: car, supabase: supabase),
-                  ],
-                ),
+                    child: _ActionButtons(car: car, supabase: supabase),
+                  ),
+                ],
               ),
             ),
           ),
+
         ),
       ),
     );
