@@ -59,7 +59,13 @@ class NewsDataSourceImpl implements NewsDataSource {
         };
       }).toList();
 
-      return await Future.wait(futureItems);
+      final results = await Future.wait(futureItems);
+      results.sort((a, b) {
+        final dateA = DateTime.tryParse(a['created_at'] as String? ?? '') ?? DateTime(0);
+        final dateB = DateTime.tryParse(b['created_at'] as String? ?? '') ?? DateTime(0);
+        return dateB.compareTo(dateA); // newest first
+      });
+      return results;
     } catch (e) {
       debugPrint('❌ [NewsDataSource] Error fetching Lamley Group news: $e');
       return [];
@@ -113,13 +119,17 @@ class NewsRepositoryImpl implements NewsRepository {
   @override
   Future<List<NewsModel>> getNews() async {
     final data = await _dataSource.getNews();
-    return data.map((json) => NewsModel.fromJson(json)).toList();
+    final models = data.map((json) => NewsModel.fromJson(json)).toList();
+    models.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // newest first
+    return models;
   }
 
   @override
   Stream<List<NewsModel>> watchNews() {
-    return _dataSource.watchNews().map(
-          (list) => list.map((json) => NewsModel.fromJson(json)).toList(),
-        );
+    return _dataSource.watchNews().map((list) {
+      final models = list.map((json) => NewsModel.fromJson(json)).toList();
+      models.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // newest first
+      return models;
+    });
   }
 }
