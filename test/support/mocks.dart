@@ -14,12 +14,16 @@ import 'package:autoworld164/features/hunting/data/repositories/hunting_reposito
 import 'package:autoworld164/features/settings/data/repositories/settings_repository.dart';
 
 import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
+import 'package:autoworld164/features/settings/presentation/settings_cubit.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 class MockCarsRepository extends Mock implements CarsRepository {}
 class MockCarsCollectionCubit extends Mock implements CarsCollectionCubit {}
 class MockNewsRepository extends Mock implements NewsRepository {}
 class MockHuntingRepository extends Mock implements HuntingRepository {}
+class MockSessionCubit extends Mock implements SessionCubit {}
+class MockSettingsCubit extends Mock implements SettingsCubit {}
 
 
 class MockSharedUserRepository extends Mock implements SharedUserRepository {}

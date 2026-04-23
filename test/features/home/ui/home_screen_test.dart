@@ -7,11 +7,32 @@ import 'package:autoworld164/core/di/injection.dart';
 import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 
+import 'package:autoworld164/features/settings/presentation/settings_cubit.dart';
+import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../support/mocks.dart';
 
 void main() {
+  late MockSessionCubit mockSessionCubit;
+  late MockSettingsCubit mockSettingsCubit;
+
   setUp(() async {
     await getIt.reset();
+    
+    mockSessionCubit = MockSessionCubit();
+    final session = buildSessionModel(userId: 'test-user');
+    when(() => mockSessionCubit.state).thenReturn(SessionState.authenticated(session: session));
+    when(() => mockSessionCubit.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockSessionCubit.close()).thenAnswer((_) async {});
+    getIt.registerFactory<SessionCubit>(() => mockSessionCubit);
+
+    mockSettingsCubit = MockSettingsCubit();
+    when(() => mockSettingsCubit.state).thenReturn(const SettingsState.initial());
+    when(() => mockSettingsCubit.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockSettingsCubit.close()).thenAnswer((_) async {});
+    getIt.registerFactory<SettingsCubit>(() => mockSettingsCubit);
+
     final mockCubit = MockCarsCollectionCubit();
     when(() => mockCubit.state).thenReturn(const CarsCollectionState.initial());
     when(() => mockCubit.stream).thenAnswer((_) => Stream.empty());
@@ -26,7 +47,10 @@ void main() {
       MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const HomeScreen(),
+        home: BlocProvider<SessionCubit>.value(
+          value: mockSessionCubit,
+          child: const HomeScreen(),
+        ),
       ),
     );
     await tester.pump();
