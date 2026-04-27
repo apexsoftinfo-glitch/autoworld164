@@ -300,13 +300,30 @@ class _DetailGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       mainAxisSpacing: 8,
       children: [
-        _DetailItem(label: l10n.carDetailsCondition, value: car.status.toUpperCase()),
+        _DetailItem(
+          label: l10n.carDetailsCondition, 
+          value: _getLocalizedStatus(context, car.status).toUpperCase(),
+        ),
         _DetailItem(label: l10n.carDetailsSeries, value: car.series ?? '-'),
         _DetailItem(label: l10n.carDetailsDate, value: car.purchaseDate != null ? DateFormat('dd.MM.yyyy').format(car.purchaseDate!) : '-'),
         _DetailItem(label: l10n.carDetailsPurchasePrice, value: currencyFormat.format(car.purchasePrice)),
         _DetailItem(label: l10n.carDetailsEstimatedValue, value: currencyFormat.format(car.estimatedValue), highlight: true),
       ],
     );
+  }
+
+  String _getLocalizedStatus(BuildContext context, String status) {
+    final l10n = context.l10n;
+    return switch (status) {
+      'Nowy' => l10n.carConditionNew,
+      'Idealny' => l10n.carConditionMint,
+      'Dobry' => l10n.carConditionGood,
+      'Lekko uszkodzony' => l10n.carConditionFair,
+      'Uszkodzony' => l10n.carConditionPoor,
+      'Luzak (bez opakowania)' => l10n.carConditionLoose,
+      'Inne' => l10n.carConditionOther,
+      _ => status,
+    };
   }
 }
 

@@ -123,7 +123,12 @@ class CarPdfGenerator {
                         pw.Text('${car.brand} ${car.modelName}',
                             style: pw.TextStyle(font: fontBold, fontSize: 20)),
                         pw.SizedBox(height: 8),
-                        _buildDetail(isPolish ? 'STAN' : 'STATUS', car.status, fontRegular: fontRegular, fontBold: fontBold),
+                        _buildDetail(
+                          isPolish ? 'STAN' : 'CONDITION', 
+                          _getLocalizedStatus(car.status, isPolish).toUpperCase(), 
+                          fontRegular: fontRegular, 
+                          fontBold: fontBold,
+                        ),
                         _buildDetail(isPolish ? 'SERIA' : 'SERIES', car.series ?? '-', fontRegular: fontRegular, fontBold: fontBold),
                         _buildDetail(
                           isPolish ? 'DATA ZAKUPU' : 'PURCHASE DATE',
@@ -217,5 +222,21 @@ class CarPdfGenerator {
         ],
       ),
     );
+  }
+
+  static String _getLocalizedStatus(String status, bool isPolish) {
+    if (isPolish) {
+      return status; // Database values are already in Polish
+    }
+    return switch (status) {
+      'Nowy' => 'New',
+      'Idealny' => 'Mint',
+      'Dobry' => 'Good',
+      'Lekko uszkodzony' => 'Fair',
+      'Uszkodzony' => 'Poor',
+      'Luzak (bez opakowania)' => 'Loose (no box)',
+      'Inne' => 'Other',
+      _ => status,
+    };
   }
 }

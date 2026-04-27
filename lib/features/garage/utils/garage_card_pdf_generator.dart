@@ -13,6 +13,7 @@ class GarageCardPdfGenerator {
     CarModel car, {
     required String? garageName,
     required SupabaseClient supabase,
+    required bool isPolish,
   }) async {
     final pdf = pw.Document();
 
@@ -103,7 +104,7 @@ class GarageCardPdfGenerator {
                               style: pw.TextStyle(font: fontBold, fontSize: 18, color: PdfColors.black, letterSpacing: 2),
                             ),
                             pw.Text(
-                              'KOLEKCJA 1/64',
+                              isPolish ? 'KOLEKCJA 1/64' : '1/64 COLLECTION',
                               style: pw.TextStyle(font: fontLight, fontSize: 8, color: PdfColors.grey600, letterSpacing: 2),
                             ),
                           ],
@@ -158,7 +159,7 @@ class GarageCardPdfGenerator {
                             borderRadius: const pw.BorderRadius.all(pw.Radius.circular(12)),
                           ),
                           child: pw.Center(
-                            child: pw.Text('Brak zdjęcia', style: pw.TextStyle(font: fontRegular, color: PdfColors.grey400)),
+                            child: pw.Text(isPolish ? 'Brak zdjęcia' : 'No photo', style: pw.TextStyle(font: fontRegular, color: PdfColors.grey400)),
                           ),
                         ),
 
@@ -180,9 +181,9 @@ class GarageCardPdfGenerator {
                       // ── Info grid ────────────────────────────────────────
                       pw.Row(
                         children: [
-                          _infoBox('STAN', car.status.toUpperCase(), fontRegular: fontRegular, fontBold: fontBold),
+                          _infoBox(isPolish ? 'STAN' : 'CONDITION', _getLocalizedStatus(car.status, isPolish).toUpperCase(), fontRegular: fontRegular, fontBold: fontBold),
                           pw.SizedBox(width: 12),
-                          _infoBox('SERIA', car.series ?? '—', fontRegular: fontRegular, fontBold: fontBold),
+                          _infoBox(isPolish ? 'SERIA' : 'SERIES', (car.series ?? (isPolish ? '—' : '-')).toUpperCase(), fontRegular: fontRegular, fontBold: fontBold),
                         ],
                       ),
 
@@ -190,7 +191,7 @@ class GarageCardPdfGenerator {
                       if (extraImages.isNotEmpty) ...[
                         pw.SizedBox(height: 25),
                         pw.Text(
-                          'GALERIA ZDJĘĆ',
+                          isPolish ? 'GALERIA ZDJĘĆ' : 'PHOTO GALLERY',
                           style: pw.TextStyle(font: fontBold, fontSize: 8, color: PdfColors.grey500, letterSpacing: 2),
                         ),
                         pw.SizedBox(height: 10),
@@ -223,7 +224,7 @@ class GarageCardPdfGenerator {
                         children: [
                           pw.Text('AutoWorld164', style: pw.TextStyle(font: fontRegular, fontSize: 8, color: PdfColors.grey400)),
                           if (allImages.isNotEmpty)
-                            pw.Text('${allImages.length} zdjęć', style: pw.TextStyle(font: fontRegular, fontSize: 8, color: PdfColors.grey400)),
+                            pw.Text('${allImages.length} ${isPolish ? 'zdjęć' : 'photo(s)'}', style: pw.TextStyle(font: fontRegular, fontSize: 8, color: PdfColors.grey400)),
                         ],
                       ),
                     ],
@@ -266,5 +267,21 @@ class GarageCardPdfGenerator {
         ),
       ),
     );
+  }
+
+  static String _getLocalizedStatus(String status, bool isPolish) {
+    if (isPolish) {
+      return status;
+    }
+    return switch (status) {
+      'Nowy' => 'New',
+      'Idealny' => 'Mint',
+      'Dobry' => 'Good',
+      'Lekko uszkodzony' => 'Fair',
+      'Uszkodzony' => 'Poor',
+      'Luzak (bez opakowania)' => 'Loose (no box)',
+      'Inne' => 'Other',
+      _ => status,
+    };
   }
 }

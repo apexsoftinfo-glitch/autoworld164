@@ -576,11 +576,14 @@ class _ShareButton extends StatelessWidget {
         ? settingsState.settings.garageName
         : null;
 
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+
     return GestureDetector(
       onTap: () => GarageCardPdfGenerator.generateAndShare(
         car,
         garageName: garageName,
         supabase: supabase,
+        isPolish: isPolish,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
