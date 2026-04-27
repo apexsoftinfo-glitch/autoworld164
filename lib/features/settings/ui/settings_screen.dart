@@ -12,6 +12,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../../../shared/error_messages.dart';
+import '../../../app/locale/presentation/cubit/app_locale_cubit.dart';
+import '../../../app/locale/models/app_locale_option_model.dart';
 import '../../auth/presentation/ui/login_screen.dart';
 import '../../profiles/models/shared_user_model.dart';
 import '../../profiles/ui/widgets/profile_photo.dart';
@@ -702,7 +704,13 @@ class _LanguageSection extends StatelessWidget {
             child: _ChoiceCard(
               label: l == AppLanguage.pl ? 'PL' : 'EN',
               isSelected: isSelected,
-              onTap: () => context.read<SettingsCubit>().updateLanguage(userId, l),
+              onTap: () {
+                context.read<SettingsCubit>().updateLanguage(userId, l);
+                final localeOption = l == AppLanguage.pl 
+                    ? AppLocaleOptionModel.polish 
+                    : AppLocaleOptionModel.english;
+                context.read<AppLocaleCubit>().selectLocale(localeOption);
+              },
             ),
           ),
         );
