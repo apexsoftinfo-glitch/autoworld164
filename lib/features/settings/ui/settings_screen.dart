@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -195,6 +196,24 @@ class _SettingsList extends StatelessWidget {
             title: l10n.settingsSectionBackup,
             icon: Icons.backup_outlined,
             child: _BackupSection(),
+          ),
+          const SizedBox(height: 40),
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final info = snapshot.data!;
+                return Text(
+                  'AutoWorld164 v${info.version}+${info.buildNumber}',
+                  style: const TextStyle(
+                    color: Colors.white24,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w300,
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ],
       ),
