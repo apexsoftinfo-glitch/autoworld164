@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/di/injection.dart';
 import '../data/repositories/hunting_repository.dart';
 import '../presentation/cubit/hunting_cubit.dart';
+import '../../../l10n/l10n.dart';
 
 class HuntingScreen extends StatelessWidget {
   const HuntingScreen({super.key});
@@ -39,7 +40,7 @@ class _HuntingViewState extends State<_HuntingView> {
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nie można otworzyć linku')),
+          SnackBar(content: Text(context.l10n.errorCannotOpenLink)),
         );
       }
     }
@@ -47,12 +48,13 @@ class _HuntingViewState extends State<_HuntingView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'HOT HUNT',
+        title: Text(
+          l10n.huntingTitle,
           style: TextStyle(
             fontWeight: FontWeight.w900,
             letterSpacing: 5,
@@ -96,14 +98,14 @@ class _HuntingViewState extends State<_HuntingView> {
                   child: BlocBuilder<HuntingCubit, HuntingState>(
                     builder: (context, state) {
                       return switch (state) {
-                        Initial() => const _HuntingInitial(),
+                        Initial() => _HuntingInitial(),
                         Loading() => const Center(
                             child: CircularProgressIndicator(color: Color(0xFFFFD700)),
                           ),
-                        Error(errorKey: final _) => const Center(
+                        Error(errorKey: final _) => Center(
                             child: Text(
-                              'Wystąpił błąd podczas wyszukiwania',
-                              style: TextStyle(color: Colors.white70),
+                              l10n.huntingError,
+                              style: const TextStyle(color: Colors.white70),
                             ),
                           ),
                         Data(results: final results, query: final _) =>
@@ -142,7 +144,7 @@ class _SearchField extends StatelessWidget {
         controller: controller,
         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         decoration: InputDecoration(
-          hintText: 'Wpisz model (np. Supra RLC)',
+          hintText: context.l10n.huntingSearchHint,
           hintStyle: const TextStyle(color: Colors.white38),
           prefixIcon: const Icon(Icons.search, color: Color(0xFFFFD700)),
           border: InputBorder.none,
@@ -163,14 +165,15 @@ class _HuntingInitial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final l10n = context.l10n;
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.explore_outlined, size: 64, color: Colors.white12),
           SizedBox(height: 16),
           Text(
-            'ZNAJDŹ SWÓJ WYMARZONY MODEL',
+            l10n.huntingEmptyTitle,
             style: TextStyle(
               color: Colors.white38,
               fontSize: 12,
@@ -182,7 +185,7 @@ class _HuntingInitial extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 48),
             child: Text(
-              'Przeszukaj najpopularniejsze platformy w poszukiwaniu okazji i promocji.',
+              l10n.huntingEmptySubtitle,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white24, fontSize: 13),
             ),
@@ -220,6 +223,7 @@ class _HuntSourceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -255,7 +259,7 @@ class _HuntSourceCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _ActionBtn(
-                    label: 'SZUKAJ',
+                    label: l10n.huntingSearchButton,
                     icon: Icons.search,
                     onTap: () => onLaunch(result.searchUrl),
                     isPrimary: true,
@@ -265,7 +269,7 @@ class _HuntSourceCard extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _ActionBtn(
-                      label: 'PROMOCJE',
+                      label: l10n.huntingPromoButton,
                       icon: Icons.local_offer_outlined,
                       onTap: () => onLaunch(result.promoQuery!),
                       isPrimary: false,

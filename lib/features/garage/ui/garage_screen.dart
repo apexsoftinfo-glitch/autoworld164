@@ -279,7 +279,7 @@ class _CarCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            (car.toyMaker ?? 'PRODUCENT').toUpperCase(),
+                            (car.toyMaker ?? context.l10n.carProducerPlaceholder).toUpperCase(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -454,7 +454,7 @@ class _SearchAndToggleBar extends StatelessWidget {
                 onChanged: onSearch,
                 style: const TextStyle(color: Colors.white, fontSize: 13),
                 decoration: InputDecoration(
-                  hintText: 'Szukaj modelu...',
+                  hintText: context.l10n.garageSearchHint,
                   hintStyle: const TextStyle(color: Colors.white24, fontSize: 12),
                   border: InputBorder.none,
                   icon: Icon(
@@ -536,7 +536,7 @@ class _CarListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    (car.toyMaker ?? 'PRODUCENT').toUpperCase(),
+                    (car.toyMaker ?? context.l10n.carProducerPlaceholder).toUpperCase(),
                     style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
                   ),
                   Text(
@@ -649,8 +649,8 @@ class _BottomAddButton extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 ),
                 icon: const Icon(Icons.add),
-                label: const Text(
-                  'DODAJ NOWY MODEL',
+                label: Text(
+                  context.l10n.garageAddNewCarButton,
                   style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
                 ),
               ),
@@ -701,8 +701,8 @@ class _BrandFilterSheet extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'PRODUCENCI',
+                Text(
+                  context.l10n.garageProducersTitle,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -714,7 +714,7 @@ class _BrandFilterSheet extends StatelessWidget {
                   TextButton(
                     onPressed: () => onSelect(null),
                     child: Text(
-                      'USUŃ FILTR',
+                      context.l10n.garageRemoveFilter,
                       style: TextStyle(
                         color: const Color(0xFFFFD700).withValues(alpha: 0.7),
                         fontSize: 10,

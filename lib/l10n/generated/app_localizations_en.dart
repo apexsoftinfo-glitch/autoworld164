@@ -663,4 +663,229 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAddCustomBackground => 'Add background';
+
+  @override
+  String get homeMyGarage => 'MY GARAGE';
+
+  @override
+  String get homeNews => 'NEWS';
+
+  @override
+  String get homeHotHunt => 'HOT HUNT';
+
+  @override
+  String get homeAddCar => 'ADD MODEL';
+
+  @override
+  String get homeLoadingGarage => 'Loading garage data...';
+
+  @override
+  String get homeTotalValueTitle => 'COLLECTION VALUE';
+
+  @override
+  String get homeTotalItemsTitle => 'ITEMS IN GARAGE';
+
+  @override
+  String get homeLatestArrivals => 'LATEST ARRIVALS';
+
+  @override
+  String get homeSeeAll => 'SEE ALL';
+
+  @override
+  String get homeNoModelsTitle => 'NO MODELS';
+
+  @override
+  String get homeNoModelsSubtitle =>
+      'Your garage is waiting for the first model';
+
+  @override
+  String get carDetailsBrand => 'BRAND';
+
+  @override
+  String get carDetailsSeries => 'SERIES';
+
+  @override
+  String get carDetailsCondition => 'CONDITION';
+
+  @override
+  String get carDetailsPrice => 'PRICE';
+
+  @override
+  String get carDetailsValue => 'VALUE';
+
+  @override
+  String get carDetailsDate => 'DATE';
+
+  @override
+  String get carDetailsOtherPhotos => 'OTHER PHOTOS';
+
+  @override
+  String get carDetailsDeleteConfirmTitle => 'DELETE MODEL';
+
+  @override
+  String get carDetailsDeleteConfirmBody =>
+      'Are you sure you want to permanently delete this model from the garage?';
+
+  @override
+  String get carFormBrandPlaceholder => 'e.g. Hot Wheels';
+
+  @override
+  String get carFormModelPlaceholder => 'e.g. Porsche 911 GT3';
+
+  @override
+  String get carFormProducerOther => 'OTHER';
+
+  @override
+  String get carFormProducerDialogTitle => 'ENTER PRODUCER';
+
+  @override
+  String get carFormProducerPlaceholder => 'e.g. Inno64';
+
+  @override
+  String get carFormConditionLabel => 'CONDITION';
+
+  @override
+  String get carFormCameraLabel => 'CAMERA';
+
+  @override
+  String get carFormGalleryLabel => 'GALLERY';
+
+  @override
+  String get carFormInternetLabel => 'INTERNET';
+
+  @override
+  String get huntingTitle => 'HOT HUNT';
+
+  @override
+  String get huntingSearchHint => 'Enter model (e.g. Supra RLC)';
+
+  @override
+  String get huntingEmptyTitle => 'FIND YOUR DREAM MODEL';
+
+  @override
+  String get huntingEmptySubtitle =>
+      'Search the most popular platforms for deals and promotions.';
+
+  @override
+  String get huntingSearchButton => 'SEARCH';
+
+  @override
+  String get huntingPromoButton => 'PROMOTIONS';
+
+  @override
+  String get huntingError => 'An error occurred while searching';
+
+  @override
+  String get huntingLaunchError => 'Cannot open link';
+
+  @override
+  String get newsEmptyState => 'No new messages';
+
+  @override
+  String get newsLearnMore => 'LEARN MORE';
+
+  @override
+  String get newsRefreshTooltip => 'Refresh news';
+
+  @override
+  String get settingsNoUser => 'No user';
+
+  @override
+  String get homePiecesCount => 'pcs.';
+
+  @override
+  String get homeTotalValue => 'Value.';
+
+  @override
+  String get carDetailsPurchasePrice => 'Purchase price';
+
+  @override
+  String get carDetailsEstimatedValue => 'Est. value';
+
+  @override
+  String get carDetailsEditData => 'Edit data';
+
+  @override
+  String get carGalleryCameraLabel => 'CAMERA';
+
+  @override
+  String get carGalleryGalleryLabel => 'GALLERY';
+
+  @override
+  String get carGalleryInternetLabel => 'INTERNET';
+
+  @override
+  String get homeGarageTitle => 'GARAGE';
+
+  @override
+  String homeGarageTitleWithName(Object name) {
+    return 'GARAGE $name';
+  }
+
+  @override
+  String get carFormMaxPhotos => 'Maximum 5 photos';
+
+  @override
+  String get carFormImageError => 'Error opening gallery/camera';
+
+  @override
+  String get carFormEstimatingTitle => 'SEARCHING FOR ESTIMATED VALUE';
+
+  @override
+  String get carFormEstimatingBody =>
+      'We are searching databases to provide you with the most accurate market price...';
+
+  @override
+  String get carFormCancelEstimation => 'CANCEL AND ENTER MANUALLY';
+
+  @override
+  String get garageSearchHint => 'Search model...';
+
+  @override
+  String get garageAddNewCarButton => 'ADD NEW MODEL';
+
+  @override
+  String get garageProducersTitle => 'PRODUCERS';
+
+  @override
+  String get garageRemoveFilter => 'REMOVE FILTER';
+
+  @override
+  String get carProducerPlaceholder => 'PRODUCER';
+
+  @override
+  String get cancelButtonLabel => 'CANCEL';
+
+  @override
+  String get carFormSeriesDialogTitle => 'ENTER SERIES NAME';
+
+  @override
+  String get carFormSeriesPlaceholder => 'e.g. Team Transport';
+
+  @override
+  String get errorCannotOpenLink => 'Cannot open link';
+
+  @override
+  String get carConditionNew => 'New';
+
+  @override
+  String get carConditionMint => 'Mint';
+
+  @override
+  String get carConditionGood => 'Good';
+
+  @override
+  String get carConditionFair => 'Fair';
+
+  @override
+  String get carConditionPoor => 'Poor';
+
+  @override
+  String get carConditionLoose => 'Loose (no box)';
+
+  @override
+  String get carConditionOther => 'Other';
+
+  @override
+  String get commonOther => 'Other...';
 }

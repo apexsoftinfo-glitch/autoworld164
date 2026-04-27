@@ -41,7 +41,7 @@ class _NewsScreenView extends StatelessWidget {
           IconButton(
             onPressed: () => context.read<NewsCubit>().loadNews(),
             icon: const Icon(Icons.refresh, color: Color(0xFFFFD700)),
-            tooltip: 'Odśwież nowości',
+            tooltip: context.l10n.newsRefreshTooltip,
           ),
         ],
         flexibleSpace: ClipRect(
@@ -112,11 +112,11 @@ class _NewsScreenView extends StatelessWidget {
                       backgroundColor: const Color(0xFF1C1C1E),
                       child: newsList.isEmpty
                           ? ListView(
-                              children: const [
+                              children: [
                                 SizedBox(height: 100),
                                 Center(
                                   child: Text(
-                                    'Brak nowych wiadomości',
+                                    context.l10n.newsEmptyState,
                                     style: TextStyle(color: Colors.white70),
                                   ),
                                 ),
@@ -296,11 +296,11 @@ class _NewsCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 20),
-                        const Row(
+                        Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'DOWIEDZ SIĘ WIĘCEJ',
+                              context.l10n.newsLearnMore,
                               style: TextStyle(
                                 color: Color(0xFFFFD700),
                                 fontSize: 10,

@@ -36,6 +36,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
   DateTime? _purchaseDate;
   late String _status;
   bool _isEstimating = false;
+  AppLocalizations get l10n => context.l10n;
 
   @override
   void initState() {
@@ -110,7 +111,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
     final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
     if (total >= 5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Maksymalnie 5 zdjęć')),
+        SnackBar(content: Text(l10n.carFormMaxPhotos)),
       );
       return;
     }
@@ -131,7 +132,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
       debugPrint('Error picking image: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Błąd podczas otwierania galerii/aparatu: $e')),
+          SnackBar(content: Text('${l10n.carFormImageError}: $e')),
         );
       }
     }
@@ -240,7 +241,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               _GlassInput(
                                 controller: _brandController,
                                 label: '${l10n.carBrandLabel} / MODEL',
-                                hint: 'np. Porsche 911 GT3',
+                                hint: l10n.carFormBrandPlaceholder,
                                 validator: (v) => v!.isEmpty ? '...' : null,
                               ),
                               const SizedBox(height: 16),
@@ -294,7 +295,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               const SizedBox(height: 16),
 
                               _StatusInput(
-                                label: 'STAN',
+                                label: l10n.carFormConditionLabel,
                                 selectedStatus: _status,
                                 onChanged: (v) => setState(() => _status = v),
                               ),
@@ -412,11 +413,11 @@ class _MultiPhotoPicker extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: [
               if (total < 5)
-                _AddPhotoBox(onTap: () => onAdd(ImageSource.camera), label: 'APARAT'),
+                _AddPhotoBox(onTap: () => onAdd(ImageSource.camera), label: l10n.carGalleryCameraLabel),
               if (total < 5)
-                _AddPhotoBox(onTap: () => onAdd(ImageSource.gallery), label: 'GALERIA', icon: Icons.photo_library_outlined),
+                _AddPhotoBox(onTap: () => onAdd(ImageSource.gallery), label: l10n.carGalleryGalleryLabel, icon: Icons.photo_library_outlined),
               if (total < 5)
-                _AddPhotoBox(onTap: onSearchOnline, label: 'INTERNET', icon: Icons.public),
+                _AddPhotoBox(onTap: onSearchOnline, label: l10n.carGalleryInternetLabel, icon: Icons.public),
               
               ...newImages.asMap().entries.map((e) => _Thumbnail(
                 image: e.value,
@@ -707,32 +708,33 @@ class _InnyProducerBox extends StatelessWidget {
   }
 
   Future<String?> _showCustomProducerDialog(BuildContext context, String current) async {
+    final l10n = context.l10n;
     final textController = TextEditingController(text: current);
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A120B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
-        title: const Text('PODAJ PRODUCENTA', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+        title: Text(l10n.carFormProducerDialogTitle, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
         content: TextField(
           controller: textController,
           autofocus: true,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            hintText: 'np. Inno64',
-            hintStyle: TextStyle(color: Colors.white24),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
+          decoration: InputDecoration(
+            hintText: l10n.carFormProducerPlaceholder,
+            hintStyle: const TextStyle(color: Colors.white24),
+            enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
+            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ANULUJ', style: TextStyle(color: Colors.white38)),
+            child: Text(l10n.closeButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, textController.text),
-            child: const Text('ZAPISZ', style: TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
+            child: Text(l10n.carFormSaveButton.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -769,7 +771,7 @@ class _SeriesSelector extends StatelessWidget {
     if (isCustom) {
       items.add(current);
     }
-    items.add('Inne...');
+    items.add(context.l10n.commonOther);
 
     return _GlassDropdown<String>(
       label: label,
@@ -794,32 +796,33 @@ class _SeriesSelector extends StatelessWidget {
   }
 
   Future<String?> _showCustomSeriesDialog(BuildContext context, String current) async {
+    final l10n = context.l10n;
     final textController = TextEditingController(text: current);
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A120B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
-        title: const Text('PODAJ NAZWĘ SERII', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+        title: Text(l10n.carFormSeriesDialogTitle, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
         content: TextField(
           controller: textController,
           autofocus: true,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            hintText: 'np. Team Transport',
-            hintStyle: TextStyle(color: Colors.white24),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
+          decoration: InputDecoration(
+            hintText: l10n.carFormSeriesPlaceholder,
+            hintStyle: const TextStyle(color: Colors.white24),
+            enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
+            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ANULUJ', style: TextStyle(color: Colors.white38)),
+            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, textController.text),
-            child: const Text('ZAPISZ', style: TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
+            child: Text(l10n.carFormSaveButton.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -838,24 +841,28 @@ class _StatusInput extends StatelessWidget {
     required this.onChanged,
   });
 
-  static const _options = [
-    'Nowy',
-    'Idealny',
-    'Dobry',
-    'Lekko uszkodzony',
-    'Uszkodzony',
-    'Luzak (bez opakowania)',
-    'Inne',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    
+    // Status list is internally snake_case or specific Polish words from legacy
+    // To maintain compatibility, we keep the internal values but localize the display
+    final Map<String, String> statusMap = {
+      'Nowy': l10n.carConditionNew,
+      'Idealny': l10n.carConditionMint,
+      'Dobry': l10n.carConditionGood,
+      'Lekko uszkodzony': l10n.carConditionFair,
+      'Uszkodzony': l10n.carConditionPoor,
+      'Luzak (bez opakowania)': l10n.carConditionLoose,
+      'Inne': l10n.carConditionOther,
+    };
+
     return _GlassDropdown<String>(
       label: label,
-      value: selectedStatus,
-      items: _options.map((s) => DropdownMenuItem(
-        value: s,
-        child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+      value: statusMap.containsKey(selectedStatus) ? selectedStatus : 'Inne',
+      items: statusMap.entries.map((e) => DropdownMenuItem(
+        value: e.key,
+        child: Text(e.value.toUpperCase(), style: const TextStyle(fontSize: 12)),
       )).toList(),
       onChanged: (val) {
         if (val != null) onChanged(val);
@@ -1092,6 +1099,7 @@ class _ValuationOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Positioned.fill(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
@@ -1105,10 +1113,10 @@ class _ValuationOverlay extends StatelessWidget {
                 children: [
                   const Icon(Icons.auto_fix_high, color: Color(0xFFFFD700), size: 48),
                   const SizedBox(height: 24),
-                  const Text(
-                    'SZUKANIE SZACUNKOWEJ WARTOŚCI',
+                  Text(
+                    l10n.carFormEstimatingTitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w200,
@@ -1116,10 +1124,10 @@ class _ValuationOverlay extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Przeszukujemy bazy danych, aby podać Ci jak najdokładniejszą cenę rynkową...',
+                  Text(
+                    l10n.carFormEstimatingBody,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white38, fontSize: 12),
+                    style: const TextStyle(color: Colors.white38, fontSize: 12),
                   ),
                   const SizedBox(height: 32),
                   const CircularProgressIndicator(color: Color(0xFFFFD700)),
@@ -1127,7 +1135,7 @@ class _ValuationOverlay extends StatelessWidget {
                   TextButton(
                     onPressed: onCancel,
                     child: Text(
-                      'ZREZYGNUJ I WPISZ RĘCZNIE',
+                      l10n.carFormCancelEstimation,
                       style: TextStyle(
                         color: const Color(0xFFFFD700).withValues(alpha: 0.6),
                         fontSize: 11,

@@ -39,6 +39,7 @@ class _HomeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
@@ -73,8 +74,8 @@ class _HomeScreenView extends StatelessWidget {
                                   orElse: () => null,
                                 );
                                 final title = garageName != null && garageName.isNotEmpty 
-                                  ? 'GARAŻ $garageName' 
-                                  : 'GARAŻ';
+                                  ? context.l10n.homeGarageTitleWithName(garageName) 
+                                  : context.l10n.homeGarageTitle;
                                 return Text(
                                   title.toUpperCase(),
                                   style: const TextStyle(
@@ -139,7 +140,7 @@ class _HomeScreenView extends StatelessWidget {
                       mainAxisSpacing: 16,
                       children: [
                         _VIPCard(
-                          label: 'MÓJ GARAŻ',
+                          label: l10n.homeMyGarage,
                           icon: Icons.auto_awesome,
                           color: const Color(0xFFFFD700),
                           onTap: () => Navigator.push(
@@ -148,7 +149,7 @@ class _HomeScreenView extends StatelessWidget {
                           ),
                         ),
                         _VIPCard(
-                          label: 'NOWOŚCI',
+                          label: l10n.homeNews,
                           icon: Icons.new_releases,
                           color: const Color(0xFFFFD700),
                           onTap: () => Navigator.push(
@@ -157,7 +158,7 @@ class _HomeScreenView extends StatelessWidget {
                           ),
                         ),
                         _VIPCard(
-                          label: 'HOT HUNT',
+                          label: l10n.homeHotHunt,
                           icon: Icons.explore,
                           color: const Color(0xFFFFD700),
                           onTap: () => Navigator.push(
@@ -166,7 +167,7 @@ class _HomeScreenView extends StatelessWidget {
                           ),
                         ),
                         _VIPCard(
-                          label: 'USTAWIENIA',
+                          label: l10n.settingsTitle,
                           icon: Icons.tune,
                           color: Colors.white,
                           onTap: () => Navigator.push(
@@ -252,9 +253,9 @@ class _HomeScreenView extends StatelessWidget {
                     child: Row(
                       children: [
                         const SizedBox(width: 8),
-                        _VIPStat(label: 'sztuk.', value: pieces),
+                        _VIPStat(label: l10n.homePiecesCount, value: pieces),
                         const SizedBox(width: 24),
-                        _VIPStat(label: 'Wartość.', value: value),
+                        _VIPStat(label: l10n.homeTotalValue, value: value),
                         const Spacer(),
                         // Stylish Add Button
                         GestureDetector(
@@ -280,14 +281,14 @@ class _HomeScreenView extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.add, color: Colors.black, size: 20),
-                                SizedBox(width: 8),
+                                const Icon(Icons.add, color: Colors.black, size: 20),
+                                const SizedBox(width: 8),
                                 Text(
-                                  'DODAJ MODEL',
-                                  style: TextStyle(
+                                  l10n.homeAddCar.toUpperCase(),
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 11,
@@ -368,7 +369,7 @@ class _VIPStat extends StatelessWidget {
           ),
         ),
         Text(
-          label,
+          label.toUpperCase(),
           style: const TextStyle(
             fontSize: 7,
             fontWeight: FontWeight.w900,
@@ -407,7 +408,7 @@ class _VIPCard extends StatelessWidget {
             Icon(icon, size: 40, color: color),
             const SizedBox(height: 12),
             Text(
-              label,
+              label.toUpperCase(),
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w800,

@@ -519,7 +519,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get carGalleryLabel => 'Galeria zdjęć';
 
   @override
-  String get carSearchPhotosLabel => 'Zdjecia z internetu';
+  String get carSearchPhotosLabel => 'Zdjęcia z internetu';
 
   @override
   String get carAiEstimateLabel => 'Wycena AI';
@@ -669,4 +669,228 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get settingsAddCustomBackground => 'Dodaj tło';
+
+  @override
+  String get homeMyGarage => 'MÓJ GARAŻ';
+
+  @override
+  String get homeNews => 'NOWOŚCI';
+
+  @override
+  String get homeHotHunt => 'HOT HUNT';
+
+  @override
+  String get homeAddCar => 'DODAJ MODEL';
+
+  @override
+  String get homeLoadingGarage => 'Pobieranie danych z garażu...';
+
+  @override
+  String get homeTotalValueTitle => 'WARTOŚĆ KOLEKCJI';
+
+  @override
+  String get homeTotalItemsTitle => 'SZTUK W GARAŻU';
+
+  @override
+  String get homeLatestArrivals => 'NOWOŚCI W GARAŻU';
+
+  @override
+  String get homeSeeAll => 'ZOBACZ WSZYSTKO';
+
+  @override
+  String get homeNoModelsTitle => 'BRAK MODELI';
+
+  @override
+  String get homeNoModelsSubtitle => 'Twój garaż czeka na pierwszy model';
+
+  @override
+  String get carDetailsBrand => 'MARKA';
+
+  @override
+  String get carDetailsSeries => 'SERIA';
+
+  @override
+  String get carDetailsCondition => 'STAN';
+
+  @override
+  String get carDetailsPrice => 'CENA';
+
+  @override
+  String get carDetailsValue => 'WARTOŚĆ';
+
+  @override
+  String get carDetailsDate => 'DATA';
+
+  @override
+  String get carDetailsOtherPhotos => 'INNE ZDJĘCIA';
+
+  @override
+  String get carDetailsDeleteConfirmTitle => 'USUWANIE MODELU';
+
+  @override
+  String get carDetailsDeleteConfirmBody =>
+      'Czy na pewno chcesz bezpowrotnie usunąć ten model z garażu?';
+
+  @override
+  String get carFormBrandPlaceholder => 'np. Hot Wheels';
+
+  @override
+  String get carFormModelPlaceholder => 'np. Porsche 911 GT3';
+
+  @override
+  String get carFormProducerOther => 'INNY';
+
+  @override
+  String get carFormProducerDialogTitle => 'PODAJ PRODUCENTA';
+
+  @override
+  String get carFormProducerPlaceholder => 'np. Inno64';
+
+  @override
+  String get carFormConditionLabel => 'STAN';
+
+  @override
+  String get carFormCameraLabel => 'APARAT';
+
+  @override
+  String get carFormGalleryLabel => 'GALERIA';
+
+  @override
+  String get carFormInternetLabel => 'INTERNET';
+
+  @override
+  String get huntingTitle => 'HOT HUNT';
+
+  @override
+  String get huntingSearchHint => 'Wpisz model (np. Supra RLC)';
+
+  @override
+  String get huntingEmptyTitle => 'ZNAJDŹ SWÓJ WYMARZONY MODEL';
+
+  @override
+  String get huntingEmptySubtitle =>
+      'Przeszukaj najpopularniejsze platformy w poszukiwaniu okazji i promocji.';
+
+  @override
+  String get huntingSearchButton => 'SZUKAJ';
+
+  @override
+  String get huntingPromoButton => 'PROMOCJE';
+
+  @override
+  String get huntingError => 'Wystąpił błąd podczas wyszukiwania';
+
+  @override
+  String get huntingLaunchError => 'Nie można otworzyć linku';
+
+  @override
+  String get newsEmptyState => 'Brak nowych wiadomości';
+
+  @override
+  String get newsLearnMore => 'DOWIEDZ SIĘ WIĘCEJ';
+
+  @override
+  String get newsRefreshTooltip => 'Odśwież nowości';
+
+  @override
+  String get settingsNoUser => 'Brak użytkownika';
+
+  @override
+  String get homePiecesCount => 'sztuk.';
+
+  @override
+  String get homeTotalValue => 'Wartość.';
+
+  @override
+  String get carDetailsPurchasePrice => 'Cena zakupu';
+
+  @override
+  String get carDetailsEstimatedValue => 'Szac. wartość';
+
+  @override
+  String get carDetailsEditData => 'Redaguj dane';
+
+  @override
+  String get carGalleryCameraLabel => 'APARAT';
+
+  @override
+  String get carGalleryGalleryLabel => 'GALERIA';
+
+  @override
+  String get carGalleryInternetLabel => 'INTERNET';
+
+  @override
+  String get homeGarageTitle => 'GARAŻ';
+
+  @override
+  String homeGarageTitleWithName(Object name) {
+    return 'GARAŻ $name';
+  }
+
+  @override
+  String get carFormMaxPhotos => 'Maksymalnie 5 zdjęć';
+
+  @override
+  String get carFormImageError => 'Błąd podczas otwierania galerii/aparatu';
+
+  @override
+  String get carFormEstimatingTitle => 'SZUKANIE SZACUNKOWEJ WARTOŚCI';
+
+  @override
+  String get carFormEstimatingBody =>
+      'Przeszukujemy bazy danych, aby podać Ci jak najdokładniejszą cenę rynkową...';
+
+  @override
+  String get carFormCancelEstimation => 'ZREZYGNUJ I WPISZ RĘCZNIE';
+
+  @override
+  String get garageSearchHint => 'Szukaj modelu...';
+
+  @override
+  String get garageAddNewCarButton => 'DODAJ NOWY MODEL';
+
+  @override
+  String get garageProducersTitle => 'PRODUCENCI';
+
+  @override
+  String get garageRemoveFilter => 'USUŃ FILTR';
+
+  @override
+  String get carProducerPlaceholder => 'PRODUCENT';
+
+  @override
+  String get cancelButtonLabel => 'ANULUJ';
+
+  @override
+  String get carFormSeriesDialogTitle => 'PODAJ NAZWĘ SERII';
+
+  @override
+  String get carFormSeriesPlaceholder => 'np. Team Transport';
+
+  @override
+  String get errorCannotOpenLink => 'Nie można otworzyć linku';
+
+  @override
+  String get carConditionNew => 'Nowy';
+
+  @override
+  String get carConditionMint => 'Idealny';
+
+  @override
+  String get carConditionGood => 'Dobry';
+
+  @override
+  String get carConditionFair => 'Lekko uszkodzony';
+
+  @override
+  String get carConditionPoor => 'Uszkodzony';
+
+  @override
+  String get carConditionLoose => 'Luzak (bez opakowania)';
+
+  @override
+  String get carConditionOther => 'Inne';
+
+  @override
+  String get commonOther => 'Inne...';
 }

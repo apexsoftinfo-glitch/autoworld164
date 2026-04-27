@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// No description provided for @carSearchPhotosLabel.
   ///
   /// In pl, this message translates to:
-  /// **'Zdjecia z internetu'**
+  /// **'Zdjęcia z internetu'**
   String get carSearchPhotosLabel;
 
   /// No description provided for @carAiEstimateLabel.
@@ -1297,6 +1297,444 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Dodaj tło'**
   String get settingsAddCustomBackground;
+
+  /// No description provided for @homeMyGarage.
+  ///
+  /// In pl, this message translates to:
+  /// **'MÓJ GARAŻ'**
+  String get homeMyGarage;
+
+  /// No description provided for @homeNews.
+  ///
+  /// In pl, this message translates to:
+  /// **'NOWOŚCI'**
+  String get homeNews;
+
+  /// No description provided for @homeHotHunt.
+  ///
+  /// In pl, this message translates to:
+  /// **'HOT HUNT'**
+  String get homeHotHunt;
+
+  /// No description provided for @homeAddCar.
+  ///
+  /// In pl, this message translates to:
+  /// **'DODAJ MODEL'**
+  String get homeAddCar;
+
+  /// No description provided for @homeLoadingGarage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Pobieranie danych z garażu...'**
+  String get homeLoadingGarage;
+
+  /// No description provided for @homeTotalValueTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'WARTOŚĆ KOLEKCJI'**
+  String get homeTotalValueTitle;
+
+  /// No description provided for @homeTotalItemsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'SZTUK W GARAŻU'**
+  String get homeTotalItemsTitle;
+
+  /// No description provided for @homeLatestArrivals.
+  ///
+  /// In pl, this message translates to:
+  /// **'NOWOŚCI W GARAŻU'**
+  String get homeLatestArrivals;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZOBACZ WSZYSTKO'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeNoModelsTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'BRAK MODELI'**
+  String get homeNoModelsTitle;
+
+  /// No description provided for @homeNoModelsSubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Twój garaż czeka na pierwszy model'**
+  String get homeNoModelsSubtitle;
+
+  /// No description provided for @carDetailsBrand.
+  ///
+  /// In pl, this message translates to:
+  /// **'MARKA'**
+  String get carDetailsBrand;
+
+  /// No description provided for @carDetailsSeries.
+  ///
+  /// In pl, this message translates to:
+  /// **'SERIA'**
+  String get carDetailsSeries;
+
+  /// No description provided for @carDetailsCondition.
+  ///
+  /// In pl, this message translates to:
+  /// **'STAN'**
+  String get carDetailsCondition;
+
+  /// No description provided for @carDetailsPrice.
+  ///
+  /// In pl, this message translates to:
+  /// **'CENA'**
+  String get carDetailsPrice;
+
+  /// No description provided for @carDetailsValue.
+  ///
+  /// In pl, this message translates to:
+  /// **'WARTOŚĆ'**
+  String get carDetailsValue;
+
+  /// No description provided for @carDetailsDate.
+  ///
+  /// In pl, this message translates to:
+  /// **'DATA'**
+  String get carDetailsDate;
+
+  /// No description provided for @carDetailsOtherPhotos.
+  ///
+  /// In pl, this message translates to:
+  /// **'INNE ZDJĘCIA'**
+  String get carDetailsOtherPhotos;
+
+  /// No description provided for @carDetailsDeleteConfirmTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'USUWANIE MODELU'**
+  String get carDetailsDeleteConfirmTitle;
+
+  /// No description provided for @carDetailsDeleteConfirmBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy na pewno chcesz bezpowrotnie usunąć ten model z garażu?'**
+  String get carDetailsDeleteConfirmBody;
+
+  /// No description provided for @carFormBrandPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'np. Hot Wheels'**
+  String get carFormBrandPlaceholder;
+
+  /// No description provided for @carFormModelPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'np. Porsche 911 GT3'**
+  String get carFormModelPlaceholder;
+
+  /// No description provided for @carFormProducerOther.
+  ///
+  /// In pl, this message translates to:
+  /// **'INNY'**
+  String get carFormProducerOther;
+
+  /// No description provided for @carFormProducerDialogTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'PODAJ PRODUCENTA'**
+  String get carFormProducerDialogTitle;
+
+  /// No description provided for @carFormProducerPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'np. Inno64'**
+  String get carFormProducerPlaceholder;
+
+  /// No description provided for @carFormConditionLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'STAN'**
+  String get carFormConditionLabel;
+
+  /// No description provided for @carFormCameraLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'APARAT'**
+  String get carFormCameraLabel;
+
+  /// No description provided for @carFormGalleryLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'GALERIA'**
+  String get carFormGalleryLabel;
+
+  /// No description provided for @carFormInternetLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'INTERNET'**
+  String get carFormInternetLabel;
+
+  /// No description provided for @huntingTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'HOT HUNT'**
+  String get huntingTitle;
+
+  /// No description provided for @huntingSearchHint.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wpisz model (np. Supra RLC)'**
+  String get huntingSearchHint;
+
+  /// No description provided for @huntingEmptyTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZNAJDŹ SWÓJ WYMARZONY MODEL'**
+  String get huntingEmptyTitle;
+
+  /// No description provided for @huntingEmptySubtitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przeszukaj najpopularniejsze platformy w poszukiwaniu okazji i promocji.'**
+  String get huntingEmptySubtitle;
+
+  /// No description provided for @huntingSearchButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'SZUKAJ'**
+  String get huntingSearchButton;
+
+  /// No description provided for @huntingPromoButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'PROMOCJE'**
+  String get huntingPromoButton;
+
+  /// No description provided for @huntingError.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wystąpił błąd podczas wyszukiwania'**
+  String get huntingError;
+
+  /// No description provided for @huntingLaunchError.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie można otworzyć linku'**
+  String get huntingLaunchError;
+
+  /// No description provided for @newsEmptyState.
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak nowych wiadomości'**
+  String get newsEmptyState;
+
+  /// No description provided for @newsLearnMore.
+  ///
+  /// In pl, this message translates to:
+  /// **'DOWIEDZ SIĘ WIĘCEJ'**
+  String get newsLearnMore;
+
+  /// No description provided for @newsRefreshTooltip.
+  ///
+  /// In pl, this message translates to:
+  /// **'Odśwież nowości'**
+  String get newsRefreshTooltip;
+
+  /// No description provided for @settingsNoUser.
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak użytkownika'**
+  String get settingsNoUser;
+
+  /// No description provided for @homePiecesCount.
+  ///
+  /// In pl, this message translates to:
+  /// **'sztuk.'**
+  String get homePiecesCount;
+
+  /// No description provided for @homeTotalValue.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wartość.'**
+  String get homeTotalValue;
+
+  /// No description provided for @carDetailsPurchasePrice.
+  ///
+  /// In pl, this message translates to:
+  /// **'Cena zakupu'**
+  String get carDetailsPurchasePrice;
+
+  /// No description provided for @carDetailsEstimatedValue.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szac. wartość'**
+  String get carDetailsEstimatedValue;
+
+  /// No description provided for @carDetailsEditData.
+  ///
+  /// In pl, this message translates to:
+  /// **'Redaguj dane'**
+  String get carDetailsEditData;
+
+  /// No description provided for @carGalleryCameraLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'APARAT'**
+  String get carGalleryCameraLabel;
+
+  /// No description provided for @carGalleryGalleryLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'GALERIA'**
+  String get carGalleryGalleryLabel;
+
+  /// No description provided for @carGalleryInternetLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'INTERNET'**
+  String get carGalleryInternetLabel;
+
+  /// No description provided for @homeGarageTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'GARAŻ'**
+  String get homeGarageTitle;
+
+  /// No description provided for @homeGarageTitleWithName.
+  ///
+  /// In pl, this message translates to:
+  /// **'GARAŻ {name}'**
+  String homeGarageTitleWithName(Object name);
+
+  /// No description provided for @carFormMaxPhotos.
+  ///
+  /// In pl, this message translates to:
+  /// **'Maksymalnie 5 zdjęć'**
+  String get carFormMaxPhotos;
+
+  /// No description provided for @carFormImageError.
+  ///
+  /// In pl, this message translates to:
+  /// **'Błąd podczas otwierania galerii/aparatu'**
+  String get carFormImageError;
+
+  /// No description provided for @carFormEstimatingTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'SZUKANIE SZACUNKOWEJ WARTOŚCI'**
+  String get carFormEstimatingTitle;
+
+  /// No description provided for @carFormEstimatingBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przeszukujemy bazy danych, aby podać Ci jak najdokładniejszą cenę rynkową...'**
+  String get carFormEstimatingBody;
+
+  /// No description provided for @carFormCancelEstimation.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZREZYGNUJ I WPISZ RĘCZNIE'**
+  String get carFormCancelEstimation;
+
+  /// No description provided for @garageSearchHint.
+  ///
+  /// In pl, this message translates to:
+  /// **'Szukaj modelu...'**
+  String get garageSearchHint;
+
+  /// No description provided for @garageAddNewCarButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'DODAJ NOWY MODEL'**
+  String get garageAddNewCarButton;
+
+  /// No description provided for @garageProducersTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'PRODUCENCI'**
+  String get garageProducersTitle;
+
+  /// No description provided for @garageRemoveFilter.
+  ///
+  /// In pl, this message translates to:
+  /// **'USUŃ FILTR'**
+  String get garageRemoveFilter;
+
+  /// No description provided for @carProducerPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'PRODUCENT'**
+  String get carProducerPlaceholder;
+
+  /// No description provided for @cancelButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'ANULUJ'**
+  String get cancelButtonLabel;
+
+  /// No description provided for @carFormSeriesDialogTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'PODAJ NAZWĘ SERII'**
+  String get carFormSeriesDialogTitle;
+
+  /// No description provided for @carFormSeriesPlaceholder.
+  ///
+  /// In pl, this message translates to:
+  /// **'np. Team Transport'**
+  String get carFormSeriesPlaceholder;
+
+  /// No description provided for @errorCannotOpenLink.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie można otworzyć linku'**
+  String get errorCannotOpenLink;
+
+  /// No description provided for @carConditionNew.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowy'**
+  String get carConditionNew;
+
+  /// No description provided for @carConditionMint.
+  ///
+  /// In pl, this message translates to:
+  /// **'Idealny'**
+  String get carConditionMint;
+
+  /// No description provided for @carConditionGood.
+  ///
+  /// In pl, this message translates to:
+  /// **'Dobry'**
+  String get carConditionGood;
+
+  /// No description provided for @carConditionFair.
+  ///
+  /// In pl, this message translates to:
+  /// **'Lekko uszkodzony'**
+  String get carConditionFair;
+
+  /// No description provided for @carConditionPoor.
+  ///
+  /// In pl, this message translates to:
+  /// **'Uszkodzony'**
+  String get carConditionPoor;
+
+  /// No description provided for @carConditionLoose.
+  ///
+  /// In pl, this message translates to:
+  /// **'Luzak (bez opakowania)'**
+  String get carConditionLoose;
+
+  /// No description provided for @carConditionOther.
+  ///
+  /// In pl, this message translates to:
+  /// **'Inne'**
+  String get carConditionOther;
+
+  /// No description provided for @commonOther.
+  ///
+  /// In pl, this message translates to:
+  /// **'Inne...'**
+  String get commonOther;
 }
 
 class _AppLocalizationsDelegate

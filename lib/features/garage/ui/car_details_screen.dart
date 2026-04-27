@@ -13,6 +13,7 @@ import 'car_form_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../presentation/cubit/car_form_cubit.dart';
 import '../utils/car_pdf_generator.dart';
+import '../../../l10n/l10n.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   final CarModel car;
@@ -290,6 +291,7 @@ class _DetailGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -298,11 +300,11 @@ class _DetailGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       mainAxisSpacing: 8,
       children: [
-        _DetailItem(label: 'STAN', value: car.status.toUpperCase()),
-        _DetailItem(label: 'SERIA', value: car.series ?? '-'),
-        _DetailItem(label: 'DATA ZAKUPU', value: car.purchaseDate != null ? DateFormat('dd.MM.yyyy').format(car.purchaseDate!) : '-'),
-        _DetailItem(label: 'CENA ZAKUPU', value: currencyFormat.format(car.purchasePrice)),
-        _DetailItem(label: 'SZAC. WARTOŚĆ', value: currencyFormat.format(car.estimatedValue), highlight: true),
+        _DetailItem(label: l10n.carDetailsCondition, value: car.status.toUpperCase()),
+        _DetailItem(label: l10n.carDetailsSeries, value: car.series ?? '-'),
+        _DetailItem(label: l10n.carDetailsDate, value: car.purchaseDate != null ? DateFormat('dd.MM.yyyy').format(car.purchaseDate!) : '-'),
+        _DetailItem(label: l10n.carDetailsPurchasePrice, value: currencyFormat.format(car.purchasePrice)),
+        _DetailItem(label: l10n.carDetailsEstimatedValue, value: currencyFormat.format(car.estimatedValue), highlight: true),
       ],
     );
   }
@@ -345,6 +347,7 @@ class _ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
 
     return Row(
@@ -371,9 +374,9 @@ class _ActionButtons extends StatelessWidget {
                 side: const BorderSide(color: Colors.white24),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
-              child: const Text(
-                'REDAGUJ DANE',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13),
+              child: Text(
+                l10n.carDetailsEditData.toUpperCase(),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13),
               ),
             ),
           ),
@@ -402,13 +405,13 @@ class _ActionButtons extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               padding: EdgeInsets.zero,
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.picture_as_pdf, color: Color(0xFFFFD700), size: 20),
+                const Icon(Icons.picture_as_pdf, color: Color(0xFFFFD700), size: 20),
                 Text(
                   'PDF',
-                  style: TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+                  style: const TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
                 ),
               ],
             ),
@@ -432,6 +435,7 @@ class _DeleteButton extends StatelessWidget {
   }
 
   void _confirmDelete(BuildContext context) {
+    final l10n = context.l10n;
     showDialog(
       context: context,
       builder: (diagContext) => BackdropFilter(
@@ -439,19 +443,19 @@ class _DeleteButton extends StatelessWidget {
         child: AlertDialog(
           backgroundColor: const Color(0xFF1A120B),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
-          title: const Text('Usuń model', style: TextStyle(color: Colors.white)),
-          content: const Text('Czy na pewno chcesz usunąć ten model z garażu?', style: TextStyle(color: Colors.white70)),
+          title: Text(l10n.carDetailsDeleteConfirmTitle, style: const TextStyle(color: Colors.white)),
+          content: Text(l10n.carDetailsDeleteConfirmBody, style: const TextStyle(color: Colors.white70)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(diagContext),
-              child: const Text('ANULUJ', style: TextStyle(color: Colors.white38)),
+              child: Text(l10n.closeButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(diagContext);
                 context.read<CarFormCubit>().deleteCar(carId);
               },
-              child: const Text('USUŃ', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+              child: Text(l10n.deleteAccountConfirmButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
