@@ -754,6 +754,7 @@ class _SeriesSelector extends StatelessWidget {
 
   static const _fixedOptions = [
     'Main',
+    'Silver series',
     'Premium',
     'Boulevard',
     'TH',
