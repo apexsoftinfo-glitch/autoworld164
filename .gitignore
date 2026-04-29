@@ -1,3 +1,8 @@
+# Build artifacts
+*.aab
+*.ipa
+*.apk
+
 # Secrets
 .env
 config/api-keys.json
