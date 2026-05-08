@@ -23,6 +23,9 @@ abstract class CarsDataSource {
   // Series autocomplete
   Future<List<String>> fetchSeries();
   Future<void> addSeries(String name);
+
+  // Real web search via Edge Function
+  Future<List<String>> searchWebPhotos(String query);
 }
 
 @LazySingleton(as: CarsDataSource)
@@ -172,5 +175,27 @@ class CarsDataSourceImpl implements CarsDataSource {
       'name': name,
       'user_id': userId,
     }, onConflict: 'name, user_id');
+  }
+
+  @override
+  Future<List<String>> searchWebPhotos(String query) async {
+    try {
+      final response = await _supabase.functions.invoke(
+        'search-photos',
+        body: {'query': query},
+      );
+      
+      if (response.status == 200) {
+        final data = response.data as Map<String, dynamic>;
+        final urls = (data['urls'] as List?)?.map((e) => e as String).toList();
+        return urls ?? [];
+      } else {
+        debugPrint('Edge function search-photos error: ${response.status}');
+        return [];
+      }
+    } catch (e, stack) {
+      debugPrint('CarsDataSourceImpl searchWebPhotos error: $e\n$stack');
+      return [];
+    }
   }
 }
