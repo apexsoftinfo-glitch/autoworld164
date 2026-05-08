@@ -167,11 +167,18 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<double> estimateValue(String query) async {
-    // Simulated AI valuation with realistic delay
-    await Future.delayed(const Duration(seconds: 3));
+    debugPrint('CarsRepositoryImpl: estimateValue query: $query');
     
+    // 1. Try real search via Edge Function
+    final realValue = await _dataSource.estimateValue(query);
+    if (realValue > 0) {
+      return realValue;
+    }
+
+    // 2. Fallback to heuristic if real search fails or returns nothing
+    debugPrint('CarsRepositoryImpl: Falling back to heuristic for estimation');
     final lowerQuery = query.toLowerCase();
-    double baseValue = 15.0; // Default base for a common 1/64 car
+    double baseValue = 15.0;
 
     if (lowerQuery.contains('rlc') || lowerQuery.contains('special edition')) {
       baseValue = 150.0;
@@ -189,7 +196,6 @@ class CarsRepositoryImpl implements CarsRepository {
       baseValue += 15.0;
     }
 
-    // Add some "AI randomness" (+/- 15%) to make it feel dynamic
     final randomFactor = 0.85 + (DateTime.now().millisecond % 300) / 1000.0;
     return double.parse((baseValue * randomFactor).toStringAsFixed(2));
   }
