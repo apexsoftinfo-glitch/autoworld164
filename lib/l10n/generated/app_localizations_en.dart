@@ -888,4 +888,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonOther => 'Other...';
+
+  @override
+  String get carFormSearchRequiredTitle => 'Missing Information';
+
+  @override
+  String get carFormSearchRequiredBody =>
+      'To search for photos online, you must first enter: Brand/Model, Producer, and Series.';
 }

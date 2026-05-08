@@ -1735,6 +1735,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Inne...'**
   String get commonOther;
+
+  /// No description provided for @carFormSearchRequiredTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wymagane dane'**
+  String get carFormSearchRequiredTitle;
+
+  /// No description provided for @carFormSearchRequiredBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Aby szukać zdjęć w internecie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.'**
+  String get carFormSearchRequiredBody;
 }
 
 class _AppLocalizationsDelegate

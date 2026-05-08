@@ -62,10 +62,51 @@ class _CarFormScreenState extends State<CarFormScreen> {
   }
 
   Future<void> _searchInternet(BuildContext context) async {
-    final query = '${_toyMakerController.text} ${_brandController.text} ${_nameController.text} ${_seriesController.text} 1/64'
+    final brand = _brandController.text.trim();
+    final producer = _toyMakerController.text.trim();
+    final series = _seriesController.text.trim();
+
+    if (brand.isEmpty || producer.isEmpty || series.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color(0xFF1A120B),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+            side: const BorderSide(color: Colors.white12),
+          ),
+          title: Text(
+            l10n.carFormSearchRequiredTitle.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          content: Text(
+            l10n.carFormSearchRequiredBody,
+            style: const TextStyle(color: Colors.white70, fontSize: 14),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                l10n.closeButtonLabel.toUpperCase(),
+                style: const TextStyle(
+                  color: Color(0xFFFFD700),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final query = '$producer $brand ${_nameController.text} $series 1/64'
         .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
-    if (query.isEmpty) return;
     
     final url = await SearchPhotosDialog.show(context, query);
     if (url != null) {

@@ -317,5 +317,7 @@
   "carConditionPoor": "Poor",
   "carConditionLoose": "Loose (no box)",
   "carConditionOther": "Other",
-  "commonOther": "Other..."
+  "commonOther": "Other...",
+  "carFormSearchRequiredTitle": "Missing Information",
+  "carFormSearchRequiredBody": "To search for photos online, you must first enter: Brand/Model, Producer, and Series."
 }

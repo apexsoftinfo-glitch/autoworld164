@@ -893,4 +893,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get commonOther => 'Inne...';
+
+  @override
+  String get carFormSearchRequiredTitle => 'Wymagane dane';
+
+  @override
+  String get carFormSearchRequiredBody =>
+      'Aby szukać zdjęć w internecie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.';
 }
