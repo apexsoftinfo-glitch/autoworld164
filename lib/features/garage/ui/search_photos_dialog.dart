@@ -56,6 +56,21 @@ class SearchPhotosDialog extends StatelessWidget {
                     fontWeight: FontWeight.w200,
                   ),
                 ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    query,
+                    style: const TextStyle(
+                      color: Colors.white38,
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 const SizedBox(height: 24),
                 ConstrainedBox(
                   constraints: BoxConstraints(
@@ -71,12 +86,35 @@ class SearchPhotosDialog extends StatelessWidget {
                         ),
                         error: (key) => SizedBox(
                           height: 200,
-                          child: Center(child: Text(key, style: const TextStyle(color: Colors.redAccent))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_outline, color: Colors.redAccent, size: 40),
+                              const SizedBox(height: 16),
+                              Text(key, style: const TextStyle(color: Colors.redAccent)),
+                              TextButton(
+                                onPressed: () => context.read<SearchPhotosCubit>().search(query),
+                                child: const Text('PONÓW PRÓBĘ', style: TextStyle(color: Color(0xFFFFD700))),
+                              ),
+                            ],
+                          ),
                         ),
                         success: (urls) => urls.isEmpty
-                            ? const SizedBox(
+                            ? SizedBox(
                                 height: 200,
-                                child: Center(child: Text('Brak wyników', style: TextStyle(color: Colors.white24))),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.search_off, color: Colors.white24, size: 40),
+                                    const SizedBox(height: 16),
+                                    const Text('Brak wyników', style: TextStyle(color: Colors.white24)),
+                                    const SizedBox(height: 8),
+                                    TextButton(
+                                      onPressed: () => context.read<SearchPhotosCubit>().search(query),
+                                      child: const Text('SPRÓBUJ PONOWNIE', style: TextStyle(color: Color(0xFFFFD700))),
+                                    ),
+                                  ],
+                                ),
                               )
                             : GridView.builder(
                                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
