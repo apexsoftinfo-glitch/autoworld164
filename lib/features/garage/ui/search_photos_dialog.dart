@@ -57,7 +57,10 @@ class SearchPhotosDialog extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Flexible(
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.6,
+                  ),
                   child: BlocBuilder<SearchPhotosCubit, SearchPhotosState>(
                     builder: (context, state) {
                       return state.when(
@@ -70,42 +73,48 @@ class SearchPhotosDialog extends StatelessWidget {
                           height: 200,
                           child: Center(child: Text(key, style: const TextStyle(color: Colors.redAccent))),
                         ),
-                        success: (urls) => GridView.builder(
-                          padding: const EdgeInsets.all(20),
-                          shrinkWrap: true,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                          ),
-                          itemCount: urls.length,
-                          itemBuilder: (context, i) {
-                            final url = urls[i];
-                            return GestureDetector(
-                              onTap: () => Navigator.pop(context, url),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: Colors.white10),
+                        success: (urls) => urls.isEmpty
+                            ? const SizedBox(
+                                height: 200,
+                                child: Center(child: Text('Brak wyników', style: TextStyle(color: Colors.white24))),
+                              )
+                            : GridView.builder(
+                                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Image.network(
-                                    url,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, progress) {
-                                      if (progress == null) return child;
-                                      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
-                                    },
-                                    errorBuilder: (context, error, stackTrace) => const Center(
-                                      child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                itemCount: urls.length,
+                                itemBuilder: (context, i) {
+                                  final url = urls[i];
+                                  return GestureDetector(
+                                    onTap: () => Navigator.pop(context, url),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(color: Colors.white10),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.network(
+                                          url,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, progress) {
+                                            if (progress == null) return child;
+                                            return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                                          },
+                                          errorBuilder: (context, error, stackTrace) => const Center(
+                                            child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       );
                     },
                   ),

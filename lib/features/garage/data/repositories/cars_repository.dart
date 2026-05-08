@@ -161,8 +161,10 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<List<String>> searchWebPhotos(String query) async {
-    // Simulated search results for demo
-    // Providing real public URLs for a "WOW" effect
+    debugPrint('CarsRepositoryImpl: searchWebPhotos query: $query');
+    // Simulated search results for demo with a small delay
+    await Future.delayed(const Duration(milliseconds: 1200));
+
     if (query.toLowerCase().contains('porsche')) {
       return [
         'https://m.media-amazon.com/images/I/71X8f8E8q8L._AC_SL1500_.jpg',
