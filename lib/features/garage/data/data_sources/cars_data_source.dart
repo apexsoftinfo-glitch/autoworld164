@@ -25,7 +25,7 @@ abstract class CarsDataSource {
   Future<void> addSeries(String name);
 
   // Real web search via Edge Function
-  Future<List<String>> searchWebPhotos(String query);
+  Future<List<String>> searchWebPhotos(String query, {int offset = 0});
 }
 
 @LazySingleton(as: CarsDataSource)
@@ -178,11 +178,14 @@ class CarsDataSourceImpl implements CarsDataSource {
   }
 
   @override
-  Future<List<String>> searchWebPhotos(String query) async {
+  Future<List<String>> searchWebPhotos(String query, {int offset = 0}) async {
     try {
       final response = await _supabase.functions.invoke(
         'search-photos',
-        body: {'query': query},
+        body: {
+          'query': query,
+          'offset': offset,
+        },
       );
       
       if (response.status == 200) {

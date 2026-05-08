@@ -36,7 +36,7 @@ abstract class CarsRepository {
   });
   Future<void> deleteCar(CarModel car);
   Future<List<String>> getSeries();
-  Future<List<String>> searchWebPhotos(String query);
+  Future<List<String>> searchWebPhotos(String query, {int offset = 0});
   Future<double> estimateValue(String query);
 }
 
@@ -160,9 +160,9 @@ class CarsRepositoryImpl implements CarsRepository {
   Future<List<String>> getSeries() => _dataSource.fetchSeries();
 
   @override
-  Future<List<String>> searchWebPhotos(String query) async {
-    debugPrint('CarsRepositoryImpl: searchWebPhotos query: $query');
-    return _dataSource.searchWebPhotos(query);
+  Future<List<String>> searchWebPhotos(String query, {int offset = 0}) async {
+    debugPrint('CarsRepositoryImpl: searchWebPhotos query: $query (offset: $offset)');
+    return _dataSource.searchWebPhotos(query, offset: offset);
   }
 
   @override

@@ -99,7 +99,7 @@ class SearchPhotosDialog extends StatelessWidget {
                             ],
                           ),
                         ),
-                        success: (urls) => urls.isEmpty
+                        success: (urls, isLoadingMore) => urls.isEmpty
                             ? SizedBox(
                                 height: 200,
                                 child: Column(
@@ -116,42 +116,70 @@ class SearchPhotosDialog extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : GridView.builder(
-                                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
-                                ),
-                                itemCount: urls.length,
-                                itemBuilder: (context, i) {
-                                  final url = urls[i];
-                                  return GestureDetector(
-                                    onTap: () => Navigator.pop(context, url),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        border: Border.all(color: Colors.white10),
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: GridView.builder(
+                                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                                      shrinkWrap: true,
+                                      physics: const ClampingScrollPhysics(),
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 12,
+                                        mainAxisSpacing: 12,
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Image.network(
-                                          url,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, progress) {
-                                            if (progress == null) return child;
-                                            return const Center(child: CircularProgressIndicator(strokeWidth: 2));
-                                          },
-                                          errorBuilder: (context, error, stackTrace) => const Center(
-                                            child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                      itemCount: urls.length,
+                                      itemBuilder: (context, i) {
+                                        final url = urls[i];
+                                        return GestureDetector(
+                                          onTap: () => Navigator.pop(context, url),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(16),
+                                              border: Border.all(color: Colors.white10),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(16),
+                                              child: Image.network(
+                                                url,
+                                                fit: BoxFit.cover,
+                                                loadingBuilder: (context, child, progress) {
+                                                  if (progress == null) return child;
+                                                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                                                },
+                                                errorBuilder: (context, error, stackTrace) => const Center(
+                                                  child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  if (isLoadingMore)
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 20),
+                                      child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+                                    )
+                                  else if (urls.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 20),
+                                      child: TextButton.icon(
+                                        onPressed: () => context.read<SearchPhotosCubit>().loadMore(query),
+                                        icon: const Icon(Icons.add_circle_outline, color: Color(0xFFFFD700)),
+                                        label: const Text(
+                                          'SZUKAJ JESZCZE',
+                                          style: TextStyle(
+                                            color: Color(0xFFFFD700),
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.2,
                                           ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
+                                ],
                               ),
                       );
                     },

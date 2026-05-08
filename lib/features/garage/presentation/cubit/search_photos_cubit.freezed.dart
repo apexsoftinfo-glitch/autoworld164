@@ -125,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<String> urls)?  success,TResult Function( String errorKey)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<String> urls,  bool isLoadingMore)?  success,TResult Function( String errorKey)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case SearchPhotosInitial() when initial != null:
 return initial();case SearchPhotosLoading() when loading != null:
 return loading();case SearchPhotosSuccess() when success != null:
-return success(_that.urls);case SearchPhotosError() when error != null:
+return success(_that.urls,_that.isLoadingMore);case SearchPhotosError() when error != null:
 return error(_that.errorKey);case _:
   return orElse();
 
@@ -149,12 +149,12 @@ return error(_that.errorKey);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<String> urls)  success,required TResult Function( String errorKey)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<String> urls,  bool isLoadingMore)  success,required TResult Function( String errorKey)  error,}) {final _that = this;
 switch (_that) {
 case SearchPhotosInitial():
 return initial();case SearchPhotosLoading():
 return loading();case SearchPhotosSuccess():
-return success(_that.urls);case SearchPhotosError():
+return success(_that.urls,_that.isLoadingMore);case SearchPhotosError():
 return error(_that.errorKey);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -169,12 +169,12 @@ return error(_that.errorKey);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<String> urls)?  success,TResult? Function( String errorKey)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<String> urls,  bool isLoadingMore)?  success,TResult? Function( String errorKey)?  error,}) {final _that = this;
 switch (_that) {
 case SearchPhotosInitial() when initial != null:
 return initial();case SearchPhotosLoading() when loading != null:
 return loading();case SearchPhotosSuccess() when success != null:
-return success(_that.urls);case SearchPhotosError() when error != null:
+return success(_that.urls,_that.isLoadingMore);case SearchPhotosError() when error != null:
 return error(_that.errorKey);case _:
   return null;
 
@@ -251,7 +251,7 @@ String toString() {
 
 
 class SearchPhotosSuccess implements SearchPhotosState {
-  const SearchPhotosSuccess(final  List<String> urls): _urls = urls;
+  const SearchPhotosSuccess(final  List<String> urls, {this.isLoadingMore = false}): _urls = urls;
   
 
  final  List<String> _urls;
@@ -261,6 +261,7 @@ class SearchPhotosSuccess implements SearchPhotosState {
   return EqualUnmodifiableListView(_urls);
 }
 
+@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of SearchPhotosState
 /// with the given fields replaced by the non-null parameter values.
@@ -272,16 +273,16 @@ $SearchPhotosSuccessCopyWith<SearchPhotosSuccess> get copyWith => _$SearchPhotos
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchPhotosSuccess&&const DeepCollectionEquality().equals(other._urls, _urls));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchPhotosSuccess&&const DeepCollectionEquality().equals(other._urls, _urls)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_urls));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_urls),isLoadingMore);
 
 @override
 String toString() {
-  return 'SearchPhotosState.success(urls: $urls)';
+  return 'SearchPhotosState.success(urls: $urls, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -292,7 +293,7 @@ abstract mixin class $SearchPhotosSuccessCopyWith<$Res> implements $SearchPhotos
   factory $SearchPhotosSuccessCopyWith(SearchPhotosSuccess value, $Res Function(SearchPhotosSuccess) _then) = _$SearchPhotosSuccessCopyWithImpl;
 @useResult
 $Res call({
- List<String> urls
+ List<String> urls, bool isLoadingMore
 });
 
 
@@ -309,10 +310,11 @@ class _$SearchPhotosSuccessCopyWithImpl<$Res>
 
 /// Create a copy of SearchPhotosState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? urls = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? urls = null,Object? isLoadingMore = null,}) {
   return _then(SearchPhotosSuccess(
 null == urls ? _self._urls : urls // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
