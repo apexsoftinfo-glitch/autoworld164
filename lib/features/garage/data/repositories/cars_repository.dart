@@ -181,19 +181,19 @@ class CarsRepositoryImpl implements CarsRepository {
     double baseValue = 15.0;
 
     if (lowerQuery.contains('rlc') || lowerQuery.contains('special edition')) {
-      baseValue = 150.0;
+      baseValue = 185.0;
     } else if (lowerQuery.contains('sth') || lowerQuery.contains('super treasure hunt')) {
-      baseValue = 120.0;
+      baseValue = 140.0;
     } else if (lowerQuery.contains('premium') || lowerQuery.contains('boulevard') || lowerQuery.contains('team transport')) {
-      baseValue = 45.0;
+      baseValue = 55.0;
     } else if (lowerQuery.contains('th') || lowerQuery.contains('treasure hunt')) {
-      baseValue = 25.0;
+      baseValue = 35.0;
     } else if (lowerQuery.contains('main')) {
-      baseValue = 10.0;
+      baseValue = 12.0;
     }
     
     if (lowerQuery.contains('porsche') || lowerQuery.contains('ferrari') || lowerQuery.contains('lamborghini') || lowerQuery.contains('nissan')) {
-      baseValue += 15.0;
+      baseValue += 25.0;
     }
 
     final randomFactor = 0.85 + (DateTime.now().millisecond % 300) / 1000.0;
