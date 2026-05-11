@@ -47,6 +47,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pl'),
         home: BlocProvider<SessionCubit>.value(
           value: mockSessionCubit,
           child: const HomeScreen(),
