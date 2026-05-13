@@ -44,3 +44,7 @@ begin
   end if;
 end;
 $$;
+
+grant select, insert, update, delete on table public.autoworld_settings to authenticated;
+grant select, insert, update, delete on table public.autoworld_settings to service_role;
+grant select on table public.autoworld_settings to anon;
