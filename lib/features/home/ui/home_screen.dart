@@ -127,60 +127,63 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 140),
+                    const SizedBox(height: 180),
 
-
-
-                    // Navigation Grid
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: 1.1,
-                      children: [
-                        _VIPCard(
-                          label: l10n.homeMyGarage,
-                          icon: Icons.auto_awesome,
-                          color: const Color(0xFFFFD700),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const GarageScreen()),
-                          ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        width: 260,
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.1,
+                          children: [
+                            _VIPCard(
+                              label: l10n.homeMyGarage,
+                              icon: Icons.auto_awesome,
+                              color: const Color(0xFFFFD700),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const GarageScreen()),
+                              ),
+                            ),
+                            _VIPCard(
+                              label: l10n.homeNews,
+                              icon: Icons.new_releases,
+                              color: const Color(0xFFFFD700),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const NewsScreen()),
+                              ),
+                            ),
+                            _VIPCard(
+                              label: l10n.homeHotHunt,
+                              icon: Icons.explore,
+                              color: const Color(0xFFFFD700),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const HuntingScreen()),
+                              ),
+                            ),
+                            _VIPCard(
+                              label: l10n.settingsTitle,
+                              icon: Icons.tune,
+                              color: Colors.white,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                              ),
+                            ),
+                          ],
                         ),
-                        _VIPCard(
-                          label: l10n.homeNews,
-                          icon: Icons.new_releases,
-                          color: const Color(0xFFFFD700),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const NewsScreen()),
-                          ),
-                        ),
-                        _VIPCard(
-                          label: l10n.homeHotHunt,
-                          icon: Icons.explore,
-                          color: const Color(0xFFFFD700),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const HuntingScreen()),
-                          ),
-                        ),
-                        _VIPCard(
-                          label: l10n.settingsTitle,
-                          icon: Icons.tune,
-                          color: Colors.white,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const SettingsScreen()),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 32),
 
-                    const SizedBox(height: 140),
+                    const SizedBox(height: 80),
                   ],
                 ),
               ),
