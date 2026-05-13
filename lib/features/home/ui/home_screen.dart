@@ -127,7 +127,7 @@ class _HomeScreenView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 180),
+                    const SizedBox(height: 320),
 
                     Align(
                       alignment: Alignment.centerRight,
@@ -183,7 +183,7 @@ class _HomeScreenView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
 
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
