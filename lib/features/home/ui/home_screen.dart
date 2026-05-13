@@ -185,31 +185,6 @@ class _HomeScreenView extends StatelessWidget {
               ),
             ),
 
-            // Credits - Fixed above bottom bar
-            Positioned(
-              bottom: 110,
-              left: 24,
-              right: 24,
-              child: Center(
-                child: Text(
-                  context.l10n.homeMadeInPoland,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black54,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
 
             // Unified Bottom Command Bar (Stats + Action)
             Positioned(
