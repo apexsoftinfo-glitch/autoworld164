@@ -93,5 +93,6 @@ Logika `Supabase` ma być w `Data Source`; wyjątek: bootstrap aplikacji i DI mo
 Dla tabel używanych w `Stream` włącz `RLS` i utwórz odpowiednie policies.
 Dla `Supabase Realtime` dodaj tabelę do publikacji `supabase_realtime`.
 Jeśli `update` lub `delete` mają zwracać poprzednie dane w `Realtime`, ustaw `REPLICA IDENTITY FULL`.
+Każda nowa tabela w schemacie `public` MUSI posiadać jawne instrukcje `GRANT` dla ról `authenticated`, `service_role` (select, insert, update, delete) oraz `anon` (select), aby była dostępna przez Data API (wymóg Supabase od 2026 r.).
 Nie rób automatycznie destrukcyjnych zmian w tabeli współdzielonej, np. `drop`, kasowania danych lub niekompatybilnej zmiany schemy.
 Gdy wdrażasz `Supabase Edge Functions`, deployuj tylko tę funkcję, nad którą aktualnie pracujesz. Nigdy nie nadpisuj wszystkich funkcji naraz.
