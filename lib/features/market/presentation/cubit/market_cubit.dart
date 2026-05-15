@@ -8,6 +8,7 @@ import 'package:autoworld164/features/market/models/market_car_model.dart';
 import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
 import 'package:autoworld164/features/garage/models/car_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'market_cubit.freezed.dart';
 
@@ -32,37 +33,52 @@ class MarketCubit extends Cubit<MarketState> {
     _init();
   }
 
+  static const _prefKey = 'market_view_type';
   final MarketRepository _repository;
   final CarsRepository _carsRepository;
   StreamSubscription? _subscription;
 
+  Future<CollectionViewType> _loadViewType() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_prefKey) == 'list'
+        ? CollectionViewType.list
+        : CollectionViewType.grid;
+  }
+
+  Future<void> _saveViewType(CollectionViewType type) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefKey, type == CollectionViewType.list ? 'list' : 'grid');
+  }
+
   void _init() {
     emit(const MarketState.loading());
-    _subscription = _repository.marketCarsStream.listen(
-      (cars) {
-        final currentQuery = state.maybeWhen(
-          data: (c, fc, q, vt, st, so) => q,
-          orElse: () => '',
-        );
-        final currentViewType = state.maybeWhen(
-          data: (c, fc, q, vt, st, so) => vt,
-          orElse: () => CollectionViewType.grid,
-        );
-        final currentSort = state.maybeWhen(
-          data: (c, fc, q, vt, st, so) => st,
-          orElse: () => SortType.date,
-        );
-        final currentOrder = state.maybeWhen(
-          data: (c, fc, q, vt, st, so) => so,
-          orElse: () => SortOrder.desc,
-        );
-        
-        _updateData(cars, currentQuery, currentViewType, currentSort, currentOrder);
-      },
-      onError: (e) {
-        emit(const MarketState.error('error_generic'));
-      },
-    );
+    Future.microtask(() async {
+      final savedViewType = await _loadViewType();
+      _subscription = _repository.marketCarsStream.listen(
+        (cars) {
+          final currentQuery = state.maybeWhen(
+            data: (c, fc, q, vt, st, so) => q,
+            orElse: () => '',
+          );
+          final currentViewType = state.maybeWhen(
+            data: (c, fc, q, vt, st, so) => vt,
+            orElse: () => savedViewType,
+          );
+          final currentSort = state.maybeWhen(
+            data: (c, fc, q, vt, st, so) => st,
+            orElse: () => SortType.date,
+          );
+          final currentOrder = state.maybeWhen(
+            data: (c, fc, q, vt, st, so) => so,
+            orElse: () => SortOrder.desc,
+          );
+          _updateData(cars, currentQuery, currentViewType, currentSort, currentOrder);
+        },
+        onError: (e) {
+          emit(const MarketState.error('error_generic'));
+        },
+      );
+    });
   }
 
   void _updateData(List<MarketCarModel> allCars, String query, CollectionViewType viewType, SortType sort, SortOrder order) {
@@ -112,6 +128,7 @@ class MarketCubit extends Cubit<MarketState> {
   void toggleView() {
     state.whenOrNull(data: (cars, fc, q, vt, st, so) {
       final nextView = vt == CollectionViewType.grid ? CollectionViewType.list : CollectionViewType.grid;
+      _saveViewType(nextView);
       emit((state as MarketData).copyWith(viewType: nextView));
     });
   }

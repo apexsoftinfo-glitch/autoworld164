@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
 import 'package:autoworld164/features/garage/models/car_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'cars_collection_cubit.freezed.dart';
 
@@ -37,12 +38,27 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
     _init();
   }
 
+  static const _prefKey = 'garage_view_type';
   final CarsRepository _carsRepository;
   StreamSubscription<List<CarModel>>? _subscription;
 
+  Future<CollectionViewType> _loadViewType() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_prefKey) == 'list'
+        ? CollectionViewType.list
+        : CollectionViewType.grid;
+  }
+
+  Future<void> _saveViewType(CollectionViewType type) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefKey, type == CollectionViewType.list ? 'list' : 'grid');
+  }
+
   void _init() {
-    Future.microtask(() => emit(const CarsCollectionState.loading()));
-    _subscription = _carsRepository.carsStream.listen(
+    Future.microtask(() async {
+      emit(const CarsCollectionState.loading());
+      final savedViewType = await _loadViewType();
+      _subscription = _carsRepository.carsStream.listen(
       (cars) {
         double purchaseTotal = 0;
         final stats = <String, int>{};
@@ -62,7 +78,7 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         );
         final currentViewType = state.maybeWhen(
           data: (c, fc, pt, st, q, vt, stype, sorder) => vt,
-          orElse: () => CollectionViewType.grid,
+          orElse: () => savedViewType,
         );
 
         final filtered = _filterCars(cars, currentQuery);
@@ -83,6 +99,7 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         emit(const CarsCollectionState.error('errorUnknown'));
       },
     );
+    });
   }
 
   void search(String query) {
@@ -104,6 +121,7 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
   void toggleView() {
     state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, query, viewType, st, so) {
       final newType = viewType == CollectionViewType.grid ? CollectionViewType.list : CollectionViewType.grid;
+      _saveViewType(newType);
       emit(CarsCollectionState.data(
         cars: cars,
         filteredCars: filtered,
