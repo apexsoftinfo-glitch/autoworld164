@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 
 abstract class MarketDataSource {
   Stream<List<Map<String, dynamic>>> watchMarketCars();
+  Future<List<Map<String, dynamic>>> getMarketCars();
   Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls);
   Future<void> editMarketCar(
     String id,
@@ -31,6 +32,14 @@ class MarketDataSourceImpl implements MarketDataSource {
     return _supabase
         .from('autoworld_market')
         .stream(primaryKey: ['id'])
+        .order('created_at', ascending: false);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getMarketCars() async {
+    return await _supabase
+        .from('autoworld_market')
+        .select()
         .order('created_at', ascending: false);
   }
 
