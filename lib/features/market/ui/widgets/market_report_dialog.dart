@@ -2,9 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
-import '../../utils/market_report_pdf_generator.dart';
+import '../../utils/market_report_image_generator.dart';
 
-class MarketReportDialog extends StatelessWidget {
+class MarketReportDialog extends StatefulWidget {
   final List<MarketCarModel> cars;
 
   const MarketReportDialog({super.key, required this.cars});
@@ -18,6 +18,13 @@ class MarketReportDialog extends StatelessWidget {
   }
 
   @override
+  State<MarketReportDialog> createState() => _MarketReportDialogState();
+}
+
+class _MarketReportDialogState extends State<MarketReportDialog> {
+  final GlobalKey _captureKey = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
     final currencyFormat = NumberFormat.simpleCurrency(
@@ -26,11 +33,11 @@ class MarketReportDialog extends StatelessWidget {
       decimalDigits: 0,
     );
 
-    final totalCount = cars.length;
-    final totalValue = cars.fold<double>(0, (sum, car) => sum + car.price);
+    final totalCount = widget.cars.length;
+    final totalValue = widget.cars.fold<double>(0, (sum, car) => sum + car.price);
 
     final Map<String, int> producerStats = {};
-    for (final car in cars) {
+    for (final car in widget.cars) {
       final producer = car.toyMaker ?? (isPolish ? 'Nieznany' : 'Unknown');
       producerStats[producer] = (producerStats[producer] ?? 0) + 1;
     }
@@ -41,6 +48,7 @@ class MarketReportDialog extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Dialog(
         backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: Container(
           width: double.infinity,
           constraints: const BoxConstraints(maxWidth: 500),
@@ -52,9 +60,9 @@ class MarketReportDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Header
+              // Header (Not captured)
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
                 child: Row(
                   children: [
                     Container(
@@ -84,87 +92,121 @@ class MarketReportDialog extends StatelessWidget {
                 ),
               ),
 
-              // Summary
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: [
-                    _buildStatCard(
-                      isPolish ? 'ILOŚĆ' : 'COUNT',
-                      totalCount.toString(),
-                      Colors.blueAccent,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildStatCard(
-                      isPolish ? 'WARTOŚĆ' : 'VALUE',
-                      currencyFormat.format(totalValue),
-                      const Color(0xFFFFD700),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // List of producers
+              // Scrollable area for UI
               Flexible(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                  ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(16),
-                    itemCount: sortedProducers.length,
-                    separatorBuilder: (context, index) => Divider(color: Colors.white.withValues(alpha: 0.05)),
-                    itemBuilder: (context, index) {
-                      final entry = sortedProducers[index];
-                      return Row(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: RepaintBoundary(
+                    key: _captureKey,
+                    child: Container(
+                      color: const Color(0xFF1A120B), // Solid background for capture
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            entry.key.toUpperCase(),
-                            style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold),
+                          // Summary
+                          Row(
+                            children: [
+                              _buildStatCard(
+                                isPolish ? 'ILOŚĆ' : 'COUNT',
+                                totalCount.toString(),
+                                Colors.blueAccent,
+                              ),
+                              const SizedBox(width: 12),
+                              _buildStatCard(
+                                isPolish ? 'WARTOŚĆ' : 'VALUE',
+                                currencyFormat.format(totalValue),
+                                const Color(0xFFFFD700),
+                              ),
+                            ],
                           ),
-                          const Spacer(),
-                          Text(
-                            entry.value.toString(),
-                            style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
+
+                          const SizedBox(height: 24),
+
+                          // List of producers
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black26,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                            ),
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(16),
+                              itemCount: sortedProducers.length,
+                              separatorBuilder: (context, index) => Divider(color: Colors.white.withValues(alpha: 0.05)),
+                              itemBuilder: (context, index) {
+                                final entry = sortedProducers[index];
+                                return Row(
+                                  children: [
+                                    Text(
+                                      entry.key.toUpperCase(),
+                                      style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      entry.value.toString(),
+                                      style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      isPolish ? 'szt.' : 'pcs',
+                                      style: const TextStyle(color: Colors.white24, fontSize: 9),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            isPolish ? 'szt.' : 'pcs',
-                            style: const TextStyle(color: Colors.white24, fontSize: 9),
+                          
+                          const SizedBox(height: 16),
+                          
+                          // Branding in capture
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.directions_car, color: Colors.white10, size: 14),
+                              const SizedBox(width: 8),
+                              Text(
+                                'AUTOWORLD164 REPORT',
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.05),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
               ),
 
-              // Actions
+              // Actions (Not captured)
               Padding(
                 padding: const EdgeInsets.all(24),
                 child: Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => MarketReportPdfGenerator.generateAndShare(
-                          cars: cars,
-                          isPolish: isPolish,
+                      child: FilledButton.icon(
+                        onPressed: () => MarketReportImageGenerator.captureAndShare(
+                          _captureKey,
+                          'autoworld_market_report_${DateFormat('yyyyMMdd').format(DateTime.now())}',
                         ),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: const Color(0xFFFFD700).withValues(alpha: 0.4)),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFD700),
+                          foregroundColor: Colors.black,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
-                        icon: const Icon(Icons.picture_as_pdf, color: Color(0xFFFFD700)),
+                        icon: const Icon(Icons.share),
                         label: Text(
-                          isPolish ? 'EKSPORTUJ PDF' : 'EXPORT PDF',
-                          style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
+                          isPolish ? 'UDOSTĘPNIJ PNG' : 'SHARE PNG',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
