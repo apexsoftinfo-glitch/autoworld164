@@ -29,6 +29,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get marketExchangedSold => 'Wymieniono / Sprzedano';
 
   @override
+  String get marketPrice => 'CENA';
+
+  @override
+  String get marketCondition => 'STAN';
+
+  @override
+  String get marketAuction => 'LICYTACJA';
+
+  @override
+  String get marketNotes => 'UWAGI';
+
+  @override
+  String get marketForSale => 'NA SPRZEDAŻ';
+
+  @override
+  String get marketForExchange => 'NA WYMIANĘ';
+
+  @override
+  String get marketForSaleExchange => 'NA SPRZEDAŻ / WYMIANĘ';
+
+  @override
+  String get marketAuctionStatus => 'LICYTACJA';
+
+  @override
+  String get marketGeneratedBy => 'WYGENEROWANE PRZEZ AUTOWORLD 1/64';
+
+  @override
+  String get marketExchangeBadge => 'WYMIANA';
+
+  @override
+  String get marketSaleBadge => 'SPRZEDAŻ';
+
+  @override
   String get newsOriginalArticle => 'Oryginalny artykuł';
 
   @override

@@ -137,7 +137,7 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(currentCar.isAuction ? 'AUCTION' : 'PRICE', style: const TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                              Text(currentCar.isAuction ? l10n.marketAuction.toUpperCase() : l10n.marketPrice.toUpperCase(), style: const TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                                               if (currentCar.isAuction)
                                                 const Padding(
                                                   padding: EdgeInsets.only(top: 4),
@@ -152,10 +152,10 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                           ),
                                         Row(
                                           children: [
-                                            if (currentCar.isExchange) _TypeBadge(label: 'EXCHANGE', color: Colors.blueAccent),
+                                            if (currentCar.isExchange) _TypeBadge(label: l10n.marketExchangeBadge.toUpperCase(), color: Colors.blueAccent),
                                             if (currentCar.isSale) ...[
                                               const SizedBox(width: 8),
-                                              _TypeBadge(label: 'SALE', color: Colors.greenAccent),
+                                              _TypeBadge(label: l10n.marketSaleBadge.toUpperCase(), color: Colors.greenAccent),
                                             ],
                                           ],
                                         ),
@@ -163,7 +163,7 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                     ),
                                     if (currentCar.notes != null && currentCar.notes!.isNotEmpty) ...[
                                       const SizedBox(height: 32),
-                                      const Text('NOTES / UWAGI', style: TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                      Text(l10n.marketNotes.toUpperCase(), style: const TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
                                       const SizedBox(height: 8),
                                       Text(
                                         currentCar.notes!,
@@ -412,6 +412,7 @@ class _ListingPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: 1080,
       height: 1350,
@@ -447,7 +448,7 @@ class _ListingPreview extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            (car.toyMaker ?? 'MODEL').toUpperCase(),
+                            (car.toyMaker ?? l10n.carProducerPlaceholder).toUpperCase(),
                             style: const TextStyle(
                               color: Color(0xFF6C757D),
                               fontSize: 24,
@@ -508,7 +509,7 @@ class _ListingPreview extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('CONDITION', style: TextStyle(color: Color(0xFF6C757D), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                        Text(l10n.marketCondition.toUpperCase(), style: const TextStyle(color: Color(0xFF6C757D), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2)),
                         Text(
                           car.status.toUpperCase(),
                           style: const TextStyle(color: Color(0xFF212529), fontSize: 32, fontWeight: FontWeight.w900),
@@ -527,10 +528,10 @@ class _ListingPreview extends StatelessWidget {
                           ),
                         Text(
                           car.isAuction 
-                              ? 'AUCTION / LICYTACJA' 
+                              ? l10n.marketAuctionStatus.toUpperCase() 
                               : (car.isSale && car.isExchange 
-                                  ? 'FOR SALE / EXCHANGE'
-                                  : (car.isSale ? 'FOR SALE' : 'FOR EXCHANGE')),
+                                  ? l10n.marketForSaleExchange.toUpperCase()
+                                  : (car.isSale ? l10n.marketForSale.toUpperCase() : l10n.marketForExchange.toUpperCase())),
                           style: const TextStyle(color: Color(0xFF6C757D), fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 1),
                         ),
                       ],
@@ -548,10 +549,10 @@ class _ListingPreview extends StatelessWidget {
                 ),
                 
                 const SizedBox(height: 40),
-                const Center(
+                Center(
                   child: Text(
-                    'GENERATED BY AUTOWORLD 1/64',
-                    style: TextStyle(color: Color(0xFFADB5BD), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 4),
+                    l10n.marketGeneratedBy.toUpperCase(),
+                    style: const TextStyle(color: Color(0xFFADB5BD), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 4),
                   ),
                 ),
               ],

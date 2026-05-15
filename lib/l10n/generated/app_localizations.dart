@@ -134,6 +134,72 @@ abstract class AppLocalizations {
   /// **'Wymieniono / Sprzedano'**
   String get marketExchangedSold;
 
+  /// No description provided for @marketPrice.
+  ///
+  /// In pl, this message translates to:
+  /// **'CENA'**
+  String get marketPrice;
+
+  /// No description provided for @marketCondition.
+  ///
+  /// In pl, this message translates to:
+  /// **'STAN'**
+  String get marketCondition;
+
+  /// No description provided for @marketAuction.
+  ///
+  /// In pl, this message translates to:
+  /// **'LICYTACJA'**
+  String get marketAuction;
+
+  /// No description provided for @marketNotes.
+  ///
+  /// In pl, this message translates to:
+  /// **'UWAGI'**
+  String get marketNotes;
+
+  /// No description provided for @marketForSale.
+  ///
+  /// In pl, this message translates to:
+  /// **'NA SPRZEDAŻ'**
+  String get marketForSale;
+
+  /// No description provided for @marketForExchange.
+  ///
+  /// In pl, this message translates to:
+  /// **'NA WYMIANĘ'**
+  String get marketForExchange;
+
+  /// No description provided for @marketForSaleExchange.
+  ///
+  /// In pl, this message translates to:
+  /// **'NA SPRZEDAŻ / WYMIANĘ'**
+  String get marketForSaleExchange;
+
+  /// No description provided for @marketAuctionStatus.
+  ///
+  /// In pl, this message translates to:
+  /// **'LICYTACJA'**
+  String get marketAuctionStatus;
+
+  /// No description provided for @marketGeneratedBy.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYGENEROWANE PRZEZ AUTOWORLD 1/64'**
+  String get marketGeneratedBy;
+
+  /// No description provided for @marketExchangeBadge.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYMIANA'**
+  String get marketExchangeBadge;
+
+  /// No description provided for @marketSaleBadge.
+  ///
+  /// In pl, this message translates to:
+  /// **'SPRZEDAŻ'**
+  String get marketSaleBadge;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:
