@@ -388,107 +388,182 @@ class _ListingPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1080,
-      height: 1350, // Instagram Portrait ratio
+      height: 1350,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF0C0C0C), Color(0xFF221100)],
-        ),
+        color: Color(0xFFF8F9FA), // Light neutral background
       ),
       child: Stack(
         children: [
-          // Background noise/texture simulation
-          Positioned.fill(child: Opacity(opacity: 0.05, child: Image.asset('assets/images/garage_bg.png', fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => Container()))),
-          
-          Column(
-            children: [
-              // Photo Area
-              Expanded(
-                flex: 7,
-                child: Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(60),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 40, offset: const Offset(0, 20)),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: car.displayPhotoPath != null
-                        ? CarPhoto(path: car.displayPhotoPath!, fit: BoxFit.cover, folderName: 'autoworld_market_photos')
-                        : const Icon(Icons.directions_car, color: Colors.white10, size: 200),
-                  ),
-                ),
+          // Subtle background pattern
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.03,
+              child: Image.asset(
+                'assets/images/garage_bg.png',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(),
               ),
-              // Info Area
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 80),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        (car.toyMaker ?? 'UNKNOWN').toUpperCase(),
-                        style: const TextStyle(color: Color(0xFFFFD700), fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 8),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '${car.brand} ${car.modelName}',
-                        style: const TextStyle(color: Colors.white, fontSize: 64, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+          ),
+          
+          Padding(
+            padding: const EdgeInsets.all(60),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Info Section
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                currencyFormat.format(car.price),
-                                style: const TextStyle(color: Color(0xFFFFD700), fontSize: 56, fontWeight: FontWeight.w900),
-                              ),
-                              const Text('OFFERED ON AUTOWORLD 1/64', style: TextStyle(color: Colors.white30, fontSize: 16, letterSpacing: 4)),
-                            ],
-                          ),
-                          // QR Code placeholder or Badge
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFD700),
-                              borderRadius: BorderRadius.circular(20),
+                          Text(
+                            (car.toyMaker ?? 'MODEL').toUpperCase(),
+                            style: const TextStyle(
+                              color: Color(0xFF6C757D),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 8,
                             ),
-                            child: Text(
-                              car.isSale ? 'FOR SALE' : 'EXCHANGE',
-                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 24),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '${car.brand} ${car.modelName}',
+                            style: const TextStyle(
+                              color: Color(0xFF212529),
+                              fontSize: 64,
+                              fontWeight: FontWeight.bold,
+                              height: 1.1,
                             ),
                           ),
                         ],
                       ),
-                    ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.directions_car, color: Color(0xFFDAA520), size: 48),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 40),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('CONDITION', style: TextStyle(color: Color(0xFF6C757D), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                        Text(
+                          car.status.toUpperCase(),
+                          style: const TextStyle(color: Color(0xFF212529), fontSize: 32, fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          currencyFormat.format(car.price),
+                          style: const TextStyle(color: Color(0xFFDAA520), fontSize: 48, fontWeight: FontWeight.w900),
+                        ),
+                        Text(
+                          car.isSale ? 'FOR SALE' : 'FOR EXCHANGE',
+                          style: const TextStyle(color: Color(0xFF6C757D), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 60),
+                const Divider(color: Color(0xFFDEE2E6), thickness: 2),
+                const SizedBox(height: 40),
+
+                // Photos Section
+                Expanded(
+                  child: _buildPhotoLayout(),
+                ),
+                
+                const SizedBox(height: 40),
+                const Center(
+                  child: Text(
+                    'GENERATED BY AUTOWORLD 1/64',
+                    style: TextStyle(color: Color(0xFFADB5BD), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 4),
                   ),
                 ),
-              ),
-            ],
-          ),
-          // Logo Badge
-          Positioned(
-            top: 60,
-            right: 60,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.8),
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFFFD700), width: 4),
-              ),
-              child: const Icon(Icons.directions_car, color: Color(0xFFFFD700), size: 48),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoLayout() {
+    final photos = car.photoPaths;
+    if (photos.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFE9ECEF),
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: const Center(child: Icon(Icons.directions_car, color: Colors.white, size: 200)),
+      );
+    }
+
+    if (photos.length == 1) {
+      return _buildPhotoItem(photos.first, isLarge: true);
+    }
+
+    // Grid layout for multiple photos
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 30,
+        mainAxisSpacing: 30,
+        childAspectRatio: 4 / 3,
+      ),
+      itemCount: photos.length > 4 ? 4 : photos.length, // Limit to 4 for clean look or more if needed
+      itemBuilder: (context, index) => _buildPhotoItem(photos[index]),
+    );
+  }
+
+  Widget _buildPhotoItem(String path, {bool isLarge = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(isLarge ? 40 : 24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(isLarge ? 40 : 24),
+        child: CarPhoto(
+          path: path,
+          fit: BoxFit.cover,
+          folderName: 'autoworld_market_photos',
+        ),
       ),
     );
   }
