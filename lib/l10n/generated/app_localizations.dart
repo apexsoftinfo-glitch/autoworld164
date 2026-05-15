@@ -1307,7 +1307,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeHotHunt.
   ///
   /// In pl, this message translates to:
-  /// **'HOT HUNT'**
+  /// **'WYMIANA/SPRZEDAŻ'**
   String get homeHotHunt;
 
   /// No description provided for @homeAddCar.
@@ -1469,8 +1469,26 @@ abstract class AppLocalizations {
   /// No description provided for @huntingTitle.
   ///
   /// In pl, this message translates to:
-  /// **'HOT HUNT'**
+  /// **'WYMIANA/SPRZEDAŻ'**
   String get huntingTitle;
+
+  /// No description provided for @marketAddManual.
+  ///
+  /// In pl, this message translates to:
+  /// **'DODAJ RĘCZNIE'**
+  String get marketAddManual;
+
+  /// No description provided for @marketAddFromGarage.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYBIERZ Z GARAŻU'**
+  String get marketAddFromGarage;
+
+  /// No description provided for @marketSelectModelTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'WYBIERZ MODEL Z GARAŻU'**
+  String get marketSelectModelTitle;
 
   /// No description provided for @huntingSearchHint.
   ///

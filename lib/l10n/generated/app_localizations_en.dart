@@ -667,7 +667,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeNews => 'NEWS';
 
   @override
-  String get homeHotHunt => 'HOT HUNT';
+  String get homeHotHunt => 'TRADE/SALE';
 
   @override
   String get homeAddCar => 'ADD MODEL';
@@ -750,10 +750,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get carFormInternetLabel => 'INTERNET';
 
   @override
-  String get huntingTitle => 'HOT HUNT';
+  String get huntingTitle => 'TRADE/SALE';
 
   @override
-  String get huntingSearchHint => 'Enter model (e.g. Supra RLC)';
+  String get marketAddManual => 'ADD MANUALLY';
+
+  @override
+  String get marketAddFromGarage => 'SELECT FROM GARAGE';
+
+  @override
+  String get marketSelectModelTitle => 'SELECT MODEL FROM GARAGE';
+
+  @override
+  String get huntingSearchHint => 'Search model (e.g. Supra RLC)';
 
   @override
   String get huntingEmptyTitle => 'FIND YOUR DREAM MODEL';

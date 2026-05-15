@@ -8,13 +8,15 @@ import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../models/market_car_model.dart';
 import '../presentation/cubit/market_form_cubit.dart';
+import '../../garage/models/car_model.dart';
 import '../../garage/ui/search_photos_dialog.dart';
 import '../../garage/ui/widgets/car_photo.dart';
 
 class MarketCarFormScreen extends StatefulWidget {
   final MarketCarModel? car;
+  final CarModel? garageCar;
 
-  const MarketCarFormScreen({super.key, this.car});
+  const MarketCarFormScreen({super.key, this.car, this.garageCar});
 
   @override
   State<MarketCarFormScreen> createState() => _MarketCarFormScreenState();
@@ -40,16 +42,22 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   @override
   void initState() {
     super.initState();
-    _brandController = TextEditingController(text: widget.car?.brand);
-    _nameController = TextEditingController(text: widget.car?.modelName);
-    _toyMakerController = TextEditingController(text: widget.car?.toyMaker);
-    _seriesController = TextEditingController(text: widget.car?.series);
+    final initialBrand = widget.car?.brand ?? widget.garageCar?.brand;
+    final initialName = widget.car?.modelName ?? widget.garageCar?.modelName;
+    final initialToyMaker = widget.car?.toyMaker ?? widget.garageCar?.toyMaker;
+    final initialSeries = widget.car?.series ?? widget.garageCar?.series;
+    final initialPrice = widget.car?.price ?? widget.garageCar?.purchasePrice ?? 0.0;
+
+    _brandController = TextEditingController(text: initialBrand);
+    _nameController = TextEditingController(text: initialName);
+    _toyMakerController = TextEditingController(text: initialToyMaker);
+    _seriesController = TextEditingController(text: initialSeries);
     _priceController = TextEditingController(
-      text: widget.car?.price.toString() ?? '',
+      text: initialPrice > 0 ? initialPrice.toString() : '',
     );
     
-    _remainingPhotoPaths.addAll(widget.car?.photoPaths ?? []);
-    _status = widget.car?.status ?? 'Nowy';
+    _remainingPhotoPaths.addAll(widget.car?.photoPaths ?? widget.garageCar?.allPhotoPaths ?? []);
+    _status = widget.car?.status ?? widget.garageCar?.status ?? 'Nowy';
     _isExchange = widget.car?.isExchange ?? true;
     _isSale = widget.car?.isSale ?? true;
   }

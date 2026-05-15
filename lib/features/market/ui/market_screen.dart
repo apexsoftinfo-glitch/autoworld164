@@ -13,6 +13,7 @@ import '../presentation/cubit/market_cubit.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart'; // For SortType/Order
 import '../../garage/ui/widgets/car_photo.dart';
 import 'market_car_form_screen.dart';
+import 'garage_selection_dialog.dart';
 
 class MarketScreen extends StatelessWidget {
   const MarketScreen({super.key});
@@ -626,10 +627,7 @@ class _BottomAddButton extends StatelessWidget {
                 ],
               ),
               child: FilledButton.icon(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MarketCarFormScreen()),
-                ),
+                onPressed: () => _showAddOptions(context),
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFFFFD700),
                   foregroundColor: Colors.black,
@@ -644,6 +642,92 @@ class _BottomAddButton extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showAddOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A120B).withValues(alpha: 0.95),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+            border: Border.all(color: Colors.white10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _OptionButton(
+                icon: Icons.add_circle_outline,
+                label: context.l10n.marketAddManual,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MarketCarFormScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              _OptionButton(
+                icon: Icons.garage_outlined,
+                label: context.l10n.marketAddFromGarage,
+                onTap: () async {
+                  Navigator.pop(context);
+                  final car = await GarageSelectionDialog.show(context);
+                  if (car != null && context.mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => MarketCarFormScreen(garageCar: car)),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OptionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _OptionButton({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white10),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: const Color(0xFFFFD700)),
+            const SizedBox(width: 16),
+            Text(
+              label.toUpperCase(),
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 13),
+            ),
+            const Spacer(),
+            const Icon(Icons.chevron_right, color: Colors.white24),
+          ],
+        ),
       ),
     );
   }
