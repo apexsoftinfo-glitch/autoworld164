@@ -861,15 +861,12 @@ class _GlassInput extends StatelessWidget {
   final String? hint;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
-  final Widget? suffix;
-
   const _GlassInput({
     required this.controller,
     required this.label,
     this.hint,
     this.keyboardType,
     this.validator,
-    this.suffix,
   });
 
   @override
@@ -889,7 +886,6 @@ class _GlassInput extends StatelessWidget {
           hint: hint,
           keyboardType: keyboardType,
           validator: validator,
-          suffix: suffix,
         ),
       ],
     );
@@ -901,14 +897,11 @@ class _GlassInputBase extends StatelessWidget {
   final String? hint;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
-  final Widget? suffix;
-
   const _GlassInputBase({
     required this.controller,
     this.hint,
     this.keyboardType,
     this.validator,
-    this.suffix,
   });
 
   @override
@@ -927,7 +920,6 @@ class _GlassInputBase extends StatelessWidget {
             hintStyle: const TextStyle(color: Colors.white24, fontSize: 13),
             filled: true,
             fillColor: Colors.white.withValues(alpha: 0.05),
-            suffixIcon: suffix,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12)),
             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Color(0xFFFFD700), width: 0.5)),
