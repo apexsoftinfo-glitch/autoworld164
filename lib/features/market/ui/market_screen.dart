@@ -16,6 +16,7 @@ import 'market_car_form_screen.dart';
 import 'market_car_details_screen.dart';
 import 'widgets/garage_move_success_dialog.dart';
 import 'garage_selection_dialog.dart';
+import 'widgets/market_report_dialog.dart';
 
 class MarketScreen extends StatelessWidget {
   const MarketScreen({super.key});
@@ -625,6 +626,30 @@ class _BottomAddButton extends StatelessWidget {
               child: IconButton(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 20),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          _GlassBox(
+            padding: EdgeInsets.zero,
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: BlocBuilder<MarketCubit, MarketState>(
+                builder: (context, state) {
+                  final cars = state.maybeWhen(
+                    data: (c, fc, q, vt, st, so) => fc,
+                    orElse: () => <MarketCarModel>[],
+                  );
+                  return IconButton(
+                    onPressed: cars.isEmpty ? null : () => MarketReportDialog.show(context, cars),
+                    icon: Icon(
+                      Icons.analytics_outlined, 
+                      color: cars.isEmpty ? Colors.white10 : const Color(0xFFFFD700), 
+                      size: 24,
+                    ),
+                  );
+                },
               ),
             ),
           ),
