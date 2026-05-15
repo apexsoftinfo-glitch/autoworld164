@@ -27,6 +27,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   late TextEditingController _toyMakerController;
   late TextEditingController _seriesController;
   late TextEditingController _priceController;
+  late TextEditingController _notesController;
   
   final List<File> _newImages = [];
   final List<String> _remainingPhotoPaths = [];
@@ -56,6 +57,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     _priceController = TextEditingController(
       text: initialPrice > 0 ? initialPrice.toString() : '',
     );
+    _notesController = TextEditingController(text: widget.car?.notes);
     
     _remainingPhotoPaths.addAll(widget.car?.photoPaths ?? widget.garageCar?.allPhotoPaths ?? []);
     _status = widget.car?.status ?? widget.garageCar?.status ?? 'Nowy';
@@ -70,6 +72,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     _toyMakerController.dispose();
     _seriesController.dispose();
     _priceController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -213,6 +216,12 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             ],
                           ),
                           const SizedBox(height: 16),
+                          _GlassInput(
+                            controller: _notesController,
+                            label: 'UWAGI',
+                            maxLines: 3,
+                          ),
+                          const SizedBox(height: 16),
                           _StatusInput(
                             label: l10n.carFormConditionLabel,
                             selectedStatus: _status,
@@ -245,6 +254,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                                   modelName: '',
                                   toyMaker: _toyMakerController.text,
                                   series: _seriesController.text.isEmpty ? null : _seriesController.text,
+                                  notes: _notesController.text.isEmpty ? null : _notesController.text,
                                   price: double.tryParse(_priceController.text.replaceAll(',', '.')) ?? 0.0,
                                   status: _status,
                                   isExchange: _isExchange,
@@ -649,8 +659,9 @@ class _GlassInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final bool enabled;
+  final int? maxLines;
 
-  const _GlassInput({required this.controller, required this.label, this.keyboardType, this.validator, this.enabled = true});
+  const _GlassInput({required this.controller, required this.label, this.keyboardType, this.validator, this.enabled = true, this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -661,6 +672,7 @@ class _GlassInput extends StatelessWidget {
         keyboardType: keyboardType,
         validator: validator,
         enabled: enabled,
+        maxLines: maxLines,
         style: TextStyle(color: enabled ? Colors.white : Colors.white24, fontSize: 14),
         decoration: InputDecoration(
           labelText: label.toUpperCase(),

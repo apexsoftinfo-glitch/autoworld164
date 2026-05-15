@@ -13,6 +13,7 @@ abstract class MarketCarModel with _$MarketCarModel {
     @JsonKey(name: 'model_name') required String modelName,
     @JsonKey(name: 'toy_maker') String? toyMaker,
     String? series,
+    String? notes,
     @Default(0.0) double price,
     @JsonKey(name: 'photo_paths') @Default([]) List<String> photoPaths,
     @Default('Nowy') String status,

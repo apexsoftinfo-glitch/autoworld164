@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MarketCarModel {
 
- String get id;@JsonKey(name: 'user_id') String get userId; String get brand;@JsonKey(name: 'model_name') String get modelName;@JsonKey(name: 'toy_maker') String? get toyMaker; String? get series; double get price;@JsonKey(name: 'photo_paths') List<String> get photoPaths; String get status;@JsonKey(name: 'is_exchange') bool get isExchange;@JsonKey(name: 'is_sale') bool get isSale;@JsonKey(name: 'is_auction') bool get isAuction;@JsonKey(name: 'created_at') DateTime get createdAt;
+ String get id;@JsonKey(name: 'user_id') String get userId; String get brand;@JsonKey(name: 'model_name') String get modelName;@JsonKey(name: 'toy_maker') String? get toyMaker; String? get series; String? get notes; double get price;@JsonKey(name: 'photo_paths') List<String> get photoPaths; String get status;@JsonKey(name: 'is_exchange') bool get isExchange;@JsonKey(name: 'is_sale') bool get isSale;@JsonKey(name: 'is_auction') bool get isAuction;@JsonKey(name: 'created_at') DateTime get createdAt;
 /// Create a copy of MarketCarModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MarketCarModelCopyWith<MarketCarModel> get copyWith => _$MarketCarModelCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketCarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.price, price) || other.price == price)&&const DeepCollectionEquality().equals(other.photoPaths, photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.isExchange, isExchange) || other.isExchange == isExchange)&&(identical(other.isSale, isSale) || other.isSale == isSale)&&(identical(other.isAuction, isAuction) || other.isAuction == isAuction)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketCarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.price, price) || other.price == price)&&const DeepCollectionEquality().equals(other.photoPaths, photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.isExchange, isExchange) || other.isExchange == isExchange)&&(identical(other.isSale, isSale) || other.isSale == isSale)&&(identical(other.isAuction, isAuction) || other.isAuction == isAuction)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,price,const DeepCollectionEquality().hash(photoPaths),status,isExchange,isSale,isAuction,createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,notes,price,const DeepCollectionEquality().hash(photoPaths),status,isExchange,isSale,isAuction,createdAt);
 
 @override
 String toString() {
-  return 'MarketCarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, price: $price, photoPaths: $photoPaths, status: $status, isExchange: $isExchange, isSale: $isSale, isAuction: $isAuction, createdAt: $createdAt)';
+  return 'MarketCarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, notes: $notes, price: $price, photoPaths: $photoPaths, status: $status, isExchange: $isExchange, isSale: $isSale, isAuction: $isAuction, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MarketCarModelCopyWith<$Res>  {
   factory $MarketCarModelCopyWith(MarketCarModel value, $Res Function(MarketCarModel) _then) = _$MarketCarModelCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series, double price,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'is_exchange') bool isExchange,@JsonKey(name: 'is_sale') bool isSale,@JsonKey(name: 'is_auction') bool isAuction,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series, String? notes, double price,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'is_exchange') bool isExchange,@JsonKey(name: 'is_sale') bool isSale,@JsonKey(name: 'is_auction') bool isAuction,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$MarketCarModelCopyWithImpl<$Res>
 
 /// Create a copy of MarketCarModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? price = null,Object? photoPaths = null,Object? status = null,Object? isExchange = null,Object? isSale = null,Object? isAuction = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? notes = freezed,Object? price = null,Object? photoPaths = null,Object? status = null,Object? isExchange = null,Object? isSale = null,Object? isAuction = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -73,6 +73,7 @@ as String,brand: null == brand ? _self.brand : brand // ignore: cast_nullable_to
 as String,modelName: null == modelName ? _self.modelName : modelName // ignore: cast_nullable_to_non_nullable
 as String,toyMaker: freezed == toyMaker ? _self.toyMaker : toyMaker // ignore: cast_nullable_to_non_nullable
 as String?,series: freezed == series ? _self.series : series // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,photoPaths: null == photoPaths ? _self.photoPaths : photoPaths // ignore: cast_nullable_to_non_nullable
 as List<String>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  String? notes,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MarketCarModel() when $default != null:
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.notes,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  String? notes,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _MarketCarModel():
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.notes,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +207,10 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'user_id')  String userId,  String brand, @JsonKey(name: 'model_name')  String modelName, @JsonKey(name: 'toy_maker')  String? toyMaker,  String? series,  String? notes,  double price, @JsonKey(name: 'photo_paths')  List<String> photoPaths,  String status, @JsonKey(name: 'is_exchange')  bool isExchange, @JsonKey(name: 'is_sale')  bool isSale, @JsonKey(name: 'is_auction')  bool isAuction, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _MarketCarModel() when $default != null:
-return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker,_that.series,_that.notes,_that.price,_that.photoPaths,_that.status,_that.isExchange,_that.isSale,_that.isAuction,_that.createdAt);case _:
   return null;
 
 }
@@ -221,7 +222,7 @@ return $default(_that.id,_that.userId,_that.brand,_that.modelName,_that.toyMaker
 @JsonSerializable()
 
 class _MarketCarModel extends MarketCarModel {
-  const _MarketCarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, this.price = 0.0, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], this.status = 'Nowy', @JsonKey(name: 'is_exchange') this.isExchange = true, @JsonKey(name: 'is_sale') this.isSale = true, @JsonKey(name: 'is_auction') this.isAuction = false, @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths,super._();
+  const _MarketCarModel({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.brand, @JsonKey(name: 'model_name') required this.modelName, @JsonKey(name: 'toy_maker') this.toyMaker, this.series, this.notes, this.price = 0.0, @JsonKey(name: 'photo_paths') final  List<String> photoPaths = const [], this.status = 'Nowy', @JsonKey(name: 'is_exchange') this.isExchange = true, @JsonKey(name: 'is_sale') this.isSale = true, @JsonKey(name: 'is_auction') this.isAuction = false, @JsonKey(name: 'created_at') required this.createdAt}): _photoPaths = photoPaths,super._();
   factory _MarketCarModel.fromJson(Map<String, dynamic> json) => _$MarketCarModelFromJson(json);
 
 @override final  String id;
@@ -230,6 +231,7 @@ class _MarketCarModel extends MarketCarModel {
 @override@JsonKey(name: 'model_name') final  String modelName;
 @override@JsonKey(name: 'toy_maker') final  String? toyMaker;
 @override final  String? series;
+@override final  String? notes;
 @override@JsonKey() final  double price;
  final  List<String> _photoPaths;
 @override@JsonKey(name: 'photo_paths') List<String> get photoPaths {
@@ -257,16 +259,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketCarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.price, price) || other.price == price)&&const DeepCollectionEquality().equals(other._photoPaths, _photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.isExchange, isExchange) || other.isExchange == isExchange)&&(identical(other.isSale, isSale) || other.isSale == isSale)&&(identical(other.isAuction, isAuction) || other.isAuction == isAuction)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketCarModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.modelName, modelName) || other.modelName == modelName)&&(identical(other.toyMaker, toyMaker) || other.toyMaker == toyMaker)&&(identical(other.series, series) || other.series == series)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.price, price) || other.price == price)&&const DeepCollectionEquality().equals(other._photoPaths, _photoPaths)&&(identical(other.status, status) || other.status == status)&&(identical(other.isExchange, isExchange) || other.isExchange == isExchange)&&(identical(other.isSale, isSale) || other.isSale == isSale)&&(identical(other.isAuction, isAuction) || other.isAuction == isAuction)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,price,const DeepCollectionEquality().hash(_photoPaths),status,isExchange,isSale,isAuction,createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,brand,modelName,toyMaker,series,notes,price,const DeepCollectionEquality().hash(_photoPaths),status,isExchange,isSale,isAuction,createdAt);
 
 @override
 String toString() {
-  return 'MarketCarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, price: $price, photoPaths: $photoPaths, status: $status, isExchange: $isExchange, isSale: $isSale, isAuction: $isAuction, createdAt: $createdAt)';
+  return 'MarketCarModel(id: $id, userId: $userId, brand: $brand, modelName: $modelName, toyMaker: $toyMaker, series: $series, notes: $notes, price: $price, photoPaths: $photoPaths, status: $status, isExchange: $isExchange, isSale: $isSale, isAuction: $isAuction, createdAt: $createdAt)';
 }
 
 
@@ -277,7 +279,7 @@ abstract mixin class _$MarketCarModelCopyWith<$Res> implements $MarketCarModelCo
   factory _$MarketCarModelCopyWith(_MarketCarModel value, $Res Function(_MarketCarModel) _then) = __$MarketCarModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series, double price,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'is_exchange') bool isExchange,@JsonKey(name: 'is_sale') bool isSale,@JsonKey(name: 'is_auction') bool isAuction,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(name: 'user_id') String userId, String brand,@JsonKey(name: 'model_name') String modelName,@JsonKey(name: 'toy_maker') String? toyMaker, String? series, String? notes, double price,@JsonKey(name: 'photo_paths') List<String> photoPaths, String status,@JsonKey(name: 'is_exchange') bool isExchange,@JsonKey(name: 'is_sale') bool isSale,@JsonKey(name: 'is_auction') bool isAuction,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -294,7 +296,7 @@ class __$MarketCarModelCopyWithImpl<$Res>
 
 /// Create a copy of MarketCarModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? price = null,Object? photoPaths = null,Object? status = null,Object? isExchange = null,Object? isSale = null,Object? isAuction = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? brand = null,Object? modelName = null,Object? toyMaker = freezed,Object? series = freezed,Object? notes = freezed,Object? price = null,Object? photoPaths = null,Object? status = null,Object? isExchange = null,Object? isSale = null,Object? isAuction = null,Object? createdAt = null,}) {
   return _then(_MarketCarModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -302,6 +304,7 @@ as String,brand: null == brand ? _self.brand : brand // ignore: cast_nullable_to
 as String,modelName: null == modelName ? _self.modelName : modelName // ignore: cast_nullable_to_non_nullable
 as String,toyMaker: freezed == toyMaker ? _self.toyMaker : toyMaker // ignore: cast_nullable_to_non_nullable
 as String?,series: freezed == series ? _self.series : series // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,photoPaths: null == photoPaths ? _self._photoPaths : photoPaths // ignore: cast_nullable_to_non_nullable
 as List<String>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable

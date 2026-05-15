@@ -161,6 +161,15 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                         ),
                                       ],
                                     ),
+                                    if (currentCar.notes != null && currentCar.notes!.isNotEmpty) ...[
+                                      const SizedBox(height: 32),
+                                      const Text('NOTES / UWAGI', style: TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        currentCar.notes!,
+                                        style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),

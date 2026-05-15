@@ -14,6 +14,7 @@ _MarketCarModel _$MarketCarModelFromJson(Map<String, dynamic> json) =>
       modelName: json['model_name'] as String,
       toyMaker: json['toy_maker'] as String?,
       series: json['series'] as String?,
+      notes: json['notes'] as String?,
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       photoPaths:
           (json['photo_paths'] as List<dynamic>?)
@@ -35,6 +36,7 @@ Map<String, dynamic> _$MarketCarModelToJson(_MarketCarModel instance) =>
       'model_name': instance.modelName,
       'toy_maker': instance.toyMaker,
       'series': instance.series,
+      'notes': instance.notes,
       'price': instance.price,
       'photo_paths': instance.photoPaths,
       'status': instance.status,
