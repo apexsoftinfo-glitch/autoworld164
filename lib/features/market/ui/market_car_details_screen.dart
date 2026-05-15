@@ -14,6 +14,7 @@ import '../../../../l10n/l10n.dart';
 import '../../garage/ui/widgets/car_photo.dart';
 import '../models/market_car_model.dart';
 import '../presentation/cubit/market_form_cubit.dart';
+import '../data/repositories/market_repository.dart';
 import 'market_car_form_screen.dart';
 import 'widgets/market_sold_success_dialog.dart';
 
@@ -42,114 +43,122 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
 
     return BlocProvider(
       create: (context) => getIt<MarketFormCubit>(),
-      child: BlocListener<MarketFormCubit, MarketFormState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            success: () => Navigator.pop(context),
-            error: (key, p, s) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(key), backgroundColor: Colors.redAccent),
+      child: StreamBuilder<List<MarketCarModel>>(
+        stream: getIt<MarketRepository>().marketCarsStream,
+        builder: (context, snapshot) {
+          final currentCar = snapshot.data?.firstWhere(
+            (c) => c.id == widget.car.id,
+            orElse: () => widget.car,
+          ) ?? widget.car;
+
+          return BlocListener<MarketFormCubit, MarketFormState>(
+            listener: (context, state) {
+              state.whenOrNull(
+                success: () => Navigator.pop(context),
+                error: (key, p, s) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(key), backgroundColor: Colors.redAccent),
+                  );
+                },
               );
             },
-          );
-        },
-        child: Builder(
-          builder: (context) => Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.edit_outlined, color: Colors.white70),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => MarketCarFormScreen(car: widget.car)),
+            child: Builder(
+              builder: (context) => Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                ),
-              ],
-            ),
-            body: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF0C0C0C),
-                        Color(0xFF1A120B),
-                        Color(0xFF0C0C0C),
-                      ],
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.edit_outlined, color: Colors.white70),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => MarketCarFormScreen(car: currentCar)),
+                      ),
                     ),
-                  ),
-                  child: SafeArea(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.all(24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _PhotoGallery(car: widget.car),
-                                const SizedBox(height: 24),
-                                // Basic Info
-                                Text(
-                                  (widget.car.toyMaker ?? l10n.carProducerPlaceholder).toUpperCase(),
-                                  style: const TextStyle(color: Color(0xFFFFD700), fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${widget.car.brand} ${widget.car.modelName}',
-                                  style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
+                  ],
+                ),
+                body: Stack(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF0C0C0C),
+                            Color(0xFF1A120B),
+                            Color(0xFF0C0C0C),
+                          ],
+                        ),
+                      ),
+                      child: SafeArea(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                padding: const EdgeInsets.all(24),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _InfoChip(label: widget.car.status.toUpperCase(), color: Colors.white10),
-                                    if (widget.car.series != null) ...[
-                                      const SizedBox(width: 8),
-                                      _InfoChip(label: widget.car.series!.toUpperCase(), color: const Color(0xFFFFD700).withValues(alpha: 0.1)),
-                                    ],
-                                  ],
-                                ),
-                                const SizedBox(height: 32),
-                                // Price and Tags
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('PRICE', style: TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                                        Text(
-                                          currencyFormat.format(widget.car.price),
-                                          style: const TextStyle(color: Color(0xFFFFD700), fontSize: 24, fontWeight: FontWeight.w900),
-                                        ),
-                                      ],
+                                    _PhotoGallery(car: currentCar),
+                                    const SizedBox(height: 24),
+                                    // Basic Info
+                                    Text(
+                                      (currentCar.toyMaker ?? l10n.carProducerPlaceholder).toUpperCase(),
+                                      style: const TextStyle(color: Color(0xFFFFD700), fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 2),
                                     ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${currentCar.brand} ${currentCar.modelName}',
+                                      style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 16),
                                     Row(
                                       children: [
-                                        if (widget.car.isExchange) _TypeBadge(label: 'EXCHANGE', color: Colors.blueAccent),
-                                        if (widget.car.isSale) ...[
+                                        _InfoChip(label: currentCar.status.toUpperCase(), color: Colors.white10),
+                                        if (currentCar.series != null) ...[
                                           const SizedBox(width: 8),
-                                          _TypeBadge(label: 'SALE', color: Colors.greenAccent),
+                                          _InfoChip(label: currentCar.series!.toUpperCase(), color: const Color(0xFFFFD700).withValues(alpha: 0.1)),
                                         ],
                                       ],
                                     ),
+                                    const SizedBox(height: 32),
+                                    // Price and Tags
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('PRICE', style: TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                            Text(
+                                              currencyFormat.format(currentCar.price),
+                                              style: const TextStyle(color: Color(0xFFFFD700), fontSize: 24, fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            if (currentCar.isExchange) _TypeBadge(label: 'EXCHANGE', color: Colors.blueAccent),
+                                            if (currentCar.isSale) ...[
+                                              const SizedBox(width: 8),
+                                              _TypeBadge(label: 'SALE', color: Colors.greenAccent),
+                                            ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
                         // Bottom Buttons
                         Padding(
                           padding: const EdgeInsets.all(24),
@@ -187,13 +196,15 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                   left: -2000,
                   child: RepaintBoundary(
                     key: _boundaryKey,
-                    child: _ListingPreview(car: widget.car, currencyFormat: currencyFormat),
+                    child: _ListingPreview(car: currentCar, currencyFormat: currencyFormat),
                   ),
                 ),
               ],
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

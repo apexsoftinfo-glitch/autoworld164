@@ -41,13 +41,9 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   void initState() {
     super.initState();
     final garageCar = widget.garageCar;
-    String initialBrandModel = widget.car?.brand ?? '';
-    if (initialBrandModel.isEmpty && garageCar != null) {
-      initialBrandModel = garageCar.brand;
-      if (garageCar.modelName.isNotEmpty) {
-        initialBrandModel += ' ${garageCar.modelName}';
-      }
-    }
+    String initialBrandModel = widget.car != null
+        ? '${widget.car!.brand} ${widget.car!.modelName}'.trim()
+        : (garageCar != null ? '${garageCar.brand} ${garageCar.modelName}'.trim() : '');
     
     final initialToyMaker = widget.car?.toyMaker ?? widget.garageCar?.toyMaker;
     final initialSeries = widget.car?.series ?? widget.garageCar?.series;
@@ -231,7 +227,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                                   modelName: '',
                                   toyMaker: _toyMakerController.text,
                                   series: _seriesController.text.isEmpty ? null : _seriesController.text,
-                                  price: double.tryParse(_priceController.text) ?? 0.0,
+                                  price: double.tryParse(_priceController.text.replaceAll(',', '.')) ?? 0.0,
                                   status: _status,
                                   isExchange: _isExchange,
                                   isSale: _isSale,

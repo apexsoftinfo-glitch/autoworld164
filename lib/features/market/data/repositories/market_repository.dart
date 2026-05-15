@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:autoworld164/features/market/data/data_sources/market_data_source.dart';
 import 'package:autoworld164/features/market/models/market_car_model.dart';
-import 'package:rxdart/rxdart.dart';
 
 abstract class MarketRepository {
   Stream<List<MarketCarModel>> get marketCarsStream;
@@ -43,22 +42,12 @@ class MarketRepositoryImpl implements MarketRepository {
   MarketRepositoryImpl(this._dataSource);
 
   final MarketDataSource _dataSource;
-  final _marketCarsSubject = BehaviorSubject<List<MarketCarModel>>();
 
   @override
   Stream<List<MarketCarModel>> get marketCarsStream {
-    _refreshCars();
-    return _marketCarsSubject.stream;
-  }
-
-  Future<void> _refreshCars() async {
-    try {
-      final list = await _dataSource.getMarketCars();
-      _marketCarsSubject.add(list.map((json) => MarketCarModel.fromJson(json)).toList());
-    } catch (e) {
-      debugPrint('MarketRepositoryImpl _refreshCars error: $e');
-      // Don't rethrow here to avoid breaking the stream
-    }
+    return _dataSource.watchMarketCars().map((list) {
+      return list.map((json) => MarketCarModel.fromJson(json)).toList();
+    });
   }
 
   @override
@@ -88,7 +77,6 @@ class MarketRepositoryImpl implements MarketRepository {
       };
 
       await _dataSource.addMarketCar(data, photos, internetUrls, initialPhotoPaths: initialPhotoPaths);
-      _refreshCars();
     } catch (e, stack) {
       debugPrint('MarketRepositoryImpl addMarketCar error: $e\n$stack');
       rethrow;
@@ -130,7 +118,6 @@ class MarketRepositoryImpl implements MarketRepository {
         internetUrls,
         oldModel.photoPaths,
       );
-      _refreshCars();
     } catch (e, stack) {
       debugPrint('MarketRepositoryImpl editMarketCar error: $e\n$stack');
       rethrow;
@@ -141,7 +128,6 @@ class MarketRepositoryImpl implements MarketRepository {
   Future<void> deleteMarketCar(MarketCarModel car) async {
     try {
       await _dataSource.deleteMarketCar(car.id, car.photoPaths);
-      _refreshCars();
     } catch (e, stack) {
       debugPrint('MarketRepositoryImpl deleteMarketCar error: $e\n$stack');
       rethrow;
