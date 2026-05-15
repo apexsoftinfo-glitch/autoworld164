@@ -12,7 +12,7 @@ import '../../garage/presentation/cubit/cars_collection_cubit.dart';
 import '../../garage/ui/garage_screen.dart';
 import '../../garage/ui/car_form_screen.dart';
 import '../../../app/session/presentation/cubit/session_cubit.dart';
-import '../../hunting/ui/hunting_screen.dart';
+import '../../market/ui/market_screen.dart';
 import '../../settings/presentation/settings_cubit.dart';
 import '../../../l10n/l10n.dart';
 
@@ -161,11 +161,11 @@ class _HomeScreenView extends StatelessWidget {
                             ),
                             _VIPCard(
                               label: l10n.homeHotHunt,
-                              icon: Icons.explore,
+                              icon: Icons.storefront_outlined,
                               color: const Color(0xFFFFD700),
                               onTap: () => Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (_) => const HuntingScreen()),
+                                MaterialPageRoute(builder: (_) => const MarketScreen()),
                               ),
                             ),
                             _VIPCard(

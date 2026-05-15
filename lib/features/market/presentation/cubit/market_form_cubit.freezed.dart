@@ -1,0 +1,490 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'market_form_cubit.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+/// @nodoc
+mixin _$MarketFormState implements DiagnosticableTreeMixin {
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MarketFormState'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketFormState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'MarketFormState()';
+}
+
+
+}
+
+/// @nodoc
+class $MarketFormStateCopyWith<$Res>  {
+$MarketFormStateCopyWith(MarketFormState _, $Res Function(MarketFormState) __);
+}
+
+
+/// Adds pattern-matching-related methods to [MarketFormState].
+extension MarketFormStatePatterns on MarketFormState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( MarketFormInitial value)?  initial,TResult Function( MarketFormLoading value)?  loading,TResult Function( MarketFormSuccess value)?  success,TResult Function( MarketFormError value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case MarketFormInitial() when initial != null:
+return initial(_that);case MarketFormLoading() when loading != null:
+return loading(_that);case MarketFormSuccess() when success != null:
+return success(_that);case MarketFormError() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( MarketFormInitial value)  initial,required TResult Function( MarketFormLoading value)  loading,required TResult Function( MarketFormSuccess value)  success,required TResult Function( MarketFormError value)  error,}){
+final _that = this;
+switch (_that) {
+case MarketFormInitial():
+return initial(_that);case MarketFormLoading():
+return loading(_that);case MarketFormSuccess():
+return success(_that);case MarketFormError():
+return error(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( MarketFormInitial value)?  initial,TResult? Function( MarketFormLoading value)?  loading,TResult? Function( MarketFormSuccess value)?  success,TResult? Function( MarketFormError value)?  error,}){
+final _that = this;
+switch (_that) {
+case MarketFormInitial() when initial != null:
+return initial(_that);case MarketFormLoading() when loading != null:
+return loading(_that);case MarketFormSuccess() when success != null:
+return success(_that);case MarketFormError() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<String> producers,  List<String> series)?  initial,TResult Function( List<String> producers,  List<String> series)?  loading,TResult Function()?  success,TResult Function( String errorKey,  List<String> producers,  List<String> series)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case MarketFormInitial() when initial != null:
+return initial(_that.producers,_that.series);case MarketFormLoading() when loading != null:
+return loading(_that.producers,_that.series);case MarketFormSuccess() when success != null:
+return success();case MarketFormError() when error != null:
+return error(_that.errorKey,_that.producers,_that.series);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<String> producers,  List<String> series)  initial,required TResult Function( List<String> producers,  List<String> series)  loading,required TResult Function()  success,required TResult Function( String errorKey,  List<String> producers,  List<String> series)  error,}) {final _that = this;
+switch (_that) {
+case MarketFormInitial():
+return initial(_that.producers,_that.series);case MarketFormLoading():
+return loading(_that.producers,_that.series);case MarketFormSuccess():
+return success();case MarketFormError():
+return error(_that.errorKey,_that.producers,_that.series);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<String> producers,  List<String> series)?  initial,TResult? Function( List<String> producers,  List<String> series)?  loading,TResult? Function()?  success,TResult? Function( String errorKey,  List<String> producers,  List<String> series)?  error,}) {final _that = this;
+switch (_that) {
+case MarketFormInitial() when initial != null:
+return initial(_that.producers,_that.series);case MarketFormLoading() when loading != null:
+return loading(_that.producers,_that.series);case MarketFormSuccess() when success != null:
+return success();case MarketFormError() when error != null:
+return error(_that.errorKey,_that.producers,_that.series);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class MarketFormInitial with DiagnosticableTreeMixin implements MarketFormState {
+  const MarketFormInitial({final  List<String> producers = const [], final  List<String> series = const []}): _producers = producers,_series = series;
+  
+
+ final  List<String> _producers;
+@JsonKey() List<String> get producers {
+  if (_producers is EqualUnmodifiableListView) return _producers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_producers);
+}
+
+ final  List<String> _series;
+@JsonKey() List<String> get series {
+  if (_series is EqualUnmodifiableListView) return _series;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_series);
+}
+
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MarketFormInitialCopyWith<MarketFormInitial> get copyWith => _$MarketFormInitialCopyWithImpl<MarketFormInitial>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MarketFormState.initial'))
+    ..add(DiagnosticsProperty('producers', producers))..add(DiagnosticsProperty('series', series));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketFormInitial&&const DeepCollectionEquality().equals(other._producers, _producers)&&const DeepCollectionEquality().equals(other._series, _series));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_producers),const DeepCollectionEquality().hash(_series));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'MarketFormState.initial(producers: $producers, series: $series)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $MarketFormInitialCopyWith<$Res> implements $MarketFormStateCopyWith<$Res> {
+  factory $MarketFormInitialCopyWith(MarketFormInitial value, $Res Function(MarketFormInitial) _then) = _$MarketFormInitialCopyWithImpl;
+@useResult
+$Res call({
+ List<String> producers, List<String> series
+});
+
+
+
+
+}
+/// @nodoc
+class _$MarketFormInitialCopyWithImpl<$Res>
+    implements $MarketFormInitialCopyWith<$Res> {
+  _$MarketFormInitialCopyWithImpl(this._self, this._then);
+
+  final MarketFormInitial _self;
+  final $Res Function(MarketFormInitial) _then;
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? producers = null,Object? series = null,}) {
+  return _then(MarketFormInitial(
+producers: null == producers ? _self._producers : producers // ignore: cast_nullable_to_non_nullable
+as List<String>,series: null == series ? _self._series : series // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class MarketFormLoading with DiagnosticableTreeMixin implements MarketFormState {
+  const MarketFormLoading({final  List<String> producers = const [], final  List<String> series = const []}): _producers = producers,_series = series;
+  
+
+ final  List<String> _producers;
+@JsonKey() List<String> get producers {
+  if (_producers is EqualUnmodifiableListView) return _producers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_producers);
+}
+
+ final  List<String> _series;
+@JsonKey() List<String> get series {
+  if (_series is EqualUnmodifiableListView) return _series;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_series);
+}
+
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MarketFormLoadingCopyWith<MarketFormLoading> get copyWith => _$MarketFormLoadingCopyWithImpl<MarketFormLoading>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MarketFormState.loading'))
+    ..add(DiagnosticsProperty('producers', producers))..add(DiagnosticsProperty('series', series));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketFormLoading&&const DeepCollectionEquality().equals(other._producers, _producers)&&const DeepCollectionEquality().equals(other._series, _series));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_producers),const DeepCollectionEquality().hash(_series));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'MarketFormState.loading(producers: $producers, series: $series)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $MarketFormLoadingCopyWith<$Res> implements $MarketFormStateCopyWith<$Res> {
+  factory $MarketFormLoadingCopyWith(MarketFormLoading value, $Res Function(MarketFormLoading) _then) = _$MarketFormLoadingCopyWithImpl;
+@useResult
+$Res call({
+ List<String> producers, List<String> series
+});
+
+
+
+
+}
+/// @nodoc
+class _$MarketFormLoadingCopyWithImpl<$Res>
+    implements $MarketFormLoadingCopyWith<$Res> {
+  _$MarketFormLoadingCopyWithImpl(this._self, this._then);
+
+  final MarketFormLoading _self;
+  final $Res Function(MarketFormLoading) _then;
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? producers = null,Object? series = null,}) {
+  return _then(MarketFormLoading(
+producers: null == producers ? _self._producers : producers // ignore: cast_nullable_to_non_nullable
+as List<String>,series: null == series ? _self._series : series // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class MarketFormSuccess with DiagnosticableTreeMixin implements MarketFormState {
+  const MarketFormSuccess();
+  
+
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MarketFormState.success'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketFormSuccess);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'MarketFormState.success()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class MarketFormError with DiagnosticableTreeMixin implements MarketFormState {
+  const MarketFormError(this.errorKey, {final  List<String> producers = const [], final  List<String> series = const []}): _producers = producers,_series = series;
+  
+
+ final  String errorKey;
+ final  List<String> _producers;
+@JsonKey() List<String> get producers {
+  if (_producers is EqualUnmodifiableListView) return _producers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_producers);
+}
+
+ final  List<String> _series;
+@JsonKey() List<String> get series {
+  if (_series is EqualUnmodifiableListView) return _series;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_series);
+}
+
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MarketFormErrorCopyWith<MarketFormError> get copyWith => _$MarketFormErrorCopyWithImpl<MarketFormError>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MarketFormState.error'))
+    ..add(DiagnosticsProperty('errorKey', errorKey))..add(DiagnosticsProperty('producers', producers))..add(DiagnosticsProperty('series', series));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketFormError&&(identical(other.errorKey, errorKey) || other.errorKey == errorKey)&&const DeepCollectionEquality().equals(other._producers, _producers)&&const DeepCollectionEquality().equals(other._series, _series));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,errorKey,const DeepCollectionEquality().hash(_producers),const DeepCollectionEquality().hash(_series));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'MarketFormState.error(errorKey: $errorKey, producers: $producers, series: $series)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $MarketFormErrorCopyWith<$Res> implements $MarketFormStateCopyWith<$Res> {
+  factory $MarketFormErrorCopyWith(MarketFormError value, $Res Function(MarketFormError) _then) = _$MarketFormErrorCopyWithImpl;
+@useResult
+$Res call({
+ String errorKey, List<String> producers, List<String> series
+});
+
+
+
+
+}
+/// @nodoc
+class _$MarketFormErrorCopyWithImpl<$Res>
+    implements $MarketFormErrorCopyWith<$Res> {
+  _$MarketFormErrorCopyWithImpl(this._self, this._then);
+
+  final MarketFormError _self;
+  final $Res Function(MarketFormError) _then;
+
+/// Create a copy of MarketFormState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? errorKey = null,Object? producers = null,Object? series = null,}) {
+  return _then(MarketFormError(
+null == errorKey ? _self.errorKey : errorKey // ignore: cast_nullable_to_non_nullable
+as String,producers: null == producers ? _self._producers : producers // ignore: cast_nullable_to_non_nullable
+as List<String>,series: null == series ? _self._series : series // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+// dart format on

@@ -47,6 +47,14 @@ import 'package:autoworld164/features/hunting/data/repositories/hunting_reposito
     as _i813;
 import 'package:autoworld164/features/hunting/presentation/cubit/hunting_cubit.dart'
     as _i328;
+import 'package:autoworld164/features/market/data/data_sources/market_data_source.dart'
+    as _i618;
+import 'package:autoworld164/features/market/data/repositories/market_repository.dart'
+    as _i625;
+import 'package:autoworld164/features/market/presentation/cubit/market_cubit.dart'
+    as _i73;
+import 'package:autoworld164/features/market/presentation/cubit/market_form_cubit.dart'
+    as _i379;
 import 'package:autoworld164/features/news/data/news_repository.dart' as _i225;
 import 'package:autoworld164/features/news/presentation/news_cubit.dart'
     as _i537;
@@ -94,6 +102,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i461.SubscriptionRepository>(
       () =>
           _i461.SubscriptionRepositoryImpl(gh<_i604.SubscriptionDataSource>()),
+    );
+    gh.lazySingleton<_i618.MarketDataSource>(
+      () => _i618.MarketDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.factory<_i328.HuntingCubit>(
       () => _i328.HuntingCubit(gh<_i813.HuntingRepository>()),
@@ -148,11 +159,23 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i461.SubscriptionRepository>(),
       ),
     );
+    gh.lazySingleton<_i625.MarketRepository>(
+      () => _i625.MarketRepositoryImpl(gh<_i618.MarketDataSource>()),
+    );
     gh.lazySingleton<_i173.SettingsRepository>(
       () => _i173.SettingsRepositoryImpl(gh<_i1022.SettingsDataSource>()),
     );
+    gh.factory<_i379.MarketFormCubit>(
+      () => _i379.MarketFormCubit(
+        gh<_i625.MarketRepository>(),
+        gh<_i421.CarsRepository>(),
+      ),
+    );
     gh.lazySingleton<_i225.NewsRepository>(
       () => _i225.NewsRepositoryImpl(gh<_i225.NewsDataSource>()),
+    );
+    gh.factory<_i73.MarketCubit>(
+      () => _i73.MarketCubit(gh<_i625.MarketRepository>()),
     );
     gh.lazySingleton<_i186.AppLocaleRepository>(
       () => _i186.AppLocaleRepositoryImpl(gh<_i953.AppLocaleDataSource>()),
