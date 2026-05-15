@@ -134,16 +134,22 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text('PRICE', style: TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                                            Text(
-                                              currencyFormat.format(currentCar.price),
-                                              style: const TextStyle(color: Color(0xFFFFD700), fontSize: 24, fontWeight: FontWeight.w900),
-                                            ),
-                                          ],
-                                        ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(currentCar.isAuction ? 'AUCTION' : 'PRICE', style: const TextStyle(color: Colors.white30, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                              if (currentCar.isAuction)
+                                                const Padding(
+                                                  padding: EdgeInsets.only(top: 4),
+                                                  child: Icon(Icons.gavel, color: Color(0xFFFFD700), size: 32),
+                                                )
+                                              else
+                                                Text(
+                                                  currencyFormat.format(currentCar.price),
+                                                  style: const TextStyle(color: Color(0xFFFFD700), fontSize: 24, fontWeight: FontWeight.w900),
+                                                ),
+                                            ],
+                                          ),
                                         Row(
                                           children: [
                                             if (currentCar.isExchange) _TypeBadge(label: 'EXCHANGE', color: Colors.blueAccent),
@@ -489,14 +495,19 @@ class _ListingPreview extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        if (car.isAuction)
+                          const Icon(Icons.gavel, color: Color(0xFFDAA520), size: 100)
+                        else
+                          Text(
+                            currencyFormat.format(car.price),
+                            style: const TextStyle(color: Color(0xFFDAA520), fontSize: 80, fontWeight: FontWeight.w900),
+                          ),
                         Text(
-                          currencyFormat.format(car.price),
-                          style: const TextStyle(color: Color(0xFFDAA520), fontSize: 80, fontWeight: FontWeight.w900),
-                        ),
-                        Text(
-                          car.isSale && car.isExchange 
-                              ? 'FOR SALE / EXCHANGE'
-                              : (car.isSale ? 'FOR SALE' : 'FOR EXCHANGE'),
+                          car.isAuction 
+                              ? 'AUCTION / LICYTACJA' 
+                              : (car.isSale && car.isExchange 
+                                  ? 'FOR SALE / EXCHANGE'
+                                  : (car.isSale ? 'FOR SALE' : 'FOR EXCHANGE')),
                           style: const TextStyle(color: Color(0xFF6C757D), fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 1),
                         ),
                       ],

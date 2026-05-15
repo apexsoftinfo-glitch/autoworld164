@@ -23,6 +23,7 @@ _MarketCarModel _$MarketCarModelFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String? ?? 'Nowy',
       isExchange: json['is_exchange'] as bool? ?? true,
       isSale: json['is_sale'] as bool? ?? true,
+      isAuction: json['is_auction'] as bool? ?? false,
       createdAt: DateTime.parse(json['created_at'] as String),
     );
 
@@ -39,5 +40,6 @@ Map<String, dynamic> _$MarketCarModelToJson(_MarketCarModel instance) =>
       'status': instance.status,
       'is_exchange': instance.isExchange,
       'is_sale': instance.isSale,
+      'is_auction': instance.isAuction,
       'created_at': instance.createdAt.toIso8601String(),
     };

@@ -140,6 +140,7 @@ class MarketCubit extends Cubit<MarketState> {
         status: car.status,
         isExchange: true,
         isSale: true,
+        isAuction: false,
         initialPhotoPaths: car.allPhotoPaths,
       );
 

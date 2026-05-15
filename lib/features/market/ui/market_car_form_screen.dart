@@ -34,6 +34,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   late String _status;
   late bool _isExchange;
   late bool _isSale;
+  late bool _isAuction;
 
   AppLocalizations get l10n => context.l10n;
 
@@ -60,6 +61,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     _status = widget.car?.status ?? widget.garageCar?.status ?? 'Nowy';
     _isExchange = widget.car?.isExchange ?? true;
     _isSale = widget.car?.isSale ?? true;
+    _isAuction = widget.car?.isAuction ?? false;
   }
 
   @override
@@ -189,10 +191,26 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             onChanged: (_) => setState(() {}),
                           ),
                           const SizedBox(height: 16),
-                          _GlassInput(
-                            controller: _priceController,
-                            label: l10n.carPurchasePriceLabel.toUpperCase(),
-                            keyboardType: TextInputType.number,
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: _GlassInput(
+                                  controller: _priceController,
+                                  label: l10n.carPurchasePriceLabel.toUpperCase(),
+                                  keyboardType: TextInputType.number,
+                                  enabled: !_isAuction,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                flex: 2,
+                                child: _AuctionCheckbox(
+                                  value: _isAuction,
+                                  onChanged: (v) => setState(() => _isAuction = v),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           _StatusInput(
@@ -231,6 +249,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                                   status: _status,
                                   isExchange: _isExchange,
                                   isSale: _isSale,
+                                  isAuction: _isAuction,
                                   newPhotos: _newImages,
                                   photoUrls: _internetPhotoUrls,
                                   remainingPhotoPaths: _remainingPhotoPaths,
@@ -629,8 +648,9 @@ class _GlassInput extends StatelessWidget {
   final String label;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final bool enabled;
 
-  const _GlassInput({required this.controller, required this.label, this.keyboardType, this.validator});
+  const _GlassInput({required this.controller, required this.label, this.keyboardType, this.validator, this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -640,7 +660,8 @@ class _GlassInput extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        enabled: enabled,
+        style: TextStyle(color: enabled ? Colors.white : Colors.white24, fontSize: 14),
         decoration: InputDecoration(
           labelText: label.toUpperCase(),
           labelStyle: const TextStyle(color: Color(0xFFFFD700), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
@@ -733,6 +754,50 @@ class _GlassBox extends StatelessWidget {
             border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
           ),
           child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _AuctionCheckbox extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const _AuctionCheckbox({required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onChanged(!value),
+      child: _GlassBox(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Column(
+          children: [
+            Text(
+              'LICYTACJA'.toUpperCase(),
+              style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
+            ),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  value ? Icons.gavel : Icons.gavel_outlined,
+                  color: value ? const Color(0xFFFFD700) : Colors.white24,
+                  size: 20,
+                ),
+                Checkbox(
+                  value: value,
+                  onChanged: (v) => onChanged(v ?? false),
+                  activeColor: const Color(0xFFFFD700),
+                  checkColor: Colors.black,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  side: const BorderSide(color: Colors.white24),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -18,6 +18,7 @@ abstract class MarketCarModel with _$MarketCarModel {
     @Default('Nowy') String status,
     @JsonKey(name: 'is_exchange') @Default(true) bool isExchange,
     @JsonKey(name: 'is_sale') @Default(true) bool isSale,
+    @JsonKey(name: 'is_auction') @Default(false) bool isAuction,
     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _MarketCarModel;
 

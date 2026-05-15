@@ -16,6 +16,7 @@ abstract class MarketRepository {
     required String status,
     required bool isExchange,
     required bool isSale,
+    required bool isAuction,
     List<File> photos = const [],
     List<String> internetUrls = const [],
     List<String> initialPhotoPaths = const [],
@@ -30,6 +31,7 @@ abstract class MarketRepository {
     required String status,
     required bool isExchange,
     required bool isSale,
+    required bool isAuction,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
@@ -60,6 +62,7 @@ class MarketRepositoryImpl implements MarketRepository {
     required String status,
     required bool isExchange,
     required bool isSale,
+    required bool isAuction,
     List<File> photos = const [],
     List<String> internetUrls = const [],
     List<String> initialPhotoPaths = const [],
@@ -74,6 +77,7 @@ class MarketRepositoryImpl implements MarketRepository {
         'status': status,
         'is_exchange': isExchange,
         'is_sale': isSale,
+        'is_auction': isAuction,
       };
 
       await _dataSource.addMarketCar(data, photos, internetUrls, initialPhotoPaths: initialPhotoPaths);
@@ -94,6 +98,7 @@ class MarketRepositoryImpl implements MarketRepository {
     required String status,
     required bool isExchange,
     required bool isSale,
+    required bool isAuction,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
     List<String>? remainingPhotoPaths,
@@ -108,6 +113,7 @@ class MarketRepositoryImpl implements MarketRepository {
         'status': status,
         'is_exchange': isExchange,
         'is_sale': isSale,
+        'is_auction': isAuction,
         'photo_paths': remainingPhotoPaths ?? oldModel.photoPaths,
       };
 
