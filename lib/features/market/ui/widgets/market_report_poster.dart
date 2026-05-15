@@ -195,6 +195,7 @@ class MarketReportPoster extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(flex: 2, child: _headerText(isPolish ? 'PRODUCENT' : 'PRODUCER')),
                   Expanded(flex: 3, child: _headerText(isPolish ? 'MARKA I MODEL' : 'BRAND & MODEL')),
+                  Expanded(flex: 2, child: _headerText(isPolish ? 'UWAGI' : 'NOTES')),
                   Expanded(flex: 2, child: _headerText(isPolish ? 'CENA' : 'PRICE', align: TextAlign.right)),
                 ],
               ),
@@ -238,6 +239,10 @@ class MarketReportPoster extends StatelessWidget {
                           color: Colors.blue.shade900,
                         )),
                         Expanded(flex: 3, child: _dataText('${car.brand} ${car.modelName}')),
+                        Expanded(flex: 2, child: _dataText(
+                          car.notes?.isNotEmpty == true ? car.notes! : '-',
+                          color: Colors.black54,
+                        )),
                         Expanded(flex: 2, child: _dataText(
                           currencyFormat.format(car.price),
                           bold: true,
