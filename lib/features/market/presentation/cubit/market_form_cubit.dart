@@ -7,6 +7,7 @@ import 'package:autoworld164/features/market/data/repositories/market_repository
 import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
 import 'package:autoworld164/features/market/models/market_car_model.dart';
 import '../../../../shared/error_messages.dart';
+import 'package:autoworld164/features/garage/models/car_model.dart';
 import 'package:flutter/foundation.dart';
 
 part 'market_form_cubit.freezed.dart';
@@ -65,6 +66,7 @@ class MarketFormCubit extends Cubit<MarketFormState> {
     List<File> newPhotos = const [],
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
+    CarModel? fromGarageCar,
   }) async {
     final currentProducers = state.maybeWhen(
       initial: (p, s) => p,
@@ -108,7 +110,12 @@ class MarketFormCubit extends Cubit<MarketFormState> {
           isSale: isSale,
           photos: newPhotos,
           internetUrls: photoUrls,
+          initialPhotoPaths: remainingPhotoPaths ?? [],
         );
+
+        if (fromGarageCar != null) {
+          await _carsRepository.deleteCar(fromGarageCar);
+        }
       }
       emit(const MarketFormState.success());
     } catch (e, stack) {

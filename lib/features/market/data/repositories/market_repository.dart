@@ -19,6 +19,7 @@ abstract class MarketRepository {
     required bool isSale,
     List<File> photos = const [],
     List<String> internetUrls = const [],
+    List<String> initialPhotoPaths = const [],
   });
   Future<void> editMarketCar({
     required MarketCarModel oldModel,
@@ -72,6 +73,7 @@ class MarketRepositoryImpl implements MarketRepository {
     required bool isSale,
     List<File> photos = const [],
     List<String> internetUrls = const [],
+    List<String> initialPhotoPaths = const [],
   }) async {
     try {
       final data = {
@@ -85,7 +87,7 @@ class MarketRepositoryImpl implements MarketRepository {
         'is_sale': isSale,
       };
 
-      await _dataSource.addMarketCar(data, photos, internetUrls);
+      await _dataSource.addMarketCar(data, photos, internetUrls, initialPhotoPaths: initialPhotoPaths);
       _refreshCars();
     } catch (e, stack) {
       debugPrint('MarketRepositoryImpl addMarketCar error: $e\n$stack');

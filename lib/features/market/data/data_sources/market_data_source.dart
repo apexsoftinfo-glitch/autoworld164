@@ -10,7 +10,7 @@ import 'package:path/path.dart' as p;
 abstract class MarketDataSource {
   Stream<List<Map<String, dynamic>>> watchMarketCars();
   Future<List<Map<String, dynamic>>> getMarketCars();
-  Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls);
+  Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls, {List<String> initialPhotoPaths = const []});
   Future<void> editMarketCar(
     String id,
     Map<String, dynamic> data,
@@ -83,14 +83,39 @@ class MarketDataSourceImpl implements MarketDataSource {
     return paths;
   }
 
+  Future<List<String>> _copyExistingPhotos(List<String> fileNames) async {
+    if (fileNames.isEmpty) return [];
+    
+    final docs = await getApplicationDocumentsDirectory();
+    final sourceDir = p.join(docs.path, 'autoworld_photos');
+    final targetDir = await _getPhotosDir();
+    
+    final paths = <String>[];
+    for (final fileName in fileNames) {
+      try {
+        final sourceFile = File(p.join(sourceDir, fileName));
+        if (await sourceFile.exists()) {
+          final newFileName = '${DateTime.now().millisecondsSinceEpoch}_moved_${paths.length}${p.extension(fileName)}';
+          final targetPath = p.join(targetDir, newFileName);
+          await sourceFile.copy(targetPath);
+          paths.add(newFileName);
+        }
+      } catch (e) {
+        debugPrint('Error copying photo $fileName: $e');
+      }
+    }
+    return paths;
+  }
+
   @override
-  Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls) async {
+  Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls, {List<String> initialPhotoPaths = const []}) async {
     final localPaths = await _savePhotosLocally(photos);
     final remotePaths = await _saveFromUrlsLocally(internetUrls);
+    final movedPaths = await _copyExistingPhotos(initialPhotoPaths);
 
     await _supabase.from('autoworld_market').insert({
       ...data,
-      'photo_paths': [...localPaths, ...remotePaths],
+      'photo_paths': [...movedPaths, ...localPaths, ...remotePaths],
     });
   }
 

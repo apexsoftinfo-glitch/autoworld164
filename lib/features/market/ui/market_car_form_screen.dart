@@ -225,6 +225,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                               if (_formKey.currentState!.validate()) {
                                 context.read<MarketFormCubit>().saveCar(
                                   existingCar: widget.car,
+                                  fromGarageCar: widget.garageCar,
                                   brand: _brandController.text,
                                   modelName: '',
                                   toyMaker: _toyMakerController.text,
