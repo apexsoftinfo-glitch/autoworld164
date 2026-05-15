@@ -465,6 +465,20 @@ class _ListingPreview extends StatelessWidget {
                               height: 1.1,
                             ),
                           ),
+                          if (car.notes != null && car.notes!.isNotEmpty) ...[
+                            const SizedBox(height: 12),
+                            Text(
+                              car.notes!,
+                              style: const TextStyle(
+                                color: Color(0xFF6C757D),
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                                height: 1.3,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ],
                       ),
                     ),
