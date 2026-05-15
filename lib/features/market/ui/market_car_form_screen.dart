@@ -151,6 +151,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             newImages: _newImages,
                             remainingPaths: _remainingPhotoPaths,
                             internetUrls: _internetPhotoUrls,
+                            folderName: widget.garageCar != null ? 'autoworld_photos' : 'autoworld_market_photos',
                             onAdd: (source) async {
                               final picker = ImagePicker();
                               final picked = await picker.pickImage(source: source, imageQuality: 70);
@@ -332,6 +333,7 @@ class _MultiPhotoPicker extends StatelessWidget {
   final List<File> newImages;
   final List<String> remainingPaths;
   final List<String> internetUrls;
+  final String? folderName;
   final Function(ImageSource) onAdd;
   final Function(int) onRemoveNew;
   final Function(String) onRemoveExisting;
@@ -342,6 +344,7 @@ class _MultiPhotoPicker extends StatelessWidget {
     required this.newImages,
     required this.remainingPaths,
     required this.internetUrls,
+    this.folderName,
     required this.onAdd,
     required this.onRemoveNew,
     required this.onRemoveExisting,
@@ -390,6 +393,7 @@ class _MultiPhotoPicker extends StatelessWidget {
               
               ...remainingPaths.map((p) => _Thumbnail(
                 path: p,
+                folderName: folderName,
                 onRemove: () => onRemoveExisting(p),
               )),
 
@@ -445,9 +449,10 @@ class _Thumbnail extends StatelessWidget {
   final File? image;
   final String? path;
   final String? url;
+  final String? folderName;
   final VoidCallback onRemove;
 
-  const _Thumbnail({this.image, this.path, this.url, required this.onRemove});
+  const _Thumbnail({this.image, this.path, this.url, this.folderName, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -484,8 +489,8 @@ class _Thumbnail extends StatelessWidget {
 
   Widget _buildImage() {
     if (image != null) return Image.file(image!, fit: BoxFit.cover);
-    if (url != null) return CarPhoto(path: url!, fit: BoxFit.cover);
-    return CarPhoto(path: path!, fit: BoxFit.cover);
+    if (url != null) return CarPhoto(path: url!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_market_photos');
+    return CarPhoto(path: path!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_market_photos');
   }
 }
 

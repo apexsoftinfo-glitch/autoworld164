@@ -9,11 +9,13 @@ class CarPhoto extends StatelessWidget {
   final String path;
   final BoxFit fit;
   final Widget? placeholder;
+  final String folderName;
 
   const CarPhoto({
     required this.path,
     this.fit = BoxFit.cover,
     this.placeholder,
+    this.folderName = 'autoworld_photos',
     super.key,
   });
 
@@ -57,6 +59,6 @@ class CarPhoto extends StatelessWidget {
 
   Future<String> _getLocalPath() async {
     final docs = await getApplicationDocumentsDirectory();
-    return p.join(docs.path, 'autoworld_photos', path);
+    return p.join(docs.path, folderName, path);
   }
 }

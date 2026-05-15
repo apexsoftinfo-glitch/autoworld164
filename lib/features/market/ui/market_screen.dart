@@ -376,6 +376,7 @@ class _MarketCarCard extends StatelessWidget {
                       ? CarPhoto(
                           path: photoPath,
                           fit: BoxFit.cover,
+                          folderName: 'autoworld_market_photos',
                           placeholder: const _ImagePlaceholder(),
                         )
                       : const _ImagePlaceholder(),
@@ -482,6 +483,7 @@ class _MarketCarListTile extends StatelessWidget {
                 ? CarPhoto(
                     path: photoPath,
                     fit: BoxFit.cover,
+                    folderName: 'autoworld_market_photos',
                     placeholder: const _ImagePlaceholder(),
                   )
                 : const _ImagePlaceholder(),
