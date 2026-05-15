@@ -520,18 +520,25 @@ class _MarketTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (car.isAuction)
+          _Tag(
+            label: l10n.marketAuction.toUpperCase(),
+            color: const Color(0xFFFFD700),
+          ),
+        if (car.isAuction && (car.isExchange || car.isSale)) const SizedBox(width: 4),
         if (car.isExchange)
           _Tag(
-            label: 'EXCHANGE',
+            label: l10n.marketExchangeBadge.toUpperCase(),
             color: Colors.blueAccent,
           ),
         if (car.isSale && car.isExchange) const SizedBox(width: 4),
         if (car.isSale)
           _Tag(
-            label: 'SALE',
+            label: l10n.marketSaleBadge.toUpperCase(),
             color: Colors.greenAccent,
           ),
       ],
