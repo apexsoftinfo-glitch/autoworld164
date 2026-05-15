@@ -218,6 +218,13 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
         final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
         final pageCars = sortedCars.sublist(start, end);
 
+        // Precache images for this page to ensure they appear in capture
+        if (mounted) {
+          await Future.wait(pageCars.where((c) => c.displayPhotoPath != null).map((c) {
+            return precacheImage(NetworkImage(c.displayPhotoPath!), context);
+          }));
+        }
+
         final poster = MarketReportPoster(
           cars: pageCars,
           page: i + 1,

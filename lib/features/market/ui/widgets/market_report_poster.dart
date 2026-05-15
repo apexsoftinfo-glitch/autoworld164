@@ -120,6 +120,7 @@ class MarketReportPoster extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
+                      _headerCell(isPolish ? 'FOTO' : 'PHOTO', flex: 1),
                       _headerCell(isPolish ? 'PRODUCENT' : 'PRODUCER', flex: 2),
                       _headerCell(isPolish ? 'MARKA I MODEL' : 'BRAND & MODEL', flex: 3),
                       _headerCell(isPolish ? 'CENA' : 'PRICE', flex: 2, align: TextAlign.right),
@@ -128,12 +129,35 @@ class MarketReportPoster extends StatelessWidget {
                 ),
                 // Table Rows
                 ...cars.map((car) => Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   decoration: BoxDecoration(
                     border: Border(top: BorderSide(color: Colors.grey.shade200)),
                   ),
                   child: Row(
                     children: [
+                      // Photo Cell
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: car.displayPhotoPath != null
+                                ? Image.network(
+                                    car.displayPhotoPath!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.directions_car, color: Colors.black12),
+                                  )
+                                : const Icon(Icons.directions_car, color: Colors.black12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
                       _dataCell(car.toyMaker?.toUpperCase() ?? '-', flex: 2, isBold: true, color: Colors.blue.shade900),
                       _dataCell('${car.brand} ${car.modelName}', flex: 3),
                       _dataCell(currencyFormat.format(car.price), flex: 2, align: TextAlign.right, isBold: true, color: Colors.green.shade900),
