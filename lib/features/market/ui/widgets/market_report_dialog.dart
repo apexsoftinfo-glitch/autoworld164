@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
-import 'market_report_poster.dart';
+import 'market_report_poster.dart' show MarketReportPoster, loadImageBytes;
 import 'package:flutter/rendering.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -218,17 +218,15 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
         final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
         final pageCars = sortedCars.sublist(start, end);
 
-        // Precache only network images (skip local file paths)
-        if (mounted) {
-          final networkCars = pageCars.where((c) {
-            final p = c.displayPhotoPath;
-            return p != null && (p.startsWith('http://') || p.startsWith('https://'));
-          }).toList();
-          if (networkCars.isNotEmpty) {
-            await Future.wait(networkCars.map((c) {
-              return precacheImage(NetworkImage(c.displayPhotoPath!), context)
-                  .catchError((e) { debugPrint('precache error: $e'); });
-            }));
+        // Pre-load image bytes for all cars on this page before off-screen render
+        final Map<String, Uint8List> photoBytes = {};
+        for (final car in pageCars) {
+          final path = car.displayPhotoPath;
+          if (path != null) {
+            final bytes = await loadImageBytes(path);
+            if (bytes != null) {
+              photoBytes[car.id] = bytes;
+            }
           }
         }
 
@@ -239,6 +237,7 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
           totalValue: totalValue.toDouble(),
           totalCount: totalCount,
           isPolish: isPolish,
+          photoBytes: photoBytes,
         );
 
         final bytes = await _captureWidget(poster);

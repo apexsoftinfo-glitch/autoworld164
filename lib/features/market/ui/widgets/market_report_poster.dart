@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
 
+/// Poster widget for off-screen PNG capture.
+/// Accepts pre-loaded image bytes so images render synchronously.
 class MarketReportPoster extends StatelessWidget {
   final List<MarketCarModel> cars;
   final int page;
@@ -10,6 +13,8 @@ class MarketReportPoster extends StatelessWidget {
   final double totalValue;
   final int totalCount;
   final bool isPolish;
+  /// Map of car id → pre-loaded image bytes (may be absent if no photo)
+  final Map<String, Uint8List> photoBytes;
 
   const MarketReportPoster({
     super.key,
@@ -19,6 +24,7 @@ class MarketReportPoster extends StatelessWidget {
     required this.totalValue,
     required this.totalCount,
     required this.isPolish,
+    required this.photoBytes,
   });
 
   @override
@@ -30,11 +36,9 @@ class MarketReportPoster extends StatelessWidget {
     );
 
     return Container(
-      width: 1000, // Fixed width for high-quality capture
+      width: 1000,
       padding: const EdgeInsets.all(40),
-      decoration: const BoxDecoration(
-        color: Colors.white, // Light background
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,22 +64,16 @@ class MarketReportPoster extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'PAGE $page / $totalPages',
-                    style: TextStyle(color: Colors.black.withValues(alpha: 0.4), fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              Text(
+                'PAGE $page / $totalPages',
+                style: TextStyle(color: Colors.black.withValues(alpha: 0.4), fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          
+
           const SizedBox(height: 40),
-          
-          // Summary (only on first page or maybe every page? User said "on each page" for models)
-          // Let's show summary on every page for context
+
+          // Summary boxes
           Row(
             children: [
               _buildStatBox(
@@ -94,7 +92,7 @@ class MarketReportPoster extends StatelessWidget {
 
           const SizedBox(height: 40),
 
-          // Models Table
+          // Models Table title
           Text(
             isPolish ? 'LISTA MODELI' : 'MODELS LIST',
             style: const TextStyle(
@@ -136,7 +134,7 @@ class MarketReportPoster extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // Photo Cell
+                      // Photo Cell — use pre-loaded bytes
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -148,7 +146,9 @@ class MarketReportPoster extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: _buildPhotoWidget(car.displayPhotoPath),
+                            child: photoBytes.containsKey(car.id)
+                                ? Image.memory(photoBytes[car.id]!, fit: BoxFit.cover)
+                                : const Icon(Icons.directions_car, color: Colors.black12),
                           ),
                         ),
                       ),
@@ -159,7 +159,7 @@ class MarketReportPoster extends StatelessWidget {
                     ],
                   ),
                 )),
-                // Fill empty rows if needed to keep constant height (optional)
+                // Fill empty rows to keep consistent height
                 if (cars.length < 10)
                   ...List.generate(10 - cars.length, (index) => Container(
                     height: 52,
@@ -244,29 +244,30 @@ class MarketReportPoster extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildPhotoWidget(String? path) {
-    if (path == null) {
-      return const Icon(Icons.directions_car, color: Colors.black12);
-    }
+/// Loads image bytes from a path (network URL or local file).
+Future<Uint8List?> loadImageBytes(String path) async {
+  try {
     if (path.startsWith('http://') || path.startsWith('https://')) {
-      return Image.network(
-        path,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.directions_car, color: Colors.black12),
-      );
+      final httpClient = HttpClient();
+      final request = await httpClient.getUrl(Uri.parse(path));
+      final response = await request.close();
+      final bytes = <int>[];
+      await for (final chunk in response) {
+        bytes.addAll(chunk);
+      }
+      httpClient.close();
+      return Uint8List.fromList(bytes);
+    } else {
+      // Local file
+      final file = File(path);
+      if (await file.exists()) {
+        return await file.readAsBytes();
+      }
     }
-    // Local file path
-    final file = File(path);
-    if (file.existsSync()) {
-      return Image.file(
-        file,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.directions_car, color: Colors.black12),
-      );
-    }
-    return const Icon(Icons.directions_car, color: Colors.black12);
+  } catch (e) {
+    debugPrint('loadImageBytes error for $path: $e');
   }
+  return null;
 }
