@@ -15,7 +15,6 @@ abstract class CarModel with _$CarModel {
     String? series,
     @JsonKey(name: 'purchase_date') DateTime? purchaseDate,
     @JsonKey(name: 'purchase_price') @Default(0.0) double purchasePrice,
-    @JsonKey(name: 'estimated_value') @Default(0.0) double estimatedValue,
     @JsonKey(name: 'photo_path') String? photoPath,
     @JsonKey(name: 'photo_paths') @Default([]) List<String> photoPaths,
     @Default('Nowy') String status,

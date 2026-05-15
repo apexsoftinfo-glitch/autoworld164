@@ -20,7 +20,6 @@ sealed class CarsCollectionState with _$CarsCollectionState {
     required List<CarModel> cars,
     required List<CarModel> filteredCars,
     required double totalPurchasePrice,
-    required double totalEstimatedValue,
     @Default({}) Map<String, int> brandStats,
     @Default('') String query,
     @Default(CollectionViewType.grid) CollectionViewType viewType,
@@ -42,12 +41,10 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
     _subscription = _carsRepository.carsStream.listen(
       (cars) {
         double purchaseTotal = 0;
-        double estimatedTotal = 0;
         final stats = <String, int>{};
 
         for (final car in cars) {
           purchaseTotal += car.purchasePrice;
-          estimatedTotal += car.estimatedValue;
           
           final key = (car.toyMaker ?? car.brand).trim();
           if (key.isNotEmpty) {
@@ -56,11 +53,11 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         }
 
         final currentQuery = state.maybeWhen(
-          data: (c, fc, pt, et, st, q, vt) => q,
+          data: (c, fc, pt, st, q, vt) => q,
           orElse: () => '',
         );
         final currentViewType = state.maybeWhen(
-          data: (c, fc, pt, et, st, q, vt) => vt,
+          data: (c, fc, pt, st, q, vt) => vt,
           orElse: () => CollectionViewType.grid,
         );
 
@@ -70,7 +67,6 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
           cars: cars,
           filteredCars: filtered,
           totalPurchasePrice: purchaseTotal,
-          totalEstimatedValue: estimatedTotal,
           brandStats: stats,
           query: currentQuery,
           viewType: currentViewType,
@@ -84,13 +80,12 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
   }
 
   void search(String query) {
-    state.whenOrNull(data: (cars, filtered, purchaseTotal, estimatedTotal, stats, q, viewType) {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, q, viewType) {
       final newFiltered = _filterCars(cars, query);
       emit(CarsCollectionState.data(
         cars: cars,
         filteredCars: newFiltered,
         totalPurchasePrice: purchaseTotal,
-        totalEstimatedValue: estimatedTotal,
         brandStats: stats,
         query: query,
         viewType: viewType,
@@ -99,13 +94,12 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
   }
 
   void toggleView() {
-    state.whenOrNull(data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, query, viewType) {
       final newType = viewType == CollectionViewType.grid ? CollectionViewType.list : CollectionViewType.grid;
       emit(CarsCollectionState.data(
         cars: cars,
         filteredCars: filtered,
         totalPurchasePrice: purchaseTotal,
-        totalEstimatedValue: estimatedTotal,
         brandStats: stats,
         query: query,
         viewType: newType,

@@ -71,7 +71,7 @@ class _GarageScreenView extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  data: (cars, filtered, purchaseTotal, estimatedTotal, stats, query, viewType) {
+                  data: (cars, filtered, purchaseTotal, stats, query, viewType) {
                     if (cars.isEmpty) {
                       return const _EmptyGarageView();
                     }
@@ -80,7 +80,7 @@ class _GarageScreenView extends StatelessWidget {
                       children: [
                         _GarageSummaryHeader(
                           pieces: filtered.length,
-                          totalValue: estimatedTotal,
+                          totalValue: purchaseTotal,
                         ),
                         const SizedBox(height: 16),
                         _SearchAndToggleBar(
@@ -315,7 +315,7 @@ class _CarCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            currencyFormat.format(car.estimatedValue),
+                            currencyFormat.format(car.purchasePrice),
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -552,7 +552,7 @@ class _CarListTile extends StatelessWidget {
               ),
             ),
             Text(
-              currencyFormat.format(car.estimatedValue),
+              currencyFormat.format(car.purchasePrice),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8),

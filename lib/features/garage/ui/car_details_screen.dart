@@ -44,7 +44,7 @@ class CarDetailsScreen extends StatelessWidget {
                 ),
               );
             },
-            error: (key, producers) {
+            error: (key, producers, series) {
                ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(key),
@@ -306,8 +306,7 @@ class _DetailGrid extends StatelessWidget {
         ),
         _DetailItem(label: l10n.carDetailsSeries, value: car.series ?? '-'),
         _DetailItem(label: l10n.carDetailsDate, value: car.purchaseDate != null ? DateFormat('dd.MM.yyyy').format(car.purchaseDate!) : '-'),
-        _DetailItem(label: l10n.carDetailsPurchasePrice, value: currencyFormat.format(car.purchasePrice)),
-        _DetailItem(label: l10n.carDetailsEstimatedValue, value: currencyFormat.format(car.estimatedValue), highlight: true),
+        _DetailItem(label: l10n.carDetailsPurchasePrice, value: currencyFormat.format(car.purchasePrice), highlight: true),
       ],
     );
   }

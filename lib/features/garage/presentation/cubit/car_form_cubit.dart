@@ -14,13 +14,16 @@ part 'car_form_cubit.freezed.dart';
 sealed class CarFormState with _$CarFormState {
   const factory CarFormState.initial({
     @Default([]) List<String> producers,
+    @Default([]) List<String> series,
   }) = CarFormInitial;
   const factory CarFormState.loading({
     @Default([]) List<String> producers,
+    @Default([]) List<String> series,
   }) = CarFormLoading;
   const factory CarFormState.success() = CarFormSuccess;
   const factory CarFormState.error(String errorKey, {
     @Default([]) List<String> producers,
+    @Default([]) List<String> series,
   }) = CarFormError;
 }
 
@@ -33,20 +36,17 @@ class CarFormCubit extends Cubit<CarFormState> {
   Future<void> loadInitialData() async {
     emit(const CarFormState.loading());
     try {
-      final producers = await _carsRepository.getProducers();
-      emit(CarFormState.initial(producers: producers));
+      final results = await Future.wait([
+        _carsRepository.getProducers(),
+        _carsRepository.getSeries(),
+      ]);
+      emit(CarFormState.initial(
+        producers: results[0],
+        series: results[1],
+      ));
     } catch (e) {
       debugPrint('CarFormCubit loadInitialData error: $e');
       emit(const CarFormState.initial());
-    }
-  }
-
-  Future<double?> estimateValue(String query) async {
-    try {
-      return await _carsRepository.estimateValue(query);
-    } catch (e) {
-      debugPrint('CarFormCubit estimateValue error: $e');
-      return null;
     }
   }
 
@@ -58,20 +58,25 @@ class CarFormCubit extends Cubit<CarFormState> {
     String? series,
     DateTime? purchaseDate,
     required double purchasePrice,
-    required double estimatedValue,
     required String status,
     List<File> newPhotos = const [],
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
     final currentProducers = state.maybeWhen(
-      initial: (p) => p,
-      loading: (p) => p,
-      error: (e, p) => p,
+      initial: (p, s) => p,
+      loading: (p, s) => p,
+      error: (e, p, s) => p,
+      orElse: () => <String>[],
+    );
+    final currentSeries = state.maybeWhen(
+      initial: (p, s) => s,
+      loading: (p, s) => s,
+      error: (e, p, s) => s,
       orElse: () => <String>[],
     );
 
-    emit(CarFormState.loading(producers: currentProducers));
+    emit(CarFormState.loading(producers: currentProducers, series: currentSeries));
     try {
       if (existingCar != null) {
         await _carsRepository.editCar(
@@ -82,7 +87,6 @@ class CarFormCubit extends Cubit<CarFormState> {
           series: series,
           purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
-          estimatedValue: estimatedValue,
           status: status,
           newPhotos: newPhotos,
           internetUrls: photoUrls,
@@ -96,7 +100,6 @@ class CarFormCubit extends Cubit<CarFormState> {
           series: series,
           purchaseDate: purchaseDate,
           purchasePrice: purchasePrice,
-          estimatedValue: estimatedValue,
           status: status,
           photos: newPhotos,
           internetUrls: photoUrls,
@@ -105,7 +108,7 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit saveCar error: $e\n$stack');
-      emit(CarFormState.error(mapErrorToKey(e), producers: currentProducers));
+      emit(CarFormState.error(mapErrorToKey(e), producers: currentProducers, series: currentSeries));
     }
   }
 

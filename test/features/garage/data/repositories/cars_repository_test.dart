@@ -53,7 +53,6 @@ void main() {
         brand: 'Majorette',
         modelName: 'Porsche',
         purchasePrice: 10.0,
-        estimatedValue: 20.0,
         status: 'Nowy',
       );
 

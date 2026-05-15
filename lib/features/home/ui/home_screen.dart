@@ -198,11 +198,11 @@ class _HomeScreenView extends StatelessWidget {
               child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
                 builder: (context, state) {
                   final pieces = state.maybeWhen(
-                    data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) => cars.length.toString(),
+                    data: (cars, filtered, purchasePrice, stats, q, vt) => cars.length.toString(),
                     orElse: () => '0',
                   );
                   final value = state.maybeWhen(
-                    data: (cars, filtered, purchasePrice, estimatedValue, stats, q, vt) {
+                    data: (cars, filtered, purchasePrice, stats, q, vt) {
                       final isPolish = Localizations.localeOf(context).languageCode == 'pl';
                       final currencyFormat = NumberFormat.simpleCurrency(
                         locale: isPolish ? 'pl_PL' : 'en_US',
@@ -210,12 +210,12 @@ class _HomeScreenView extends StatelessWidget {
                         decimalDigits: 0,
                       );
                       
-                      if (estimatedValue >= 1000000) {
-                        return '${(estimatedValue / 1000000).toStringAsFixed(1)}M ${currencyFormat.currencySymbol}';
-                      } else if (estimatedValue >= 1000) {
-                        return '${(estimatedValue / 1000).toStringAsFixed(1)}K ${currencyFormat.currencySymbol}';
+                      if (purchasePrice >= 1000000) {
+                        return '${(purchasePrice / 1000000).toStringAsFixed(1)}M ${currencyFormat.currencySymbol}';
+                      } else if (purchasePrice >= 1000) {
+                        return '${(purchasePrice / 1000).toStringAsFixed(1)}K ${currencyFormat.currencySymbol}';
                       }
-                      return currencyFormat.format(estimatedValue);
+                      return currencyFormat.format(purchasePrice);
                     },
                     orElse: () {
                       final isPolish = Localizations.localeOf(context).languageCode == 'pl';

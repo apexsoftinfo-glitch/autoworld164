@@ -15,7 +15,6 @@ abstract class CarsRepository {
     String? series,
     DateTime? purchaseDate,
     required double purchasePrice,
-    required double estimatedValue,
     required String status,
     List<File> photos = const [],
     List<String> internetUrls = const [],
@@ -28,7 +27,6 @@ abstract class CarsRepository {
     String? series,
     DateTime? purchaseDate,
     required double purchasePrice,
-    required double estimatedValue,
     required String status,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
@@ -38,7 +36,6 @@ abstract class CarsRepository {
   Future<List<String>> getSeries();
   Future<List<String>> getProducers();
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
-  Future<double> estimateValue(String query);
 }
 
 @LazySingleton(as: CarsRepository)
@@ -73,7 +70,6 @@ class CarsRepositoryImpl implements CarsRepository {
     String? series,
     DateTime? purchaseDate,
     required double purchasePrice,
-    required double estimatedValue,
     required String status,
     List<File> photos = const [],
     List<String> internetUrls = const [],
@@ -86,7 +82,6 @@ class CarsRepositoryImpl implements CarsRepository {
         'series': series,
         'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
-        'estimated_value': estimatedValue,
         'status': status,
       };
  
@@ -113,7 +108,6 @@ class CarsRepositoryImpl implements CarsRepository {
     String? series,
     DateTime? purchaseDate,
     required double purchasePrice,
-    required double estimatedValue,
     required String status,
     List<File> newPhotos = const [],
     List<String> internetUrls = const [],
@@ -127,7 +121,6 @@ class CarsRepositoryImpl implements CarsRepository {
         'series': series,
         'purchase_date': purchaseDate?.toIso8601String(),
         'purchase_price': purchasePrice,
-        'estimated_value': estimatedValue,
         'status': status,
         'photo_paths': remainingPhotoPaths ?? oldModel.photoPaths,
       };
@@ -173,40 +166,5 @@ class CarsRepositoryImpl implements CarsRepository {
   Future<List<String>> searchWebPhotos(String query, {int offset = 0}) async {
     debugPrint('CarsRepositoryImpl: searchWebPhotos query: $query (offset: $offset)');
     return _dataSource.searchWebPhotos(query, offset: offset);
-  }
-
-  @override
-  Future<double> estimateValue(String query) async {
-    debugPrint('CarsRepositoryImpl: estimateValue query: $query');
-    
-    // 1. Try real search via Edge Function
-    final realValue = await _dataSource.estimateValue(query);
-    if (realValue > 0) {
-      return realValue;
-    }
-
-    // 2. Fallback to heuristic if real search fails or returns nothing
-    debugPrint('CarsRepositoryImpl: Falling back to heuristic for estimation');
-    final lowerQuery = query.toLowerCase();
-    double baseValue = 15.0;
-
-    if (lowerQuery.contains('rlc') || lowerQuery.contains('special edition')) {
-      baseValue = 185.0;
-    } else if (lowerQuery.contains('sth') || lowerQuery.contains('super treasure hunt')) {
-      baseValue = 140.0;
-    } else if (lowerQuery.contains('premium') || lowerQuery.contains('boulevard') || lowerQuery.contains('team transport')) {
-      baseValue = 55.0;
-    } else if (lowerQuery.contains('th') || lowerQuery.contains('treasure hunt')) {
-      baseValue = 35.0;
-    } else if (lowerQuery.contains('main')) {
-      baseValue = 12.0;
-    }
-    
-    if (lowerQuery.contains('porsche') || lowerQuery.contains('ferrari') || lowerQuery.contains('lamborghini') || lowerQuery.contains('nissan')) {
-      baseValue += 25.0;
-    }
-
-    final randomFactor = 0.85 + (DateTime.now().millisecond % 300) / 1000.0;
-    return double.parse((baseValue * randomFactor).toStringAsFixed(2));
   }
 }

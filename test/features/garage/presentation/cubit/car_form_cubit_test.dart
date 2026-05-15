@@ -23,6 +23,7 @@ void main() {
       ),
     );
     when(() => carsRepository.getProducers()).thenAnswer((_) async => []);
+    when(() => carsRepository.getSeries()).thenAnswer((_) async => []);
   });
 
   group('CarFormCubit', () {
@@ -36,7 +37,6 @@ void main() {
               series: any(named: 'series'),
               purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
-              estimatedValue: any(named: 'estimatedValue'),
               status: any(named: 'status'),
               photos: any(named: 'photos'),
               internetUrls: any(named: 'internetUrls'),
@@ -47,26 +47,27 @@ void main() {
         brand: 'Hot Wheels',
         modelName: 'Speedster',
         purchasePrice: 10,
-        estimatedValue: 15,
         status: 'Nowy',
       ),
       expect: () => [
-        const CarFormState.loading(producers: []),
+        const CarFormState.loading(producers: [], series: []),
         const CarFormState.success(),
       ],
     );
 
     blocTest<CarFormCubit, CarFormState>(
-      'loadInitialData emits loading then initial with producers',
+      'loadInitialData emits loading then initial with producers and series',
       build: () {
         when(() => carsRepository.getProducers())
             .thenAnswer((_) async => ['Custom Co']);
+        when(() => carsRepository.getSeries())
+            .thenAnswer((_) async => ['Custom Series']);
         return CarFormCubit(carsRepository);
       },
       act: (cubit) => cubit.loadInitialData(),
       expect: () => [
-        const CarFormState.loading(producers: []),
-        const CarFormState.initial(producers: ['Custom Co']),
+        const CarFormState.loading(producers: [], series: []),
+        const CarFormState.initial(producers: ['Custom Co'], series: ['Custom Series']),
       ],
     );
 
@@ -80,7 +81,6 @@ void main() {
               series: any(named: 'series'),
               purchaseDate: any(named: 'purchaseDate'),
               purchasePrice: any(named: 'purchasePrice'),
-              estimatedValue: any(named: 'estimatedValue'),
               status: any(named: 'status'),
               photos: any(named: 'photos'),
               internetUrls: any(named: 'internetUrls'),
@@ -91,12 +91,11 @@ void main() {
         brand: 'Hot Wheels',
         modelName: 'Speedster',
         purchasePrice: 10,
-        estimatedValue: 15,
         status: 'Nowy',
       ),
       expect: () => [
-        const CarFormState.loading(producers: []),
-        const CarFormState.error('network_error', producers: []),
+        const CarFormState.loading(producers: [], series: []),
+        const CarFormState.error('network_error', producers: [], series: []),
       ],
     );
   });

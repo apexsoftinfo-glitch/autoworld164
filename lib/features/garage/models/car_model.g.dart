@@ -17,7 +17,6 @@ _CarModel _$CarModelFromJson(Map<String, dynamic> json) => _CarModel(
       ? null
       : DateTime.parse(json['purchase_date'] as String),
   purchasePrice: (json['purchase_price'] as num?)?.toDouble() ?? 0.0,
-  estimatedValue: (json['estimated_value'] as num?)?.toDouble() ?? 0.0,
   photoPath: json['photo_path'] as String?,
   photoPaths:
       (json['photo_paths'] as List<dynamic>?)
@@ -37,7 +36,6 @@ Map<String, dynamic> _$CarModelToJson(_CarModel instance) => <String, dynamic>{
   'series': instance.series,
   'purchase_date': instance.purchaseDate?.toIso8601String(),
   'purchase_price': instance.purchasePrice,
-  'estimated_value': instance.estimatedValue,
   'photo_path': instance.photoPath,
   'photo_paths': instance.photoPaths,
   'status': instance.status,

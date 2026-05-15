@@ -28,14 +28,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
   late TextEditingController _toyMakerController;
   late TextEditingController _seriesController;
   late TextEditingController _purchasePriceController;
-  late TextEditingController _estimatedValueController;
   
   final List<File> _newImages = [];
   final List<String> _remainingPhotoPaths = [];
   final List<String> _internetPhotoUrls = [];
   DateTime? _purchaseDate;
   late String _status;
-  bool _isEstimating = false;
   AppLocalizations get l10n => context.l10n;
 
   @override
@@ -47,9 +45,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
     _seriesController = TextEditingController(text: widget.car?.series);
     _purchasePriceController = TextEditingController(
       text: widget.car?.purchasePrice.toString() ?? '',
-    );
-    _estimatedValueController = TextEditingController(
-      text: widget.car?.estimatedValue.toString() ?? '',
     );
     
     _remainingPhotoPaths.addAll(widget.car?.photoPaths ?? []);
@@ -114,28 +109,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
     }
   }
 
-  Future<void> _aiEstimate(BuildContext context, CarFormCubit cubit) async {
-    final query = '${_toyMakerController.text} ${_brandController.text} ${_nameController.text} ${_seriesController.text}'
-        .replaceAll(RegExp(r'\s+'), ' ')
-        .trim();
-    if (query.isEmpty) return;
-    
-    setState(() => _isEstimating = true);
-    
-    try {
-      final value = await cubit.estimateValue(query);
-      if (mounted && _isEstimating) {
-        if (value != null) {
-          _estimatedValueController.text = value.toStringAsFixed(2);
-        }
-      }
-    } catch (e) {
-      debugPrint('Valuation error: $e');
-    } finally {
-      if (mounted) setState(() => _isEstimating = false);
-    }
-  }
-
 
   @override
   void dispose() {
@@ -144,7 +117,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
     _toyMakerController.dispose();
     _seriesController.dispose();
     _purchasePriceController.dispose();
-    _estimatedValueController.dispose();
     super.dispose();
   }
 
@@ -291,9 +263,9 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                 controller: _toyMakerController,
                                 label: l10n.carProducerLabel,
                                 dynamicProducers: state.maybeWhen(
-                                  initial: (p) => p,
-                                  loading: (p) => p,
-                                  error: (e, p) => p,
+                                  initial: (p, s) => p,
+                                  loading: (p, s) => p,
+                                  error: (e, p, s) => p,
                                   orElse: () => [],
                                 ),
                                 onChanged: (v) => setState(() {}),
@@ -303,6 +275,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               _SeriesSelector(
                                 controller: _seriesController,
                                 label: l10n.carSeriesLabel,
+                                dynamicSeries: state.maybeWhen(
+                                  initial: (p, s) => s,
+                                  loading: (p, s) => s,
+                                  error: (e, p, s) => s,
+                                  orElse: () => [],
+                                ),
                                 onChanged: (v) => setState(() {}),
                               ),
                               const SizedBox(height: 16),
@@ -314,30 +292,11 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _GlassInput(
-                                      controller: _purchasePriceController,
-                                      label: '${l10n.carPurchasePriceLabel} (${currencyFormat.currencySymbol})',
-                                      keyboardType: TextInputType.number,
-                                      validator: (v) => double.tryParse(v ?? '') == null ? '?' : null,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: _GlassInput(
-                                      controller: _estimatedValueController,
-                                      label: '${l10n.carEstimatedValueLabel} (${currencyFormat.currencySymbol})',
-                                      keyboardType: TextInputType.number,
-                                      suffix: IconButton(
-                                        icon: const Icon(Icons.auto_fix_high, color: Color(0xFFFFD700), size: 18),
-                                        onPressed: () => _aiEstimate(context, context.read<CarFormCubit>()),
-                                      ),
-                                      validator: (v) => double.tryParse(v ?? '') == null ? '?' : null,
-                                    ),
-                                  ),
-                                ],
+                              _GlassInput(
+                                controller: _purchasePriceController,
+                                label: '${l10n.carPurchasePriceLabel} (${currencyFormat.currencySymbol})',
+                                keyboardType: TextInputType.number,
+                                validator: (v) => double.tryParse(v ?? '') == null ? '?' : null,
                               ),
                               const SizedBox(height: 16),
 
@@ -368,7 +327,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
                                       series: _seriesController.text.isEmpty ? null : _seriesController.text,
                                       purchaseDate: _purchaseDate,
                                       purchasePrice: double.parse(_purchasePriceController.text),
-                                      estimatedValue: double.parse(_estimatedValueController.text),
                                       status: _status,
                                       newPhotos: _newImages,
                                       photoUrls: _internetPhotoUrls,
@@ -395,10 +353,6 @@ class _CarFormScreenState extends State<CarFormScreen> {
                         ),
                       ),
                     ),
-                  ),
-                if (_isEstimating)
-                  _ValuationOverlay(
-                    onCancel: () => setState(() => _isEstimating = false),
                   ),
               ],
             );
@@ -669,11 +623,13 @@ class _ProducerSelector extends StatelessWidget {
 class _SeriesSelector extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final List<String> dynamicSeries;
   final ValueChanged<String> onChanged;
 
   const _SeriesSelector({
     required this.controller,
     required this.label,
+    required this.dynamicSeries,
     required this.onChanged,
   });
 
@@ -690,25 +646,27 @@ class _SeriesSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current = controller.text;
-    final isCustom = current.isNotEmpty && !_fixedOptions.contains(current);
+    final isKnown = _fixedOptions.contains(current) || dynamicSeries.contains(current);
+    final isCustom = current.isNotEmpty && !isKnown;
     
     // Create list of items for dropdown
-    final List<String> items = List.from(_fixedOptions);
+    final Set<String> itemsSet = {..._fixedOptions, ...dynamicSeries};
     if (isCustom) {
-      items.add(current);
+      itemsSet.add(current);
     }
+    final List<String> items = itemsSet.toList()..sort();
     items.add(context.l10n.commonOther);
 
     return _GlassDropdown<String>(
       label: label,
-      value: isCustom ? current : (current.isEmpty ? null : current),
+      value: current.isEmpty ? null : (items.contains(current) ? current : null),
       items: items.map((s) => DropdownMenuItem(
         value: s,
         child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
       )).toList(),
       onChanged: (val) async {
-        if (val == 'Inne...') {
-          final result = await _showCustomSeriesDialog(context, isCustom ? current : '');
+        if (val == context.l10n.commonOther) {
+          final result = await _showCustomSeriesDialog(context, current);
           if (result != null && result.isNotEmpty) {
             controller.text = result;
             onChanged(result);
@@ -1018,64 +976,3 @@ class _SaveButton extends StatelessWidget {
 }
 
 
-class _ValuationOverlay extends StatelessWidget {
-  final VoidCallback onCancel;
-
-  const _ValuationOverlay({required this.onCancel});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Positioned.fill(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          color: Colors.black54,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.auto_fix_high, color: Color(0xFFFFD700), size: 48),
-                  const SizedBox(height: 24),
-                  Text(
-                    l10n.carFormEstimatingTitle,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w200,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.carFormEstimatingBody,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white38, fontSize: 12),
-                  ),
-                  const SizedBox(height: 32),
-                  const CircularProgressIndicator(color: Color(0xFFFFD700)),
-                  const SizedBox(height: 48),
-                  TextButton(
-                    onPressed: onCancel,
-                    child: Text(
-                      l10n.carFormCancelEstimation,
-                      style: TextStyle(
-                        color: const Color(0xFFFFD700).withValues(alpha: 0.6),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

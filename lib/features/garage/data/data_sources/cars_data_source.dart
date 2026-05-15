@@ -30,9 +30,6 @@ abstract class CarsDataSource {
 
   // Real web search via Edge Function
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
-
-  // Real-world value estimation via Edge Function
-  Future<double> estimateValue(String query);
 }
 
 @LazySingleton(as: CarsDataSource)
@@ -222,28 +219,6 @@ class CarsDataSourceImpl implements CarsDataSource {
     } catch (e, stack) {
       debugPrint('CarsDataSourceImpl searchWebPhotos error: $e\n$stack');
       return [];
-    }
-  }
-
-  @override
-  Future<double> estimateValue(String query) async {
-    try {
-      final response = await _supabase.functions.invoke(
-        'estimate-value',
-        body: {'query': query},
-      );
-
-      if (response.status == 200) {
-        final data = response.data as Map<String, dynamic>;
-        final value = (data['value'] as num?)?.toDouble() ?? 0.0;
-        return value;
-      } else {
-        debugPrint('Edge function estimate-value error: ${response.status}');
-        return 0.0;
-      }
-    } catch (e, stack) {
-      debugPrint('CarsDataSourceImpl estimateValue error: $e\n$stack');
-      return 0.0;
     }
   }
 }

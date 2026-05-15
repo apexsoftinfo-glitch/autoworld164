@@ -23,7 +23,6 @@ void main() {
         brand: 'Hot Wheels',
         modelName: 'M1',
         purchasePrice: 10.0,
-        estimatedValue: 15.0,
         createdAt: DateTime(2023),
       ),
       CarModel(
@@ -32,7 +31,6 @@ void main() {
         brand: 'Matchbox',
         modelName: 'M2',
         purchasePrice: 5.0,
-        estimatedValue: 5.0,
         createdAt: DateTime(2023),
       ),
     ];
@@ -50,7 +48,6 @@ void main() {
           cars: mockCars,
           filteredCars: mockCars,
           totalPurchasePrice: 15.0,
-          totalEstimatedValue: 20.0,
           brandStats: const {'Hot Wheels': 1, 'Matchbox': 1},
           query: '',
           viewType: CollectionViewType.grid,
