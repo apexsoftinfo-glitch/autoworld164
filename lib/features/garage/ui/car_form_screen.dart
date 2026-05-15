@@ -226,7 +226,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                         ),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                          const Color(0xFF2D1B0D).withValues(alpha: isEditing ? 0.7 : 0.4),
+                          const Color(0xFF1A120B).withValues(alpha: 0.75),
                           BlendMode.darken,
                         ),
                       ),
@@ -398,12 +398,12 @@ class _MultiPhotoPicker extends StatelessWidget {
             children: [
               Text(
                 l10n.carGalleryLabel.toUpperCase(),
-                style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.w900),
+                style: const TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w900),
               ),
               const Spacer(),
               Text(
                 '$total / 5',
-                style: const TextStyle(color: Colors.white38, fontSize: 10),
+                style: const TextStyle(color: Colors.white60, fontSize: 10),
               ),
             ],
           ),
@@ -470,7 +470,7 @@ class _AddPhotoBox extends StatelessWidget {
           children: [
             Icon(icon, color: const Color(0xFFFFD700), size: 24),
             const SizedBox(height: 8),
-            Text(label, style: const TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.w900)),
+            Text(label, style: const TextStyle(color: Colors.white60, fontSize: 8, fontWeight: FontWeight.w900)),
           ],
         ),
       ),
@@ -601,7 +601,7 @@ class _ProducerSelector extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: l10n.carFormProducerPlaceholder,
-            hintStyle: const TextStyle(color: Colors.white24),
+            hintStyle: const TextStyle(color: Colors.white54),
             enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
             focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
           ),
@@ -609,7 +609,7 @@ class _ProducerSelector extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
+            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white60)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, textController.text),
@@ -694,7 +694,7 @@ class _SeriesSelector extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: l10n.carFormSeriesPlaceholder,
-            hintStyle: const TextStyle(color: Colors.white24),
+            hintStyle: const TextStyle(color: Colors.white54),
             enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white12)),
             focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFFFD700))),
           ),
@@ -702,7 +702,7 @@ class _SeriesSelector extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
+            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white60)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, textController.text),
@@ -777,12 +777,12 @@ class _GlassDropdown<T> extends StatelessWidget {
           padding: const EdgeInsets.only(left: 4, bottom: 8),
           child: Text(
             label.toUpperCase(),
-            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+            style: const TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
+            color: Colors.white.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.white12),
           ),
@@ -823,7 +823,7 @@ class _DatePickerButton extends StatelessWidget {
           padding: const EdgeInsets.only(left: 4, bottom: 8),
           child: Text(
             label.toUpperCase(),
-            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+            style: const TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ),
         GestureDetector(
@@ -831,11 +831,11 @@ class _DatePickerButton extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: Colors.white.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.white12),
                 ),
@@ -878,7 +878,7 @@ class _GlassInput extends StatelessWidget {
           padding: const EdgeInsets.only(left: 4, bottom: 8),
           child: Text(
             label.toUpperCase(),
-            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+            style: const TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5),
           ),
         ),
         _GlassInputBase(
@@ -909,7 +909,7 @@ class _GlassInputBase extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -917,9 +917,9 @@ class _GlassInputBase extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.white24, fontSize: 13),
+            hintStyle: const TextStyle(color: Colors.white54, fontSize: 13),
             filled: true,
-            fillColor: Colors.white.withValues(alpha: 0.05),
+            fillColor: Colors.white.withValues(alpha: 0.12),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12)),
             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Colors.white12)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Color(0xFFFFD700), width: 0.5)),
