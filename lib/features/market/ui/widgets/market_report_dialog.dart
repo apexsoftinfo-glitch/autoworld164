@@ -1,13 +1,13 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../../models/market_car_model.dart';
-import 'market_report_poster.dart' show MarketReportPoster, loadUiImage;
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:typed_data';
+import '../../models/market_car_model.dart';
+import 'market_report_poster.dart' show MarketReportPoster, loadUiImage;
 
 class MarketReportDialog extends StatefulWidget {
   final List<MarketCarModel> cars;
@@ -169,11 +169,11 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
-                        icon: _isExporting 
+                        icon: _isExporting
                           ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
                           : const Icon(Icons.share),
                         label: Text(
-                          _isExporting 
+                          _isExporting
                             ? (isPolish ? 'GENEROWANIE...' : 'GENERATING...')
                             : (isPolish ? 'EKSPORTUJ PNG' : 'EXPORT PNG'),
                           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -192,22 +192,23 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
 
   Future<void> _handleExport() async {
     setState(() => _isExporting = true);
-    
+
+    // Capture context-dependent values before async gaps
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+    final overlayState = Overlay.of(context);
+
     try {
-      final isPolish = Localizations.localeOf(context).languageCode == 'pl';
-      
+
       // Sort cars: price desc, then producer asc
       final sortedCars = List<MarketCarModel>.from(widget.cars)..sort((a, b) {
         int res = b.price.compareTo(a.price);
-        if (res == 0) {
-          res = (a.toyMaker ?? '').compareTo(b.toyMaker ?? '');
-        }
+        if (res == 0) res = (a.toyMaker ?? '').compareTo(b.toyMaker ?? '');
         return res;
       });
 
       const int itemsPerPage = 10;
       final int totalCount = sortedCars.length;
-      final int totalValue = widget.cars.fold<double>(0, (sum, car) => sum + car.price.toDouble()).toInt();
+      final double totalValue = widget.cars.fold<double>(0, (s, c) => s + c.price);
       final int totalPages = (totalCount / itemsPerPage).ceil();
 
       final List<XFile> shareFiles = [];
@@ -215,90 +216,82 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
 
       for (int i = 0; i < totalPages; i++) {
         final start = i * itemsPerPage;
-        final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
+        final end = start + itemsPerPage < totalCount ? start + itemsPerPage : totalCount;
         final pageCars = sortedCars.sublist(start, end);
 
-        // Pre-decode images to dart:ui.Image for synchronous off-screen rendering
+        // Step 1: pre-decode images to dart:ui.Image (fully async, before render)
         final Map<String, ui.Image> photoImages = {};
         for (final car in pageCars) {
           final path = car.displayPhotoPath;
           if (path != null) {
             final img = await loadUiImage(path);
-            if (img != null) {
-              photoImages[car.id] = img;
-            }
+            if (img != null) photoImages[car.id] = img;
           }
         }
 
-        final poster = MarketReportPoster(
-          cars: pageCars,
-          page: i + 1,
-          totalPages: totalPages,
-          totalValue: totalValue.toDouble(),
-          totalCount: totalCount,
-          isPolish: isPolish,
-          photoImages: photoImages,
-        );
+        // Step 2: insert poster into real Flutter tree via Overlay, off-screen
+        final captureKey = GlobalKey();
+        late OverlayEntry entry;
+        entry = OverlayEntry(builder: (_) => Positioned(
+          left: -9999,
+          top: -9999,
+          child: RepaintBoundary(
+            key: captureKey,
+            child: MediaQuery(
+              data: const MediaQueryData(size: Size(1000, 1500)),
+              child: MarketReportPoster(
+                cars: pageCars,
+                page: i + 1,
+                totalPages: totalPages,
+                totalValue: totalValue,
+                totalCount: totalCount,
+                isPolish: isPolish,
+                photoImages: photoImages,
+              ),
+            ),
+          ),
+        ));
 
-        final bytes = await _captureWidget(poster);
-        if (bytes != null) {
-          final path = '${directory.path}/market_report_p${i + 1}.png';
-          final file = File(path);
-          await file.writeAsBytes(bytes);
-          shareFiles.add(XFile(path));
+        overlayState.insert(entry);
+
+        // Step 3: wait for Flutter to fully render (3 frames to be safe)
+        await SchedulerBinding.instance.endOfFrame;
+        await SchedulerBinding.instance.endOfFrame;
+        await SchedulerBinding.instance.endOfFrame;
+
+        // Step 4: capture
+        try {
+          final boundary = captureKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+          if (boundary != null) {
+            final image = await boundary.toImage(pixelRatio: 3.0);
+            final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+            final buffer = byteData!.buffer.asUint8List();
+
+            final path = '${directory.path}/market_report_p${i + 1}.png';
+            await File(path).writeAsBytes(buffer);
+            shareFiles.add(XFile(path));
+          }
+        } finally {
+          entry.remove();
+          // Dispose decoded images to free memory
+          for (final img in photoImages.values) {
+            img.dispose();
+          }
         }
       }
 
       if (shareFiles.isNotEmpty) {
         // ignore: deprecated_member_use
-        await Share.shareXFiles(shareFiles, text: isPolish ? 'Sprawozdanie AutoWorld164' : 'AutoWorld164 Market Report');
+        await Share.shareXFiles(
+          shareFiles,
+          text: isPolish ? 'Sprawozdanie AutoWorld164' : 'AutoWorld164 Market Report',
+        );
       }
     } catch (e) {
       debugPrint('Export error: $e');
     } finally {
-      if (mounted) {
-        setState(() => _isExporting = false);
-      }
+      if (mounted) setState(() => _isExporting = false);
     }
-  }
-
-  /// Captures a widget as an image even if it's not on screen.
-  Future<Uint8List?> _captureWidget(Widget widget, {double pixelRatio = 3.0}) async {
-    final RenderRepaintBoundary boundary = RenderRepaintBoundary();
-    final BuildOwner buildOwner = BuildOwner(focusManager: FocusManager());
-    final PipelineOwner pipelineOwner = PipelineOwner();
-
-    final RenderView renderView = RenderView(
-      view: ui.PlatformDispatcher.instance.implicitView!,
-      configuration: ViewConfiguration(
-        logicalConstraints: const BoxConstraints(maxWidth: 1000, maxHeight: 1200),
-        devicePixelRatio: pixelRatio,
-      ),
-      child: RenderPositionedBox(child: boundary),
-    );
-
-    pipelineOwner.rootNode = renderView;
-    renderView.prepareInitialFrame();
-
-    final RenderObjectToWidgetElement<RenderBox> rootElement = RenderObjectToWidgetAdapter<RenderBox>(
-      container: boundary,
-      child: Directionality(
-        textDirection: ui.TextDirection.ltr,
-        child: Material(child: widget),
-      ),
-    ).attachToRenderTree(buildOwner);
-
-    buildOwner.buildScope(rootElement);
-    buildOwner.finalizeTree();
-
-    pipelineOwner.flushLayout();
-    pipelineOwner.flushCompositingBits();
-    pipelineOwner.flushPaint();
-
-    final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
-    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    
-    return byteData?.buffer.asUint8List();
   }
 
   Widget _buildStatCard(String label, String value, Color color) {
