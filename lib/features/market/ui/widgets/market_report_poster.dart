@@ -62,15 +62,6 @@ class MarketReportPoster extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    'AUTOWORLD164',
-                    style: TextStyle(
-                      color: Color(0xFFFFD700),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 4,
-                    ),
-                  ),
                   Text(
                     'PAGE $page / $totalPages',
                     style: TextStyle(color: Colors.black.withValues(alpha: 0.4), fontSize: 16, fontWeight: FontWeight.bold),
