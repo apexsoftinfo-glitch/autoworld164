@@ -267,19 +267,20 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   }
 
   void _confirmDelete(BuildContext context) {
+    final cubit = context.read<MarketFormCubit>();
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: const Color(0xFF1A120B),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
         title: Text(l10n.carDetailsDeleteConfirmTitle.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
         content: Text(l10n.carDetailsDeleteConfirmBody, style: const TextStyle(color: Colors.white70, fontSize: 14)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white60))),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white60))),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              context.read<MarketFormCubit>().deleteCar(widget.car!.id);
+              Navigator.pop(dialogContext);
+              cubit.deleteCar(widget.car!.id);
             },
             child: Text(l10n.carDetailsDeleteConfirmTitle.toUpperCase(), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
           ),
