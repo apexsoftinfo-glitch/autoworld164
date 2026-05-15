@@ -388,6 +388,7 @@ class _VIPCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               label.toUpperCase(),
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
