@@ -10,6 +10,8 @@ import 'package:flutter/foundation.dart';
 part 'cars_collection_cubit.freezed.dart';
 
 enum CollectionViewType { grid, list }
+enum SortType { date, series, price, producer }
+enum SortOrder { asc, desc }
 
 @freezed
 sealed class CarsCollectionState with _$CarsCollectionState {
@@ -23,6 +25,8 @@ sealed class CarsCollectionState with _$CarsCollectionState {
     @Default({}) Map<String, int> brandStats,
     @Default('') String query,
     @Default(CollectionViewType.grid) CollectionViewType viewType,
+    @Default(SortType.date) SortType sortType,
+    @Default(SortOrder.desc) SortOrder sortOrder,
   }) = CarsCollectionData;
 }
 
@@ -53,11 +57,11 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         }
 
         final currentQuery = state.maybeWhen(
-          data: (c, fc, pt, st, q, vt) => q,
+          data: (c, fc, pt, st, q, vt, stype, sorder) => q,
           orElse: () => '',
         );
         final currentViewType = state.maybeWhen(
-          data: (c, fc, pt, st, q, vt) => vt,
+          data: (c, fc, pt, st, q, vt, stype, sorder) => vt,
           orElse: () => CollectionViewType.grid,
         );
 
@@ -70,6 +74,8 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
           brandStats: stats,
           query: currentQuery,
           viewType: currentViewType,
+          sortType: state.maybeWhen(data: (c, fc, pt, st, q, vt, stype, sorder) => stype, orElse: () => SortType.date),
+          sortOrder: state.maybeWhen(data: (c, fc, pt, st, q, vt, stype, sorder) => sorder, orElse: () => SortOrder.desc),
         ));
       },
       onError: (error) {
@@ -80,8 +86,8 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
   }
 
   void search(String query) {
-    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, q, viewType) {
-      final newFiltered = _filterCars(cars, query);
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, q, viewType, st, so) {
+      final newFiltered = _sortCars(_filterCars(cars, query), st, so);
       emit(CarsCollectionState.data(
         cars: cars,
         filteredCars: newFiltered,
@@ -89,12 +95,14 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         brandStats: stats,
         query: query,
         viewType: viewType,
+        sortType: st,
+        sortOrder: so,
       ));
     });
   }
 
   void toggleView() {
-    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, query, viewType) {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, query, viewType, st, so) {
       final newType = viewType == CollectionViewType.grid ? CollectionViewType.list : CollectionViewType.grid;
       emit(CarsCollectionState.data(
         cars: cars,
@@ -103,8 +111,55 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
         brandStats: stats,
         query: query,
         viewType: newType,
+        sortType: st,
+        sortOrder: so,
       ));
     });
+  }
+
+  void changeSort(SortType type) {
+    state.whenOrNull(data: (cars, filtered, purchaseTotal, stats, query, viewType, sortType, sortOrder) {
+      SortOrder newOrder = SortOrder.desc;
+      if (sortType == type) {
+        newOrder = sortOrder == SortOrder.desc ? SortOrder.asc : SortOrder.desc;
+      }
+      
+      final sorted = _sortCars(_filterCars(cars, query), type, newOrder);
+      
+      emit(CarsCollectionState.data(
+        cars: cars,
+        filteredCars: sorted,
+        totalPurchasePrice: purchaseTotal,
+        brandStats: stats,
+        query: query,
+        viewType: viewType,
+        sortType: type,
+        sortOrder: newOrder,
+      ));
+    });
+  }
+
+  List<CarModel> _sortCars(List<CarModel> cars, SortType type, SortOrder order) {
+    final sorted = List<CarModel>.from(cars);
+    sorted.sort((a, b) {
+      int cmp;
+      switch (type) {
+        case SortType.date:
+          cmp = (a.purchaseDate ?? DateTime(1900)).compareTo(b.purchaseDate ?? DateTime(1900));
+          break;
+        case SortType.series:
+          cmp = (a.series ?? '').toLowerCase().compareTo((b.series ?? '').toLowerCase());
+          break;
+        case SortType.price:
+          cmp = a.purchasePrice.compareTo(b.purchasePrice);
+          break;
+        case SortType.producer:
+          cmp = (a.toyMaker ?? a.brand).toLowerCase().compareTo((b.toyMaker ?? b.brand).toLowerCase());
+          break;
+      }
+      return order == SortOrder.asc ? cmp : -cmp;
+    });
+    return sorted;
   }
 
   List<CarModel> _filterCars(List<CarModel> cars, String query) {

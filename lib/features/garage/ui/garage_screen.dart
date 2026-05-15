@@ -71,7 +71,7 @@ class _GarageScreenView extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  data: (cars, filtered, purchaseTotal, stats, query, viewType) {
+                  data: (cars, filtered, purchaseTotal, stats, query, viewType, st, so) {
                     if (cars.isEmpty) {
                       return const _EmptyGarageView();
                     }
@@ -89,6 +89,11 @@ class _GarageScreenView extends StatelessWidget {
                           onSearch: (v) => context.read<CarsCollectionCubit>().search(v),
                           onToggle: () => context.read<CarsCollectionCubit>().toggleView(),
                           onFilter: () => _showBrandFilter(context, stats, query),
+                        ),
+                        _SortBar(
+                          currentSort: st,
+                          currentOrder: so,
+                          onSort: (type) => context.read<CarsCollectionCubit>().changeSort(type),
                         ),
                         Expanded(
                           child: RefreshIndicator(
@@ -491,6 +496,112 @@ class _SearchAndToggleBar extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SortBar extends StatelessWidget {
+  final SortType currentSort;
+  final SortOrder currentOrder;
+  final Function(SortType) onSort;
+
+  const _SortBar({
+    required this.currentSort,
+    required this.currentOrder,
+    required this.onSort,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _SortButton(
+            icon: Icons.layers_outlined,
+            label: l10n.carSeriesLabel.toUpperCase(),
+            isSelected: currentSort == SortType.series,
+            order: currentOrder,
+            onTap: () => onSort(SortType.series),
+          ),
+          const SizedBox(width: 8),
+          _SortButton(
+            icon: Icons.sell_outlined,
+            label: l10n.carPurchasePriceLabel.split('(').first.trim().toUpperCase(),
+            isSelected: currentSort == SortType.price,
+            order: currentOrder,
+            onTap: () => onSort(SortType.price),
+          ),
+          const SizedBox(width: 8),
+          _SortButton(
+            icon: Icons.factory_outlined,
+            label: l10n.carProducerPlaceholder.toUpperCase(),
+            isSelected: currentSort == SortType.producer,
+            order: currentOrder,
+            onTap: () => onSort(SortType.producer),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SortButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final SortOrder order;
+  final VoidCallback onTap;
+
+  const _SortButton({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.order,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const activeColor = Color(0xFFFFD700);
+    final color = isSelected ? activeColor : Colors.white24;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: isSelected ? activeColor.withValues(alpha: 0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: isSelected ? activeColor.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.05)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 10, color: color),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 7,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.5,
+              ),
+            ),
+            if (isSelected) ...[
+              const SizedBox(width: 2),
+              Icon(
+                order == SortOrder.asc ? Icons.arrow_upward : Icons.arrow_downward,
+                size: 8,
+                color: activeColor,
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
