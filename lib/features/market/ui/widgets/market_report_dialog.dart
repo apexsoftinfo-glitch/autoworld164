@@ -218,11 +218,18 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
         final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
         final pageCars = sortedCars.sublist(start, end);
 
-        // Precache images for this page to ensure they appear in capture
+        // Precache only network images (skip local file paths)
         if (mounted) {
-          await Future.wait(pageCars.where((c) => c.displayPhotoPath != null).map((c) {
-            return precacheImage(NetworkImage(c.displayPhotoPath!), context);
-          }));
+          final networkCars = pageCars.where((c) {
+            final p = c.displayPhotoPath;
+            return p != null && (p.startsWith('http://') || p.startsWith('https://'));
+          }).toList();
+          if (networkCars.isNotEmpty) {
+            await Future.wait(networkCars.map((c) {
+              return precacheImage(NetworkImage(c.displayPhotoPath!), context)
+                  .catchError((e) { debugPrint('precache error: $e'); });
+            }));
+          }
         }
 
         final poster = MarketReportPoster(

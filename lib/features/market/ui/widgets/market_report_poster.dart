@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
@@ -147,13 +148,7 @@ class MarketReportPoster extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: car.displayPhotoPath != null
-                                ? Image.network(
-                                    car.displayPhotoPath!,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.directions_car, color: Colors.black12),
-                                  )
-                                : const Icon(Icons.directions_car, color: Colors.black12),
+                            child: _buildPhotoWidget(car.displayPhotoPath),
                           ),
                         ),
                       ),
@@ -248,5 +243,30 @@ class MarketReportPoster extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildPhotoWidget(String? path) {
+    if (path == null) {
+      return const Icon(Icons.directions_car, color: Colors.black12);
+    }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.directions_car, color: Colors.black12),
+      );
+    }
+    // Local file path
+    final file = File(path);
+    if (file.existsSync()) {
+      return Image.file(
+        file,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.directions_car, color: Colors.black12),
+      );
+    }
+    return const Icon(Icons.directions_car, color: Colors.black12);
   }
 }
