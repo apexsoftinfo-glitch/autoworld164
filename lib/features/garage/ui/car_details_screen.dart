@@ -14,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../presentation/cubit/car_form_cubit.dart';
 import '../utils/car_pdf_generator.dart';
 import '../../../l10n/l10n.dart';
+import '../../market/presentation/cubit/market_cubit.dart';
+import '../../market/ui/widgets/garage_move_success_dialog.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   final CarModel car;
@@ -30,22 +32,16 @@ class CarDetailsScreen extends StatelessWidget {
       name: isPolish ? 'PLN' : 'USD',
     );
 
-    return BlocProvider(
-      create: (context) => getIt<CarFormCubit>(),
-      child: BlocListener<CarFormCubit, CarFormState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<CarFormCubit>()),
+        BlocProvider(create: (context) => getIt<MarketCubit>()),
+      ],
+      child: BlocListener<MarketCubit, MarketState>(
         listener: (context, state) {
           state.whenOrNull(
-            success: () {
-              Navigator.pop(context);
+            error: (key) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Model został usunięty z garażu'),
-                  backgroundColor: Colors.black87,
-                ),
-              );
-            },
-            error: (key, producers, series) {
-               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(key),
                   backgroundColor: Colors.red.shade800,
@@ -54,96 +50,118 @@ class CarDetailsScreen extends StatelessWidget {
             },
           );
         },
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-            actions: [
-              _DeleteButton(carId: car.id),
-            ],
-          ),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF0C0C0C),
-                  Color(0xFF2D1B0D),
-                  Color(0xFF0C0C0C),
-                ],
+        child: BlocListener<CarFormCubit, CarFormState>(
+          listener: (context, state) {
+            state.whenOrNull(
+              success: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Model został usunięty z garażu'),
+                    backgroundColor: Colors.black87,
+                  ),
+                );
+              },
+              error: (key, producers, series) {
+                 ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(key),
+                    backgroundColor: Colors.red.shade800,
+                  ),
+                );
+              },
+            );
+          },
+          child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
               ),
+              actions: [
+                _DeleteButton(carId: car.id),
+              ],
             ),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  // ── Scrollable content ───────────────────────────────────
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _PhotoGallery(car: car, supabase: supabase),
-                          const SizedBox(height: 16),
-                          Text(
-                            car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
-                            style: const TextStyle(
-                              color: Color(0xFFFFD700),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 2,
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF0C0C0C),
+                    Color(0xFF2D1B0D),
+                    Color(0xFF0C0C0C),
+                  ],
+                ),
+              ),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    // ── Scrollable content ───────────────────────────────────
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _PhotoGallery(car: car, supabase: supabase),
+                            const SizedBox(height: 16),
+                            Text(
+                              car.toyMaker?.toUpperCase() ?? 'PRODUCENT NIEZNANY',
+                              style: const TextStyle(
+                                color: Color(0xFFFFD700),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            car.brand,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w200,
-                              letterSpacing: -1,
+                            const SizedBox(height: 4),
+                            Text(
+                              car.brand,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w200,
+                                letterSpacing: -1,
+                              ),
                             ),
-                          ),
-                          Text(
-                            car.modelName,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
+                            Text(
+                              car.modelName,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          _DetailGrid(car: car, currencyFormat: currencyFormat),
-                          const SizedBox(height: 8),
-                        ],
+                            const SizedBox(height: 16),
+                            _DetailGrid(car: car, currencyFormat: currencyFormat),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                  // ── Action buttons — always visible at bottom ────────────
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
-                      border: Border(
-                        top: BorderSide(color: Colors.white.withValues(alpha: 0.07)),
+                    // ── Action buttons — always visible at bottom ────────────
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        border: Border(
+                          top: BorderSide(color: Colors.white.withValues(alpha: 0.07)),
+                        ),
                       ),
+                      child: _ActionButtons(car: car, supabase: supabase),
                     ),
-                    child: _ActionButtons(car: car, supabase: supabase),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-
         ),
       ),
     );
@@ -404,6 +422,38 @@ class _ActionButtons extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
+                color: Colors.greenAccent.withValues(alpha: 0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: OutlinedButton(
+            onPressed: () => _confirmSell(context),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: Colors.greenAccent.withValues(alpha: 0.4)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              padding: EdgeInsets.zero,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.sell_outlined, color: Colors.greenAccent, size: 20),
+                Text(
+                  isPolish ? 'SPRZEDAJ' : 'SELL',
+                  style: const TextStyle(color: Colors.greenAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Container(
+          width: 80,
+          height: 60,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
                 color: const Color(0xFFFFD700).withValues(alpha: 0.1),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
@@ -434,6 +484,55 @@ class _ActionButtons extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void _confirmSell(BuildContext context) {
+    final l10n = context.l10n;
+    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+    
+    showDialog(
+      context: context,
+      builder: (diagContext) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          backgroundColor: const Color(0xFF1A120B),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
+          title: Text(
+            isPolish ? 'Przenieść do sprzedaży?' : 'Move to marketplace?',
+            style: const TextStyle(color: Colors.white),
+          ),
+          content: Text(
+            isPolish 
+              ? 'Czy na pewno chcesz przenieść ten model z garażu do sekcji Wymiana/Sprzedaż?' 
+              : 'Are you sure you want to move this model from the garage to the Marketplace?',
+            style: const TextStyle(color: Colors.white70),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(diagContext),
+              child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(diagContext);
+                try {
+                  await context.read<MarketCubit>().moveFromGarage(car);
+                  if (context.mounted) {
+                    GarageMoveSuccessDialog.show(context, car);
+                  }
+                } catch (e) {
+                  // Error handled by BlocListener
+                }
+              },
+              child: Text(
+                isPolish ? 'PRZENIEŚ' : 'MOVE', 
+                style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
