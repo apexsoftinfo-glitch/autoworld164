@@ -491,11 +491,13 @@ class _ListingPreview extends StatelessWidget {
                       children: [
                         Text(
                           currencyFormat.format(car.price),
-                          style: const TextStyle(color: Color(0xFFDAA520), fontSize: 48, fontWeight: FontWeight.w900),
+                          style: const TextStyle(color: Color(0xFFDAA520), fontSize: 80, fontWeight: FontWeight.w900),
                         ),
                         Text(
-                          car.isSale ? 'FOR SALE' : 'FOR EXCHANGE',
-                          style: const TextStyle(color: Color(0xFF6C757D), fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 2),
+                          car.isSale && car.isExchange 
+                              ? 'FOR SALE / EXCHANGE'
+                              : (car.isSale ? 'FOR SALE' : 'FOR EXCHANGE'),
+                          style: const TextStyle(color: Color(0xFF6C757D), fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 1),
                         ),
                       ],
                     ),
