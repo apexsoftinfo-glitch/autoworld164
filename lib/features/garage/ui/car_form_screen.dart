@@ -222,7 +222,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                          isEditing ? 'assets/images/warm_garage.png' : 'assets/images/add_model_bg.png',
+                          'assets/images/add_model_bg.png',
                         ),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
