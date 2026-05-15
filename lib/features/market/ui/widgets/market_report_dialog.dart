@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'dart:typed_data';
 
 class MarketReportDialog extends StatefulWidget {
   final List<MarketCarModel> cars;
@@ -26,13 +27,7 @@ class MarketReportDialog extends StatefulWidget {
 }
 
 class _MarketReportDialogState extends State<MarketReportDialog> {
-  final GlobalKey _captureKey = GlobalKey();
   bool _isExporting = false;
-  
-  // Data for off-screen capture
-  List<MarketCarModel>? _pageCars;
-  int _currentPage = 0;
-  int _totalPagesCount = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -55,166 +50,142 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
       ..sort((a, b) => b.value.compareTo(a.value));
 
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      child: Stack(
-        children: [
-          // ── Off-screen Poster for Capture ────────────────────────────────
-          Offstage(
-            offstage: true,
-            child: TickerMode(
-              enabled: true,
-              child: RepaintBoundary(
-                key: _captureKey,
-                child: _pageCars != null ? MarketReportPoster(
-                  cars: _pageCars!,
-                  page: _currentPage,
-                  totalPages: _totalPagesCount,
-                  totalValue: totalValue,
-                  totalCount: totalCount,
-                  isPolish: isPolish,
-                ) : const SizedBox.shrink(),
-              ),
-            ),
+      filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(maxWidth: 500),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A120B).withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
           ),
-
-          // ── Real UI ──────────────────────────────────────────────────────
-          Dialog(
-            backgroundColor: Colors.transparent,
-            insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-            child: Container(
-              width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 500),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A120B).withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(32),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFD700).withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.analytics_outlined, color: Color(0xFFFFD700)),
-                        ),
-                        const SizedBox(width: 16),
-                        Text(
-                          isPolish ? 'SPRAWOZDANIE' : 'MARKET REPORT',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white38),
-                          onPressed: _isExporting ? null : () => Navigator.pop(context),
-                        ),
-                      ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFD700).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.analytics_outlined, color: Color(0xFFFFD700)),
                     ),
-                  ),
+                    const SizedBox(width: 16),
+                    Text(
+                      isPolish ? 'SPRAWOZDANIE' : 'MARKET REPORT',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white38),
+                      onPressed: _isExporting ? null : () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
 
-                  // Scrollable summary area
-                  Flexible(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+              // Scrollable summary area
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              _buildStatCard(
-                                isPolish ? 'ILOŚĆ' : 'COUNT',
-                                totalCount.toString(),
-                                Colors.blueAccent,
-                              ),
-                              const SizedBox(width: 12),
-                              _buildStatCard(
-                                isPolish ? 'WARTOŚĆ' : 'VALUE',
-                                currencyFormat.format(totalValue),
-                                const Color(0xFFFFD700),
-                              ),
-                            ],
+                          _buildStatCard(
+                            isPolish ? 'ILOŚĆ' : 'COUNT',
+                            totalCount.toString(),
+                            Colors.blueAccent,
                           ),
-                          const SizedBox(height: 24),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                            ),
-                            child: ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(16),
-                              itemCount: sortedProducers.length,
-                              separatorBuilder: (context, index) => Divider(color: Colors.white.withValues(alpha: 0.05)),
-                              itemBuilder: (context, index) {
-                                final entry = sortedProducers[index];
-                                return Row(
-                                  children: [
-                                    Text(
-                                      entry.key.toUpperCase(),
-                                      style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      entry.value.toString(),
-                                      style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                          const SizedBox(width: 12),
+                          _buildStatCard(
+                            isPolish ? 'WARTOŚĆ' : 'VALUE',
+                            currencyFormat.format(totalValue),
+                            const Color(0xFFFFD700),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-
-                  // Actions
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: FilledButton.icon(
-                            onPressed: _isExporting ? null : _handleExport,
-                            style: FilledButton.styleFrom(
-                              backgroundColor: const Color(0xFFFFD700),
-                              foregroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                            ),
-                            icon: _isExporting 
-                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                              : const Icon(Icons.share),
-                            label: Text(
-                              _isExporting 
-                                ? (isPolish ? 'GENEROWANIE...' : 'GENERATING...')
-                                : (isPolish ? 'EKSPORTUJ PNG' : 'EXPORT PNG'),
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                      const SizedBox(height: 24),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black26,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                         ),
-                      ],
-                    ),
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(16),
+                          itemCount: sortedProducers.length,
+                          separatorBuilder: (context, index) => Divider(color: Colors.white.withValues(alpha: 0.05)),
+                          itemBuilder: (context, index) {
+                            final entry = sortedProducers[index];
+                            return Row(
+                              children: [
+                                Text(
+                                  entry.key.toUpperCase(),
+                                  style: const TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.bold),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  entry.value.toString(),
+                                  style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+
+              // Actions
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: _isExporting ? null : _handleExport,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFD700),
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        icon: _isExporting 
+                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                          : const Icon(Icons.share),
+                        label: Text(
+                          _isExporting 
+                            ? (isPolish ? 'GENEROWANIE...' : 'GENERATING...')
+                            : (isPolish ? 'EKSPORTUJ PNG' : 'EXPORT PNG'),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -235,33 +206,32 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
       });
 
       const int itemsPerPage = 10;
-      final int totalPages = (sortedCars.length / itemsPerPage).ceil();
-      _totalPagesCount = totalPages;
+      final int totalCount = sortedCars.length;
+      final int totalValue = widget.cars.fold<double>(0, (sum, car) => sum + car.price.toDouble()).toInt();
+      final int totalPages = (totalCount / itemsPerPage).ceil();
 
       final List<XFile> shareFiles = [];
       final directory = await getTemporaryDirectory();
 
       for (int i = 0; i < totalPages; i++) {
         final start = i * itemsPerPage;
-        final end = (start + itemsPerPage) < sortedCars.length ? (start + itemsPerPage) : sortedCars.length;
-        
-        setState(() {
-          _currentPage = i + 1;
-          _pageCars = sortedCars.sublist(start, end);
-        });
+        final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
+        final pageCars = sortedCars.sublist(start, end);
 
-        // Wait for frame to render the Offstage widget
-        await Future.delayed(const Duration(milliseconds: 100));
+        final poster = MarketReportPoster(
+          cars: pageCars,
+          page: i + 1,
+          totalPages: totalPages,
+          totalValue: totalValue.toDouble(),
+          totalCount: totalCount,
+          isPolish: isPolish,
+        );
 
-        final boundary = _captureKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-        if (boundary != null) {
-          final image = await boundary.toImage(pixelRatio: 3.0);
-          final byteData = await image.toByteData(format: ImageByteFormat.png);
-          final buffer = byteData!.buffer.asUint8List();
-          
+        final bytes = await _captureWidget(poster);
+        if (bytes != null) {
           final path = '${directory.path}/market_report_p${i + 1}.png';
           final file = File(path);
-          await file.writeAsBytes(buffer);
+          await file.writeAsBytes(bytes);
           shareFiles.add(XFile(path));
         }
       }
@@ -274,12 +244,48 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
       debugPrint('Export error: $e');
     } finally {
       if (mounted) {
-        setState(() {
-          _isExporting = false;
-          _pageCars = null;
-        });
+        setState(() => _isExporting = false);
       }
     }
+  }
+
+  /// Captures a widget as an image even if it's not on screen.
+  Future<Uint8List?> _captureWidget(Widget widget, {double pixelRatio = 3.0}) async {
+    final RenderRepaintBoundary boundary = RenderRepaintBoundary();
+    final BuildOwner buildOwner = BuildOwner(focusManager: FocusManager());
+    final PipelineOwner pipelineOwner = PipelineOwner();
+
+    final RenderView renderView = RenderView(
+      view: ui.PlatformDispatcher.instance.implicitView!,
+      configuration: ViewConfiguration(
+        logicalConstraints: const BoxConstraints(maxWidth: 1000, maxHeight: 1200),
+        devicePixelRatio: pixelRatio,
+      ),
+      child: RenderPositionedBox(child: boundary),
+    );
+
+    pipelineOwner.rootNode = renderView;
+    renderView.prepareInitialFrame();
+
+    final RenderObjectToWidgetElement<RenderBox> rootElement = RenderObjectToWidgetAdapter<RenderBox>(
+      container: boundary,
+      child: Directionality(
+        textDirection: ui.TextDirection.ltr,
+        child: Material(child: widget),
+      ),
+    ).attachToRenderTree(buildOwner);
+
+    buildOwner.buildScope(rootElement);
+    buildOwner.finalizeTree();
+
+    pipelineOwner.flushLayout();
+    pipelineOwner.flushCompositingBits();
+    pipelineOwner.flushPaint();
+
+    final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
+    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    
+    return byteData?.buffer.asUint8List();
   }
 
   Widget _buildStatCard(String label, String value, Color color) {
