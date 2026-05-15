@@ -290,6 +290,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               _ProducerInput(
                                 controller: _toyMakerController,
                                 label: l10n.carProducerLabel,
+                                dynamicProducers: state.maybeWhen(
+                                  initial: (p) => p,
+                                  loading: (p) => p,
+                                  error: (e, p) => p,
+                                  orElse: () => [],
+                                ),
                                 onChanged: (v) => setState(() {}),
                               ),
                               const SizedBox(height: 16),
@@ -571,11 +577,13 @@ class _Thumbnail extends StatelessWidget {
 class _ProducerInput extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final List<String> dynamicProducers;
   final ValueChanged<String> onChanged;
 
   const _ProducerInput({
     required this.controller,
     required this.label,
+    required this.dynamicProducers,
     required this.onChanged,
   });
 
@@ -606,27 +614,46 @@ class _ProducerInput extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            itemCount: _producers.length + 1,
+            itemCount: _producers.length + dynamicProducers.where((dp) => !_producers.any((p) => p.$1 == dp)).length + 1,
             separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemBuilder: (context, index) {
-              if (index == _producers.length) {
-                return _InnyProducerBox(
-                  controller: controller,
-                  onChanged: onChanged,
+              if (index < _producers.length) {
+                final p = _producers[index];
+                final isSelected = controller.text == p.$1;
+
+                return _ProducerLogoBox(
+                  logoUrl: p.$2,
+                  name: p.$1,
+                  isSelected: isSelected,
+                  onTap: () {
+                    controller.text = p.$1;
+                    onChanged(p.$1);
+                  },
                 );
               }
 
-              final p = _producers[index];
-              final isSelected = controller.text == p.$1;
+              final filteredDynamic = dynamicProducers.where((dp) => !_producers.any((p) => p.$1 == dp)).toList();
+              final dynamicIndex = index - _producers.length;
 
-              return _ProducerLogoBox(
-                logoUrl: p.$2,
-                name: p.$1,
-                isSelected: isSelected,
-                onTap: () {
-                  controller.text = p.$1;
-                  onChanged(p.$1);
-                },
+              if (dynamicIndex < filteredDynamic.length) {
+                final name = filteredDynamic[dynamicIndex];
+                final isSelected = controller.text == name;
+
+                return _ProducerLogoBox(
+                  logoUrl: '',
+                  name: name,
+                  isSelected: isSelected,
+                  onTap: () {
+                    controller.text = name;
+                    onChanged(name);
+                  },
+                );
+              }
+
+              return _InnyProducerBox(
+                controller: controller,
+                onChanged: onChanged,
+                allProducers: [..._producers.map((e) => e.$1), ...dynamicProducers],
               );
             },
           ),
@@ -700,12 +727,17 @@ class _FallbackText extends StatelessWidget {
 class _InnyProducerBox extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final List<String> allProducers;
 
-  const _InnyProducerBox({required this.controller, required this.onChanged});
+  const _InnyProducerBox({
+    required this.controller,
+    required this.onChanged,
+    required this.allProducers,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isCustom = !['Hot Wheels', 'Matchbox', 'Majorette', 'Mini GT', 'Tomica', 'Maisto', 'Jada'].contains(controller.text) && controller.text.isNotEmpty;
+    final isCustom = !allProducers.contains(controller.text) && controller.text.isNotEmpty;
 
     return GestureDetector(
       onTap: () async {

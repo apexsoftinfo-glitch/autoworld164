@@ -36,6 +36,7 @@ abstract class CarsRepository {
   });
   Future<void> deleteCar(CarModel car);
   Future<List<String>> getSeries();
+  Future<List<String>> getProducers();
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
   Future<double> estimateValue(String query);
 }
@@ -93,6 +94,9 @@ class CarsRepositoryImpl implements CarsRepository {
       if (series != null) {
         await _dataSource.addSeries(series);
       }
+      if (toyMaker != null) {
+        await _dataSource.addProducer(toyMaker);
+      }
       await _refresh();
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl addCar error: $e\n$stack');
@@ -138,6 +142,9 @@ class CarsRepositoryImpl implements CarsRepository {
       if (series != null) {
         await _dataSource.addSeries(series);
       }
+      if (toyMaker != null) {
+        await _dataSource.addProducer(toyMaker);
+      }
       await _refresh();
     } catch (e, stack) {
       debugPrint('CarsRepositoryImpl editCar error: $e\n$stack');
@@ -158,6 +165,9 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<List<String>> getSeries() => _dataSource.fetchSeries();
+
+  @override
+  Future<List<String>> getProducers() => _dataSource.fetchProducers();
 
   @override
   Future<List<String>> searchWebPhotos(String query, {int offset = 0}) async {

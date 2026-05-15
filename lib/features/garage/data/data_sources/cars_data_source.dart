@@ -24,6 +24,10 @@ abstract class CarsDataSource {
   Future<List<String>> fetchSeries();
   Future<void> addSeries(String name);
 
+  // Producers autocomplete
+  Future<List<String>> fetchProducers();
+  Future<void> addProducer(String name);
+
   // Real web search via Edge Function
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
 
@@ -175,6 +179,22 @@ class CarsDataSourceImpl implements CarsDataSource {
     final userId = _supabase.auth.currentUser?.id;
     if (userId == null) return;
     await _supabase.from('autoworld_series').upsert({
+      'name': name,
+      'user_id': userId,
+    }, onConflict: 'name, user_id');
+  }
+
+  @override
+  Future<List<String>> fetchProducers() async {
+    final response = await _supabase.from('autoworld_producers').select('name').order('name');
+    return (response as List).map((e) => e['name'] as String).toList();
+  }
+
+  @override
+  Future<void> addProducer(String name) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
+    await _supabase.from('autoworld_producers').upsert({
       'name': name,
       'user_id': userId,
     }, onConflict: 'name, user_id');

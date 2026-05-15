@@ -12,10 +12,16 @@ part 'car_form_cubit.freezed.dart';
 
 @freezed
 sealed class CarFormState with _$CarFormState {
-  const factory CarFormState.initial() = CarFormInitial;
-  const factory CarFormState.loading() = CarFormLoading;
+  const factory CarFormState.initial({
+    @Default([]) List<String> producers,
+  }) = CarFormInitial;
+  const factory CarFormState.loading({
+    @Default([]) List<String> producers,
+  }) = CarFormLoading;
   const factory CarFormState.success() = CarFormSuccess;
-  const factory CarFormState.error(String errorKey) = CarFormError;
+  const factory CarFormState.error(String errorKey, {
+    @Default([]) List<String> producers,
+  }) = CarFormError;
 }
 
 @injectable
@@ -25,7 +31,14 @@ class CarFormCubit extends Cubit<CarFormState> {
   final CarsRepository _carsRepository;
 
   Future<void> loadInitialData() async {
-    emit(const CarFormState.initial());
+    emit(const CarFormState.loading());
+    try {
+      final producers = await _carsRepository.getProducers();
+      emit(CarFormState.initial(producers: producers));
+    } catch (e) {
+      debugPrint('CarFormCubit loadInitialData error: $e');
+      emit(const CarFormState.initial());
+    }
   }
 
   Future<double?> estimateValue(String query) async {
@@ -51,7 +64,14 @@ class CarFormCubit extends Cubit<CarFormState> {
     List<String> photoUrls = const [],
     List<String>? remainingPhotoPaths,
   }) async {
-    emit(const CarFormState.loading());
+    final currentProducers = state.maybeWhen(
+      initial: (p) => p,
+      loading: (p) => p,
+      error: (e, p) => p,
+      orElse: () => <String>[],
+    );
+
+    emit(CarFormState.loading(producers: currentProducers));
     try {
       if (existingCar != null) {
         await _carsRepository.editCar(
@@ -85,7 +105,7 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(const CarFormState.success());
     } catch (e, stack) {
       debugPrint('CarFormCubit saveCar error: $e\n$stack');
-      emit(CarFormState.error(mapErrorToKey(e)));
+      emit(CarFormState.error(mapErrorToKey(e), producers: currentProducers));
     }
   }
 

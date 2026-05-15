@@ -22,6 +22,7 @@ void main() {
         createdAt: DateTime.now(),
       ),
     );
+    when(() => carsRepository.getProducers()).thenAnswer((_) async => []);
   });
 
   group('CarFormCubit', () {
@@ -50,8 +51,22 @@ void main() {
         status: 'Nowy',
       ),
       expect: () => [
-        const CarFormState.loading(),
+        const CarFormState.loading(producers: []),
         const CarFormState.success(),
+      ],
+    );
+
+    blocTest<CarFormCubit, CarFormState>(
+      'loadInitialData emits loading then initial with producers',
+      build: () {
+        when(() => carsRepository.getProducers())
+            .thenAnswer((_) async => ['Custom Co']);
+        return CarFormCubit(carsRepository);
+      },
+      act: (cubit) => cubit.loadInitialData(),
+      expect: () => [
+        const CarFormState.loading(producers: []),
+        const CarFormState.initial(producers: ['Custom Co']),
       ],
     );
 
@@ -80,8 +95,8 @@ void main() {
         status: 'Nowy',
       ),
       expect: () => [
-        const CarFormState.loading(),
-        const CarFormState.error('network_error'),
+        const CarFormState.loading(producers: []),
+        const CarFormState.error('network_error', producers: []),
       ],
     );
   });
