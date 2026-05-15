@@ -9,7 +9,6 @@ import '../../../l10n/l10n.dart';
 import '../models/market_car_model.dart';
 import '../presentation/cubit/market_form_cubit.dart';
 import '../../garage/models/car_model.dart';
-import '../../garage/ui/search_photos_dialog.dart';
 import '../../garage/ui/widgets/car_photo.dart';
 
 class MarketCarFormScreen extends StatefulWidget {
@@ -25,7 +24,6 @@ class MarketCarFormScreen extends StatefulWidget {
 class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _brandController;
-  late TextEditingController _nameController;
   late TextEditingController _toyMakerController;
   late TextEditingController _seriesController;
   late TextEditingController _priceController;
@@ -42,14 +40,20 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   @override
   void initState() {
     super.initState();
-    final initialBrand = widget.car?.brand ?? widget.garageCar?.brand;
-    final initialName = widget.car?.modelName ?? widget.garageCar?.modelName;
+    final garageCar = widget.garageCar;
+    String initialBrandModel = widget.car?.brand ?? '';
+    if (initialBrandModel.isEmpty && garageCar != null) {
+      initialBrandModel = garageCar.brand;
+      if (garageCar.modelName.isNotEmpty) {
+        initialBrandModel += ' ${garageCar.modelName}';
+      }
+    }
+    
     final initialToyMaker = widget.car?.toyMaker ?? widget.garageCar?.toyMaker;
     final initialSeries = widget.car?.series ?? widget.garageCar?.series;
     final initialPrice = widget.car?.price ?? widget.garageCar?.purchasePrice ?? 0.0;
 
-    _brandController = TextEditingController(text: initialBrand);
-    _nameController = TextEditingController(text: initialName);
+    _brandController = TextEditingController(text: initialBrandModel);
     _toyMakerController = TextEditingController(text: initialToyMaker);
     _seriesController = TextEditingController(text: initialSeries);
     _priceController = TextEditingController(
@@ -62,46 +66,17 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     _isSale = widget.car?.isSale ?? true;
   }
 
-  Future<void> _searchInternet(BuildContext context) async {
-    final brand = _brandController.text.trim();
-    final producer = _toyMakerController.text.trim();
-    final series = _seriesController.text.trim();
-
-    if (brand.isEmpty || producer.isEmpty || series.isEmpty) {
-      _showErrorDialog(l10n.carFormSearchRequiredTitle, l10n.carFormSearchRequiredBody);
-      return;
-    }
-
-    final query = '$producer $brand $series';
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => SearchPhotosDialog(query: query),
-    );
-
-    if (result != null && result.isNotEmpty) {
-      setState(() {
-        _internetPhotoUrls.add(result);
-      });
-    }
+  @override
+  void dispose() {
+    _brandController.dispose();
+    _toyMakerController.dispose();
+    _seriesController.dispose();
+    _priceController.dispose();
+    super.dispose();
   }
 
-  void _showErrorDialog(String title, String body) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A120B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
-        title: Text(title.toUpperCase(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
-        content: Text(body, style: const TextStyle(color: Colors.white70, fontSize: 14)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.closeButtonLabel.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-    );
-  }
+  // Removed _searchInternet as per user request (real photos only)
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +159,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             onRemoveNew: (i) => setState(() => _newImages.removeAt(i)),
                             onRemoveExisting: (p) => setState(() => _remainingPhotoPaths.remove(p)),
                             onRemoveInternet: (u) => setState(() => _internetPhotoUrls.remove(u)),
-                            onSearchOnline: () => _searchInternet(context),
+                            onSearchOnline: () {}, // Disabled as per user request
                           ),
                           const SizedBox(height: 32),
                           _ProducerSelector(
@@ -201,14 +176,8 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                           const SizedBox(height: 16),
                           _GlassInput(
                             controller: _brandController,
-                            label: l10n.carBrandLabel,
+                            label: '${l10n.carBrandLabel} / MODEL',
                             validator: (v) => v?.isEmpty ?? true ? l10n.carBrandLabel : null,
-                          ),
-                          const SizedBox(height: 16),
-                          _GlassInput(
-                            controller: _nameController,
-                            label: l10n.carModelNameLabel,
-                            validator: (v) => v?.isEmpty ?? true ? l10n.carModelNameLabel : null,
                           ),
                           const SizedBox(height: 16),
                           _SeriesSelector(
@@ -257,7 +226,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                                 context.read<MarketFormCubit>().saveCar(
                                   existingCar: widget.car,
                                   brand: _brandController.text,
-                                  modelName: _nameController.text,
+                                  modelName: '',
                                   toyMaker: _toyMakerController.text,
                                   series: _seriesController.text.isEmpty ? null : _seriesController.text,
                                   price: double.tryParse(_priceController.text) ?? 0.0,
@@ -411,8 +380,6 @@ class _MultiPhotoPicker extends StatelessWidget {
                 _AddPhotoBox(onTap: () => onAdd(ImageSource.camera), label: l10n.carGalleryCameraLabel),
               if (total < 5)
                 _AddPhotoBox(onTap: () => onAdd(ImageSource.gallery), label: l10n.carGalleryGalleryLabel, icon: Icons.photo_library_outlined),
-              if (total < 5)
-                _AddPhotoBox(onTap: onSearchOnline, label: l10n.carGalleryInternetLabel, icon: Icons.public),
               
               ...newImages.asMap().entries.map((e) => _Thumbnail(
                 image: e.value,
