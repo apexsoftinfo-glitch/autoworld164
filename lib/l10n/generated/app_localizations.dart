@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('pl'),
   ];
 
+  /// No description provided for @marketMoveSuccessTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model przeniesiony!'**
+  String get marketMoveSuccessTitle;
+
+  /// No description provided for @marketMoveSuccessMessage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model został pomyślnie przeniesiony do sekcji Wymiana/Sprzedaż.'**
+  String get marketMoveSuccessMessage;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:

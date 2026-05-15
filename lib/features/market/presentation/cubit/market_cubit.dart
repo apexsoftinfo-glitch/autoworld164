@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:flutter/widgets.dart' show debugPrint;
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:autoworld164/features/market/data/repositories/market_repository.dart';
 import 'package:autoworld164/features/market/models/market_car_model.dart';
 import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
+import 'package:autoworld164/features/garage/data/repositories/cars_repository.dart';
+import 'package:autoworld164/features/garage/models/car_model.dart';
 
 part 'market_cubit.freezed.dart';
 
@@ -25,11 +28,12 @@ class MarketState with _$MarketState {
 
 @injectable
 class MarketCubit extends Cubit<MarketState> {
-  MarketCubit(this._repository) : super(const MarketState.initial()) {
+  MarketCubit(this._repository, this._carsRepository) : super(const MarketState.initial()) {
     _init();
   }
 
   final MarketRepository _repository;
+  final CarsRepository _carsRepository;
   StreamSubscription? _subscription;
 
   void _init() {
@@ -122,6 +126,31 @@ class MarketCubit extends Cubit<MarketState> {
       }
       _updateData(cars, q, vt, type, nextOrder);
     });
+  }
+
+  Future<void> moveFromGarage(CarModel car) async {
+    try {
+      // 1. Add to market
+      await _repository.addMarketCar(
+        brand: car.brand,
+        modelName: car.modelName,
+        toyMaker: car.toyMaker,
+        series: car.series,
+        price: car.purchasePrice,
+        status: car.status,
+        isExchange: true,
+        isSale: true,
+        initialPhotoPaths: car.allPhotoPaths,
+      );
+
+      // 2. Delete from garage
+      await _carsRepository.deleteCar(car);
+      
+      // retry() or wait for stream to update (BehaviorSubject will update automatically)
+    } catch (e) {
+      debugPrint('MarketCubit moveFromGarage error: $e');
+      rethrow;
+    }
   }
 
   void retry() {

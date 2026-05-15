@@ -9,6 +9,13 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get marketMoveSuccessTitle => 'Model moved!';
+
+  @override
+  String get marketMoveSuccessMessage =>
+      'The model has been successfully moved to the Trade/Sale section.';
+
+  @override
   String get newsOriginalArticle => 'Original Article';
 
   @override

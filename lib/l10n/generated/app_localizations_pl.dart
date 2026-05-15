@@ -9,6 +9,13 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
+  String get marketMoveSuccessTitle => 'Model przeniesiony!';
+
+  @override
+  String get marketMoveSuccessMessage =>
+      'Model został pomyślnie przeniesiony do sekcji Wymiana/Sprzedaż.';
+
+  @override
   String get newsOriginalArticle => 'Oryginalny artykuł';
 
   @override

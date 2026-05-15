@@ -1,4 +1,6 @@
 {
+  "marketMoveSuccessTitle": "Model przeniesiony!",
+  "marketMoveSuccessMessage": "Model został pomyślnie przeniesiony do sekcji Wymiana/Sprzedaż.",
   "@@locale": "pl",
   "newsOriginalArticle": "Oryginalny artykuł",
   "newsReadMore": "CZYTAJ WIĘCEJ",

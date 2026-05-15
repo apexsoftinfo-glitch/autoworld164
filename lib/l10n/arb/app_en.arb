@@ -1,4 +1,6 @@
 {
+  "marketMoveSuccessTitle": "Model moved!",
+  "marketMoveSuccessMessage": "The model has been successfully moved to the Trade/Sale section.",
   "@@locale": "en",
   "newsOriginalArticle": "Original Article",
   "newsReadMore": "READ MORE",

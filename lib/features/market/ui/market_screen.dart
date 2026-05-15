@@ -13,6 +13,7 @@ import '../presentation/cubit/market_cubit.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart'; // For SortType/Order
 import '../../garage/ui/widgets/car_photo.dart';
 import 'market_car_form_screen.dart';
+import 'widgets/garage_move_success_dialog.dart';
 import 'garage_selection_dialog.dart';
 
 class MarketScreen extends StatelessWidget {
@@ -682,12 +683,16 @@ class _BottomAddButton extends StatelessWidget {
                 onTap: () async {
                   Navigator.pop(sheetContext);
                   final car = await GarageSelectionDialog.show(context);
-                  debugPrint('Selected garage car: ${car?.brand} ${car?.modelName}');
                   if (car != null && context.mounted) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => MarketCarFormScreen(garageCar: car)),
-                    );
+                    // Show loading overlay or handle it in cubit
+                    try {
+                      await context.read<MarketCubit>().moveFromGarage(car);
+                      if (context.mounted) {
+                        GarageMoveSuccessDialog.show(context, car);
+                      }
+                    } catch (e) {
+                      // Error is logged in cubit
+                    }
                   }
                 },
               ),
