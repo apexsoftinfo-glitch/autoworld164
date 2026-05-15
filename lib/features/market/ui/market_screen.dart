@@ -650,7 +650,7 @@ class _BottomAddButton extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) => BackdropFilter(
+      builder: (sheetContext) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -666,7 +666,7 @@ class _BottomAddButton extends StatelessWidget {
                 icon: Icons.add_circle_outline,
                 label: context.l10n.marketAddManual,
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(sheetContext);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const MarketCarFormScreen()),
@@ -678,8 +678,9 @@ class _BottomAddButton extends StatelessWidget {
                 icon: Icons.garage_outlined,
                 label: context.l10n.marketAddFromGarage,
                 onTap: () async {
-                  Navigator.pop(context);
+                  Navigator.pop(sheetContext);
                   final car = await GarageSelectionDialog.show(context);
+                  debugPrint('Selected garage car: ${car?.brand} ${car?.modelName}');
                   if (car != null && context.mounted) {
                     Navigator.push(
                       context,

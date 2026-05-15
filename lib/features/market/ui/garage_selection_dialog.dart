@@ -83,7 +83,7 @@ class GarageSelectionDialog extends StatelessWidget {
                           return ListView.separated(
                             padding: const EdgeInsets.all(24),
                             itemCount: filtered.length,
-                            separatorBuilder: (_, _) => const SizedBox(height: 12),
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
                             itemBuilder: (context, index) {
                               final car = filtered[index];
                               return _CarSelectionTile(
