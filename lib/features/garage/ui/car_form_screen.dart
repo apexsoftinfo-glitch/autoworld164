@@ -287,7 +287,7 @@ class _CarFormScreenState extends State<CarFormScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              _ProducerInput(
+                              _ProducerSelector(
                                 controller: _toyMakerController,
                                 label: l10n.carProducerLabel,
                                 dynamicProducers: state.maybeWhen(
@@ -574,209 +574,61 @@ class _Thumbnail extends StatelessWidget {
   }
 }
 
-class _ProducerInput extends StatelessWidget {
+class _ProducerSelector extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final List<String> dynamicProducers;
   final ValueChanged<String> onChanged;
 
-  const _ProducerInput({
+  const _ProducerSelector({
     required this.controller,
     required this.label,
     required this.dynamicProducers,
     required this.onChanged,
   });
 
-  static const _producers = [
-    ('Hot Wheels', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Hot_Wheels_logo.svg/512px-Hot_Wheels_logo.svg.png'),
-    ('Matchbox', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Matchbox_Logo.svg/512px-Matchbox_Logo.svg.png'),
-    ('Majorette', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Majorette_logo.svg/512px-Majorette_logo.svg.png'),
-    ('Mini GT', 'https://minigt.com/assets/images/logo.png'),
-    ('Tomica', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Tomica_logo.svg/512px-Tomica_logo.svg.png'),
-    ('Maisto', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Maisto_logo.svg/512px-Maisto_logo.svg.png'),
-    ('Jada', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Jada_Toys_logo.svg/512px-Jada_Toys_logo.svg.png'),
+  static const _fixedProducers = [
+    'Hot Wheels',
+    'Matchbox',
+    'Majorette',
+    'Mini GT',
+    'Tomica',
+    'Maisto',
+    'Jada',
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 12),
-          child: Text(
-            label.toUpperCase(),
-            style: const TextStyle(color: Colors.white38, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
-          ),
-        ),
-        SizedBox(
-          height: 60,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            itemCount: _producers.length + dynamicProducers.where((dp) => !_producers.any((p) => p.$1 == dp)).length + 1,
-            separatorBuilder: (context, index) => const SizedBox(width: 8),
-            itemBuilder: (context, index) {
-              if (index < _producers.length) {
-                final p = _producers[index];
-                final isSelected = controller.text == p.$1;
+    final current = controller.text;
+    final isKnown = _fixedProducers.contains(current) || dynamicProducers.contains(current);
+    final isCustom = current.isNotEmpty && !isKnown;
+    
+    final Set<String> itemsSet = {..._fixedProducers, ...dynamicProducers};
+    if (isCustom) {
+      itemsSet.add(current);
+    }
+    final List<String> items = itemsSet.toList()..sort();
+    items.add(context.l10n.commonOther);
 
-                return _ProducerLogoBox(
-                  logoUrl: p.$2,
-                  name: p.$1,
-                  isSelected: isSelected,
-                  onTap: () {
-                    controller.text = p.$1;
-                    onChanged(p.$1);
-                  },
-                );
-              }
-
-              final filteredDynamic = dynamicProducers.where((dp) => !_producers.any((p) => p.$1 == dp)).toList();
-              final dynamicIndex = index - _producers.length;
-
-              if (dynamicIndex < filteredDynamic.length) {
-                final name = filteredDynamic[dynamicIndex];
-                final isSelected = controller.text == name;
-
-                return _ProducerLogoBox(
-                  logoUrl: '',
-                  name: name,
-                  isSelected: isSelected,
-                  onTap: () {
-                    controller.text = name;
-                    onChanged(name);
-                  },
-                );
-              }
-
-              return _InnyProducerBox(
-                controller: controller,
-                onChanged: onChanged,
-                allProducers: [..._producers.map((e) => e.$1), ...dynamicProducers],
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ProducerLogoBox extends StatelessWidget {
-  final String logoUrl;
-  final String name;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _ProducerLogoBox({
-    required this.logoUrl,
-    required this.name,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 80,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? const Color(0xFFFFD700) : Colors.white12,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: logoUrl.endsWith('.png') || logoUrl.endsWith('.jpg')
-            ? Image.network(
-                logoUrl,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => _FallbackText(name: name),
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white24)));
-                },
-              )
-            : _FallbackText(name: name),
-      ),
-    );
-  }
-}
-
-class _FallbackText extends StatelessWidget {
-  final String name;
-  const _FallbackText({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        name.toUpperCase(),
-        textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white70, fontSize: 8, fontWeight: FontWeight.w900),
-      ),
-    );
-  }
-}
-
-class _InnyProducerBox extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final List<String> allProducers;
-
-  const _InnyProducerBox({
-    required this.controller,
-    required this.onChanged,
-    required this.allProducers,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isCustom = !allProducers.contains(controller.text) && controller.text.isNotEmpty;
-
-    return GestureDetector(
-      onTap: () async {
-        final result = await _showCustomProducerDialog(context, controller.text);
-        if (result != null) {
-          controller.text = result;
-          onChanged(result);
+    return _GlassDropdown<String>(
+      label: label,
+      value: current.isEmpty ? null : (items.contains(current) ? current : null),
+      items: items.map((s) => DropdownMenuItem(
+        value: s,
+        child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+      )).toList(),
+      onChanged: (val) async {
+        if (val == context.l10n.commonOther) {
+          final result = await _showCustomProducerDialog(context, current);
+          if (result != null && result.isNotEmpty) {
+            controller.text = result;
+            onChanged(result);
+          }
+        } else if (val != null) {
+          controller.text = val;
+          onChanged(val);
         }
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 80,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isCustom ? const Color(0xFFFFD700).withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isCustom ? const Color(0xFFFFD700) : Colors.white12,
-            width: isCustom ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.more_horiz, color: isCustom ? const Color(0xFFFFD700) : Colors.white38),
-            const SizedBox(height: 2),
-            Text(
-              isCustom ? controller.text.toUpperCase() : 'INNY',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: isCustom ? Colors.white : Colors.white38,
-                fontSize: 8,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -803,7 +655,7 @@ class _InnyProducerBox extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.closeButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
+            child: Text(l10n.cancelButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.white38)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, textController.text),
