@@ -16,6 +16,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'The model has been successfully moved to the Trade/Sale section.';
 
   @override
+  String get marketSoldSuccessTitle => 'Congratulations!';
+
+  @override
+  String get marketSoldSuccessMessage =>
+      'The model has been successfully sold/exchanged. It will now be removed from your database.';
+
+  @override
+  String get marketGenerateListing => 'Generate Listing';
+
+  @override
+  String get marketExchangedSold => 'Exchanged / Sold';
+
+  @override
   String get newsOriginalArticle => 'Original Article';
 
   @override
@@ -263,6 +276,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get closeButtonLabel => 'Close';
+
+  @override
+  String get okButtonLabel => 'OK';
 
   @override
   String get protectProBannerTitle => 'Protect access to Pro';

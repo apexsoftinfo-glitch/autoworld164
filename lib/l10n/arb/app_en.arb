@@ -1,6 +1,10 @@
 {
   "marketMoveSuccessTitle": "Model moved!",
   "marketMoveSuccessMessage": "The model has been successfully moved to the Trade/Sale section.",
+  "marketSoldSuccessTitle": "Congratulations!",
+  "marketSoldSuccessMessage": "The model has been successfully sold/exchanged. It will now be removed from your database.",
+  "marketGenerateListing": "Generate Listing",
+  "marketExchangedSold": "Exchanged / Sold",
   "@@locale": "en",
   "newsOriginalArticle": "Original Article",
   "newsReadMore": "READ MORE",
@@ -119,6 +123,7 @@
   "stayButtonLabel": "Stay",
   "discardButtonLabel": "Discard",
   "closeButtonLabel": "Close",
+  "okButtonLabel": "OK",
   "protectProBannerTitle": "Protect access to Pro",
   "protectProBannerBody": "This guest account already has Pro. Register this account so you do not lose access in the future.",
   "developerDiagnosticsTitle": "Debug-only diagnostics",

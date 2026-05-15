@@ -1,6 +1,10 @@
 {
   "marketMoveSuccessTitle": "Model przeniesiony!",
   "marketMoveSuccessMessage": "Model został pomyślnie przeniesiony do sekcji Wymiana/Sprzedaż.",
+  "marketSoldSuccessTitle": "Gratulacje!",
+  "marketSoldSuccessMessage": "Model został pomyślnie sprzedany/wymieniony. Zostanie teraz usunięty z Twojej bazy danych.",
+  "marketGenerateListing": "Generuj ogłoszenie",
+  "marketExchangedSold": "Wymieniono / Sprzedano",
   "@@locale": "pl",
   "newsOriginalArticle": "Oryginalny artykuł",
   "newsReadMore": "CZYTAJ WIĘCEJ",
@@ -119,6 +123,7 @@
   "stayButtonLabel": "Zostań",
   "discardButtonLabel": "Odrzuć",
   "closeButtonLabel": "Zamknij",
+  "okButtonLabel": "OK",
   "protectProBannerTitle": "Zabezpiecz dostęp do Pro",
   "protectProBannerBody": "To konto gościa ma już Pro. Zarejestruj to konto, aby nie stracić dostępu w przyszłości.",
   "developerDiagnosticsTitle": "Diagnostyka tylko dla debug",

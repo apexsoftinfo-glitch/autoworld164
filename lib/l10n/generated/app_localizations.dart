@@ -110,6 +110,30 @@ abstract class AppLocalizations {
   /// **'Model został pomyślnie przeniesiony do sekcji Wymiana/Sprzedaż.'**
   String get marketMoveSuccessMessage;
 
+  /// No description provided for @marketSoldSuccessTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Gratulacje!'**
+  String get marketSoldSuccessTitle;
+
+  /// No description provided for @marketSoldSuccessMessage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model został pomyślnie sprzedany/wymieniony. Zostanie teraz usunięty z Twojej bazy danych.'**
+  String get marketSoldSuccessMessage;
+
+  /// No description provided for @marketGenerateListing.
+  ///
+  /// In pl, this message translates to:
+  /// **'Generuj ogłoszenie'**
+  String get marketGenerateListing;
+
+  /// No description provided for @marketExchangedSold.
+  ///
+  /// In pl, this message translates to:
+  /// **'Wymieniono / Sprzedano'**
+  String get marketExchangedSold;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:
@@ -547,6 +571,12 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Zamknij'**
   String get closeButtonLabel;
+
+  /// No description provided for @okButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'OK'**
+  String get okButtonLabel;
 
   /// No description provided for @protectProBannerTitle.
   ///

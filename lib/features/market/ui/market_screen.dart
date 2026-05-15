@@ -13,6 +13,7 @@ import '../presentation/cubit/market_cubit.dart';
 import '../../garage/presentation/cubit/cars_collection_cubit.dart'; // For SortType/Order
 import '../../garage/ui/widgets/car_photo.dart';
 import 'market_car_form_screen.dart';
+import 'market_car_details_screen.dart';
 import 'widgets/garage_move_success_dialog.dart';
 import 'garage_selection_dialog.dart';
 
@@ -443,7 +444,7 @@ class _MarketCarCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => MarketCarFormScreen(car: car)),
+                MaterialPageRoute(builder: (_) => MarketCarDetailsScreen(car: car)),
               ),
             ),
           ),
@@ -473,7 +474,7 @@ class _MarketCarListTile extends StatelessWidget {
         contentPadding: const EdgeInsets.all(8),
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => MarketCarFormScreen(car: car)),
+          MaterialPageRoute(builder: (_) => MarketCarDetailsScreen(car: car)),
         ),
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(12),
