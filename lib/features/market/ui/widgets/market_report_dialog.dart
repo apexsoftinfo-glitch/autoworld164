@@ -2,7 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
-import '../../utils/market_report_image_generator.dart';
+import 'market_report_poster.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MarketReportDialog extends StatefulWidget {
   final List<MarketCarModel> cars;
@@ -23,6 +27,12 @@ class MarketReportDialog extends StatefulWidget {
 
 class _MarketReportDialogState extends State<MarketReportDialog> {
   final GlobalKey _captureKey = GlobalKey();
+  bool _isExporting = false;
+  
+  // Data for off-screen capture
+  List<MarketCarModel>? _pageCars;
+  int _currentPage = 0;
+  int _totalPagesCount = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -46,65 +56,81 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
 
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        child: Container(
-          width: double.infinity,
-          constraints: const BoxConstraints(maxWidth: 500),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1A120B).withValues(alpha: 0.9),
-            borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header (Not captured)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFD700).withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.analytics_outlined, color: Color(0xFFFFD700)),
-                    ),
-                    const SizedBox(width: 16),
-                    Text(
-                      isPolish ? 'SPRAWOZDANIE' : 'MARKET REPORT',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white38),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
+      child: Stack(
+        children: [
+          // ── Off-screen Poster for Capture ────────────────────────────────
+          Offstage(
+            offstage: true,
+            child: TickerMode(
+              enabled: true,
+              child: RepaintBoundary(
+                key: _captureKey,
+                child: _pageCars != null ? MarketReportPoster(
+                  cars: _pageCars!,
+                  page: _currentPage,
+                  totalPages: _totalPagesCount,
+                  totalValue: totalValue,
+                  totalCount: totalCount,
+                  isPolish: isPolish,
+                ) : const SizedBox.shrink(),
               ),
+            ),
+          ),
 
-              // Scrollable area for UI
-              Flexible(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: RepaintBoundary(
-                    key: _captureKey,
-                    child: Container(
-                      color: const Color(0xFF1A120B), // Solid background for capture
+          // ── Real UI ──────────────────────────────────────────────────────
+          Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 500),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A120B).withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(32),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFD700).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.analytics_outlined, color: Color(0xFFFFD700)),
+                        ),
+                        const SizedBox(width: 16),
+                        Text(
+                          isPolish ? 'SPRAWOZDANIE' : 'MARKET REPORT',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.close, color: Colors.white38),
+                          onPressed: _isExporting ? null : () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Scrollable summary area
+                  Flexible(
+                    child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Summary
                           Row(
                             children: [
                               _buildStatCard(
@@ -120,10 +146,7 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 24),
-
-                          // List of producers
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.black26,
@@ -149,75 +172,114 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
                                       entry.value.toString(),
                                       style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.bold),
                                     ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      isPolish ? 'szt.' : 'pcs',
-                                      style: const TextStyle(color: Colors.white24, fontSize: 9),
-                                    ),
                                   ],
                                 );
                               },
                             ),
                           ),
-                          
-                          const SizedBox(height: 16),
-                          
-                          // Branding in capture
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.directions_car, color: Colors.white10, size: 14),
-                              const SizedBox(width: 8),
-                              Text(
-                                'AUTOWORLD164 REPORT',
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.05),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 2,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              // Actions (Not captured)
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: FilledButton.icon(
-                        onPressed: () => MarketReportImageGenerator.captureAndShare(
-                          _captureKey,
-                          'autoworld_market_report_${DateFormat('yyyyMMdd').format(DateTime.now())}',
+                  // Actions
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: _isExporting ? null : _handleExport,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFFFFD700),
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            icon: _isExporting 
+                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
+                              : const Icon(Icons.share),
+                            label: Text(
+                              _isExporting 
+                                ? (isPolish ? 'GENEROWANIE...' : 'GENERATING...')
+                                : (isPolish ? 'EKSPORTUJ PNG' : 'EXPORT PNG'),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xFFFFD700),
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        icon: const Icon(Icons.share),
-                        label: Text(
-                          isPolish ? 'UDOSTĘPNIJ PNG' : 'SHARE PNG',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
+  }
+
+  Future<void> _handleExport() async {
+    setState(() => _isExporting = true);
+    
+    try {
+      final isPolish = Localizations.localeOf(context).languageCode == 'pl';
+      
+      // Sort cars: price desc, then producer asc
+      final sortedCars = List<MarketCarModel>.from(widget.cars)..sort((a, b) {
+        int res = b.price.compareTo(a.price);
+        if (res == 0) {
+          res = (a.toyMaker ?? '').compareTo(b.toyMaker ?? '');
+        }
+        return res;
+      });
+
+      const int itemsPerPage = 10;
+      final int totalPages = (sortedCars.length / itemsPerPage).ceil();
+      _totalPagesCount = totalPages;
+
+      final List<XFile> shareFiles = [];
+      final directory = await getTemporaryDirectory();
+
+      for (int i = 0; i < totalPages; i++) {
+        final start = i * itemsPerPage;
+        final end = (start + itemsPerPage) < sortedCars.length ? (start + itemsPerPage) : sortedCars.length;
+        
+        setState(() {
+          _currentPage = i + 1;
+          _pageCars = sortedCars.sublist(start, end);
+        });
+
+        // Wait for frame to render the Offstage widget
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        final boundary = _captureKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+        if (boundary != null) {
+          final image = await boundary.toImage(pixelRatio: 3.0);
+          final byteData = await image.toByteData(format: ImageByteFormat.png);
+          final buffer = byteData!.buffer.asUint8List();
+          
+          final path = '${directory.path}/market_report_p${i + 1}.png';
+          final file = File(path);
+          await file.writeAsBytes(buffer);
+          shareFiles.add(XFile(path));
+        }
+      }
+
+      if (shareFiles.isNotEmpty) {
+        // ignore: deprecated_member_use
+        await Share.shareXFiles(shareFiles, text: isPolish ? 'Sprawozdanie AutoWorld164' : 'AutoWorld164 Market Report');
+      }
+    } catch (e) {
+      debugPrint('Export error: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExporting = false;
+          _pageCars = null;
+        });
+      }
+    }
   }
 
   Widget _buildStatCard(String label, String value, Color color) {
