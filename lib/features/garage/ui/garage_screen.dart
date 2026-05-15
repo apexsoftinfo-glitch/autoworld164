@@ -567,40 +567,49 @@ class _SortButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const activeColor = Color(0xFFFFD700);
-    final color = isSelected ? activeColor : Colors.white24;
+    final color = isSelected ? activeColor : Colors.white70;
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: isSelected ? activeColor.withValues(alpha: 0.1) : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: isSelected ? activeColor.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.05)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 10, color: color),
-            const SizedBox(width: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: color,
-                fontSize: 7,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.5,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: isSelected ? activeColor.withValues(alpha: 0.2) : Colors.black45,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isSelected ? activeColor.withValues(alpha: 0.6) : Colors.white12,
+                width: isSelected ? 1 : 0.5,
               ),
             ),
-            if (isSelected) ...[
-              const SizedBox(width: 2),
-              Icon(
-                order == SortOrder.asc ? Icons.arrow_upward : Icons.arrow_downward,
-                size: 8,
-                color: activeColor,
-              ),
-            ],
-          ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 14, color: color),
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                if (isSelected) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    order == SortOrder.asc ? Icons.arrow_upward : Icons.arrow_downward,
+                    size: 10,
+                    color: activeColor,
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
