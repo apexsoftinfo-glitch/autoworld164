@@ -41,6 +41,7 @@ class MarketReportPoster extends StatelessWidget {
       padding: const EdgeInsets.all(40),
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
@@ -175,7 +176,7 @@ class MarketReportPoster extends StatelessWidget {
             ),
           ),
 
-          const Spacer(),
+          const SizedBox(height: 40),
 
           // Footer
           Row(

@@ -235,6 +235,8 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
         entry = OverlayEntry(builder: (_) => Positioned(
           left: -9999,
           top: -9999,
+          width: 1000,
+          height: 1500,
           child: RepaintBoundary(
             key: captureKey,
             child: MediaQuery(
