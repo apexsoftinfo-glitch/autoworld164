@@ -429,7 +429,9 @@ class _MarketCarCard extends StatelessWidget {
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          _MarketTags(car: car),
+                          Expanded(
+                            child: _MarketTags(car: car),
+                          ),
                         ],
                       ),
                     ],
@@ -501,8 +503,10 @@ class _MarketCarListTile extends StatelessWidget {
               car.toyMaker?.toUpperCase() ?? '',
               style: const TextStyle(color: Color(0xFFFFD700), fontSize: 9, fontWeight: FontWeight.w900),
             ),
-            const Spacer(),
-            _MarketTags(car: car),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _MarketTags(car: car),
+            ),
           ],
         ),
         trailing: Text(
@@ -521,21 +525,21 @@ class _MarketTags extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Wrap(
+      alignment: WrapAlignment.end,
+      spacing: 4,
+      runSpacing: 4,
       children: [
         if (car.isAuction)
           _Tag(
             label: l10n.marketAuction.toUpperCase(),
             color: const Color(0xFFFFD700),
           ),
-        if (car.isAuction && (car.isExchange || car.isSale)) const SizedBox(width: 4),
         if (car.isExchange)
           _Tag(
             label: l10n.marketExchangeBadge.toUpperCase(),
             color: Colors.blueAccent,
           ),
-        if (car.isSale && car.isExchange) const SizedBox(width: 4),
         if (car.isSale)
           _Tag(
             label: l10n.marketSaleBadge.toUpperCase(),
