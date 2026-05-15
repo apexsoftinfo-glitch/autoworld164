@@ -183,9 +183,8 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                     ),
                   ),
                 ),
-                // Hidden RepaintBoundary for capture
-                Offstage(
-                  offstage: true,
+                Positioned(
+                  left: -2000,
                   child: RepaintBoundary(
                     key: _boundaryKey,
                     child: _ListingPreview(car: widget.car, currencyFormat: currencyFormat),
@@ -203,7 +202,7 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
     setState(() => _isGenerating = true);
     try {
       // Small delay to ensure rendering
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 300));
       
       final boundary = _boundaryKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
       if (boundary == null) return;
