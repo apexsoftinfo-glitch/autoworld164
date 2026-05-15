@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
 
 /// Poster widget for off-screen PNG capture.
-/// Accepts pre-loaded image bytes so images render synchronously.
+/// Accepts pre-decoded ui.Image objects so images render synchronously.
 class MarketReportPoster extends StatelessWidget {
   final List<MarketCarModel> cars;
   final int page;
@@ -13,8 +14,8 @@ class MarketReportPoster extends StatelessWidget {
   final double totalValue;
   final int totalCount;
   final bool isPolish;
-  /// Map of car id → pre-loaded image bytes (may be absent if no photo)
-  final Map<String, Uint8List> photoBytes;
+  /// Map of car id → pre-decoded ui.Image (renders synchronously)
+  final Map<String, ui.Image> photoImages;
 
   const MarketReportPoster({
     super.key,
@@ -24,7 +25,7 @@ class MarketReportPoster extends StatelessWidget {
     required this.totalValue,
     required this.totalCount,
     required this.isPolish,
-    required this.photoBytes,
+    required this.photoImages,
   });
 
   @override
@@ -134,7 +135,7 @@ class MarketReportPoster extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // Photo Cell — use pre-loaded bytes
+                      // Photo Cell — use pre-decoded ui.Image via RawImage (synchronous!)
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -146,8 +147,11 @@ class MarketReportPoster extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: photoBytes.containsKey(car.id)
-                                ? Image.memory(photoBytes[car.id]!, fit: BoxFit.cover)
+                            child: photoImages.containsKey(car.id)
+                                ? RawImage(
+                                    image: photoImages[car.id]!,
+                                    fit: BoxFit.cover,
+                                  )
                                 : const Icon(Icons.directions_car, color: Colors.black12),
                           ),
                         ),
@@ -246,28 +250,31 @@ class MarketReportPoster extends StatelessWidget {
   }
 }
 
-/// Loads image bytes from a path (network URL or local file).
-Future<Uint8List?> loadImageBytes(String path) async {
+/// Loads and decodes image bytes → dart:ui.Image (synchronous in rendering).
+Future<ui.Image?> loadUiImage(String path) async {
   try {
+    Uint8List bytes;
     if (path.startsWith('http://') || path.startsWith('https://')) {
       final httpClient = HttpClient();
       final request = await httpClient.getUrl(Uri.parse(path));
       final response = await request.close();
-      final bytes = <int>[];
+      final chunks = <int>[];
       await for (final chunk in response) {
-        bytes.addAll(chunk);
+        chunks.addAll(chunk);
       }
       httpClient.close();
-      return Uint8List.fromList(bytes);
+      bytes = Uint8List.fromList(chunks);
     } else {
-      // Local file
       final file = File(path);
-      if (await file.exists()) {
-        return await file.readAsBytes();
-      }
+      if (!await file.exists()) return null;
+      bytes = await file.readAsBytes();
     }
+    // Decode to dart:ui.Image — this is the key step
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frame = await codec.getNextFrame();
+    return frame.image;
   } catch (e) {
-    debugPrint('loadImageBytes error for $path: $e');
+    debugPrint('loadUiImage error for $path: $e');
+    return null;
   }
-  return null;
 }

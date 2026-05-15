@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/market_car_model.dart';
-import 'market_report_poster.dart' show MarketReportPoster, loadImageBytes;
+import 'market_report_poster.dart' show MarketReportPoster, loadUiImage;
 import 'package:flutter/rendering.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -218,14 +218,14 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
         final end = (start + itemsPerPage) < totalCount ? (start + itemsPerPage) : totalCount;
         final pageCars = sortedCars.sublist(start, end);
 
-        // Pre-load image bytes for all cars on this page before off-screen render
-        final Map<String, Uint8List> photoBytes = {};
+        // Pre-decode images to dart:ui.Image for synchronous off-screen rendering
+        final Map<String, ui.Image> photoImages = {};
         for (final car in pageCars) {
           final path = car.displayPhotoPath;
           if (path != null) {
-            final bytes = await loadImageBytes(path);
-            if (bytes != null) {
-              photoBytes[car.id] = bytes;
+            final img = await loadUiImage(path);
+            if (img != null) {
+              photoImages[car.id] = img;
             }
           }
         }
@@ -237,7 +237,7 @@ class _MarketReportDialogState extends State<MarketReportDialog> {
           totalValue: totalValue.toDouble(),
           totalCount: totalCount,
           isPolish: isPolish,
-          photoBytes: photoBytes,
+          photoImages: photoImages,
         );
 
         final bytes = await _captureWidget(poster);
