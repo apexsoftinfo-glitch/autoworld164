@@ -9,6 +9,7 @@ import 'core/di/injection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppConfig.initPaths();
 
   if (AppConfig.hasSupabaseKeys) {
     await Supabase.initialize(

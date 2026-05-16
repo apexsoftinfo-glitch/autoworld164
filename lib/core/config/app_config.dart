@@ -1,8 +1,17 @@
 import 'package:flutter/foundation.dart';
-
+import 'package:path_provider/path_provider.dart';
 import 'api_keys.dart';
 
 abstract final class AppConfig {
+  static String? _docsPath;
+  static String get docsPath => _docsPath ?? '';
+
+  static Future<void> initPaths() async {
+    if (!kIsWeb) {
+      _docsPath = (await getApplicationDocumentsDirectory()).path;
+    }
+  }
+
   static bool get hasSupabaseKeys =>
       ApiKeys.supabaseUrl.trim().isNotEmpty &&
       ApiKeys.supabaseAnonKey.trim().isNotEmpty;
