@@ -19,6 +19,7 @@ abstract class SettingsRepository {
   Future<void> updateGarageBackground(String userId, String backgroundPath);
   Future<String> exportBackup();
   Future<void> importBackup(String filePath);
+  Future<void> updateLastBackupAt(String userId, DateTime date);
 }
 
 @LazySingleton(as: SettingsRepository)
@@ -229,5 +230,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
       pData['id'] = userId;
       await supabase.from('shared_users').upsert(pData);
     }
+  }
+
+  @override
+  Future<void> updateLastBackupAt(String userId, DateTime date) async {
+    final current = await _settingsDataSource.ensureSettings(userId);
+    final updated = {...current, 'last_backup_at': date.toIso8601String()};
+    await _settingsDataSource.upsertSettings(updated);
   }
 }

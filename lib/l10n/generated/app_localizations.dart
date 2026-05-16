@@ -1925,8 +1925,32 @@ abstract class AppLocalizations {
   /// No description provided for @carFormSearchRequiredBody.
   ///
   /// In pl, this message translates to:
-  /// **'Aby szukać zdjęć w internecie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.'**
+  /// **'Aby szukać zdjęć w internetcie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.'**
   String get carFormSearchRequiredBody;
+
+  /// No description provided for @backupReminderTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'UWAGA'**
+  String get backupReminderTitle;
+
+  /// No description provided for @backupReminderBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie robiłeś kopii zapasowej. Pamiętaj, że wszystkie zdjęcia przechowywane są wyłącznie na Twoim urządzeniu.'**
+  String get backupReminderBody;
+
+  /// No description provided for @backupReminderOk.
+  ///
+  /// In pl, this message translates to:
+  /// **'OK'**
+  String get backupReminderOk;
+
+  /// No description provided for @backupReminderAction.
+  ///
+  /// In pl, this message translates to:
+  /// **'ZRÓB KOPIĘ'**
+  String get backupReminderAction;
 }
 
 class _AppLocalizationsDelegate

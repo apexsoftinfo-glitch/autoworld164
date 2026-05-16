@@ -349,5 +349,9 @@
   "carConditionOther": "Inne",
   "commonOther": "Inne...",
   "carFormSearchRequiredTitle": "Wymagane dane",
-  "carFormSearchRequiredBody": "Aby szukać zdjęć w internecie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię."
+  "carFormSearchRequiredBody": "Aby szukać zdjęć w internetcie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.",
+  "backupReminderTitle": "UWAGA",
+  "backupReminderBody": "Nie robiłeś kopii zapasowej. Pamiętaj, że wszystkie zdjęcia przechowywane są wyłącznie na Twoim urządzeniu.",
+  "backupReminderOk": "OK",
+  "backupReminderAction": "ZRÓB KOPIĘ"
 }

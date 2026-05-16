@@ -19,6 +19,9 @@ _SettingsModel _$SettingsModelFromJson(Map<String, dynamic> json) =>
       garageBackground:
           json['garage_background'] as String? ??
           'assets/images/warm_garage.png',
+      lastBackupAt: json['last_backup_at'] == null
+          ? null
+          : DateTime.parse(json['last_backup_at'] as String),
     );
 
 Map<String, dynamic> _$SettingsModelToJson(_SettingsModel instance) =>
@@ -28,6 +31,7 @@ Map<String, dynamic> _$SettingsModelToJson(_SettingsModel instance) =>
       'currency': _$AppCurrencyEnumMap[instance.currency]!,
       'language': _$AppLanguageEnumMap[instance.language]!,
       'garage_background': instance.garageBackground,
+      'last_backup_at': instance.lastBackupAt?.toIso8601String(),
     };
 
 const _$AppCurrencyEnumMap = {

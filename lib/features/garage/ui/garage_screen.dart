@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,8 +35,103 @@ class GarageScreen extends StatelessWidget {
   }
 }
 
-class _GarageScreenView extends StatelessWidget {
+class _GarageScreenView extends StatefulWidget {
   const _GarageScreenView();
+
+  @override
+  State<_GarageScreenView> createState() => _GarageScreenViewState();
+}
+
+class _GarageScreenViewState extends State<_GarageScreenView> {
+  bool _checkedReminder = false;
+
+  void _checkBackupReminder(BuildContext context, settings.Data state) {
+    if (_checkedReminder) return;
+    _checkedReminder = true;
+
+    final now = DateTime.now();
+    final lastBackup = state.settings.lastBackupAt;
+
+    if (lastBackup == null || now.difference(lastBackup).inDays >= 30) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showBackupReminderDialog(context, state.settings.id);
+      });
+    }
+  }
+
+  void _showBackupReminderDialog(BuildContext context, String userId) {
+    final l10n = context.l10n;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: const Color(0xFF1C1C1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Row(
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: Color(0xFFFFD700), size: 28),
+            const SizedBox(width: 12),
+            Text(
+              l10n.backupReminderTitle,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1),
+            ),
+          ],
+        ),
+        content: Text(
+          l10n.backupReminderBody,
+          style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        actions: [
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    // Just dismiss and update timestamp so we don't bother for 30 days
+                    context.read<settings.SettingsCubit>().updateLastBackupAt(userId, DateTime.now());
+                    Navigator.pop(dialogContext);
+                  },
+                  child: Text(
+                    l10n.backupReminderOk.toUpperCase(),
+                    style: const TextStyle(color: Colors.white38, fontWeight: FontWeight.w900),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 2,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pop(dialogContext);
+                    final path = await context.read<settings.SettingsCubit>().exportBackup(userId);
+                    if (path != null) {
+                      await SharePlus.instance.share(
+                        ShareParams(
+                          files: [XFile(path)],
+                          text: 'AutoWorld 1/64 Backup',
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFFD700),
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: Text(
+                    l10n.backupReminderAction.toUpperCase(),
+                    style: const TextStyle(fontWeight: FontWeight.w900),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +146,17 @@ class _GarageScreenView extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(
-        builder: (context, settingsState) {
-          final background = settingsState is settings.Data 
-              ? settingsState.settings.garageBackground 
-              : 'assets/images/warm_garage.png';
+      body: BlocListener<settings.SettingsCubit, settings.SettingsState>(
+        listener: (context, state) {
+          if (state is settings.Data) {
+            _checkBackupReminder(context, state);
+          }
+        },
+        child: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(
+          builder: (context, settingsState) {
+            final background = settingsState is settings.Data 
+                ? settingsState.settings.garageBackground 
+                : 'assets/images/warm_garage.png';
 
           return GarageBackground(
             path: background,
@@ -137,8 +239,9 @@ class _GarageScreenView extends StatelessWidget {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _showBrandFilter(BuildContext context, Map<String, int> stats, String currentQuery) {
     final brands = stats.keys.toList()..sort();

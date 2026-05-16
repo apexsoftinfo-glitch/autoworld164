@@ -902,7 +902,7 @@ class _BackupSection extends StatelessWidget {
           icon: Icons.file_upload_outlined,
           onTap: () async {
             final box = context.findRenderObject() as RenderBox?;
-            final path = await context.read<SettingsCubit>().exportBackup();
+            final path = await context.read<SettingsCubit>().exportBackup(userId);
             if (path != null) {
               await SharePlus.instance.share(
                 ShareParams(

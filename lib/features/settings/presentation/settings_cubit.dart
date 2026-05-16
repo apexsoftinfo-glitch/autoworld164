@@ -235,6 +235,14 @@ class SettingsCubit extends Cubit<SettingsState> {
     });
   }
 
+  Future<void> updateLastBackupAt(String userId, DateTime date) async {
+    try {
+      await _settingsRepository.updateLastBackupAt(userId, date);
+    } catch (e) {
+      debugPrint('Error updating last backup date: $e');
+    }
+  }
+
   Future<void> updateCustomBackground({
     required String userId,
     required List<int> bytes,
@@ -256,9 +264,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  Future<String?> exportBackup() async {
+  Future<String?> exportBackup(String userId) async {
     try {
-      return await _settingsRepository.exportBackup();
+      final path = await _settingsRepository.exportBackup();
+      await _settingsRepository.updateLastBackupAt(userId, DateTime.now());
+      return path;
     } catch (e) {
       emit(const Error(errorKey: 'error_exporting_backup'));
        return null;

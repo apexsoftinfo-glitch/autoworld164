@@ -349,5 +349,9 @@
   "carConditionOther": "Other",
   "commonOther": "Other...",
   "carFormSearchRequiredTitle": "Missing Information",
-  "carFormSearchRequiredBody": "To search for photos online, you must first enter: Brand/Model, Producer, and Series."
+  "carFormSearchRequiredBody": "To search for photos online, you must first enter: Brand/Model, Producer, and Series.",
+  "backupReminderTitle": "ATTENTION",
+  "backupReminderBody": "You haven't made a backup. Remember that all photos are stored exclusively on your device.",
+  "backupReminderOk": "OK",
+  "backupReminderAction": "MAKE BACKUP"
 }

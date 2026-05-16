@@ -988,4 +988,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get carFormSearchRequiredBody =>
       'To search for photos online, you must first enter: Brand/Model, Producer, and Series.';
+
+  @override
+  String get backupReminderTitle => 'ATTENTION';
+
+  @override
+  String get backupReminderBody =>
+      'You haven\'t made a backup. Remember that all photos are stored exclusively on your device.';
+
+  @override
+  String get backupReminderOk => 'OK';
+
+  @override
+  String get backupReminderAction => 'MAKE BACKUP';
 }

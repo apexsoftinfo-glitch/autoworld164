@@ -991,5 +991,18 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get carFormSearchRequiredBody =>
-      'Aby szukać zdjęć w internecie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.';
+      'Aby szukać zdjęć w internetcie, musisz najpierw wpisać: Markę/Model, Producenta oraz Serię.';
+
+  @override
+  String get backupReminderTitle => 'UWAGA';
+
+  @override
+  String get backupReminderBody =>
+      'Nie robiłeś kopii zapasowej. Pamiętaj, że wszystkie zdjęcia przechowywane są wyłącznie na Twoim urządzeniu.';
+
+  @override
+  String get backupReminderOk => 'OK';
+
+  @override
+  String get backupReminderAction => 'ZRÓB KOPIĘ';
 }
