@@ -14,7 +14,7 @@ import '../presentation/cubit/cars_collection_cubit.dart';
 import 'car_form_screen.dart';
 import 'car_details_screen.dart';
 import 'widgets/car_photo.dart';
-import '../utils/garage_card_pdf_generator.dart';
+import '../utils/garage_card_png_generator.dart';
 
 class GarageScreen extends StatelessWidget {
   const GarageScreen({super.key});
@@ -690,7 +690,6 @@ class _ShareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabase = getIt<SupabaseClient>();
     final settingsState = context.watch<settings.SettingsCubit>().state;
     final garageName = settingsState is settings.Data
         ? settingsState.settings.garageName
@@ -699,10 +698,10 @@ class _ShareButton extends StatelessWidget {
     final isPolish = Localizations.localeOf(context).languageCode == 'pl';
 
     return GestureDetector(
-      onTap: () => GarageCardPdfGenerator.generateAndShare(
+      onTap: () => GarageCardPngGenerator.generateAndShare(
+        context,
         car,
         garageName: garageName,
-        supabase: supabase,
         isPolish: isPolish,
       ),
       child: Container(

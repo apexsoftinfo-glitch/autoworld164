@@ -12,7 +12,7 @@ import '../models/car_model.dart';
 import 'car_form_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../presentation/cubit/car_form_cubit.dart';
-import '../utils/car_pdf_generator.dart';
+import '../utils/garage_card_png_generator.dart';
 import '../../../l10n/l10n.dart';
 import '../../market/presentation/cubit/market_cubit.dart';
 import '../../market/ui/widgets/garage_move_success_dialog.dart';
@@ -462,10 +462,11 @@ class _ActionButtons extends StatelessWidget {
             ],
           ),
           child: OutlinedButton(
-            onPressed: () => CarPdfGenerator.generateAndShare(
+            onPressed: () => GarageCardPngGenerator.generateAndShare(
+              context,
               car,
+              garageName: null, // We could fetch this if we had the cubit here, but for now simple
               isPolish: isPolish,
-              supabase: supabase,
             ),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: const Color(0xFFFFD700).withValues(alpha: 0.4)),
@@ -475,9 +476,9 @@ class _ActionButtons extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.picture_as_pdf, color: Color(0xFFFFD700), size: 20),
+                const Icon(Icons.image_outlined, color: Color(0xFFFFD700), size: 20),
                 Text(
-                  'PDF',
+                  'PNG',
                   style: const TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
                 ),
               ],
