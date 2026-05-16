@@ -62,6 +62,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get marketSaleBadge => 'SPRZEDAŻ';
 
   @override
+  String get marketEditListing => 'Redaguj ogłoszenie';
+
+  @override
   String get newsOriginalArticle => 'Oryginalny artykuł';
 
   @override

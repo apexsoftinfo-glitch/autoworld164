@@ -200,6 +200,12 @@ abstract class AppLocalizations {
   /// **'SPRZEDAŻ'**
   String get marketSaleBadge;
 
+  /// No description provided for @marketEditListing.
+  ///
+  /// In pl, this message translates to:
+  /// **'Redaguj ogłoszenie'**
+  String get marketEditListing;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:

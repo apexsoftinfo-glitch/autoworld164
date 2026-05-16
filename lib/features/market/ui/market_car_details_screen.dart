@@ -181,6 +181,16 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               _ActionButton(
+                                label: l10n.marketEditListing,
+                                icon: Icons.edit_outlined,
+                                color: Colors.white70,
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => MarketCarFormScreen(car: currentCar)),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _ActionButton(
                                 label: l10n.marketExchangedSold,
                                 icon: Icons.check_circle_outline,
                                 color: Colors.greenAccent,
