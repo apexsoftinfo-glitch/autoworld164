@@ -24,7 +24,7 @@ Future<String?> resolvePhotoPath(String path, String folderName) async {
 }
 
 /// Loads and decodes image to dart:ui.Image for synchronous off-screen rendering.
-Future<ui.Image?> loadUiImage(String path, {String folderName = 'autoworld_market_photos'}) async {
+Future<ui.Image?> loadUiImage(String path, {String folderName = 'autoworld_photos'}) async {
   try {
     final resolved = await resolvePhotoPath(path, folderName);
     if (resolved == null) return null;

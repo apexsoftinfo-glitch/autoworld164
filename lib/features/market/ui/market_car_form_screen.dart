@@ -76,8 +76,36 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     super.dispose();
   }
 
-  // Removed _searchInternet as per user request (real photos only)
+  Future<void> _pickImage(ImageSource source) async {
+    final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
+    if (total >= 5) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.carFormMaxPhotos)),
+      );
+      return;
+    }
+    
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(
+        source: source,
+        imageQuality: 80,
+      );
 
+      if (pickedFile != null) {
+        setState(() {
+          _newImages.add(File(pickedFile.path));
+        });
+      }
+    } catch (e) {
+      debugPrint('MarketCarFormScreen error picking image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.carFormImageError)),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,11 +181,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             remainingPaths: _remainingPhotoPaths,
                             internetUrls: _internetPhotoUrls,
                             folderName: 'autoworld_photos',
-                            onAdd: (source) async {
-                              final picker = ImagePicker();
-                              final picked = await picker.pickImage(source: source, imageQuality: 70);
-                              if (picked != null) setState(() => _newImages.add(File(picked.path)));
-                            },
+                            onAdd: (source) => _pickImage(source),
                             onRemoveNew: (i) => setState(() => _newImages.removeAt(i)),
                             onRemoveExisting: (p) => setState(() => _remainingPhotoPaths.remove(p)),
                             onRemoveInternet: (u) => setState(() => _internetPhotoUrls.remove(u)),

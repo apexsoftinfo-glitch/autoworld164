@@ -33,6 +33,17 @@ class CarPhoto extends StatelessWidget {
     
     // Legacy support: Supabase storage paths contain '/'
     if (path.contains('/')) {
+      // Recovery: check if the file exists locally first (in case upload was interrupted or we want to prioritize local)
+      final fileName = p.basename(path);
+      final localCheck = p.join(AppConfig.docsPath, 'autoworld_photos', fileName);
+      if (File(localCheck).existsSync()) {
+        return Image.file(
+          File(localCheck),
+          fit: fit,
+          cacheWidth: 600,
+        );
+      }
+
       final supabase = getIt<SupabaseClient>();
       final url = supabase.storage.from('autoworld_photos').getPublicUrl(path);
       return Image.network(
@@ -43,7 +54,16 @@ class CarPhoto extends StatelessWidget {
     }
 
     // Local file: resolve synchronously using AppConfig
-    final fullPath = p.join(AppConfig.docsPath, folderName, path);
+    String fullPath = p.join(AppConfig.docsPath, folderName, path);
+    
+    // Fallback logic for legacy marketplace photos
+    if (!File(fullPath).existsSync() && folderName == 'autoworld_photos') {
+      final legacyPath = p.join(AppConfig.docsPath, 'autoworld_market_photos', path);
+      if (File(legacyPath).existsSync()) {
+        fullPath = legacyPath;
+      }
+    }
+
     return Image.file(
       File(fullPath),
       fit: fit,

@@ -308,7 +308,7 @@ class _PhotoGallery extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(24),
-                  child: CarPhoto(path: paths[index], fit: BoxFit.cover, folderName: 'autoworld_market_photos'),
+                  child: CarPhoto(path: paths[index], fit: BoxFit.cover, folderName: 'autoworld_photos'),
                 ),
               ),
             ),
@@ -335,7 +335,7 @@ class _FullScreenGallery extends StatelessWidget {
         pageController: PageController(initialPage: initialIndex),
         builder: (context, index) {
           return PhotoViewGalleryPageOptions.customChild(
-            child: CarPhoto(path: paths[index], fit: BoxFit.contain, folderName: 'autoworld_market_photos'),
+            child: CarPhoto(path: paths[index], fit: BoxFit.contain, folderName: 'autoworld_photos'),
             heroAttributes: PhotoViewHeroAttributes(tag: 'photo_$index'),
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.covered * 2,
@@ -620,7 +620,7 @@ class _ListingPreview extends StatelessWidget {
         child: CarPhoto(
           path: path,
           fit: BoxFit.cover,
-          folderName: 'autoworld_market_photos',
+          folderName: 'autoworld_photos',
         ),
       ),
     );
