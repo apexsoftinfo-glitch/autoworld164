@@ -519,7 +519,10 @@ class _ActionButtons extends StatelessWidget {
                 try {
                   await context.read<MarketCubit>().moveFromGarage(car);
                   if (context.mounted) {
-                    GarageMoveSuccessDialog.show(context, car);
+                    await GarageMoveSuccessDialog.show(context, car);
+                    if (context.mounted) {
+                      Navigator.pop(context); // Go back to Garage
+                    }
                   }
                 } catch (e) {
                   // Error handled by BlocListener
