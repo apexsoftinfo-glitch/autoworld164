@@ -21,10 +21,11 @@ sealed class SettingsState with _$SettingsState {
     SharedUserModel? profile,
     @Default(false) bool isGuest,
     @Default(false) bool isUploadingPhoto,
+    @Default(false) bool isImporting,
     Uint8List? localPhotoBytes,
     String? pendingEmail,
   }) = Data;
-  const factory SettingsState.error({String? errorKey}) = Error;
+  const factory SettingsState.error({String? errorKey, String? errorMessage}) = Error;
   const factory SettingsState.success({String? messageKey}) = Success;
 }
 
@@ -265,17 +266,22 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> importBackup(String filePath, String userId) async {
-    final previousState = state;
-    emit(const Loading());
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(isImporting: true));
+    } else {
+      emit(const Loading());
+    }
+    
     try {
       await _settingsRepository.importBackup(filePath);
       init(userId);
       emit(const Success(messageKey: 'backup_restored_successfully'));
     } catch (e, stack) {
       debugPrint('SettingsCubit.importBackup error: $e\n$stack');
-      emit(const Error(errorKey: 'error_importing_backup'));
-      if (previousState is Data) {
-        emit(previousState);
+      emit(Error(errorKey: 'error_importing_backup', errorMessage: e.toString()));
+      if (currentState is Data) {
+        emit(currentState.copyWith(isImporting: false));
       }
     }
   }

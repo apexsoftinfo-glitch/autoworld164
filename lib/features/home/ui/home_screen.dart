@@ -44,7 +44,7 @@ class _HomeScreenView extends StatelessWidget {
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           final background = state.maybeWhen(
-            data: (settings, profile, isGuest, isUploadingPhoto, localPhotoBytes, pendingEmail) => settings.garageBackground,
+            data: (settings, profile, isGuest, isUploadingPhoto, isImporting, localPhotoBytes, pendingEmail) => settings.garageBackground,
             orElse: () => 'assets/images/warm_garage.png',
           );
 
@@ -70,7 +70,7 @@ class _HomeScreenView extends StatelessWidget {
                             BlocBuilder<SettingsCubit, SettingsState>(
                               builder: (context, state) {
                                 final garageName = state.maybeWhen(
-                                  data: (settings, profile, isGuest, isUploadingPhoto, localPhotoBytes, pendingEmail) => settings.garageName,
+                                  data: (settings, profile, isGuest, isUploadingPhoto, isImporting, localPhotoBytes, pendingEmail) => settings.garageName,
                                   orElse: () => null,
                                 );
                                 final title = garageName != null && garageName.isNotEmpty 

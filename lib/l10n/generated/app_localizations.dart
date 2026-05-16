@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'nie'**
   String get commonNo;
 
+  /// No description provided for @commonOk.
+  ///
+  /// In pl, this message translates to:
+  /// **'ok'**
+  String get commonOk;
+
   /// No description provided for @userTierGuest.
   ///
   /// In pl, this message translates to:

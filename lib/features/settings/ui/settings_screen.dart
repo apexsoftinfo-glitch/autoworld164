@@ -80,21 +80,36 @@ class _SettingsView extends StatelessWidget {
           // Content
           BlocListener<SettingsCubit, SettingsState>(
             listener: (context, state) {
-              if (state is Success) {
-                final message = state.messageKey != null 
-                  ? (state.messageKey == 'account_upgraded_successfully' 
-                      ? l10n.account_upgraded_successfully 
-                      : l10n.backup_restored_successfully)
-                  : l10n.saveSuccess;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(message)),
-                );
+              if (state is Data && state.isImporting) {
+                _showImportStatusDialog(context, isProgress: true);
               }
-              if (state is Error && state.errorKey != null) {
-                final error = messageForErrorKey(l10n, state.errorKey);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(error), backgroundColor: Colors.red),
-                );
+
+              if (state is Success) {
+                if (state.messageKey == 'backup_restored_successfully') {
+                  // Close progress dialog if open
+                  Navigator.of(context, rootNavigator: true).pop();
+                  _showImportStatusDialog(context, isProgress: false, success: true);
+                } else {
+                  final message = state.messageKey == 'account_upgraded_successfully' 
+                      ? l10n.account_upgraded_successfully 
+                      : l10n.saveSuccess;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                }
+              }
+              
+              if (state is Error) {
+                if (state.errorKey == 'error_importing_backup') {
+                  // Close progress dialog if open
+                  Navigator.of(context, rootNavigator: true).pop();
+                  _showImportStatusDialog(context, isProgress: false, success: false, error: state.errorMessage);
+                } else if (state.errorKey != null) {
+                  final error = messageForErrorKey(l10n, state.errorKey);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(error), backgroundColor: Colors.red),
+                  );
+                }
               }
             },
             child: BlocBuilder<SettingsCubit, SettingsState>(
@@ -109,7 +124,7 @@ class _SettingsView extends StatelessWidget {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                  Data(settings: final settings, profile: final profile, isGuest: final isGuest, pendingEmail: final pendingEmail, isUploadingPhoto: final isUploadingPhoto, localPhotoBytes: final localPhotoBytes) =>
+                  Data(settings: final settings, profile: final profile, isGuest: final isGuest, pendingEmail: final pendingEmail, isUploadingPhoto: final isUploadingPhoto, isImporting: _, localPhotoBytes: final localPhotoBytes) =>
                     _SettingsList(
                       settings: settings, 
                       profile: profile, 
@@ -123,6 +138,89 @@ class _SettingsView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showImportStatusDialog(BuildContext context, {required bool isProgress, bool success = false, String? error}) {
+    final l10n = context.l10n;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: !isProgress,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1C1C1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        content: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isProgress) ...[
+                const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Color(0xFFFFD700), strokeWidth: 3),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  l10n.settingsBackupRestore.toUpperCase(),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1),
+                ),
+                const SizedBox(height: 12),
+                const LinearProgressIndicator(
+                  backgroundColor: Colors.white10,
+                  color: Color(0xFFFFD700),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Przenoszenie danych...',
+                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                ),
+              ] else if (success) ...[
+                const Icon(Icons.check_circle_outline, color: Colors.green, size: 64),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.backup_restored_successfully.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
+                    child: Text(l10n.commonOk.toUpperCase()),
+                  ),
+                ),
+              ] else ...[
+                const Icon(Icons.error_outline, color: Colors.red, size: 64),
+                const SizedBox(height: 16),
+                const Text(
+                  'BŁĄD IMPORTU',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  error ?? 'Nieznany błąd',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(l10n.commonOk.toUpperCase(), style: const TextStyle(color: Colors.white54)),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -144,6 +144,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get commonNo => 'nie';
 
   @override
+  String get commonOk => 'ok';
+
+  @override
   String get userTierGuest => 'gość';
 
   @override

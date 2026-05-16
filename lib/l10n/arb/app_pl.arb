@@ -50,6 +50,7 @@
   "accountTypeRegistered": "zalogowany",
   "commonYes": "tak",
   "commonNo": "nie",
+  "commonOk": "ok",
   "userTierGuest": "gość",
   "userTierRegistered": "konto",
   "userTierPro": "Pro",

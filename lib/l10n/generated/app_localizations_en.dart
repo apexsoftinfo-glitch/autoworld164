@@ -143,6 +143,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonNo => 'no';
 
   @override
+  String get commonOk => 'ok';
+
+  @override
   String get userTierGuest => 'guest';
 
   @override
