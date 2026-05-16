@@ -149,13 +149,22 @@ class SettingsRepositoryImpl implements SettingsRepository {
     // Restore photos
     final docs = await getApplicationDocumentsDirectory();
     for (final file in archive) {
-      if (file.isFile && (file.name.startsWith('autoworld_photos/') || file.name.startsWith('autoworld_market_photos/'))) {
-        final localPath = p.join(docs.path, file.name);
-        final localFile = File(localPath);
-        if (!await localFile.parent.exists()) {
-          await localFile.parent.create(recursive: true);
+      if (file.isFile) {
+        String? targetPath;
+        if (file.name.startsWith('autoworld_photos/') || file.name.startsWith('autoworld_market_photos/')) {
+          targetPath = p.join(docs.path, file.name);
+        } else if (file.name.startsWith('photos/')) {
+          // Backward compatibility for old backups
+          targetPath = p.join(docs.path, 'autoworld_photos', p.basename(file.name));
         }
-        await localFile.writeAsBytes(file.content as List<int>);
+
+        if (targetPath != null) {
+          final localFile = File(targetPath);
+          if (!await localFile.parent.exists()) {
+            await localFile.parent.create(recursive: true);
+          }
+          await localFile.writeAsBytes(file.content as List<int>);
+        }
       }
     }
 
