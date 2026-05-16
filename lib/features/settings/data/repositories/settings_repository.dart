@@ -77,13 +77,19 @@ class SettingsRepositoryImpl implements SettingsRepository {
     if (userId == null) throw Exception('unauthenticated');
 
     final cars = await supabase.from('autoworld_cars').select();
+    final market = await supabase.from('autoworld_market').select();
+    final series = await supabase.from('autoworld_series').select();
+    final producers = await supabase.from('autoworld_producers').select();
     final settings = await supabase.from('autoworld_settings').select().eq('id', userId).maybeSingle();
     final profile = await supabase.from('shared_users').select().eq('id', userId).maybeSingle();
 
     final backupData = {
-      'version': 1,
+      'version': 2,
       'exported_at': DateTime.now().toIso8601String(),
       'cars': cars,
+      'market': market,
+      'series': series,
+      'producers': producers,
       'settings': settings,
       'profile': profile,
     };
@@ -99,18 +105,21 @@ class SettingsRepositoryImpl implements SettingsRepository {
     final dataJson = jsonEncode(backupData);
     archive.addFile(ArchiveFile('data.json', dataJson.length, utf8.encode(dataJson)));
 
-    // Add photos
-    final photosDir = Directory(p.join(docs.path, 'autoworld_photos'));
-    if (await photosDir.exists()) {
-      final files = photosDir.listSync();
-      for (final file in files) {
-        if (file is File) {
-          final bytes = await file.readAsBytes();
-          archive.addFile(ArchiveFile(
-            'photos/${p.basename(file.path)}',
-            bytes.length,
-            bytes,
-          ));
+    // Add photos from both folders
+    final photoFolders = ['autoworld_photos', 'autoworld_market_photos'];
+    for (final folder in photoFolders) {
+      final dir = Directory(p.join(docs.path, folder));
+      if (await dir.exists()) {
+        final files = dir.listSync();
+        for (final file in files) {
+          if (file is File) {
+            final bytes = await file.readAsBytes();
+            archive.addFile(ArchiveFile(
+              '$folder/${p.basename(file.path)}',
+              bytes.length,
+              bytes,
+            ));
+          }
         }
       }
     }
@@ -139,52 +148,76 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
     // Restore photos
     final docs = await getApplicationDocumentsDirectory();
-    final photosDir = Directory(p.join(docs.path, 'autoworld_photos'));
-    if (!await photosDir.exists()) {
-      await photosDir.create(recursive: true);
-    }
-
     for (final file in archive) {
-      if (file.name.startsWith('photos/') && file.isFile) {
-        final fileName = p.basename(file.name);
-        final localFile = File(p.join(photosDir.path, fileName));
+      if (file.isFile && (file.name.startsWith('autoworld_photos/') || file.name.startsWith('autoworld_market_photos/'))) {
+        final localPath = p.join(docs.path, file.name);
+        final localFile = File(localPath);
+        if (!await localFile.parent.exists()) {
+          await localFile.parent.create(recursive: true);
+        }
         await localFile.writeAsBytes(file.content as List<int>);
       }
     }
 
     // Restore data to Supabase
-    final cars = data['cars'] as List;
+    final cars = data['cars'] as List?;
+    final market = data['market'] as List?;
+    final series = data['series'] as List?;
+    final producers = data['producers'] as List?;
     final settings = data['settings'] as Map<String, dynamic>?;
     final profile = data['profile'] as Map<String, dynamic>?;
 
-    // Delete existing cars for this user if they choose to overwrite? 
-    // Usually restore means complete overwrite.
-    await supabase.from('autoworld_cars').delete().eq('user_id', userId);
-    
-    if (cars.isNotEmpty) {
-      // Clear IDs to avoid conflicts if they are from different env, but wait, usually we keep them.
-      // But user_id must be updated to CURRENT user id.
-      final modifiedCars = cars.map((c) {
-         final car = Map<String, dynamic>.from(c as Map);
-         car['user_id'] = userId;
-         // Ensure we don't try to insert 'id' if it's generated, 
-         // but wait, if it's UUID we can insert it.
-         return car;
+    // Helper to prepare data for insertion/upsertion
+    List<Map<String, dynamic>> prepareList(List? list, {bool stripId = true}) {
+      if (list == null) return [];
+      return list.map((item) {
+        final map = Map<String, dynamic>.from(item as Map);
+        map['user_id'] = userId;
+        if (stripId) map.remove('id'); // Remove ID to avoid PK conflicts if moving across accounts
+        return map;
       }).toList();
-      await supabase.from('autoworld_cars').insert(modifiedCars);
     }
 
+    // 1. Cars
+    await supabase.from('autoworld_cars').delete().eq('user_id', userId);
+    final preparedCars = prepareList(cars);
+    if (preparedCars.isNotEmpty) {
+      await supabase.from('autoworld_cars').insert(preparedCars);
+    }
+
+    // 2. Market
+    await supabase.from('autoworld_market').delete().eq('user_id', userId);
+    final preparedMarket = prepareList(market);
+    if (preparedMarket.isNotEmpty) {
+      await supabase.from('autoworld_market').insert(preparedMarket);
+    }
+
+    // 3. Series
+    await supabase.from('autoworld_series').delete().eq('user_id', userId);
+    final preparedSeries = prepareList(series);
+    if (preparedSeries.isNotEmpty) {
+      await supabase.from('autoworld_series').insert(preparedSeries);
+    }
+
+    // 4. Producers
+    await supabase.from('autoworld_producers').delete().eq('user_id', userId);
+    final preparedProducers = prepareList(producers);
+    if (preparedProducers.isNotEmpty) {
+      await supabase.from('autoworld_producers').insert(preparedProducers);
+    }
+
+    // 5. Settings
     if (settings != null) {
       final s = Map<String, dynamic>.from(settings);
-      s['id'] = userId; // settings table uses 'id' as user identifier (PK)
-      // Remove user_id if it mistakenly exists in the map
+      s['id'] = userId;
       s.remove('user_id');
       await supabase.from('autoworld_settings').upsert(s);
     }
 
+    // 6. Profile
     if (profile != null) {
       final pData = Map<String, dynamic>.from(profile);
-      pData['id'] = userId; // shared_users uses 'id' as PK
+      pData['id'] = userId;
       await supabase.from('shared_users').upsert(pData);
     }
   }
