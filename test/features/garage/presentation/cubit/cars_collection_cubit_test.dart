@@ -6,12 +6,15 @@ import 'package:mocktail/mocktail.dart';
 import 'package:autoworld164/features/garage/models/car_model.dart';
 import 'package:autoworld164/features/garage/presentation/cubit/cars_collection_cubit.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../support/mocks.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late MockCarsRepository carsRepository;
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     carsRepository = MockCarsRepository();
   });
 
