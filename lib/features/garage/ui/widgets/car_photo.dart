@@ -5,7 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/di/injection.dart';
 
-class CarPhoto extends StatelessWidget {
+class CarPhoto extends StatefulWidget {
   final String path;
   final BoxFit fit;
   final Widget? placeholder;
@@ -20,12 +20,53 @@ class CarPhoto extends StatelessWidget {
   });
 
   @override
+  State<CarPhoto> createState() => _CarPhotoState();
+}
+
+class _CarPhotoState extends State<CarPhoto> {
+  static String? _docsPath;
+  String? _resolvedPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPath();
+  }
+
+  @override
+  void didUpdateWidget(CarPhoto oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.path != widget.path || oldWidget.folderName != widget.folderName) {
+      _initPath();
+    }
+  }
+
+  Future<void> _initPath() async {
+    if (widget.path.startsWith('http') || widget.path.contains('/')) {
+      if (mounted) setState(() => _resolvedPath = widget.path);
+      return;
+    }
+
+    _docsPath ??= (await getApplicationDocumentsDirectory()).path;
+    if (mounted) {
+      setState(() {
+        _resolvedPath = p.join(_docsPath!, widget.folderName, widget.path);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final path = _resolvedPath;
+    if (path == null) {
+      return widget.placeholder ?? const Center(child: CircularProgressIndicator(strokeWidth: 2));
+    }
+
     if (path.startsWith('http')) {
       return Image.network(
         path,
-        fit: fit,
-        errorBuilder: (context, error, stackTrace) => placeholder ?? const Icon(Icons.error),
+        fit: widget.fit,
+        errorBuilder: (context, error, stackTrace) => widget.placeholder ?? const Icon(Icons.error),
       );
     }
     
@@ -35,30 +76,17 @@ class CarPhoto extends StatelessWidget {
       final url = supabase.storage.from('autoworld_photos').getPublicUrl(path);
       return Image.network(
         url,
-        fit: fit,
-        errorBuilder: (context, error, stackTrace) => placeholder ?? const Icon(Icons.error),
+        fit: widget.fit,
+        errorBuilder: (context, error, stackTrace) => widget.placeholder ?? const Icon(Icons.error),
       );
     }
 
-    // New format: Local filename relative to documents/autoworld_photos
-    return FutureBuilder<String>(
-      future: _getLocalPath(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final file = File(snapshot.data!);
-          return Image.file(
-            file,
-            fit: fit,
-            errorBuilder: (context, error, stackTrace) => placeholder ?? const Icon(Icons.error),
-          );
-        }
-        return placeholder ?? const Center(child: CircularProgressIndicator(strokeWidth: 2));
-      },
+    return Image.file(
+      File(path),
+      fit: widget.fit,
+      // Optimize for list/grid thumbnails
+      cacheWidth: 600,
+      errorBuilder: (context, error, stackTrace) => widget.placeholder ?? const Icon(Icons.error),
     );
-  }
-
-  Future<String> _getLocalPath() async {
-    final docs = await getApplicationDocumentsDirectory();
-    return p.join(docs.path, folderName, path);
   }
 }
