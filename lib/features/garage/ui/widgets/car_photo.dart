@@ -31,6 +31,15 @@ class CarPhoto extends StatelessWidget {
       );
     }
     
+    if (p.isAbsolute(path)) {
+      return Image.file(
+        File(path),
+        fit: fit,
+        cacheWidth: 600,
+        errorBuilder: (context, error, stackTrace) => placeholder ?? const Icon(Icons.error),
+      );
+    }
+
     // Legacy support: Supabase storage paths contain '/'
     if (path.contains('/')) {
       // Recovery: check if the file exists locally first (in case upload was interrupted or we want to prioritize local)

@@ -90,15 +90,23 @@ class MarketDataSourceImpl implements MarketDataSource {
     final paths = <String>[];
     for (final fileName in fileNames) {
       try {
-        final sourceFile = File(p.join(dir, fileName));
+        // Resolve the source file. Use basename to handle legacy Supabase paths (e.g., "userId/file.jpg")
+        // and check if the stored path was absolute.
+        final effectiveName = p.basename(fileName);
+        final sourceFile = p.isAbsolute(fileName) 
+            ? File(fileName) 
+            : File(p.join(dir, effectiveName));
+
         if (await sourceFile.exists()) {
-          final newFileName = 'mkt_${DateTime.now().millisecondsSinceEpoch}_moved_${paths.length}${p.extension(fileName)}';
+          final newFileName = 'mkt_${DateTime.now().millisecondsSinceEpoch}_moved_${paths.length}${p.extension(effectiveName)}';
           final targetPath = p.join(dir, newFileName);
           await sourceFile.copy(targetPath);
           paths.add(newFileName);
+        } else {
+          debugPrint('Source photo not found: ${sourceFile.path}');
         }
       } catch (e) {
-        debugPrint('Error copying/referencing photo $fileName: $e');
+        debugPrint('Error copying photo $fileName: $e');
       }
     }
     return paths;
