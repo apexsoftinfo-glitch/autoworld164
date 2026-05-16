@@ -102,29 +102,29 @@ class GarageCardPoster extends StatelessWidget {
     return DefaultTextStyle(
       style: const TextStyle(
         decoration: TextDecoration.none,
-        color: Colors.white,
+        color: Color(0xFF1A120B),
         fontFamily: 'sans-serif',
       ),
       child: Container(
         width: 800,
         height: 1200,
         decoration: const BoxDecoration(
-          color: Color(0xFF1A120B),
+          color: Colors.white,
         ),
         child: Stack(
           children: [
-            // Background design elements
+            // Subtle background design element
             Positioned(
-              top: -100,
-              right: -100,
+              top: -50,
+              right: -50,
               child: Container(
-                width: 400,
-                height: 400,
+                width: 300,
+                height: 300,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      const Color(0xFFFFD700).withValues(alpha: 0.1),
+                      const Color(0xFFC5A021).withValues(alpha: 0.05),
                       Colors.transparent,
                     ],
                   ),
@@ -150,7 +150,7 @@ class GarageCardPoster extends StatelessWidget {
                               fontSize: 32,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 4,
-                              color: Color(0xFFFFD700),
+                              color: Color(0xFFC5A021),
                             ),
                           ),
                           Text(
@@ -159,7 +159,7 @@ class GarageCardPoster extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w300,
                               letterSpacing: 2,
-                              color: Colors.white.withValues(alpha: 0.5),
+                              color: const Color(0xFF1A120B).withValues(alpha: 0.4),
                             ),
                           ),
                         ],
@@ -167,7 +167,7 @@ class GarageCardPoster extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFFFD700), width: 2),
+                          border: Border.all(color: const Color(0xFFC5A021), width: 2),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
@@ -175,7 +175,7 @@ class GarageCardPoster extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w900,
-                            color: Color(0xFFFFD700),
+                            color: Color(0xFFC5A021),
                           ),
                         ),
                       ),
@@ -192,9 +192,9 @@ class GarageCardPoster extends StatelessWidget {
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.5),
-                          blurRadius: 30,
-                          offset: const Offset(0, 15),
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 40,
+                          offset: const Offset(0, 20),
                         ),
                       ],
                     ),
@@ -203,8 +203,8 @@ class GarageCardPoster extends StatelessWidget {
                       child: mainImage != null
                           ? RawImage(image: mainImage!, fit: BoxFit.cover)
                           : Container(
-                              color: Colors.white.withValues(alpha: 0.05),
-                              child: const Icon(Icons.directions_car, color: Colors.white10, size: 100),
+                              color: Colors.black.withValues(alpha: 0.03),
+                              child: const Icon(Icons.directions_car, color: Colors.black12, size: 100),
                             ),
                     ),
                   ),
@@ -216,7 +216,7 @@ class GarageCardPoster extends StatelessWidget {
                     Text(
                       car.toyMaker!.toUpperCase(),
                       style: const TextStyle(
-                        color: Color(0xFFFFD700),
+                        color: Color(0xFFC5A021),
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 3,
@@ -228,6 +228,7 @@ class GarageCardPoster extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.w900,
+                      color: Color(0xFF1A120B),
                     ),
                   ),
                   
@@ -275,7 +276,7 @@ class GarageCardPoster extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 2,
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: const Color(0xFF1A120B).withValues(alpha: 0.2),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -289,7 +290,7 @@ class GarageCardPoster extends StatelessWidget {
                           width: 140,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white12),
+                            border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
@@ -310,7 +311,7 @@ class GarageCardPoster extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 4,
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: const Color(0xFF1A120B).withValues(alpha: 0.08),
                       ),
                     ),
                   ),
@@ -328,9 +329,9 @@ class GarageCardPoster extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.05),
+          color: const Color(0xFF1A120B).withValues(alpha: 0.03),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: const Color(0xFF1A120B).withValues(alpha: 0.05)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,7 +341,7 @@ class GarageCardPoster extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w900,
-                color: Colors.white.withValues(alpha: 0.3),
+                color: const Color(0xFF1A120B).withValues(alpha: 0.3),
               ),
             ),
             const SizedBox(height: 8),
@@ -349,7 +350,7 @@ class GarageCardPoster extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
-                color: highlight ? const Color(0xFFFFD700) : Colors.white,
+                color: highlight ? const Color(0xFFC5A021) : const Color(0xFF1A120B),
               ),
             ),
           ],
