@@ -133,6 +133,53 @@ class _GarageScreenViewState extends State<_GarageScreenView> {
     );
   }
 
+  void _showExportStatusDialog(BuildContext context, {required bool isProgress}) {
+    final l10n = context.l10n;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: !isProgress,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1C1C1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        content: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isProgress) ...[
+                const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Color(0xFFFFD700), strokeWidth: 3),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  l10n.settingsBackupCreate.toUpperCase(),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1),
+                ),
+                const SizedBox(height: 12),
+                const LinearProgressIndicator(
+                  backgroundColor: Colors.white10,
+                  color: Color(0xFFFFD700),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Przygotowywanie plików...',
+                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'To może chwilę potrwać',
+                  style: TextStyle(color: Colors.white24, fontSize: 10),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,6 +197,23 @@ class _GarageScreenViewState extends State<_GarageScreenView> {
         listener: (context, state) {
           if (state is settings.Data) {
             _checkBackupReminder(context, state);
+            if (state.isExporting) {
+              _showExportStatusDialog(context, isProgress: true);
+            }
+          }
+
+          if (state is settings.Success) {
+            if (state.messageKey == 'backup_created_successfully') {
+              // Close progress dialog if open
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+          }
+
+          if (state is settings.Error) {
+            if (state.errorKey == 'error_exporting_backup') {
+              // Close progress dialog if open
+              Navigator.of(context, rootNavigator: true).pop();
+            }
           }
         },
         child: BlocBuilder<settings.SettingsCubit, settings.SettingsState>(

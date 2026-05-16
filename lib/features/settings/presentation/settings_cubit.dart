@@ -22,6 +22,7 @@ sealed class SettingsState with _$SettingsState {
     @Default(false) bool isGuest,
     @Default(false) bool isUploadingPhoto,
     @Default(false) bool isImporting,
+    @Default(false) bool isExporting,
     Uint8List? localPhotoBytes,
     String? pendingEmail,
   }) = Data;
@@ -265,12 +266,25 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<String?> exportBackup(String userId) async {
+    final currentState = state;
+    if (currentState is Data) {
+      emit(currentState.copyWith(isExporting: true));
+    }
     try {
       final path = await _settingsRepository.exportBackup();
       await _settingsRepository.updateLastBackupAt(userId, DateTime.now());
+      if (currentState is Data) {
+        emit(currentState.copyWith(isExporting: false));
+        emit(const Success(messageKey: 'backup_created_successfully'));
+        emit(currentState);
+      }
       return path;
     } catch (e) {
+      if (currentState is Data) {
+        emit(currentState.copyWith(isExporting: false));
+      }
       emit(const Error(errorKey: 'error_exporting_backup'));
+      if (currentState is Data) emit(currentState);
        return null;
     }
   }

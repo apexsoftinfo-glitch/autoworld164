@@ -43,10 +43,10 @@ class _HomeScreenView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
-          final background = state.maybeWhen(
-            data: (settings, profile, isGuest, isUploadingPhoto, isImporting, localPhotoBytes, pendingEmail) => settings.garageBackground,
-            orElse: () => 'assets/images/warm_garage.png',
-          );
+          final background = switch (state) {
+            Data(settings: final s) => s.garageBackground,
+            _ => 'assets/images/warm_garage.png',
+          };
 
           return GarageBackground(
             path: background,
@@ -69,10 +69,10 @@ class _HomeScreenView extends StatelessWidget {
                           children: [
                             BlocBuilder<SettingsCubit, SettingsState>(
                               builder: (context, state) {
-                                final garageName = state.maybeWhen(
-                                  data: (settings, profile, isGuest, isUploadingPhoto, isImporting, localPhotoBytes, pendingEmail) => settings.garageName,
-                                  orElse: () => null,
-                                );
+                                final garageName = switch (state) {
+                                  Data(settings: final s) => s.garageName,
+                                  _ => null,
+                                };
                                 final title = garageName != null && garageName.isNotEmpty 
                                   ? context.l10n.homeGarageTitleWithName(garageName) 
                                   : context.l10n.homeGarageTitle;
