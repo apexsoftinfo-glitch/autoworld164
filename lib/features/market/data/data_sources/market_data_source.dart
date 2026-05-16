@@ -43,79 +43,62 @@ class MarketDataSourceImpl implements MarketDataSource {
         .order('created_at', ascending: false);
   }
 
-  Future<List<String>> _uploadPhotos(List<File> photos) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return [];
+  Future<String> _getPhotosDir() async {
+    final docs = await getApplicationDocumentsDirectory();
+    final dir = Directory(p.join(docs.path, 'autoworld_photos'));
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+    return dir.path;
+  }
 
+  Future<List<String>> _savePhotosLocally(List<File> photos) async {
+    final dir = await _getPhotosDir();
     final paths = <String>[];
     for (final photo in photos) {
-      try {
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${paths.length}${p.extension(photo.path)}';
-        final storagePath = '$userId/$fileName';
-        
-        await _supabase.storage.from('autoworld_photos').upload(
-          storagePath,
-          photo,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-        );
-        
-        paths.add(storagePath);
-      } catch (e) {
-        debugPrint('Error uploading photo: $e');
-      }
+      final fileName = 'mkt_${DateTime.now().millisecondsSinceEpoch}_local_${paths.length}${p.extension(photo.path)}';
+      final path = p.join(dir, fileName);
+      await photo.copy(path);
+      paths.add(fileName);
     }
     return paths;
   }
 
-  Future<List<String>> _uploadFromUrls(List<String> urls) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return [];
-
+  Future<List<String>> _saveFromUrlsLocally(List<String> urls) async {
+    final dir = await _getPhotosDir();
     final paths = <String>[];
     for (final url in urls) {
       try {
         final response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
-          final fileName = '${DateTime.now().millisecondsSinceEpoch}_remote_${paths.length}.jpg';
-          final storagePath = '$userId/$fileName';
-          
-          await _supabase.storage.from('autoworld_photos').uploadBinary(
-            storagePath,
-            response.bodyBytes,
-            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-          );
-          
-          paths.add(storagePath);
+          final fileName = 'mkt_${DateTime.now().millisecondsSinceEpoch}_remote_${paths.length}.jpg';
+          final path = p.join(dir, fileName);
+          await File(path).writeAsBytes(response.bodyBytes);
+          paths.add(fileName);
         }
       } catch (e) {
-        debugPrint('Error uploading from URL $url: $e');
+        debugPrint('Error downloading from URL $url: $e');
       }
     }
     return paths;
   }
 
-  Future<List<String>> _copyAndUploadExistingPhotos(List<String> fileNames) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null || fileNames.isEmpty) return [];
+  Future<List<String>> _copyExistingPhotos(List<String> fileNames) async {
+    if (fileNames.isEmpty) return [];
     
-    final docs = await getApplicationDocumentsDirectory();
-    final sourceDir = p.join(docs.path, 'autoworld_photos');
-    
+    final dir = await _getPhotosDir();
     final paths = <String>[];
     for (final fileName in fileNames) {
       try {
-        final sourceFile = File(p.join(sourceDir, fileName));
+        final sourceFile = File(p.join(dir, fileName));
         if (await sourceFile.exists()) {
-          final storagePath = '$userId/${DateTime.now().millisecondsSinceEpoch}_$fileName';
-          
-          await _supabase.storage.from('autoworld_photos').upload(
-            storagePath,
-            sourceFile,
-          );
-          paths.add(storagePath);
+          final newFileName = 'mkt_${DateTime.now().millisecondsSinceEpoch}_moved_${paths.length}${p.extension(fileName)}';
+          final targetPath = p.join(dir, newFileName);
+          await sourceFile.copy(targetPath);
+          paths.add(newFileName);
         }
       } catch (e) {
-        debugPrint('Error uploading existing photo $fileName: $e');
+        debugPrint('Error copying/referencing photo $fileName: $e');
       }
     }
     return paths;
@@ -123,13 +106,13 @@ class MarketDataSourceImpl implements MarketDataSource {
 
   @override
   Future<void> addMarketCar(Map<String, dynamic> data, List<File> photos, List<String> internetUrls, {List<String> initialPhotoPaths = const []}) async {
-    final storagePaths = await _uploadPhotos(photos);
-    final remoteStoragePaths = await _uploadFromUrls(internetUrls);
-    final movedStoragePaths = await _copyAndUploadExistingPhotos(initialPhotoPaths);
+    final localPaths = await _savePhotosLocally(photos);
+    final remotePaths = await _saveFromUrlsLocally(internetUrls);
+    final movedPaths = await _copyExistingPhotos(initialPhotoPaths);
 
     await _supabase.from('autoworld_market').insert({
       ...data,
-      'photo_paths': [...movedStoragePaths, ...storagePaths, ...remoteStoragePaths],
+      'photo_paths': [...movedPaths, ...localPaths, ...remotePaths],
     });
   }
 
@@ -141,14 +124,14 @@ class MarketDataSourceImpl implements MarketDataSource {
     List<String> internetUrls,
     List<String> oldPhotoPaths,
   ) async {
-    final storagePaths = await _uploadPhotos(newPhotos);
-    final remoteStoragePaths = await _uploadFromUrls(internetUrls);
+    final localPaths = await _savePhotosLocally(newPhotos);
+    final remotePaths = await _saveFromUrlsLocally(internetUrls);
     
     final currentPathsInDb = data['photo_paths'] as List? ?? [];
     
     await _supabase.from('autoworld_market').update({
       ...data,
-      'photo_paths': [...currentPathsInDb, ...storagePaths, ...remoteStoragePaths],
+      'photo_paths': [...currentPathsInDb, ...localPaths, ...remotePaths],
     }).eq('id', id);
   }
 
@@ -156,11 +139,20 @@ class MarketDataSourceImpl implements MarketDataSource {
   Future<void> deleteMarketCar(String id, List<String> photoPaths) async {
     await _supabase.from('autoworld_market').delete().eq('id', id);
 
+    // We don't delete local photos when deleting a market car if they might be used elsewhere (e.g. still in garage)
+    // But if they have 'mkt_' prefix, maybe we should?
+    // User said "tak samo jak w garażu". In garage they are deleted.
     if (photoPaths.isNotEmpty) {
-      try {
-        await _supabase.storage.from('autoworld_photos').remove(photoPaths);
-      } catch (e) {
-        debugPrint('Error removing photos from storage: $e');
+      final dir = await _getPhotosDir();
+      for (final fileName in photoPaths) {
+        // Only delete if it's a market-specific photo (starts with mkt_) 
+        // to avoid deleting photos that might still be in the garage (moved models)
+        if (fileName.startsWith('mkt_')) {
+          final file = File(p.join(dir, fileName));
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
       }
     }
   }

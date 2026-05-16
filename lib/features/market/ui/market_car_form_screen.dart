@@ -152,7 +152,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                             newImages: _newImages,
                             remainingPaths: _remainingPhotoPaths,
                             internetUrls: _internetPhotoUrls,
-                            folderName: widget.garageCar != null ? 'autoworld_photos' : 'autoworld_market_photos',
+                            folderName: 'autoworld_photos',
                             onAdd: (source) async {
                               final picker = ImagePicker();
                               final picked = await picker.pickImage(source: source, imageQuality: 70);
@@ -514,8 +514,8 @@ class _Thumbnail extends StatelessWidget {
 
   Widget _buildImage() {
     if (image != null) return Image.file(image!, fit: BoxFit.cover);
-    if (url != null) return CarPhoto(path: url!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_market_photos');
-    return CarPhoto(path: path!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_market_photos');
+    if (url != null) return CarPhoto(path: url!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_photos');
+    return CarPhoto(path: path!, fit: BoxFit.cover, folderName: folderName ?? 'autoworld_photos');
   }
 }
 

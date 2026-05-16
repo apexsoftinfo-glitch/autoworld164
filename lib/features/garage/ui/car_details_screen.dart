@@ -52,12 +52,13 @@ class CarDetailsScreen extends StatelessWidget {
         },
         child: BlocListener<CarFormCubit, CarFormState>(
           listener: (context, state) {
+            final l10n = context.l10n;
             state.whenOrNull(
               success: () {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Model został usunięty z garażu'),
+                  SnackBar(
+                    content: Text(l10n.marketCarDeletedFromGarage),
                     backgroundColor: Colors.black87,
                   ),
                 );
