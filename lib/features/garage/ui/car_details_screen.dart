@@ -489,7 +489,6 @@ class _ActionButtons extends StatelessWidget {
 
   void _confirmSell(BuildContext context) {
     final l10n = context.l10n;
-    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
     
     showDialog(
       context: context,
@@ -499,13 +498,11 @@ class _ActionButtons extends StatelessWidget {
           backgroundColor: const Color(0xFF1A120B),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: Colors.white12)),
           title: Text(
-            isPolish ? 'Przenieść do sprzedaży?' : 'Move to marketplace?',
+            l10n.marketMoveConfirmTitle,
             style: const TextStyle(color: Colors.white),
           ),
           content: Text(
-            isPolish 
-              ? 'Czy na pewno chcesz przenieść ten model z garażu do sekcji Wymiana/Sprzedaż?' 
-              : 'Are you sure you want to move this model from the garage to the Marketplace?',
+            l10n.marketMoveConfirmBody,
             style: const TextStyle(color: Colors.white70),
           ),
           actions: [
@@ -529,7 +526,7 @@ class _ActionButtons extends StatelessWidget {
                 }
               },
               child: Text(
-                isPolish ? 'PRZENIEŚ' : 'MOVE', 
+                l10n.marketMoveButton.toUpperCase(), 
                 style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),
               ),
             ),

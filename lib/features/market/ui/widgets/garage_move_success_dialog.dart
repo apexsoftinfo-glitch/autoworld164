@@ -109,26 +109,26 @@ class _GarageMoveSuccessDialogState extends State<GarageMoveSuccessDialog> with 
                           ),
                         ),
                         // Garage Icon (Left)
-                        const Positioned(
+                        Positioned(
                           left: 0,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.garage, color: Colors.white24, size: 32),
-                              SizedBox(height: 4),
-                              Text('GARAGE', style: TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold)),
+                              const Icon(Icons.garage, color: Colors.white24, size: 32),
+                              const SizedBox(height: 4),
+                              Text(l10n.marketMoveSuccessGarageLabel.toUpperCase(), style: const TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
                         // Market Icon (Right)
-                        const Positioned(
+                        Positioned(
                           right: 0,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.storefront, color: Color(0xFFFFD700), size: 32),
-                              SizedBox(height: 4),
-                              Text('MARKET', style: TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.bold)),
+                              const Icon(Icons.storefront, color: Color(0xFFFFD700), size: 32),
+                              const SizedBox(height: 4),
+                              Text(l10n.marketMoveSuccessMarketLabel.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),

@@ -62,7 +62,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketSaleBadge => 'SALE';
 
   @override
-  String get marketEditListing => 'Redaguj ogłoszenie';
+  String get marketEditListing => 'Edit Listing';
+
+  @override
+  String get marketMoveConfirmTitle => 'Move to marketplace?';
+
+  @override
+  String get marketMoveConfirmBody =>
+      'Are you sure you want to move this model from the garage to the Marketplace?';
+
+  @override
+  String get marketMoveButton => 'MOVE';
+
+  @override
+  String get marketMoveSuccessMarketLabel => 'MARKET';
+
+  @override
+  String get marketMoveSuccessGarageLabel => 'GARAGE';
+
+  @override
+  String get marketSearchNoResults => 'No results';
+
+  @override
+  String get marketCarDeletedFromGarage =>
+      'Model has been removed from the garage';
+
+  @override
+  String get marketTryAgain => 'TRY AGAIN';
 
   @override
   String get newsOriginalArticle => 'Original Article';

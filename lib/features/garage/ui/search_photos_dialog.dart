@@ -92,95 +92,95 @@ class SearchPhotosDialog extends StatelessWidget {
                               const Icon(Icons.error_outline, color: Colors.redAccent, size: 40),
                               const SizedBox(height: 16),
                               Text(key, style: const TextStyle(color: Colors.redAccent)),
-                              TextButton(
-                                onPressed: () => context.read<SearchPhotosCubit>().search(query),
-                                child: const Text('PONÓW PRÓBĘ', style: TextStyle(color: Color(0xFFFFD700))),
-                              ),
-                            ],
-                          ),
-                        ),
-                        success: (urls, isLoadingMore) => urls.isEmpty
-                            ? SizedBox(
-                                height: 200,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.search_off, color: Colors.white24, size: 40),
-                                    const SizedBox(height: 16),
-                                    const Text('Brak wyników', style: TextStyle(color: Colors.white24)),
-                                    const SizedBox(height: 8),
-                                    TextButton(
-                                      onPressed: () => context.read<SearchPhotosCubit>().search(query),
-                                      child: const Text('SPRÓBUJ PONOWNIE', style: TextStyle(color: Color(0xFFFFD700))),
-                                    ),
-                                  ],
+                                TextButton(
+                                  onPressed: () => context.read<SearchPhotosCubit>().search(query),
+                                  child: Text(l10n.marketTryAgain.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700))),
                                 ),
-                              )
-                            : Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: GridView.builder(
-                                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                                      shrinkWrap: true,
-                                      physics: const ClampingScrollPhysics(),
-                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 12,
-                                        mainAxisSpacing: 12,
+                              ],
+                            ),
+                          ),
+                          success: (urls, isLoadingMore) => urls.isEmpty
+                              ? SizedBox(
+                                  height: 200,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.search_off, color: Colors.white24, size: 40),
+                                      const SizedBox(height: 16),
+                                      Text(l10n.marketSearchNoResults, style: const TextStyle(color: Colors.white24)),
+                                      const SizedBox(height: 8),
+                                      TextButton(
+                                        onPressed: () => context.read<SearchPhotosCubit>().search(query),
+                                        child: Text(l10n.marketTryAgain.toUpperCase(), style: const TextStyle(color: Color(0xFFFFD700))),
                                       ),
-                                      itemCount: urls.length,
-                                      itemBuilder: (context, i) {
-                                        final url = urls[i];
-                                        return GestureDetector(
-                                          onTap: () => Navigator.pop(context, url),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(16),
-                                              border: Border.all(color: Colors.white10),
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(16),
-                                              child: Image.network(
-                                                url,
-                                                fit: BoxFit.cover,
-                                                loadingBuilder: (context, child, progress) {
-                                                  if (progress == null) return child;
-                                                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
-                                                },
-                                                errorBuilder: (context, error, stackTrace) => const Center(
-                                                  child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                    ],
+                                  ),
+                                )
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: GridView.builder(
+                                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                                        shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
+                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 12,
+                                          mainAxisSpacing: 12,
+                                        ),
+                                        itemCount: urls.length,
+                                        itemBuilder: (context, i) {
+                                          final url = urls[i];
+                                          return GestureDetector(
+                                            onTap: () => Navigator.pop(context, url),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(16),
+                                                border: Border.all(color: Colors.white10),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(16),
+                                                child: Image.network(
+                                                  url,
+                                                  fit: BoxFit.cover,
+                                                  loadingBuilder: (context, child, progress) {
+                                                    if (progress == null) return child;
+                                                    return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                                                  },
+                                                  errorBuilder: (context, error, stackTrace) => const Center(
+                                                    child: Icon(Icons.broken_image_outlined, color: Colors.white24, size: 30),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  if (isLoadingMore)
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 20),
-                                      child: CircularProgressIndicator(color: Color(0xFFFFD700)),
-                                    )
-                                  else if (urls.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 20),
-                                      child: TextButton.icon(
-                                        onPressed: () => context.read<SearchPhotosCubit>().loadMore(query),
-                                        icon: const Icon(Icons.add_circle_outline, color: Color(0xFFFFD700)),
-                                        label: const Text(
-                                          'SZUKAJ JESZCZE',
-                                          style: TextStyle(
-                                            color: Color(0xFFFFD700),
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
+                                    if (isLoadingMore)
+                                      const Padding(
+                                        padding: EdgeInsets.only(bottom: 20),
+                                        child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+                                      )
+                                    else if (urls.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 20),
+                                        child: TextButton.icon(
+                                          onPressed: () => context.read<SearchPhotosCubit>().loadMore(query),
+                                          icon: const Icon(Icons.add_circle_outline, color: Color(0xFFFFD700)),
+                                          label: Text(
+                                            l10n.huntingSearchButton.toUpperCase(),
+                                            style: const TextStyle(
+                                              color: Color(0xFFFFD700),
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.2,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                ],
-                              ),
+                                  ],
+                                ),
                       );
                     },
                   ),

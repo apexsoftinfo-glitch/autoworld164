@@ -206,6 +206,54 @@ abstract class AppLocalizations {
   /// **'Redaguj ogłoszenie'**
   String get marketEditListing;
 
+  /// No description provided for @marketMoveConfirmTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przenieść do sprzedaży?'**
+  String get marketMoveConfirmTitle;
+
+  /// No description provided for @marketMoveConfirmBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy na pewno chcesz przenieść ten model z garażu do sekcji Wymiana/Sprzedaż?'**
+  String get marketMoveConfirmBody;
+
+  /// No description provided for @marketMoveButton.
+  ///
+  /// In pl, this message translates to:
+  /// **'PRZENIEŚ'**
+  String get marketMoveButton;
+
+  /// No description provided for @marketMoveSuccessMarketLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'RYNEK'**
+  String get marketMoveSuccessMarketLabel;
+
+  /// No description provided for @marketMoveSuccessGarageLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'GARAŻ'**
+  String get marketMoveSuccessGarageLabel;
+
+  /// No description provided for @marketSearchNoResults.
+  ///
+  /// In pl, this message translates to:
+  /// **'Brak wyników'**
+  String get marketSearchNoResults;
+
+  /// No description provided for @marketCarDeletedFromGarage.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model został usunięty z garażu'**
+  String get marketCarDeletedFromGarage;
+
+  /// No description provided for @marketTryAgain.
+  ///
+  /// In pl, this message translates to:
+  /// **'SPRÓBUJ PONOWNIE'**
+  String get marketTryAgain;
+
   /// No description provided for @newsOriginalArticle.
   ///
   /// In pl, this message translates to:

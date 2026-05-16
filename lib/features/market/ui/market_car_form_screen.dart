@@ -87,7 +87,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
         listener: (context, state) {
           if (state is MarketFormSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Success!'), backgroundColor: Colors.green),
+              SnackBar(content: Text(l10n.saveSuccess), backgroundColor: Colors.green),
             );
             Navigator.pop(context);
           }
@@ -218,7 +218,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                           const SizedBox(height: 16),
                           _GlassInput(
                             controller: _notesController,
-                            label: 'UWAGI',
+                            label: l10n.marketNotes,
                             maxLines: 3,
                           ),
                           const SizedBox(height: 16),
@@ -338,13 +338,13 @@ class _MarketOptions extends StatelessWidget {
           SwitchListTile(
             value: isExchange,
             onChanged: onExchangeChanged,
-            title: const Text('EXCHANGE / WYMIANA', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+            title: Text(context.l10n.marketForExchange, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
             activeThumbColor: const Color(0xFFFFD700),
           ),
           SwitchListTile(
             value: isSale,
             onChanged: onSaleChanged,
-            title: const Text('FOR SALE / NA SPRZEDAŻ', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+            title: Text(context.l10n.marketForSale, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
             activeThumbColor: const Color(0xFFFFD700),
           ),
         ],
@@ -787,7 +787,7 @@ class _AuctionCheckbox extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'LICYTACJA'.toUpperCase(),
+              context.l10n.marketAuction.toUpperCase(),
               style: const TextStyle(color: Color(0xFFFFD700), fontSize: 8, fontWeight: FontWeight.w900, letterSpacing: 1),
             ),
             const SizedBox(height: 4),

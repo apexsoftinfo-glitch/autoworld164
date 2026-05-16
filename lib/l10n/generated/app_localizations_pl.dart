@@ -65,6 +65,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get marketEditListing => 'Redaguj ogłoszenie';
 
   @override
+  String get marketMoveConfirmTitle => 'Przenieść do sprzedaży?';
+
+  @override
+  String get marketMoveConfirmBody =>
+      'Czy na pewno chcesz przenieść ten model z garażu do sekcji Wymiana/Sprzedaż?';
+
+  @override
+  String get marketMoveButton => 'PRZENIEŚ';
+
+  @override
+  String get marketMoveSuccessMarketLabel => 'RYNEK';
+
+  @override
+  String get marketMoveSuccessGarageLabel => 'GARAŻ';
+
+  @override
+  String get marketSearchNoResults => 'Brak wyników';
+
+  @override
+  String get marketCarDeletedFromGarage => 'Model został usunięty z garażu';
+
+  @override
+  String get marketTryAgain => 'SPRÓBUJ PONOWNIE';
+
+  @override
   String get newsOriginalArticle => 'Oryginalny artykuł';
 
   @override
