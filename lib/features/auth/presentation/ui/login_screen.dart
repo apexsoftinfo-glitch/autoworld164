@@ -35,6 +35,7 @@ class _LoginViewState extends State<_LoginView> {
   late final TextEditingController _passwordController;
   late final FocusNode _emailFocusNode;
   late final FocusNode _passwordFocusNode;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -173,7 +174,7 @@ class _LoginViewState extends State<_LoginView> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textCapitalization: TextCapitalization.none,
                                   autofillHints: const [AutofillHints.password],
-                                  obscureText: true,
+                                  obscureText: _obscurePassword,
                                   style: const TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
                                     labelText: l10n.passwordFieldLabel,
@@ -189,6 +190,19 @@ class _LoginViewState extends State<_LoginView> {
                                       borderSide: BorderSide(
                                         color: Color(0xFFFFD700),
                                       ),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _obscurePassword
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.white54,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscurePassword = !_obscurePassword;
+                                        });
+                                      },
                                     ),
                                   ),
                                   textInputAction: TextInputAction.done,
