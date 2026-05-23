@@ -9,6 +9,7 @@ import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../../settings/presentation/settings_cubit.dart' as settings;
 import '../../../shared/ui/widgets/garage_background.dart';
+import '../../../shared/sound_helper.dart';
 import '../models/car_model.dart';
 import '../presentation/cubit/cars_collection_cubit.dart';
 
@@ -204,6 +205,7 @@ class _GarageScreenViewState extends State<_GarageScreenView> {
 
           if (state is settings.Success) {
             if (state.messageKey == 'backup_created_successfully') {
+              SoundHelper.playBackupDoneChime();
               // Close progress dialog if open
               Navigator.of(context, rootNavigator: true).pop();
             }

@@ -13,6 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/di/injection.dart';
 import '../../../l10n/l10n.dart';
 import '../../../shared/error_messages.dart';
+import '../../../shared/sound_helper.dart';
 import '../../../app/locale/presentation/cubit/app_locale_cubit.dart';
 import '../../../app/locale/models/app_locale_option_model.dart';
 import '../../profiles/models/shared_user_model.dart';
@@ -94,6 +95,7 @@ class _SettingsView extends StatelessWidget {
                   Navigator.of(context, rootNavigator: true).pop();
                   _showImportStatusDialog(context, isProgress: false, success: true);
                 } else if (state.messageKey == 'backup_created_successfully') {
+                  SoundHelper.playBackupDoneChime();
                   // Close progress dialog if open
                   Navigator.of(context, rootNavigator: true).pop();
                 } else {

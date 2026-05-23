@@ -13,4 +13,13 @@ class SoundHelper {
       debugPrint('❌ [SoundHelper] Error playing success sound: $e');
     }
   }
+
+  static Future<void> playBackupDoneChime() async {
+    try {
+      await _player.stop();
+      await _player.play(AssetSource('audio/beckup_done.mp3'));
+    } catch (e) {
+      debugPrint('❌ [SoundHelper] Error playing backup done sound: $e');
+    }
+  }
 }
