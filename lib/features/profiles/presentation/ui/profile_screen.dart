@@ -72,9 +72,6 @@ class _ProfileViewState extends State<_ProfileView> {
   late final TextEditingController _firstNameController;
   late final FocusNode _firstNameFocusNode;
 
-  late final TextEditingController _usernameController;
-  late final FocusNode _usernameFocusNode;
-
   late final TextEditingController _garageNameController;
   late final FocusNode _garageNameFocusNode;
 
@@ -84,9 +81,6 @@ class _ProfileViewState extends State<_ProfileView> {
     _firstNameController = TextEditingController();
     _firstNameFocusNode = FocusNode();
 
-    _usernameController = TextEditingController();
-    _usernameFocusNode = FocusNode();
-
     _garageNameController = TextEditingController();
     _garageNameFocusNode = FocusNode();
   }
@@ -95,9 +89,6 @@ class _ProfileViewState extends State<_ProfileView> {
   void dispose() {
     _firstNameController.dispose();
     _firstNameFocusNode.dispose();
-
-    _usernameController.dispose();
-    _usernameFocusNode.dispose();
 
     _garageNameController.dispose();
     _garageNameFocusNode.dispose();
@@ -109,17 +100,11 @@ class _ProfileViewState extends State<_ProfileView> {
     final session = context.watch<SessionCubit>().state;
     final sharedUser = session.sharedUserOrNull;
     final firstName = sharedUser?.firstName ?? '';
-    final username = sharedUser?.username ?? '';
     final l10n = context.l10n;
 
     if (!_firstNameFocusNode.hasFocus &&
         _firstNameController.text != firstName) {
       _firstNameController.text = firstName;
-    }
-
-    if (!_usernameFocusNode.hasFocus &&
-        _usernameController.text != username) {
-      _usernameController.text = username;
     }
 
     final settingsState = context.watch<SettingsCubit>().state;
@@ -171,9 +156,9 @@ class _ProfileViewState extends State<_ProfileView> {
         ),
       ],
       child: PopScope(
-        canPop: !_hasUnsavedChanges(firstName, username, garageName),
+        canPop: !_hasUnsavedChanges(firstName, garageName),
         onPopInvokedWithResult: (didPop, result) async {
-          if (didPop || !_hasUnsavedChanges(firstName, username, garageName)) return;
+          if (didPop || !_hasUnsavedChanges(firstName, garageName)) return;
 
           final shouldDiscard = await _confirmDiscardChanges(context);
           if (!context.mounted || !shouldDiscard) return;
@@ -310,16 +295,6 @@ class _ProfileViewState extends State<_ProfileView> {
                                         ),
                                         const SizedBox(height: 16),
                                         _ProfileTextField(
-                                          label: l10n.settingsUsernameLabel,
-                                          icon: Icons.alternate_email,
-                                          controller: _usernameController,
-                                          focusNode: _usernameFocusNode,
-                                          enabled: !isInteractionLocked,
-                                          keyboardType: TextInputType.text,
-                                          onChanged: (_) => setState(() {}),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        _ProfileTextField(
                                           label: l10n.settingsGarageNameLabel,
                                           icon: Icons.garage_outlined,
                                           controller: _garageNameController,
@@ -330,8 +305,8 @@ class _ProfileViewState extends State<_ProfileView> {
                                         ),
                                         const SizedBox(height: 24),
                                         ElevatedButton(
-                                          onPressed: !isInteractionLocked && _hasUnsavedChanges(firstName, username, garageName)
-                                              ? () => _saveProfile(context, session, firstName, username, garageName)
+                                          onPressed: !isInteractionLocked && _hasUnsavedChanges(firstName, garageName)
+                                              ? () => _saveProfile(context, session, firstName, garageName)
                                               : null,
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: const Color(0xFFFFD700),
@@ -569,9 +544,8 @@ class _ProfileViewState extends State<_ProfileView> {
     );
   }
 
-  bool _hasUnsavedChanges(String firstName, String username, String garageName) {
+  bool _hasUnsavedChanges(String firstName, String garageName) {
     return _firstNameController.text.trim() != firstName.trim() ||
-        _usernameController.text.trim() != username.trim() ||
         _garageNameController.text.trim() != garageName.trim();
   }
 
@@ -683,7 +657,6 @@ class _ProfileViewState extends State<_ProfileView> {
     BuildContext context,
     SessionState session,
     String currentFirstName,
-    String currentUsername,
     String currentGarageName,
   ) async {
     final userId = session.userIdOrNull;
@@ -692,7 +665,6 @@ class _ProfileViewState extends State<_ProfileView> {
     FocusScope.of(context).unfocus();
 
     final newFirstName = _firstNameController.text.trim();
-    final newUsername = _usernameController.text.trim();
     final newGarageName = _garageNameController.text.trim();
 
     final cubit = context.read<ProfileCubit>();
@@ -702,13 +674,6 @@ class _ProfileViewState extends State<_ProfileView> {
       await cubit.saveFirstName(
         userId: userId,
         firstName: newFirstName,
-      );
-    }
-
-    if (newUsername != currentUsername) {
-      await cubit.saveUsername(
-        userId: userId,
-        username: newUsername,
       );
     }
 
