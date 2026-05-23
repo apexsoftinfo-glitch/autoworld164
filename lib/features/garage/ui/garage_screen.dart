@@ -883,10 +883,12 @@ class _ShareButton extends StatelessWidget {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.ios_share, size: 11, color: Colors.white60),
+            Icon(Icons.image_outlined, size: 11, color: Colors.white60),
+            SizedBox(width: 3),
+            Icon(Icons.ios_share, size: 10, color: Colors.white60),
             SizedBox(width: 3),
             Text(
-              'PDF',
+              'PNG',
               style: TextStyle(color: Colors.white60, fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 0.5),
             ),
           ],

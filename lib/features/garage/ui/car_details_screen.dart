@@ -473,13 +473,21 @@ class _ActionButtons extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               padding: EdgeInsets.zero,
             ),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.image_outlined, color: Color(0xFFFFD700), size: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image_outlined, color: Color(0xFFFFD700), size: 18),
+                    SizedBox(width: 4),
+                    Icon(Icons.ios_share, color: Color(0xFFFFD700), size: 15),
+                  ],
+                ),
+                SizedBox(height: 2),
                 Text(
                   'PNG',
-                  style: const TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
+                  style: TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
                 ),
               ],
             ),
