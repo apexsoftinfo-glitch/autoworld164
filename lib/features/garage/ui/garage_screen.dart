@@ -702,7 +702,7 @@ class _SortBar extends StatelessWidget {
             const SizedBox(width: 8),
             _SortButton(
               icon: Icons.sell_outlined,
-              label: l10n.carPurchasePriceLabel.split('(').first.trim().toUpperCase(),
+              label: l10n.sortByPurchaseLabel,
               isSelected: currentSort == SortType.price,
               order: currentOrder,
               onTap: () => onSort(SortType.price),
@@ -710,7 +710,7 @@ class _SortBar extends StatelessWidget {
             const SizedBox(width: 8),
             _SortButton(
               icon: Icons.factory_outlined,
-              label: l10n.carProducerPlaceholder.toUpperCase(),
+              label: l10n.sortByProducerLabel,
               isSelected: currentSort == SortType.producer,
               order: currentOrder,
               onTap: () => onSort(SortType.producer),

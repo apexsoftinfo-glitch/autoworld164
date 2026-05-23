@@ -353,5 +353,7 @@
   "backupReminderTitle": "UWAGA",
   "backupReminderBody": "Nie robiłeś kopii zapasowej. Pamiętaj, że wszystkie zdjęcia przechowywane są wyłącznie na Twoim urządzeniu.",
   "backupReminderOk": "OK",
-  "backupReminderAction": "ZRÓB KOPIĘ"
+  "backupReminderAction": "ZRÓB KOPIĘ",
+  "sortByPurchaseLabel": "WG ZAKUPU",
+  "sortByProducerLabel": "WG PROD."
 }

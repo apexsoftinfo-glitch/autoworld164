@@ -1005,4 +1005,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get backupReminderAction => 'ZRÓB KOPIĘ';
+
+  @override
+  String get sortByPurchaseLabel => 'WG ZAKUPU';
+
+  @override
+  String get sortByProducerLabel => 'WG PROD.';
 }

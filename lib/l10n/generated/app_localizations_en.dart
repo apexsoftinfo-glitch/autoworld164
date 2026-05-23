@@ -1001,4 +1001,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupReminderAction => 'MAKE BACKUP';
+
+  @override
+  String get sortByPurchaseLabel => 'BY PRICE';
+
+  @override
+  String get sortByProducerLabel => 'BY PROD.';
 }

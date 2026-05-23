@@ -1951,6 +1951,18 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'ZRÓB KOPIĘ'**
   String get backupReminderAction;
+
+  /// No description provided for @sortByPurchaseLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'WG ZAKUPU'**
+  String get sortByPurchaseLabel;
+
+  /// No description provided for @sortByProducerLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'WG PROD.'**
+  String get sortByProducerLabel;
 }
 
 class _AppLocalizationsDelegate

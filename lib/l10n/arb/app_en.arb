@@ -353,5 +353,7 @@
   "backupReminderTitle": "ATTENTION",
   "backupReminderBody": "You haven't made a backup. Remember that all photos are stored exclusively on your device.",
   "backupReminderOk": "OK",
-  "backupReminderAction": "MAKE BACKUP"
+  "backupReminderAction": "MAKE BACKUP",
+  "sortByPurchaseLabel": "BY PRICE",
+  "sortByProducerLabel": "BY PROD."
 }
