@@ -484,11 +484,6 @@ class _ActionButtons extends StatelessWidget {
                     Icon(Icons.ios_share, color: Color(0xFFFFD700), size: 15),
                   ],
                 ),
-                SizedBox(height: 2),
-                Text(
-                  'PNG',
-                  style: TextStyle(color: Color(0xFFFFD700), fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
-                ),
               ],
             ),
           ),

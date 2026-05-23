@@ -886,11 +886,6 @@ class _ShareButton extends StatelessWidget {
             Icon(Icons.image_outlined, size: 11, color: Colors.white60),
             SizedBox(width: 3),
             Icon(Icons.ios_share, size: 10, color: Colors.white60),
-            SizedBox(width: 3),
-            Text(
-              'PNG',
-              style: TextStyle(color: Colors.white60, fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 0.5),
-            ),
           ],
         ),
       ),
