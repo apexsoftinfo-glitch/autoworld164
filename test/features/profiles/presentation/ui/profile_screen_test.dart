@@ -9,6 +9,8 @@ import 'package:autoworld164/app/session/presentation/cubit/session_cubit.dart';
 import 'package:autoworld164/core/di/injection.dart';
 import 'package:autoworld164/features/profiles/presentation/cubit/profile_cubit.dart';
 import 'package:autoworld164/features/profiles/presentation/ui/profile_screen.dart';
+import 'package:autoworld164/features/settings/presentation/settings_cubit.dart';
+import 'package:autoworld164/features/settings/models/settings_model.dart';
 import 'package:autoworld164/l10n/generated/app_localizations.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,6 +24,8 @@ void main() {
   late MockSharedUserRepository sharedUserRepository;
   late MockAuthRepository authRepository;
   late MockSubscriptionRepository subscriptionRepository;
+  late MockSettingsRepository settingsRepository;
+  late MockSettingsCubit settingsCubit;
 
   setUpAll(() {
     registerFallbackValue(AppLocaleOptionModel.system);
@@ -42,6 +46,18 @@ void main() {
     sharedUserRepository = MockSharedUserRepository();
     authRepository = MockAuthRepository();
     subscriptionRepository = MockSubscriptionRepository();
+    settingsRepository = MockSettingsRepository();
+    settingsCubit = MockSettingsCubit();
+
+    final mockSettings = SettingsModel(id: 'guest-1', garageName: 'My Garage');
+    when(() => settingsCubit.state).thenReturn(
+      SettingsState.data(settings: mockSettings, isGuest: true),
+    );
+    when(() => settingsCubit.stream).thenAnswer(
+      (_) => Stream.value(SettingsState.data(settings: mockSettings, isGuest: true)),
+    );
+    when(() => settingsCubit.init(any())).thenAnswer((_) async {});
+    when(() => settingsCubit.close()).thenAnswer((_) async {});
 
     when(
       () => appLocaleRepository.current,
@@ -70,11 +86,12 @@ void main() {
     );
     getIt.registerFactory<SessionCubit>(() => SessionCubit(sessionRepository));
     getIt.registerFactory<ProfileCubit>(
-      () => ProfileCubit(sharedUserRepository),
+      () => ProfileCubit(sharedUserRepository, settingsRepository),
     );
     getIt.registerFactory<AccountActionsCubit>(
       () => AccountActionsCubit(authRepository, subscriptionRepository),
     );
+    getIt.registerLazySingleton<SettingsCubit>(() => settingsCubit);
   });
 
   tearDown(() async {
@@ -95,8 +112,8 @@ void main() {
     await tester.pump();
 
     expect(find.text('Zabezpiecz dostęp do Pro'), findsOneWidget);
-    expect(find.text('Zarejestruj się'), findsOneWidget);
-    expect(find.text('Zaloguj się'), findsOneWidget);
+    expect(find.text('ZAREJESTRUJ SIĘ'), findsOneWidget);
+    expect(find.text('ZALOGUJ SIĘ'), findsOneWidget);
   });
 
   testWidgets('shows app language dropdown under first name controls', (
@@ -135,11 +152,11 @@ void main() {
     await tester.pump();
 
     await tester.scrollUntilVisible(
-      find.text('Usuń konto'),
+      find.text('USUŃ KONTO'),
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    await tester.tap(find.text('Usuń konto'));
+    await tester.tap(find.text('USUŃ KONTO'));
     await tester.pumpAndSettle();
 
     expect(find.text('Usunąć konto?'), findsOneWidget);
@@ -150,7 +167,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.text('Usuń'));
+    await tester.tap(find.text('USUŃ'));
     await tester.pumpAndSettle();
 
     verify(() => authRepository.deleteAccount()).called(1);

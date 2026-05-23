@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../shared/error_messages.dart';
+import '../../../settings/data/repositories/settings_repository.dart';
 import '../../data/repositories/shared_user_repository.dart';
 
 part 'profile_cubit.freezed.dart';
@@ -19,10 +20,11 @@ sealed class ProfileState with _$ProfileState {
 
 @injectable
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit(this._sharedUserRepository)
+  ProfileCubit(this._sharedUserRepository, this._settingsRepository)
     : super(const ProfileState.initial());
 
   final SharedUserRepository _sharedUserRepository;
+  final SettingsRepository _settingsRepository;
 
   Future<void> saveFirstName({
     required String userId,
@@ -40,6 +42,65 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(state.copyWith(isSaving: false, successKey: 'profile_saved'));
     } catch (error) {
       debugPrint('❌ [ProfileCubit] saveFirstName error: $error');
+      emit(state.copyWith(isSaving: false, errorKey: mapErrorToKey(error)));
+    }
+  }
+
+  Future<void> saveUsername({
+    required String userId,
+    required String username,
+  }) async {
+    if (state.isSaving) return;
+
+    emit(state.copyWith(isSaving: true, errorKey: null, successKey: null));
+
+    try {
+      await _sharedUserRepository.updateUsername(
+        userId: userId,
+        username: username,
+      );
+      emit(state.copyWith(isSaving: false, successKey: 'profile_saved'));
+    } catch (error) {
+      debugPrint('❌ [ProfileCubit] saveUsername error: $error');
+      emit(state.copyWith(isSaving: false, errorKey: mapErrorToKey(error)));
+    }
+  }
+
+  Future<void> saveGarageName({
+    required String userId,
+    required String garageName,
+  }) async {
+    if (state.isSaving) return;
+
+    emit(state.copyWith(isSaving: true, errorKey: null, successKey: null));
+
+    try {
+      await _settingsRepository.updateGarageName(userId, garageName);
+      emit(state.copyWith(isSaving: false, successKey: 'profile_saved'));
+    } catch (error) {
+      debugPrint('❌ [ProfileCubit] saveGarageName error: $error');
+      emit(state.copyWith(isSaving: false, errorKey: mapErrorToKey(error)));
+    }
+  }
+
+  Future<void> saveProfilePhoto({
+    required String userId,
+    required List<int> bytes,
+    required String extension,
+  }) async {
+    if (state.isSaving) return;
+
+    emit(state.copyWith(isSaving: true, errorKey: null, successKey: null));
+
+    try {
+      await _sharedUserRepository.uploadProfilePhoto(
+        userId: userId,
+        bytes: bytes,
+        extension: extension,
+      );
+      emit(state.copyWith(isSaving: false, successKey: 'profile_saved'));
+    } catch (error) {
+      debugPrint('❌ [ProfileCubit] saveProfilePhoto error: $error');
       emit(state.copyWith(isSaving: false, errorKey: mapErrorToKey(error)));
     }
   }

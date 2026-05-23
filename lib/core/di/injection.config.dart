@@ -183,6 +183,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i832.SharedUserRepository>(
       () => _i832.SharedUserRepositoryImpl(gh<_i956.SharedUserDataSource>()),
     );
+    gh.factory<_i146.ProfileCubit>(
+      () => _i146.ProfileCubit(
+        gh<_i832.SharedUserRepository>(),
+        gh<_i173.SettingsRepository>(),
+      ),
+    );
     gh.factory<_i73.MarketCubit>(
       () => _i73.MarketCubit(
         gh<_i625.MarketRepository>(),
@@ -201,9 +207,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1011.AppLocaleCubit>(
       () => _i1011.AppLocaleCubit(gh<_i186.AppLocaleRepository>()),
-    );
-    gh.factory<_i146.ProfileCubit>(
-      () => _i146.ProfileCubit(gh<_i832.SharedUserRepository>()),
     );
     gh.lazySingleton<_i496.SettingsCubit>(
       () => _i496.SettingsCubit(

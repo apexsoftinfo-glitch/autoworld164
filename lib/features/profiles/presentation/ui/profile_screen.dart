@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../app/locale/models/app_locale_option_model.dart';
 import '../../../../app/locale/presentation/cubit/app_locale_cubit.dart';
@@ -14,7 +15,10 @@ import '../../../../features/auth/presentation/ui/register_screen.dart';
 import '../../../../core/config/revenuecat_config.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/error_messages.dart';
+import '../../../settings/models/settings_model.dart';
+import '../../../settings/presentation/settings_cubit.dart';
 import '../cubit/profile_cubit.dart';
+import '../../ui/widgets/profile_photo.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,6 +34,28 @@ class ProfileScreen extends StatelessWidget {
           create: (_) => getIt<AccountActionsCubit>(),
         ),
       ],
+      child: const _ProfileViewWrapper(),
+    );
+  }
+}
+
+class _ProfileViewWrapper extends StatelessWidget {
+  const _ProfileViewWrapper();
+
+  @override
+  Widget build(BuildContext context) {
+    final session = context.watch<SessionCubit>().state;
+    final userId = session.userIdOrNull;
+    if (userId == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+        ),
+      );
+    }
+
+    return BlocProvider<SettingsCubit>.value(
+      value: getIt<SettingsCubit>()..init(userId),
       child: const _ProfileView(),
     );
   }
@@ -46,17 +72,35 @@ class _ProfileViewState extends State<_ProfileView> {
   late final TextEditingController _firstNameController;
   late final FocusNode _firstNameFocusNode;
 
+  late final TextEditingController _usernameController;
+  late final FocusNode _usernameFocusNode;
+
+  late final TextEditingController _garageNameController;
+  late final FocusNode _garageNameFocusNode;
+
   @override
   void initState() {
     super.initState();
     _firstNameController = TextEditingController();
     _firstNameFocusNode = FocusNode();
+
+    _usernameController = TextEditingController();
+    _usernameFocusNode = FocusNode();
+
+    _garageNameController = TextEditingController();
+    _garageNameFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _firstNameFocusNode.dispose();
+
+    _usernameController.dispose();
+    _usernameFocusNode.dispose();
+
+    _garageNameController.dispose();
+    _garageNameFocusNode.dispose();
     super.dispose();
   }
 
@@ -65,11 +109,27 @@ class _ProfileViewState extends State<_ProfileView> {
     final session = context.watch<SessionCubit>().state;
     final sharedUser = session.sharedUserOrNull;
     final firstName = sharedUser?.firstName ?? '';
+    final username = sharedUser?.username ?? '';
     final l10n = context.l10n;
 
     if (!_firstNameFocusNode.hasFocus &&
         _firstNameController.text != firstName) {
       _firstNameController.text = firstName;
+    }
+
+    if (!_usernameFocusNode.hasFocus &&
+        _usernameController.text != username) {
+      _usernameController.text = username;
+    }
+
+    final settingsState = context.watch<SettingsCubit>().state;
+    String garageName = '';
+    if (settingsState is Data) {
+      garageName = settingsState.settings.garageName ?? '';
+    }
+    if (!_garageNameFocusNode.hasFocus &&
+        _garageNameController.text != garageName) {
+      _garageNameController.text = garageName;
     }
 
     return MultiBlocListener(
@@ -78,7 +138,10 @@ class _ProfileViewState extends State<_ProfileView> {
           listener: (context, state) {
             if (state.successKey == 'profile_saved') {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.profileSavedSnackbar)),
+                SnackBar(
+                  content: Text(l10n.profileSavedSnackbar),
+                  backgroundColor: Colors.green,
+                ),
               );
               context.read<ProfileCubit>().clearFeedback();
             }
@@ -87,24 +150,30 @@ class _ProfileViewState extends State<_ProfileView> {
         BlocListener<AccountActionsCubit, AccountActionsState>(
           listener: (context, state) {
             if (state.successKey == 'pro_enabled') {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(l10n.proEnabledSnackbar)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.proEnabledSnackbar),
+                  backgroundColor: Colors.green,
+                ),
+              );
               context.read<AccountActionsCubit>().clearFeedback();
             }
             if (state.successKey == 'password_changed') {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(l10n.saveSuccess)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.saveSuccess),
+                  backgroundColor: Colors.green,
+                ),
+              );
               context.read<AccountActionsCubit>().clearFeedback();
             }
           },
         ),
       ],
       child: PopScope(
-        canPop: !_hasUnsavedChanges(firstName),
+        canPop: !_hasUnsavedChanges(firstName, username, garageName),
         onPopInvokedWithResult: (didPop, result) async {
-          if (didPop || !_hasUnsavedChanges(firstName)) return;
+          if (didPop || !_hasUnsavedChanges(firstName, username, garageName)) return;
 
           final shouldDiscard = await _confirmDiscardChanges(context);
           if (!context.mounted || !shouldDiscard) return;
@@ -115,14 +184,17 @@ class _ProfileViewState extends State<_ProfileView> {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                l10n.profileTitle,
+                l10n.profileTitle.toUpperCase(),
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 3,
+                  fontSize: 14,
+                  color: Colors.white,
                 ),
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
+              centerTitle: true,
             ),
             extendBodyBehindAppBar: true,
             body: Container(
@@ -133,16 +205,14 @@ class _ProfileViewState extends State<_ProfileView> {
                   image: const AssetImage('assets/images/warm_garage.png'),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withValues(
-                      alpha: 0.8,
-                    ), // Very dark to keep form elements readable
+                    Colors.black.withValues(alpha: 0.85),
                     BlendMode.darken,
                   ),
                 ),
               ),
               child: SafeArea(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(20),
                   child: Center(
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 520),
@@ -164,191 +234,275 @@ class _ProfileViewState extends State<_ProfileView> {
                                 children: [
                                   if (session.shouldShowProtectProBanner) ...[
                                     const _ProtectProBanner(),
-                                    const SizedBox(height: 24),
+                                    const SizedBox(height: 20),
                                   ],
-                                  TextField(
-                                    controller: _firstNameController,
-                                    focusNode: _firstNameFocusNode,
-                                    enabled: !isInteractionLocked,
-                                    keyboardType: TextInputType.name,
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    decoration: InputDecoration(
-                                      labelText: l10n.firstNameFieldLabel,
+                                  Container(
+                                    padding: const EdgeInsets.all(24),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(alpha: 0.08),
+                                      borderRadius: BorderRadius.circular(24),
+                                      border: Border.all(color: Colors.white12),
                                     ),
-                                    textInputAction: TextInputAction.done,
-                                    onSubmitted: (_) =>
-                                        _saveFirstName(context, session),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  FilledButton(
-                                    onPressed: !isInteractionLocked
-                                        ? () => _saveFirstName(context, session)
-                                        : null,
-                                    child: isSavingName
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          )
-                                        : Text(l10n.saveFirstNameButtonLabel),
-                                  ),
-                                  if (!session.isAnonymousUser) ...[
-                                    const SizedBox(height: 24),
-                                    TextField(
-                                      controller: TextEditingController(
-                                        text: session.emailOrNull,
-                                      ),
-                                      readOnly: true,
-                                      enabled: false,
-                                      style: const TextStyle(
-                                        color: Colors.white70,
-                                      ),
-                                      decoration: InputDecoration(
-                                        labelText: l10n.emailFieldLabel,
-                                        disabledBorder:
-                                            const UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.white24,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Center(
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                child: ProfilePhoto(
+                                                  radius: 40,
+                                                  url: sharedUser?.photoUrl,
+                                                ),
                                               ),
+                                              if (isSavingName)
+                                                Container(
+                                                  width: 80,
+                                                  height: 80,
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.black45,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Center(
+                                                    child: CircularProgressIndicator(
+                                                      color: Color(0xFFFFD700),
+                                                      strokeWidth: 2,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (!isSavingName)
+                                                Positioned(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  child: GestureDetector(
+                                                    onTap: () => _pickImage(context, session),
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(6),
+                                                      decoration: const BoxDecoration(
+                                                        color: Color(0xFFFFD700),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: const Icon(Icons.camera_alt, size: 14, color: Colors.black),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        _ProfileTextField(
+                                          label: l10n.firstNameFieldLabel,
+                                          icon: Icons.person_outline,
+                                          controller: _firstNameController,
+                                          focusNode: _firstNameFocusNode,
+                                          enabled: !isInteractionLocked,
+                                          keyboardType: TextInputType.name,
+                                          textCapitalization: TextCapitalization.words,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        _ProfileTextField(
+                                          label: l10n.settingsUsernameLabel,
+                                          icon: Icons.alternate_email,
+                                          controller: _usernameController,
+                                          focusNode: _usernameFocusNode,
+                                          enabled: !isInteractionLocked,
+                                          keyboardType: TextInputType.text,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        _ProfileTextField(
+                                          label: l10n.settingsGarageNameLabel,
+                                          icon: Icons.garage_outlined,
+                                          controller: _garageNameController,
+                                          focusNode: _garageNameFocusNode,
+                                          enabled: !isInteractionLocked,
+                                          keyboardType: TextInputType.text,
+                                        ),
+                                        const SizedBox(height: 24),
+                                        ElevatedButton(
+                                          onPressed: !isInteractionLocked && _hasUnsavedChanges(firstName, username, garageName)
+                                              ? () => _saveProfile(context, session, firstName, username, garageName)
+                                              : null,
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xFFFFD700),
+                                            foregroundColor: Colors.black,
+                                            padding: const EdgeInsets.symmetric(vertical: 16),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                            disabledBackgroundColor: Colors.white12,
+                                            disabledForegroundColor: Colors.white30,
+                                          ),
+                                          child: isSavingName
+                                              ? const SizedBox(
+                                                  width: 20,
+                                                  height: 20,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  l10n.carFormSaveButton.toUpperCase(),
+                                                  style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+                                                ),
+                                        ),
+                                        if (!session.isAnonymousUser) ...[
+                                          const SizedBox(height: 24),
+                                          const Divider(color: Colors.white10, height: 1),
+                                          const SizedBox(height: 24),
+                                          _ProfileTextField(
+                                            label: l10n.emailFieldLabel,
+                                            icon: Icons.email_outlined,
+                                            controller: TextEditingController(text: session.emailOrNull),
+                                            focusNode: FocusNode(),
+                                            enabled: false,
+                                            keyboardType: TextInputType.emailAddress,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          OutlinedButton.icon(
+                                            onPressed: !isInteractionLocked
+                                                ? () => _showChangePasswordDialog(context)
+                                                : null,
+                                            icon: const Icon(Icons.lock_outline),
+                                            label: Text(l10n.settingsChangePasswordLabel.toUpperCase()),
+                                            style: OutlinedButton.styleFrom(
+                                              foregroundColor: const Color(0xFFFFD700),
+                                              side: const BorderSide(color: Color(0xFFFFD700)),
+                                              padding: const EdgeInsets.symmetric(vertical: 16),
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                                             ),
-                                      ),
+                                          ),
+                                        ],
+                                        const SizedBox(height: 24),
+                                        const Divider(color: Colors.white10, height: 1),
+                                        const SizedBox(height: 24),
+                                        _AppLanguageDropdown(
+                                          isEnabled: !isInteractionLocked,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 16),
-                                    OutlinedButton.icon(
-                                      onPressed: !isInteractionLocked
-                                          ? () =>
-                                              _showChangePasswordDialog(
-                                                context,
-                                              )
-                                          : null,
-                                      icon: const Icon(Icons.lock_outline),
-                                      label: Text(
-                                        l10n.settingsChangePasswordLabel,
-                                      ),
-                                    ),
-                                  ],
-                                  const SizedBox(height: 16),
-                                  _AppLanguageDropdown(
-                                    isEnabled: !isInteractionLocked,
                                   ),
                                   if (profileState.errorKey != null) ...[
                                     const SizedBox(height: 16),
                                     SelectableText(
-                                      messageForErrorKey(
-                                        l10n,
-                                        profileState.errorKey,
-                                      ),
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.error,
-                                      ),
+                                      messageForErrorKey(l10n, profileState.errorKey),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                   if (accountState.errorKey != null) ...[
                                     const SizedBox(height: 16),
                                     SelectableText(
-                                      messageForErrorKey(
-                                        l10n,
-                                        accountState.errorKey,
-                                      ),
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.error,
-                                      ),
+                                      messageForErrorKey(l10n, accountState.errorKey),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontWeight: FontWeight.bold),
                                     ),
                                   ],
-                                  const SizedBox(height: 32),
+                                  const SizedBox(height: 24),
                                   if (session.isAnonymousUser) ...[
-                                    FilledButton.tonal(
+                                    ElevatedButton(
                                       onPressed: !isInteractionLocked
                                           ? () async {
-                                              final result =
-                                                  await Navigator.of(
-                                                    context,
-                                                  ).push<bool>(
-                                                    MaterialPageRoute<bool>(
-                                                      builder: (_) =>
-                                                          const RegisterScreen(),
-                                                    ),
-                                                  );
+                                              final result = await Navigator.of(context).push<bool>(
+                                                MaterialPageRoute<bool>(
+                                                  builder: (_) => const RegisterScreen(),
+                                                ),
+                                              );
                                               if (!context.mounted) return;
                                               if (result == true) {
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ).showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                   SnackBar(
-                                                    content: Text(
-                                                      l10n.accountSecuredSnackbar,
-                                                    ),
+                                                    content: Text(l10n.accountSecuredSnackbar),
+                                                    backgroundColor: Colors.green,
                                                   ),
                                                 );
                                               }
                                             }
                                           : null,
-                                      child: Text(l10n.registerButtonLabel),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFFFFD700),
+                                        foregroundColor: Colors.black,
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                      child: Text(
+                                        l10n.registerButtonLabel.toUpperCase(),
+                                        style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+                                      ),
                                     ),
                                     const SizedBox(height: 12),
                                     OutlinedButton(
                                       onPressed: !isInteractionLocked
-                                          ? () => Navigator.of(context)
-                                                .push<void>(
-                                                  MaterialPageRoute<void>(
-                                                    builder: (_) =>
-                                                        const LoginScreen(),
-                                                  ),
-                                                )
+                                          ? () => Navigator.of(context).push<void>(
+                                                MaterialPageRoute<void>(
+                                                  builder: (_) => const LoginScreen(),
+                                                ),
+                                              )
                                           : null,
-                                      child: Text(l10n.loginButtonLabel),
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: const Color(0xFFFFD700),
+                                        side: const BorderSide(color: Color(0xFFFFD700)),
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                      child: Text(
+                                        l10n.loginButtonLabel.toUpperCase(),
+                                        style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1),
+                                      ),
                                     ),
                                     const SizedBox(height: 12),
                                   ],
                                   if (!session.isAnonymousUser) ...[
                                     OutlinedButton(
                                       onPressed: !isInteractionLocked
-                                          ? () => context
-                                                .read<AccountActionsCubit>()
-                                                .signOut()
+                                          ? () => context.read<AccountActionsCubit>().signOut()
                                           : null,
-                                      child:
-                                          activeAccountAction ==
-                                              AccountAction.signOut
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.white70,
+                                        side: const BorderSide(color: Colors.white24),
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                      child: activeAccountAction == AccountAction.signOut
                                           ? const SizedBox(
                                               width: 20,
                                               height: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                              ),
+                                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white70),
                                             )
-                                          : Text(l10n.logoutButtonLabel),
+                                          : Text(
+                                              l10n.logoutButtonLabel.toUpperCase(),
+                                              style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1),
+                                            ),
                                     ),
                                     const SizedBox(height: 12),
                                   ],
-                                  if (!session.isProUser &&
-                                      RevenueCatConfig.isEnabled) ...[
-                                    FilledButton(
-                                      onPressed:
-                                          !isInteractionLocked &&
-                                              session.userIdOrNull != null
-                                          ? () => context
-                                                .read<AccountActionsCubit>()
-                                                .buyPro(session.userIdOrNull!)
+                                  if (!session.isProUser && RevenueCatConfig.isEnabled) ...[
+                                    ElevatedButton(
+                                      onPressed: !isInteractionLocked && session.userIdOrNull != null
+                                          ? () => context.read<AccountActionsCubit>().buyPro(session.userIdOrNull!)
                                           : null,
-                                      child:
-                                          activeAccountAction ==
-                                              AccountAction.buyPro
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFFFFD700),
+                                        foregroundColor: Colors.black,
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                      child: activeAccountAction == AccountAction.buyPro
                                           ? const SizedBox(
                                               width: 20,
                                               height: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                              ),
+                                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
                                             )
-                                          : Text(l10n.buyProButtonLabel),
+                                          : Text(
+                                              l10n.buyProButtonLabel.toUpperCase(),
+                                              style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1),
+                                            ),
                                     ),
                                     const SizedBox(height: 12),
                                   ],
@@ -356,34 +510,43 @@ class _ProfileViewState extends State<_ProfileView> {
                                     onPressed: !isInteractionLocked
                                         ? () => _confirmDeleteAccount(context)
                                         : null,
-                                    child:
-                                        activeAccountAction ==
-                                            AccountAction.deleteAccount
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: Colors.redAccent,
+                                      side: const BorderSide(color: Colors.redAccent),
+                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                    ),
+                                    child: activeAccountAction == AccountAction.deleteAccount
                                         ? const SizedBox(
                                             width: 20,
                                             height: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
+                                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.redAccent),
                                           )
-                                        : Text(l10n.deleteAccountButtonLabel),
+                                        : Text(
+                                            l10n.deleteAccountButtonLabel.toUpperCase(),
+                                            style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1),
+                                          ),
                                   ),
                                   if (kDebugMode) ...[
-                                    const Divider(height: 48),
+                                    const Divider(height: 48, color: Colors.white10),
                                     _ProfileSummary(session: session),
                                     const SizedBox(height: 12),
                                     OutlinedButton.icon(
                                       onPressed: !isInteractionLocked
-                                          ? () => Navigator.of(context)
-                                                .push<void>(
-                                                  MaterialPageRoute<void>(
-                                                    builder: (_) =>
-                                                        const DeveloperScreen(),
-                                                  ),
-                                                )
+                                          ? () => Navigator.of(context).push<void>(
+                                                MaterialPageRoute<void>(
+                                                  builder: (_) => const DeveloperScreen(),
+                                                ),
+                                              )
                                           : null,
                                       icon: const Icon(Icons.developer_mode),
-                                      label: Text(l10n.developerToolsTitle),
+                                      label: Text(l10n.developerToolsTitle.toUpperCase()),
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.white54,
+                                        side: const BorderSide(color: Colors.white24),
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
                                     ),
                                   ],
                                 ],
@@ -403,24 +566,45 @@ class _ProfileViewState extends State<_ProfileView> {
     );
   }
 
-  bool _hasUnsavedChanges(String firstName) {
-    return _firstNameController.text.trim() != firstName.trim();
+  bool _hasUnsavedChanges(String firstName, String username, String garageName) {
+    return _firstNameController.text.trim() != firstName.trim() ||
+        _usernameController.text.trim() != username.trim() ||
+        _garageNameController.text.trim() != garageName.trim();
   }
 
   Future<bool> _confirmDiscardChanges(BuildContext context) async {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(context.l10n.discardChangesTitle),
-        content: Text(context.l10n.discardChangesBody),
+        backgroundColor: const Color(0xFF1C1C1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          context.l10n.discardChangesTitle,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        ),
+        content: Text(
+          context.l10n.discardChangesBody,
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(context.l10n.stayButtonLabel),
+            child: Text(
+              context.l10n.stayButtonLabel.toUpperCase(),
+              style: const TextStyle(color: Colors.white38, fontWeight: FontWeight.w900),
+            ),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text(context.l10n.discardButtonLabel),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFFFD700),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text(
+              context.l10n.discardButtonLabel.toUpperCase(),
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
           ),
         ],
       ),
@@ -434,20 +618,35 @@ class _ProfileViewState extends State<_ProfileView> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.deleteAccountDialogTitle),
-        content: Text(l10n.deleteAccountDialogBody),
+        backgroundColor: const Color(0xFF1C1C1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          l10n.deleteAccountDialogTitle,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        ),
+        content: Text(
+          l10n.deleteAccountDialogBody,
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.deleteAccountCancelButtonLabel),
+            child: Text(
+              l10n.deleteAccountCancelButtonLabel.toUpperCase(),
+              style: const TextStyle(color: Colors.white38, fontWeight: FontWeight.w900),
+            ),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            child: Text(l10n.deleteAccountConfirmButtonLabel),
+            child: Text(
+              l10n.deleteAccountConfirmButtonLabel.toUpperCase(),
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
           ),
         ],
       ),
@@ -458,15 +657,66 @@ class _ProfileViewState extends State<_ProfileView> {
     }
   }
 
-  void _saveFirstName(BuildContext context, SessionState session) {
+  Future<void> _pickImage(BuildContext context, SessionState session) async {
+    final userId = session.userIdOrNull;
+    if (userId == null) return;
+
+    final cubit = context.read<ProfileCubit>();
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      final extension = image.path.split('.').last.toLowerCase();
+      
+      cubit.saveProfilePhoto(
+        userId: userId,
+        bytes: bytes,
+        extension: extension,
+      );
+    }
+  }
+
+  Future<void> _saveProfile(
+    BuildContext context,
+    SessionState session,
+    String currentFirstName,
+    String currentUsername,
+    String currentGarageName,
+  ) async {
     final userId = session.userIdOrNull;
     if (userId == null) return;
 
     FocusScope.of(context).unfocus();
-    context.read<ProfileCubit>().saveFirstName(
-      userId: userId,
-      firstName: _firstNameController.text,
-    );
+
+    final newFirstName = _firstNameController.text.trim();
+    final newUsername = _usernameController.text.trim();
+    final newGarageName = _garageNameController.text.trim();
+
+    final cubit = context.read<ProfileCubit>();
+    final settingsCubit = context.read<SettingsCubit>();
+
+    if (newFirstName != currentFirstName) {
+      await cubit.saveFirstName(
+        userId: userId,
+        firstName: newFirstName,
+      );
+    }
+
+    if (newUsername != currentUsername) {
+      await cubit.saveUsername(
+        userId: userId,
+        username: newUsername,
+      );
+    }
+
+    if (newGarageName != currentGarageName) {
+      await cubit.saveGarageName(
+        userId: userId,
+        garageName: newGarageName,
+      );
+      // Also update settings cubit state so the garage background or other observers update
+      settingsCubit.updateGarageName(userId, newGarageName);
+    }
   }
 
   Future<void> _showChangePasswordDialog(BuildContext context) async {
@@ -496,7 +746,12 @@ class _ProfileViewState extends State<_ProfileView> {
                       state.activeAction == AccountAction.changePassword;
 
                   return AlertDialog(
-                    title: Text(l10n.settingsChangePasswordLabel),
+                    backgroundColor: const Color(0xFF1C1C1E),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    title: Text(
+                      l10n.settingsChangePasswordLabel,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                    ),
                     content: Form(
                       key: formKey,
                       child: Column(
@@ -511,6 +766,7 @@ class _ProfileViewState extends State<_ProfileView> {
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               labelText: l10n.passwordFieldLabel,
+                              labelStyle: const TextStyle(color: Colors.white54),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   obscurePassword
@@ -523,6 +779,20 @@ class _ProfileViewState extends State<_ProfileView> {
                                     obscurePassword = !obscurePassword;
                                   });
                                 },
+                              ),
+                              filled: true,
+                              fillColor: Colors.white.withValues(alpha: 0.05),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.white12),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Color(0xFFFFD700)),
                               ),
                             ),
                             validator: (val) {
@@ -551,7 +821,10 @@ class _ProfileViewState extends State<_ProfileView> {
                             isLoading
                                 ? null
                                 : () => Navigator.of(context).pop(),
-                        child: Text(l10n.deleteAccountCancelButtonLabel),
+                        child: Text(
+                          l10n.deleteAccountCancelButtonLabel.toUpperCase(),
+                          style: const TextStyle(color: Colors.white38, fontWeight: FontWeight.w900),
+                        ),
                       ),
                       FilledButton(
                         onPressed:
@@ -567,6 +840,11 @@ class _ProfileViewState extends State<_ProfileView> {
                                           );
                                     }
                                   },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFD700),
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
                         child:
                             isLoading
                                 ? const SizedBox(
@@ -577,7 +855,10 @@ class _ProfileViewState extends State<_ProfileView> {
                                       color: Colors.black,
                                     ),
                                   )
-                                : Text(l10n.carFormSaveButton),
+                                : Text(
+                                    l10n.carFormSaveButton.toUpperCase(),
+                                    style: const TextStyle(fontWeight: FontWeight.w900),
+                                  ),
                       ),
                     ],
                   );
@@ -587,6 +868,81 @@ class _ProfileViewState extends State<_ProfileView> {
           ),
         );
       },
+    );
+  }
+}
+
+class _ProfileTextField extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final bool enabled;
+  final TextInputType? keyboardType;
+  final TextCapitalization textCapitalization;
+
+  const _ProfileTextField({
+    required this.label,
+    required this.icon,
+    required this.controller,
+    required this.focusNode,
+    required this.enabled,
+    this.keyboardType,
+    this.textCapitalization = TextCapitalization.none,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white54,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
+        TextField(
+          controller: controller,
+          focusNode: focusNode,
+          enabled: enabled,
+          keyboardType: keyboardType,
+          textCapitalization: textCapitalization,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+          decoration: InputDecoration(
+            prefixIcon: Icon(icon, color: Colors.white38, size: 18),
+            filled: true,
+            fillColor: Colors.white.withValues(alpha: 0.05),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.white12),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.white12),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Color(0xFFFFD700)),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -609,9 +965,26 @@ class _AppLanguageDropdown extends StatelessWidget {
           children: [
             DropdownButtonFormField<AppLocaleOptionModel>(
               initialValue: state.selectedOption,
+              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+              dropdownColor: const Color(0xFF1C1C1E),
               decoration: InputDecoration(
                 labelText: l10n.profileLanguageSectionTitle,
-                helperText: l10n.profileLanguageSectionDescription,
+                labelStyle: const TextStyle(color: Colors.white54, fontSize: 14, fontWeight: FontWeight.w600),
+                filled: true,
+                fillColor: Colors.white.withValues(alpha: 0.05),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: Colors.white12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: Color(0xFFFFD700)),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
               items: [
                 DropdownMenuItem(
@@ -631,14 +1004,26 @@ class _AppLanguageDropdown extends StatelessWidget {
                   ? (option) {
                       if (option == null) return;
                       context.read<AppLocaleCubit>().selectLocale(option);
+                      final userId = context.read<SessionCubit>().state.userIdOrNull;
+                      if (userId != null) {
+                        final appLanguage = option == AppLocaleOptionModel.polish
+                            ? AppLanguage.pl
+                            : AppLanguage.en;
+                        context.read<SettingsCubit>().updateLanguage(userId, appLanguage);
+                      }
                     }
                   : null,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.profileLanguageSectionDescription,
+              style: const TextStyle(color: Colors.white38, fontSize: 11),
             ),
             if (state.selectedOption == AppLocaleOptionModel.system) ...[
               const SizedBox(height: 4),
               Text(
                 l10n.languageOptionSystemDescription,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: const TextStyle(color: Colors.white38, fontSize: 11),
               ),
             ],
             if (state.errorKey != null) ...[
@@ -654,6 +1039,7 @@ class _AppLanguageDropdown extends StatelessWidget {
     );
   }
 }
+
 
 class _ProfileSummary extends StatelessWidget {
   const _ProfileSummary({required this.session});

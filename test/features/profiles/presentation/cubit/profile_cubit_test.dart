@@ -7,9 +7,11 @@ import '../../../../support/mocks.dart';
 
 void main() {
   late MockSharedUserRepository sharedUserRepository;
+  late MockSettingsRepository settingsRepository;
 
   setUp(() {
     sharedUserRepository = MockSharedUserRepository();
+    settingsRepository = MockSettingsRepository();
   });
 
   blocTest<ProfileCubit, ProfileState>(
@@ -21,7 +23,7 @@ void main() {
           firstName: any(named: 'firstName'),
         ),
       ).thenAnswer((_) async {});
-      return ProfileCubit(sharedUserRepository);
+      return ProfileCubit(sharedUserRepository, settingsRepository);
     },
     act: (cubit) => cubit.saveFirstName(userId: 'guest-1', firstName: 'Adam'),
     expect: () => [
