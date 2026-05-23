@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'cars_collection_cubit.freezed.dart';
 
 enum CollectionViewType { grid, list }
-enum SortType { date, series, price, producer }
+enum SortType { date, series, price, producer, name }
 enum SortOrder { asc, desc }
 
 @freezed
@@ -173,6 +173,9 @@ class CarsCollectionCubit extends Cubit<CarsCollectionState> {
           break;
         case SortType.producer:
           cmp = (a.toyMaker ?? a.brand).toLowerCase().compareTo((b.toyMaker ?? b.brand).toLowerCase());
+          break;
+        case SortType.name:
+          cmp = '${a.brand} ${a.modelName}'.toLowerCase().compareTo('${b.brand} ${b.modelName}'.toLowerCase());
           break;
       }
       return order == SortOrder.asc ? cmp : -cmp;

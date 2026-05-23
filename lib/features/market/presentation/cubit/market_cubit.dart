@@ -105,6 +105,9 @@ class MarketCubit extends Cubit<MarketState> {
         case SortType.date:
           cmp = a.createdAt.compareTo(b.createdAt);
           break;
+        case SortType.name:
+          cmp = '${a.brand} ${a.modelName}'.toLowerCase().compareTo('${b.brand} ${b.modelName}'.toLowerCase());
+          break;
       }
       return order == SortOrder.asc ? cmp : -cmp;
     });

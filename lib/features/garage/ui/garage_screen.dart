@@ -712,6 +712,14 @@ class _SortBar extends StatelessWidget {
             order: currentOrder,
             onTap: () => onSort(SortType.producer),
           ),
+          const SizedBox(width: 8),
+          _SortButton(
+            icon: Icons.sort_by_alpha,
+            label: 'A–Z',
+            isSelected: currentSort == SortType.name,
+            order: currentOrder,
+            onTap: () => onSort(SortType.name),
+          ),
         ],
       ),
     );
