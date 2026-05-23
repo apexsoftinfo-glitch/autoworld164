@@ -61,6 +61,16 @@ class _GarageReportContent extends StatelessWidget {
     final sortedProducers = producerStats.entries.toList()
       ..sort((a, b) => b.value.count.compareTo(a.value.count));
 
+    // Series stats: name → {count, totalValue}
+    final Map<String, ({int count, double value})> seriesStats = {};
+    for (final car in cars) {
+      final key = (car.series ?? (isPolish ? 'Nieznany' : 'Unknown')).trim();
+      final prev = seriesStats[key] ?? (count: 0, value: 0.0);
+      seriesStats[key] = (count: prev.count + 1, value: prev.value + car.purchasePrice);
+    }
+    final sortedSeries = seriesStats.entries.toList()
+      ..sort((a, b) => b.value.count.compareTo(a.value.count));
+
     // Monthly additions (last 12 months)
     final now = DateTime.now();
     final monthlyData = <String, int>{};
@@ -177,8 +187,23 @@ class _GarageReportContent extends StatelessWidget {
                       // Producer table title
                       _SectionTitle(isPolish ? 'WG PRODUCENTA' : 'BY PRODUCER'),
                       const SizedBox(height: 10),
-                      _ProducerTable(
-                        producers: sortedProducers,
+                      _StatsTable(
+                        label: isPolish ? 'PRODUCENT' : 'PRODUCER',
+                        items: sortedProducers,
+                        totalCount: totalCount,
+                        totalValue: totalValue,
+                        currencyFormat: currencyFormat,
+                        isPolish: isPolish,
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Series table title
+                      _SectionTitle(isPolish ? 'WG SERII' : 'BY SERIES'),
+                      const SizedBox(height: 10),
+                      _StatsTable(
+                        label: isPolish ? 'SERIA' : 'SERIES',
+                        items: sortedSeries,
                         totalCount: totalCount,
                         totalValue: totalValue,
                         currencyFormat: currencyFormat,
@@ -367,17 +392,19 @@ class _MonthlyChart extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Producer table
+// Stats breakdown table
 // ─────────────────────────────────────────────────────────────────────────────
-class _ProducerTable extends StatelessWidget {
-  final List<MapEntry<String, ({int count, double value})>> producers;
+class _StatsTable extends StatelessWidget {
+  final String label;
+  final List<MapEntry<String, ({int count, double value})>> items;
   final int totalCount;
   final double totalValue;
   final NumberFormat currencyFormat;
   final bool isPolish;
 
-  const _ProducerTable({
-    required this.producers,
+  const _StatsTable({
+    required this.label,
+    required this.items,
     required this.totalCount,
     required this.totalValue,
     required this.currencyFormat,
@@ -402,7 +429,7 @@ class _ProducerTable extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    isPolish ? 'PRODUCENT' : 'PRODUCER',
+                    label.toUpperCase(),
                     style: const TextStyle(color: Colors.white24, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1),
                   ),
                 ),
@@ -438,10 +465,10 @@ class _ProducerTable extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: producers.length,
+            itemCount: items.length,
             separatorBuilder: (_, _) => Divider(height: 1, indent: 16, endIndent: 16, color: Colors.white.withValues(alpha: 0.04)),
             itemBuilder: (context, index) {
-              final entry = producers[index];
+              final entry = items[index];
               final pct = totalCount > 0 ? (entry.value.count / totalCount * 100) : 0.0;
               final shareRatio = totalCount > 0 ? entry.value.count / totalCount : 0.0;
               final isTop = index == 0;
