@@ -35,10 +35,14 @@ class RegisterCubit extends Cubit<RegisterState> {
         email: email.trim(),
         password: password,
       );
-      emit(state.copyWith(isLoading: false));
+      if (!isClosed) {
+        emit(state.copyWith(isLoading: false));
+      }
     } catch (error) {
       debugPrint('❌ [RegisterCubit] register error: $error');
-      emit(state.copyWith(isLoading: false, errorKey: mapErrorToKey(error)));
+      if (!isClosed) {
+        emit(state.copyWith(isLoading: false, errorKey: mapErrorToKey(error)));
+      }
     }
   }
 }
