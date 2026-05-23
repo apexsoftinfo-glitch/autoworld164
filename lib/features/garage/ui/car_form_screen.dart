@@ -11,6 +11,7 @@ import '../models/car_model.dart';
 import '../presentation/cubit/car_form_cubit.dart';
 import 'search_photos_dialog.dart';
 import 'widgets/car_photo.dart';
+import '../../../shared/sound_helper.dart';
 
 class CarFormScreen extends StatefulWidget {
   final CarModel? car;
@@ -179,6 +180,9 @@ class _CarFormScreenState extends State<CarFormScreen> {
         listener: (context, state) {
           state.whenOrNull(
             success: () {
+              if (!isEditing) {
+                SoundHelper.playSuccessChime();
+              }
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
