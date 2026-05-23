@@ -46,14 +46,38 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
 
   final SharedUserDataSource _sharedUserDataSource;
   final _photoOverrides = BehaviorSubject<Map<String, String>>.seeded({});
+  final _userSubjects = <String, BehaviorSubject<SharedUserModel?>>{};
+
+  BehaviorSubject<SharedUserModel?> _subjectFor(String userId) {
+    return _userSubjects.putIfAbsent(userId, () {
+      final subject = BehaviorSubject<SharedUserModel?>.seeded(null);
+      
+      // Load initial value from data source asynchronously via direct REST
+      _sharedUserDataSource.getSharedUser(userId).then((raw) async {
+        if (raw == null) {
+          try {
+            final ensured = await _sharedUserDataSource.ensureSharedUser(userId);
+            subject.add(_mapSharedUser(ensured));
+          } catch (e) {
+            debugPrint('❌ [SharedUserRepository] Failed to ensure shell user: $e');
+          }
+        } else {
+          subject.add(_mapSharedUser(raw));
+        }
+      }).catchError((Object error) {
+        debugPrint('❌ [SharedUserRepository] Failed to load user: $error');
+      });
+      
+      return subject;
+    });
+  }
 
   @override
   Stream<SharedUserModel?> watchSharedUser(String userId) {
-    return Rx.combineLatest2<Map<String, dynamic>?, Map<String, String>, SharedUserModel?>(
-      _sharedUserDataSource.watchSharedUser(userId),
+    return Rx.combineLatest2<SharedUserModel?, Map<String, String>, SharedUserModel?>(
+      _subjectFor(userId).stream,
       _photoOverrides.stream,
-      (raw, overrides) {
-        final model = _mapSharedUser(raw);
+      (model, overrides) {
         if (model == null) return null;
         final overrideUrl = overrides[userId];
         if (overrideUrl != null) {
@@ -69,6 +93,10 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
     final rawSharedUser = await _sharedUserDataSource.getSharedUser(userId);
     final model = _mapSharedUser(rawSharedUser);
     if (model == null) return null;
+
+    // Update local cache
+    _subjectFor(userId).add(model);
+
     final overrideUrl = _photoOverrides.value[userId];
     if (overrideUrl != null) {
       return model.copyWith(photoUrl: overrideUrl);
@@ -83,6 +111,10 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
         userId,
       );
       final model = _mapSharedUser(rawSharedUser)!;
+
+      // Update local cache
+      _subjectFor(userId).add(model);
+
       final overrideUrl = _photoOverrides.value[userId];
       if (overrideUrl != null) {
         return model.copyWith(photoUrl: overrideUrl);
@@ -106,6 +138,9 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       );
 
       await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+
+      // Update local cache
+      _subjectFor(userId).add(updatedSharedUser);
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] updateFirstName error: $error');
       rethrow;
@@ -124,6 +159,9 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       );
 
       await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+
+      // Update local cache
+      _subjectFor(userId).add(updatedSharedUser);
     } catch (error) {
       debugPrint('❌ [SharedUserRepository] updateUsername error: $error');
       rethrow;
@@ -142,6 +180,9 @@ class SharedUserRepositoryImpl implements SharedUserRepository {
       );
 
       await _sharedUserDataSource.upsertSharedUser(updatedSharedUser.toJson());
+
+      // Update local cache
+      _subjectFor(userId).add(updatedSharedUser);
       
       // Update local override for instant UI feedback across app
       final currentOverrides = Map<String, String>.from(_photoOverrides.value);
