@@ -1,21 +1,42 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../models/car_model.dart';
+import '../../presentation/cubit/cars_collection_cubit.dart';
 
 class GarageReportDialog extends StatelessWidget {
-  final List<CarModel> cars;
+  const GarageReportDialog({super.key});
 
-  const GarageReportDialog({super.key, required this.cars});
-
-  static Future<void> show(BuildContext context, List<CarModel> cars) {
+  static Future<void> show(BuildContext context) {
     return showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => GarageReportDialog(cars: cars),
+      builder: (dialogContext) => BlocProvider.value(
+        value: context.read<CarsCollectionCubit>(),
+        child: const GarageReportDialog(),
+      ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+      builder: (context, state) {
+        final cars = state.maybeWhen(
+          data: (c, fc, pt, st, q, vt, stype, sorder) => c,
+          orElse: () => <CarModel>[],
+        );
+        return _GarageReportContent(cars: cars);
+      },
+    );
+  }
+}
+
+class _GarageReportContent extends StatelessWidget {
+  final List<CarModel> cars;
+  const _GarageReportContent({required this.cars});
 
   @override
   Widget build(BuildContext context) {

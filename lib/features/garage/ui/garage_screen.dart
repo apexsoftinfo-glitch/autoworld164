@@ -941,7 +941,7 @@ class _BottomAddButton extends StatelessWidget {
                   return IconButton(
                     onPressed: cars.isEmpty
                         ? null
-                        : () => GarageReportDialog.show(context, cars),
+                        : () => GarageReportDialog.show(context),
                     icon: Icon(
                       Icons.analytics_outlined,
                       color: cars.isEmpty ? Colors.white10 : const Color(0xFFFFD700),
