@@ -16,6 +16,7 @@ import '../presentation/cubit/cars_collection_cubit.dart';
 import 'car_form_screen.dart';
 import 'car_details_screen.dart';
 import 'widgets/car_photo.dart';
+import 'widgets/garage_report_dialog.dart';
 import '../utils/garage_card_png_generator.dart';
 
 class GarageScreen extends StatelessWidget {
@@ -926,6 +927,32 @@ class _BottomAddButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
+          _GlassBox(
+            padding: EdgeInsets.zero,
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: BlocBuilder<CarsCollectionCubit, CarsCollectionState>(
+                builder: (context, state) {
+                  final cars = state.maybeWhen(
+                    data: (c, fc, pt, st, q, vt, stype, sorder) => c,
+                    orElse: () => <CarModel>[],
+                  );
+                  return IconButton(
+                    onPressed: cars.isEmpty
+                        ? null
+                        : () => GarageReportDialog.show(context, cars),
+                    icon: Icon(
+                      Icons.analytics_outlined,
+                      color: cars.isEmpty ? Colors.white10 : const Color(0xFFFFD700),
+                      size: 24,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Container(
               height: 56,
@@ -951,7 +978,7 @@ class _BottomAddButton extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 label: Text(
                   context.l10n.garageAddNewCarButton,
-                  style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                  style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
                 ),
               ),
             ),
