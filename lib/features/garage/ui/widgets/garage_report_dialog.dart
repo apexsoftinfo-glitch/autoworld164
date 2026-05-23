@@ -70,7 +70,8 @@ class _GarageReportContent extends StatelessWidget {
       monthlyData[key] = 0;
     }
     for (final car in cars) {
-      final d = car.createdAt;
+      final d = car.purchaseDate;
+      if (d == null) continue;
       final monthsAgo = (now.year - d.year) * 12 + (now.month - d.month);
       if (monthsAgo >= 0 && monthsAgo < 12) {
         final key = DateFormat(isPolish ? 'MMM yy' : 'MMM yy', isPolish ? 'pl' : 'en').format(d);
@@ -163,7 +164,7 @@ class _GarageReportContent extends StatelessWidget {
                       const SizedBox(height: 24),
 
                       // Monthly chart title
-                      _SectionTitle(isPolish ? 'DODANE PO MIESIĄCACH' : 'ADDED BY MONTH'),
+                      _SectionTitle(isPolish ? 'ZAKUPY PO MIESIĄCACH' : 'PURCHASES BY MONTH'),
                       const SizedBox(height: 12),
                       _MonthlyChart(
                         labels: monthLabels,
