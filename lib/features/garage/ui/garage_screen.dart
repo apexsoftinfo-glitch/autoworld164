@@ -275,7 +275,7 @@ class _GarageScreenViewState extends State<_GarageScreenView> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 16,
                                     mainAxisSpacing: 16,
-                                    childAspectRatio: 0.75,
+                                    childAspectRatio: 0.72,
                                   ),
                                   itemCount: filtered.length,
                                   itemBuilder: (context, index) {
@@ -442,7 +442,7 @@ class _CarCard extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
