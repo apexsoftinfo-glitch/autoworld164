@@ -85,6 +85,10 @@ class SupabaseAuthDataSource implements AuthDataSource {
       UserAttributes(email: email, password: password),
     );
     debugPrint(
+      'ℹ️ [AuthDataSource] upgradeAnonymousWithEmail refreshing session...',
+    );
+    await _supabaseClient.auth.refreshSession();
+    debugPrint(
       '✅ [AuthDataSource] upgradeAnonymousWithEmail succeeded email=$email',
     );
   }
