@@ -306,6 +306,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                           enabled: !isInteractionLocked,
                                           keyboardType: TextInputType.name,
                                           textCapitalization: TextCapitalization.words,
+                                          onChanged: (_) => setState(() {}),
                                         ),
                                         const SizedBox(height: 16),
                                         _ProfileTextField(
@@ -315,6 +316,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                           focusNode: _usernameFocusNode,
                                           enabled: !isInteractionLocked,
                                           keyboardType: TextInputType.text,
+                                          onChanged: (_) => setState(() {}),
                                         ),
                                         const SizedBox(height: 16),
                                         _ProfileTextField(
@@ -324,6 +326,7 @@ class _ProfileViewState extends State<_ProfileView> {
                                           focusNode: _garageNameFocusNode,
                                           enabled: !isInteractionLocked,
                                           keyboardType: TextInputType.text,
+                                          onChanged: (_) => setState(() {}),
                                         ),
                                         const SizedBox(height: 24),
                                         ElevatedButton(
@@ -880,6 +883,7 @@ class _ProfileTextField extends StatelessWidget {
   final bool enabled;
   final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
+  final ValueChanged<String>? onChanged;
 
   const _ProfileTextField({
     required this.label,
@@ -889,6 +893,7 @@ class _ProfileTextField extends StatelessWidget {
     required this.enabled,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
+    this.onChanged,
   });
 
   @override
@@ -914,6 +919,7 @@ class _ProfileTextField extends StatelessWidget {
           enabled: enabled,
           keyboardType: keyboardType,
           textCapitalization: textCapitalization,
+          onChanged: onChanged,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
