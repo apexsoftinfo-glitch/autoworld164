@@ -90,16 +90,17 @@ class GarageReportDialog extends StatelessWidget {
                       child: const Icon(Icons.analytics_outlined, color: Color(0xFFFFD700)),
                     ),
                     const SizedBox(width: 14),
-                    Text(
-                      isPolish ? 'SPRAWOZDANIE GARAŻU' : 'GARAGE REPORT',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
+                    Expanded(
+                      child: Text(
+                        isPolish ? 'SPRAWOZDANIE GARAŻU' : 'GARAGE REPORT',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
-                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.white38),
                       onPressed: () => Navigator.pop(context),
