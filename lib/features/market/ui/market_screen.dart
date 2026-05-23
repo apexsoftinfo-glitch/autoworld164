@@ -248,42 +248,47 @@ class _SortBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 8),
-      child: Row(
-        children: [
-          _SortButton(
-            icon: Icons.layers_outlined,
-            label: l10n.carSeriesLabel.toUpperCase(),
-            isSelected: currentSort == SortType.series,
-            order: currentOrder,
-            onTap: () => onSort(SortType.series),
-          ),
-          const SizedBox(width: 8),
-          _SortButton(
-            icon: Icons.sell_outlined,
-            label: l10n.carPurchasePriceLabel.split('(').first.trim().toUpperCase(),
-            isSelected: currentSort == SortType.price,
-            order: currentOrder,
-            onTap: () => onSort(SortType.price),
-          ),
-          const SizedBox(width: 8),
-          _SortButton(
-            icon: Icons.factory_outlined,
-            label: l10n.carProducerPlaceholder.toUpperCase(),
-            isSelected: currentSort == SortType.producer,
-            order: currentOrder,
-            onTap: () => onSort(SortType.producer),
-          ),
-          const SizedBox(width: 8),
-          _SortButton(
-            icon: Icons.sort_by_alpha,
-            label: 'A–Z',
-            isSelected: currentSort == SortType.name,
-            order: currentOrder,
-            onTap: () => onSort(SortType.name),
-          ),
-        ],
+    return SizedBox(
+      height: 44,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        reverse: true,
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 8),
+        child: Row(
+          children: [
+            _SortButton(
+              icon: Icons.layers_outlined,
+              label: l10n.carSeriesLabel.toUpperCase(),
+              isSelected: currentSort == SortType.series,
+              order: currentOrder,
+              onTap: () => onSort(SortType.series),
+            ),
+            const SizedBox(width: 8),
+            _SortButton(
+              icon: Icons.sell_outlined,
+              label: l10n.carPurchasePriceLabel.split('(').first.trim().toUpperCase(),
+              isSelected: currentSort == SortType.price,
+              order: currentOrder,
+              onTap: () => onSort(SortType.price),
+            ),
+            const SizedBox(width: 8),
+            _SortButton(
+              icon: Icons.factory_outlined,
+              label: l10n.carProducerPlaceholder.toUpperCase(),
+              isSelected: currentSort == SortType.producer,
+              order: currentOrder,
+              onTap: () => onSort(SortType.producer),
+            ),
+            const SizedBox(width: 8),
+            _SortButton(
+              icon: Icons.sort_by_alpha,
+              label: 'A–Z',
+              isSelected: currentSort == SortType.name,
+              order: currentOrder,
+              onTap: () => onSort(SortType.name),
+            ),
+          ],
+        ),
       ),
     );
   }
