@@ -113,7 +113,7 @@ class SessionRepositoryImpl implements SessionRepository {
             ),
           );
         },
-      ).startWith(const SessionStatusModel.loading());
+      );
     });
   }
 
