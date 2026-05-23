@@ -23,6 +23,8 @@ abstract class AuthDataSource {
   Future<void> deleteAccount();
 
   Future<void> signOut();
+
+  Future<void> changePassword({required String newPassword});
 }
 
 @LazySingleton(as: AuthDataSource)
@@ -123,6 +125,15 @@ class SupabaseAuthDataSource implements AuthDataSource {
     debugPrint('ℹ️ [AuthDataSource] signOut started');
     await _supabaseClient.auth.signOut();
     debugPrint('✅ [AuthDataSource] signOut succeeded');
+  }
+
+  @override
+  Future<void> changePassword({required String newPassword}) async {
+    debugPrint('ℹ️ [AuthDataSource] changePassword started');
+    await _supabaseClient.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+    debugPrint('✅ [AuthDataSource] changePassword succeeded');
   }
 
   Map<String, dynamic>? _mapUser(User? user) {

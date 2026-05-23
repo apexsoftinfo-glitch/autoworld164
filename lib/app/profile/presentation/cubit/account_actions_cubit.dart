@@ -9,7 +9,7 @@ import '../../../../shared/error_messages.dart';
 
 part 'account_actions_cubit.freezed.dart';
 
-enum AccountAction { signOut, deleteAccount, buyPro, developerProOverride }
+enum AccountAction { signOut, deleteAccount, buyPro, developerProOverride, changePassword }
 
 @freezed
 sealed class AccountActionsState with _$AccountActionsState {
@@ -118,6 +118,26 @@ class AccountActionsCubit extends Cubit<AccountActionsState> {
       debugPrint(
         '❌ [AccountActionsCubit] setDeveloperProOverride error: $error',
       );
+      emit(state.copyWith(activeAction: null, errorKey: mapErrorToKey(error)));
+    }
+  }
+
+  Future<void> changePassword(String newPassword) async {
+    if (state.activeAction != null) return;
+
+    emit(
+      state.copyWith(
+        activeAction: AccountAction.changePassword,
+        errorKey: null,
+        successKey: null,
+      ),
+    );
+
+    try {
+      await _authRepository.changePassword(newPassword: newPassword);
+      emit(state.copyWith(activeAction: null, successKey: 'password_changed'));
+    } catch (error) {
+      debugPrint('❌ [AccountActionsCubit] changePassword error: $error');
       emit(state.copyWith(activeAction: null, errorKey: mapErrorToKey(error)));
     }
   }

@@ -92,6 +92,12 @@ class _ProfileViewState extends State<_ProfileView> {
               ).showSnackBar(SnackBar(content: Text(l10n.proEnabledSnackbar)));
               context.read<AccountActionsCubit>().clearFeedback();
             }
+            if (state.successKey == 'password_changed') {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(l10n.saveSuccess)));
+              context.read<AccountActionsCubit>().clearFeedback();
+            }
           },
         ),
       ],
@@ -189,6 +195,41 @@ class _ProfileViewState extends State<_ProfileView> {
                                           )
                                         : Text(l10n.saveFirstNameButtonLabel),
                                   ),
+                                  if (!session.isAnonymousUser) ...[
+                                    const SizedBox(height: 24),
+                                    TextField(
+                                      controller: TextEditingController(
+                                        text: session.emailOrNull,
+                                      ),
+                                      readOnly: true,
+                                      enabled: false,
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: l10n.emailFieldLabel,
+                                        disabledBorder:
+                                            const UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.white24,
+                                              ),
+                                            ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    OutlinedButton.icon(
+                                      onPressed: !isInteractionLocked
+                                          ? () =>
+                                              _showChangePasswordDialog(
+                                                context,
+                                              )
+                                          : null,
+                                      icon: const Icon(Icons.lock_outline),
+                                      label: Text(
+                                        l10n.settingsChangePasswordLabel,
+                                      ),
+                                    ),
+                                  ],
                                   const SizedBox(height: 16),
                                   _AppLanguageDropdown(
                                     isEnabled: !isInteractionLocked,
@@ -425,6 +466,127 @@ class _ProfileViewState extends State<_ProfileView> {
     context.read<ProfileCubit>().saveFirstName(
       userId: userId,
       firstName: _firstNameController.text,
+    );
+  }
+
+  Future<void> _showChangePasswordDialog(BuildContext context) async {
+    final l10n = context.l10n;
+    final passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    var obscurePassword = true;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider<AccountActionsCubit>.value(
+          value: context.read<AccountActionsCubit>(),
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return BlocConsumer<AccountActionsCubit, AccountActionsState>(
+                listenWhen: (prev, curr) =>
+                    prev.successKey != curr.successKey ||
+                    prev.errorKey != curr.errorKey,
+                listener: (context, state) {
+                  if (state.successKey == 'password_changed') {
+                    Navigator.of(context).pop();
+                  }
+                },
+                builder: (context, state) {
+                  final isLoading =
+                      state.activeAction == AccountAction.changePassword;
+
+                  return AlertDialog(
+                    title: Text(l10n.settingsChangePasswordLabel),
+                    content: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: obscurePassword,
+                            enabled: !isLoading,
+                            keyboardType: TextInputType.visiblePassword,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              labelText: l10n.passwordFieldLabel,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscurePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white54,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    obscurePassword = !obscurePassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validator: (val) {
+                              if (val == null || val.trim().length < 6) {
+                                return l10n.errorPassword;
+                              }
+                              return null;
+                            },
+                          ),
+                          if (state.errorKey != null &&
+                              state.activeAction == null) ...[
+                            const SizedBox(height: 16),
+                            SelectableText(
+                              messageForErrorKey(l10n, state.errorKey),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () => Navigator.of(context).pop(),
+                        child: Text(l10n.deleteAccountCancelButtonLabel),
+                      ),
+                      FilledButton(
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () {
+                                    if (formKey.currentState?.validate() ??
+                                        false) {
+                                      context
+                                          .read<AccountActionsCubit>()
+                                          .changePassword(
+                                            passwordController.text,
+                                          );
+                                    }
+                                  },
+                        child:
+                            isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                : Text(l10n.carFormSaveButton),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
