@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../garage/models/car_model.dart';
 import '../../../garage/ui/widgets/car_photo.dart';
+import '../../../../shared/sound_helper.dart';
 
 class GarageMoveSuccessDialog extends StatefulWidget {
   final CarModel car;
@@ -30,6 +31,7 @@ class _GarageMoveSuccessDialogState extends State<GarageMoveSuccessDialog> with 
   @override
   void initState() {
     super.initState();
+    SoundHelper.playTransferChime();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2500),
       vsync: this,

@@ -31,4 +31,13 @@ class SoundHelper {
       debugPrint('❌ [SoundHelper] Error playing delete sound: $e');
     }
   }
+
+  static Future<void> playTransferChime() async {
+    try {
+      await _player.stop();
+      await _player.play(AssetSource('audio/transfer.mp3'));
+    } catch (e) {
+      debugPrint('❌ [SoundHelper] Error playing transfer sound: $e');
+    }
+  }
 }
