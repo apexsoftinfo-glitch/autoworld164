@@ -363,21 +363,24 @@ class _MarketOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return _GlassBox(
       padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          SwitchListTile(
-            value: isExchange,
-            onChanged: onExchangeChanged,
-            title: Text(context.l10n.marketForExchange, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-            activeThumbColor: const Color(0xFFFFD700),
-          ),
-          SwitchListTile(
-            value: isSale,
-            onChanged: onSaleChanged,
-            title: Text(context.l10n.marketForSale, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-            activeThumbColor: const Color(0xFFFFD700),
-          ),
-        ],
+      child: Material(
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            SwitchListTile(
+              value: isExchange,
+              onChanged: onExchangeChanged,
+              title: Text(context.l10n.marketForExchange, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+              activeThumbColor: const Color(0xFFFFD700),
+            ),
+            SwitchListTile(
+              value: isSale,
+              onChanged: onSaleChanged,
+              title: Text(context.l10n.marketForSale, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+              activeThumbColor: const Color(0xFFFFD700),
+            ),
+          ],
+        ),
       ),
     );
   }

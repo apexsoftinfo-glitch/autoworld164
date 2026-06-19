@@ -1063,42 +1063,45 @@ class _BrandFilterSheet extends StatelessWidget {
                 final count = stats[brand] ?? 0;
                 final isSelected = currentQuery.toLowerCase() == brand.toLowerCase();
                 
-                return ListTile(
-                  onTap: () => onSelect(brand),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  leading: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
-                      shape: BoxShape.circle,
+                return Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    onTap: () => onSelect(brand),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    leading: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: isSelected ? const Color(0xFFFFD700).withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.directions_car, 
+                        size: 16, 
+                        color: isSelected ? const Color(0xFFFFD700) : Colors.white38,
+                      ),
                     ),
-                    child: Icon(
-                      Icons.directions_car, 
-                      size: 16, 
-                      color: isSelected ? const Color(0xFFFFD700) : Colors.white38,
+                    title: Text(
+                      brand.toUpperCase(),
+                      style: TextStyle(
+                        color: isSelected ? const Color(0xFFFFD700) : Colors.white70,
+                        fontSize: 13,
+                        fontWeight: isSelected ? FontWeight.w900 : FontWeight.w500,
+                        letterSpacing: 1,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    brand.toUpperCase(),
-                    style: TextStyle(
-                      color: isSelected ? const Color(0xFFFFD700) : Colors.white70,
-                      fontSize: 13,
-                      fontWeight: isSelected ? FontWeight.w900 : FontWeight.w500,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  trailing: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.05),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      count.toString(),
-                      style: const TextStyle(
-                        color: Colors.white38,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        count.toString(),
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
