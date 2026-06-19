@@ -17,6 +17,7 @@ import '../presentation/cubit/market_form_cubit.dart';
 import '../data/repositories/market_repository.dart';
 import 'market_car_form_screen.dart';
 import 'widgets/market_sold_success_dialog.dart';
+import '../../../../shared/sound_helper.dart';
 
 class MarketCarDetailsScreen extends StatefulWidget {
   final MarketCarModel car;
@@ -54,7 +55,10 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
           return BlocListener<MarketFormCubit, MarketFormState>(
             listener: (context, state) {
               state.whenOrNull(
-                success: () => Navigator.pop(context),
+                success: () {
+                  SoundHelper.playDeleteChime();
+                  Navigator.pop(context);
+                },
                 error: (key, p, s) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(key), backgroundColor: Colors.redAccent),

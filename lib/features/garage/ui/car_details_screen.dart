@@ -16,6 +16,7 @@ import '../utils/garage_card_png_generator.dart';
 import '../../../l10n/l10n.dart';
 import '../../market/presentation/cubit/market_cubit.dart';
 import '../../market/ui/widgets/garage_move_success_dialog.dart';
+import '../../../shared/sound_helper.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   final CarModel car;
@@ -55,6 +56,7 @@ class CarDetailsScreen extends StatelessWidget {
             final l10n = context.l10n;
             state.whenOrNull(
               success: () {
+                SoundHelper.playDeleteChime();
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

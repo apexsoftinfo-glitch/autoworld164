@@ -10,6 +10,7 @@ import '../models/market_car_model.dart';
 import '../presentation/cubit/market_form_cubit.dart';
 import '../../garage/models/car_model.dart';
 import '../../garage/ui/widgets/car_photo.dart';
+import '../../../shared/sound_helper.dart';
 
 class MarketCarFormScreen extends StatefulWidget {
   final MarketCarModel? car;
@@ -36,6 +37,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
   late bool _isExchange;
   late bool _isSale;
   late bool _isAuction;
+  bool _isDeleting = false;
 
   AppLocalizations get l10n => context.l10n;
 
@@ -114,6 +116,9 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
       child: BlocConsumer<MarketFormCubit, MarketFormState>(
         listener: (context, state) {
           if (state is MarketFormSuccess) {
+            if (_isDeleting) {
+              SoundHelper.playDeleteChime();
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(l10n.saveSuccess), backgroundColor: Colors.green),
             );
@@ -330,6 +335,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
+              setState(() => _isDeleting = true);
               cubit.deleteCar(widget.car!.id);
             },
             child: Text(l10n.carDetailsDeleteConfirmTitle.toUpperCase(), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),

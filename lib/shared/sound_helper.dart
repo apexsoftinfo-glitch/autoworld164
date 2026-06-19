@@ -22,4 +22,13 @@ class SoundHelper {
       debugPrint('❌ [SoundHelper] Error playing backup done sound: $e');
     }
   }
+
+  static Future<void> playDeleteChime() async {
+    try {
+      await _player.stop();
+      await _player.play(AssetSource('audio/delete.mp3'));
+    } catch (e) {
+      debugPrint('❌ [SoundHelper] Error playing delete sound: $e');
+    }
+  }
 }
