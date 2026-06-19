@@ -23,6 +23,7 @@ abstract class CarsDataSource {
   // Series autocomplete
   Future<List<String>> fetchSeries();
   Future<void> addSeries(String name);
+  Future<void> deleteSeries(String name);
 
   // Producers autocomplete
   Future<List<String>> fetchProducers();
@@ -179,6 +180,34 @@ class CarsDataSourceImpl implements CarsDataSource {
       'name': name,
       'user_id': userId,
     }, onConflict: 'name, user_id');
+  }
+
+  @override
+  Future<void> deleteSeries(String name) async {
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return;
+
+    final carsRes = await _supabase
+        .from('autoworld_cars')
+        .select('id')
+        .eq('series', name)
+        .limit(1);
+
+    final marketRes = await _supabase
+        .from('autoworld_market')
+        .select('id')
+        .eq('series', name)
+        .limit(1);
+
+    if ((carsRes as List).isNotEmpty || (marketRes as List).isNotEmpty) {
+      throw const FormatException('series_has_models');
+    }
+
+    await _supabase
+        .from('autoworld_series')
+        .delete()
+        .eq('name', name)
+        .eq('user_id', userId);
   }
 
   @override

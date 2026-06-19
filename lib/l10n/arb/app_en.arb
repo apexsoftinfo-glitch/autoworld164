@@ -355,5 +355,8 @@
   "backupReminderOk": "OK",
   "backupReminderAction": "MAKE BACKUP",
   "sortByPurchaseLabel": "BY PRICE",
-  "sortByProducerLabel": "BY PROD."
+  "sortByProducerLabel": "BY PROD.",
+  "errorSeriesHasModels": "Cannot delete series because you have models assigned to it.",
+  "carFormSeriesDeleteConfirmTitle": "DELETE SERIES",
+  "carFormSeriesDeleteConfirmBody": "Are you sure you want to delete this series?"
 }

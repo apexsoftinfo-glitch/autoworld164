@@ -142,4 +142,29 @@ class MarketFormCubit extends Cubit<MarketFormState> {
       emit(MarketFormState.error(mapErrorToKey(e)));
     }
   }
+
+  Future<void> deleteSeries(String name) async {
+    final currentProducers = state.maybeWhen(
+      initial: (p, s) => p,
+      loading: (p, s) => p,
+      error: (e, p, s) => p,
+      orElse: () => <String>[],
+    );
+    final currentSeries = state.maybeWhen(
+      initial: (p, s) => s,
+      loading: (p, s) => s,
+      error: (e, p, s) => s,
+      orElse: () => <String>[],
+    );
+
+    emit(MarketFormState.loading(producers: currentProducers, series: currentSeries));
+    try {
+      await _carsRepository.deleteSeries(name);
+      final updatedSeries = await _carsRepository.getSeries();
+      emit(MarketFormState.initial(producers: currentProducers, series: updatedSeries));
+    } catch (e, stack) {
+      debugPrint('MarketFormCubit deleteSeries error: $e\n$stack');
+      emit(MarketFormState.error(mapErrorToKey(e), producers: currentProducers, series: currentSeries));
+    }
+  }
 }

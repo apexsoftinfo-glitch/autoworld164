@@ -1011,4 +1011,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get sortByProducerLabel => 'WG PROD.';
+
+  @override
+  String get errorSeriesHasModels =>
+      'Nie można usunąć serii, ponieważ masz przypisane do niej modele.';
+
+  @override
+  String get carFormSeriesDeleteConfirmTitle => 'USUŃ SERIĘ';
+
+  @override
+  String get carFormSeriesDeleteConfirmBody =>
+      'Czy na pewno chcesz usunąć tę serię?';
 }

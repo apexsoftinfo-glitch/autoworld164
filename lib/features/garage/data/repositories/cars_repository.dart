@@ -34,6 +34,7 @@ abstract class CarsRepository {
   });
   Future<void> deleteCar(CarModel car);
   Future<List<String>> getSeries();
+  Future<void> deleteSeries(String name);
   Future<List<String>> getProducers();
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
 }
@@ -158,6 +159,16 @@ class CarsRepositoryImpl implements CarsRepository {
 
   @override
   Future<List<String>> getSeries() => _dataSource.fetchSeries();
+
+  @override
+  Future<void> deleteSeries(String name) async {
+    try {
+      await _dataSource.deleteSeries(name);
+    } catch (e, stack) {
+      debugPrint('CarsRepositoryImpl deleteSeries error: $e\n$stack');
+      rethrow;
+    }
+  }
 
   @override
   Future<List<String>> getProducers() => _dataSource.fetchProducers();

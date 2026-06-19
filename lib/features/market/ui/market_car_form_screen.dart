@@ -11,6 +11,7 @@ import '../presentation/cubit/market_form_cubit.dart';
 import '../../garage/models/car_model.dart';
 import '../../garage/ui/widgets/car_photo.dart';
 import '../../../shared/sound_helper.dart';
+import '../../../shared/error_messages.dart';
 
 class MarketCarFormScreen extends StatefulWidget {
   final MarketCarModel? car;
@@ -266,7 +267,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
                           if (state is MarketFormError) ...[
                             const SizedBox(height: 24),
                             Text(
-                              state.errorKey,
+                              messageForErrorKey(l10n, state.errorKey),
                               style: const TextStyle(color: Colors.redAccent),
                               textAlign: TextAlign.center,
                             ),
@@ -622,10 +623,33 @@ class _SeriesSelector extends StatelessWidget {
     return _GlassDropdown<String>(
       label: label,
       value: current.isEmpty ? null : (items.contains(current) ? current : null),
-      items: items.map((s) => DropdownMenuItem(
-        value: s,
-        child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
-      )).toList(),
+      items: items.map((s) {
+        final isOther = s == context.l10n.commonOther;
+
+        return DropdownMenuItem<String>(
+          value: s,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onLongPress: isOther ? null : () async {
+              Navigator.pop(context); // Close dropdown
+              final confirm = await _showDeleteSeriesConfirmDialog(context, s);
+              if (confirm == true && context.mounted) {
+                context.read<MarketFormCubit>().deleteSeries(s);
+                if (current == s) {
+                  controller.clear();
+                  onChanged('');
+                }
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              alignment: Alignment.centerLeft,
+              child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+            ),
+          ),
+        );
+      }).toList(),
       onChanged: (val) async {
         if (val == context.l10n.commonOther) {
           final result = await _showCustomDialog(context, label, current);
@@ -638,6 +662,51 @@ class _SeriesSelector extends StatelessWidget {
           onChanged(val);
         }
       },
+    );
+  }
+
+  Future<bool?> _showDeleteSeriesConfirmDialog(BuildContext context, String name) {
+    final l10n = context.l10n;
+    return showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: const Color(0xFF1A120B),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: const BorderSide(color: Colors.white12),
+        ),
+        title: Text(
+          l10n.carFormSeriesDeleteConfirmTitle.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        content: Text(
+          '${l10n.carFormSeriesDeleteConfirmBody}\n\nSeria: $name',
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(
+              l10n.cancelButtonLabel.toUpperCase(),
+              style: const TextStyle(color: Colors.white60),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(
+              l10n.deleteAccountConfirmButtonLabel.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.redAccent,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

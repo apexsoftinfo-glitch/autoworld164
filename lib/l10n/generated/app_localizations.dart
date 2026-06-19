@@ -1963,6 +1963,24 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'WG PROD.'**
   String get sortByProducerLabel;
+
+  /// No description provided for @errorSeriesHasModels.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nie można usunąć serii, ponieważ masz przypisane do niej modele.'**
+  String get errorSeriesHasModels;
+
+  /// No description provided for @carFormSeriesDeleteConfirmTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'USUŃ SERIĘ'**
+  String get carFormSeriesDeleteConfirmTitle;
+
+  /// No description provided for @carFormSeriesDeleteConfirmBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Czy na pewno chcesz usunąć tę serię?'**
+  String get carFormSeriesDeleteConfirmBody;
 }
 
 class _AppLocalizationsDelegate

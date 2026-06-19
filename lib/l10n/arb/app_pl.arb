@@ -355,5 +355,8 @@
   "backupReminderOk": "OK",
   "backupReminderAction": "ZRÓB KOPIĘ",
   "sortByPurchaseLabel": "WG ZAKUPU",
-  "sortByProducerLabel": "WG PROD."
+  "sortByProducerLabel": "WG PROD.",
+  "errorSeriesHasModels": "Nie można usunąć serii, ponieważ masz przypisane do niej modele.",
+  "carFormSeriesDeleteConfirmTitle": "USUŃ SERIĘ",
+  "carFormSeriesDeleteConfirmBody": "Czy na pewno chcesz usunąć tę serię?"
 }

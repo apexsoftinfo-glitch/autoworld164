@@ -50,6 +50,10 @@ String mapErrorToKey(Object error) {
     return 'rate_limit_exceeded';
   }
 
+  if (message.contains('series_has_models')) {
+    return 'series_has_models';
+  }
+
   return 'unknown_error';
 }
 
@@ -66,6 +70,7 @@ String messageForErrorKey(AppLocalizations l10n, String? errorKey) {
     'shared_users_setup_required' => l10n.errorSharedUsersSetupRequired,
     'delete_account_not_implemented' => l10n.errorDeleteAccountNotImplemented,
     'rate_limit_exceeded' => l10n.errorRateLimitExceeded,
+    'series_has_models' => l10n.errorSeriesHasModels,
     'unknown_error' || null => l10n.errorUnknown,
     _ => l10n.errorWithKey(errorKey),
   };

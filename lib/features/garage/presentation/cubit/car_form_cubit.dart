@@ -124,4 +124,29 @@ class CarFormCubit extends Cubit<CarFormState> {
       emit(CarFormState.error(mapErrorToKey(e)));
     }
   }
+
+  Future<void> deleteSeries(String name) async {
+    final currentProducers = state.maybeWhen(
+      initial: (p, s) => p,
+      loading: (p, s) => p,
+      error: (e, p, s) => p,
+      orElse: () => <String>[],
+    );
+    final currentSeries = state.maybeWhen(
+      initial: (p, s) => s,
+      loading: (p, s) => s,
+      error: (e, p, s) => s,
+      orElse: () => <String>[],
+    );
+
+    emit(CarFormState.loading(producers: currentProducers, series: currentSeries));
+    try {
+      await _carsRepository.deleteSeries(name);
+      final updatedSeries = await _carsRepository.getSeries();
+      emit(CarFormState.initial(producers: currentProducers, series: updatedSeries));
+    } catch (e, stack) {
+      debugPrint('CarFormCubit deleteSeries error: $e\n$stack');
+      emit(CarFormState.error(mapErrorToKey(e), producers: currentProducers, series: currentSeries));
+    }
+  }
 }

@@ -98,5 +98,32 @@ void main() {
         const CarFormState.error('network_error', producers: [], series: []),
       ],
     );
+
+    blocTest<CarFormCubit, CarFormState>(
+      'deleteSeries emits loading then initial with updated series list on success',
+      build: () {
+        when(() => carsRepository.deleteSeries(any())).thenAnswer((_) async {});
+        when(() => carsRepository.getSeries()).thenAnswer((_) async => ['Series A', 'Series B']);
+        return CarFormCubit(carsRepository);
+      },
+      act: (cubit) => cubit.deleteSeries('Series C'),
+      expect: () => [
+        const CarFormState.loading(producers: [], series: []),
+        const CarFormState.initial(producers: [], series: ['Series A', 'Series B']),
+      ],
+    );
+
+    blocTest<CarFormCubit, CarFormState>(
+      'deleteSeries emits loading then error when repo throws error',
+      build: () {
+        when(() => carsRepository.deleteSeries(any())).thenThrow(Exception('series_has_models'));
+        return CarFormCubit(carsRepository);
+      },
+      act: (cubit) => cubit.deleteSeries('Series C'),
+      expect: () => [
+        const CarFormState.loading(producers: [], series: []),
+        const CarFormState.error('series_has_models', producers: [], series: []),
+      ],
+    );
   });
 }

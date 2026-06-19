@@ -1007,4 +1007,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sortByProducerLabel => 'BY PROD.';
+
+  @override
+  String get errorSeriesHasModels =>
+      'Cannot delete series because you have models assigned to it.';
+
+  @override
+  String get carFormSeriesDeleteConfirmTitle => 'DELETE SERIES';
+
+  @override
+  String get carFormSeriesDeleteConfirmBody =>
+      'Are you sure you want to delete this series?';
 }
