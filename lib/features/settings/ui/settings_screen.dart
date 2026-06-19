@@ -91,6 +91,7 @@ class _SettingsView extends StatelessWidget {
 
               if (state is Success) {
                 if (state.messageKey == 'backup_restored_successfully') {
+                  SoundHelper.playBackupDoneChime();
                   // Close progress dialog if open
                   Navigator.of(context, rootNavigator: true).pop();
                   _showImportStatusDialog(context, isProgress: false, success: true);
