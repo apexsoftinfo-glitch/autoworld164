@@ -486,46 +486,49 @@ class _MarketCarListTile extends StatelessWidget {
 
     return _GlassBox(
       padding: EdgeInsets.zero,
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(8),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => MarketCarDetailsScreen(car: car)),
-        ),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: 80,
-            height: 80,
-            child: photoPath != null
-                ? CarPhoto(
-                    path: photoPath,
-                    fit: BoxFit.cover,
-                    folderName: 'autoworld_photos',
-                    placeholder: const _ImagePlaceholder(),
-                  )
-                : const _ImagePlaceholder(),
+      child: Material(
+        color: Colors.transparent,
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(8),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => MarketCarDetailsScreen(car: car)),
           ),
-        ),
-        title: Text(
-          '${car.brand} ${car.modelName}',
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        subtitle: Row(
-          children: [
-             Text(
-              car.toyMaker?.toUpperCase() ?? '',
-              style: const TextStyle(color: Color(0xFFFFD700), fontSize: 9, fontWeight: FontWeight.w900),
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              width: 80,
+              height: 80,
+              child: photoPath != null
+                  ? CarPhoto(
+                      path: photoPath,
+                      fit: BoxFit.cover,
+                      folderName: 'autoworld_photos',
+                      placeholder: const _ImagePlaceholder(),
+                    )
+                  : const _ImagePlaceholder(),
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _MarketTags(car: car),
-            ),
-          ],
-        ),
-        trailing: Text(
-          currencyFormat.format(car.price),
-          style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.w900),
+          ),
+          title: Text(
+            '${car.brand} ${car.modelName}',
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          subtitle: Row(
+            children: [
+               Text(
+                car.toyMaker?.toUpperCase() ?? '',
+                style: const TextStyle(color: Color(0xFFFFD700), fontSize: 9, fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _MarketTags(car: car),
+              ),
+            ],
+          ),
+          trailing: Text(
+            currencyFormat.format(car.price),
+            style: const TextStyle(color: Color(0xFFFFD700), fontWeight: FontWeight.w900),
+          ),
         ),
       ),
     );
