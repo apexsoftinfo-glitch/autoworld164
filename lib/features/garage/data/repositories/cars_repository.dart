@@ -37,6 +37,7 @@ abstract class CarsRepository {
   Future<void> deleteSeries(String name);
   Future<List<String>> getProducers();
   Future<List<String>> searchWebPhotos(String query, {int offset = 0});
+  Future<void> refresh();
 }
 
 @LazySingleton(as: CarsRepository)
@@ -62,6 +63,9 @@ class CarsRepositoryImpl implements CarsRepository {
       debugPrint('CarsRepositoryImpl _refresh error: $e');
     }
   }
+
+  @override
+  Future<void> refresh() => _refresh();
 
   @override
   Future<void> addCar({

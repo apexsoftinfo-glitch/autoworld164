@@ -9,6 +9,7 @@ import '../../profiles/data/repositories/shared_user_repository.dart';
 import '../../profiles/models/shared_user_model.dart';
 import '../data/repositories/settings_repository.dart';
 import '../models/settings_model.dart';
+import '../../garage/data/repositories/cars_repository.dart';
 
 part 'settings_cubit.freezed.dart';
 
@@ -36,11 +37,13 @@ class SettingsCubit extends Cubit<SettingsState> {
     this._settingsRepository,
     this._sharedUserRepository,
     this._authRepository,
+    this._carsRepository,
   ) : super(const Initial());
 
   final SettingsRepository _settingsRepository;
   final SharedUserRepository _sharedUserRepository;
   final AuthRepository _authRepository;
+  final CarsRepository _carsRepository;
 
   StreamSubscription? _settingsSub;
   StreamSubscription? _profileSub;
@@ -52,14 +55,20 @@ class SettingsCubit extends Cubit<SettingsState> {
     _debounceTimers[key] = Timer(const Duration(milliseconds: 500), action);
   }
 
-  void init(String userId) {
-    if (state is Data) {
+  void init(String userId, {bool force = false}) {
+    if (!force && state is Data) {
       final currentData = state as Data;
       if (currentData.settings.id == userId) return;
     }
     emit(const Loading());
     
     _settingsSub?.cancel();
+    if (force) {
+      _profileSub?.cancel();
+      _profileSub = null;
+      _authSub?.cancel();
+      _authSub = null;
+    }
     _settingsSub = _settingsRepository.watchSettings(userId).listen(
       (settings) {
         if (settings != null) {
@@ -299,7 +308,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     
     try {
       await _settingsRepository.importBackup(filePath);
-      init(userId);
+      await _carsRepository.refresh();
+      init(userId, force: true);
       emit(const Success(messageKey: 'backup_restored_successfully'));
     } catch (e, stack) {
       debugPrint('SettingsCubit.importBackup error: $e\n$stack');

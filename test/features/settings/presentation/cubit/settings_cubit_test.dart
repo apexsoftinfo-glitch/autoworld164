@@ -14,6 +14,7 @@ void main() {
   late MockSettingsRepository settingsRepository;
   late MockSharedUserRepository sharedUserRepository;
   late MockAuthRepository authRepository;
+  late MockCarsRepository carsRepository;
 
   setUpAll(() {
     registerFallbackValue(FakeDateTime());
@@ -23,6 +24,7 @@ void main() {
     settingsRepository = MockSettingsRepository();
     sharedUserRepository = MockSharedUserRepository();
     authRepository = MockAuthRepository();
+    carsRepository = MockCarsRepository();
   });
 
   group('SettingsCubit', () {
@@ -51,6 +53,7 @@ void main() {
           settingsRepository,
           sharedUserRepository,
           authRepository,
+          carsRepository,
         );
       },
       act: (cubit) => cubit.init(userId),
@@ -90,6 +93,7 @@ void main() {
           settingsRepository,
           sharedUserRepository,
           authRepository,
+          carsRepository,
         );
       },
       act: (cubit) async {

@@ -44,6 +44,7 @@ void main() {
     getIt.registerFactory<CarsCollectionCubit>(() => mockCarsCollectionCubit);
     final mockSettingsRepo = MockSettingsRepository();
     final mockSharedUserRepo = MockSharedUserRepository();
+    final mockCarsRepo = MockCarsRepository();
     
     when(() => mockSettingsRepo.watchSettings(any())).thenAnswer((_) => const Stream.empty());
     when(() => mockSharedUserRepo.watchSharedUser(any())).thenAnswer((_) => const Stream.empty());
@@ -52,6 +53,7 @@ void main() {
       mockSettingsRepo,
       mockSharedUserRepo,
       authRepository,
+      mockCarsRepo,
     )));
     getIt.registerLazySingleton<SessionCubit>(() => SessionCubit(sessionRepository));
   });
