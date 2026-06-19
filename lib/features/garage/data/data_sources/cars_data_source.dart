@@ -168,7 +168,13 @@ class CarsDataSourceImpl implements CarsDataSource {
 
   @override
   Future<List<String>> fetchSeries() async {
-    final response = await _supabase.from('autoworld_series').select('name').order('name');
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return [];
+    final response = await _supabase
+        .from('autoworld_series')
+        .select('name')
+        .eq('user_id', userId)
+        .order('name');
     return (response as List).map((e) => e['name'] as String).toList();
   }
 
@@ -185,7 +191,7 @@ class CarsDataSourceImpl implements CarsDataSource {
   @override
   Future<void> deleteSeries(String name) async {
     final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) return;
+    if (userId == null) throw Exception('unauthenticated');
 
     final carsRes = await _supabase
         .from('autoworld_cars')
@@ -212,7 +218,13 @@ class CarsDataSourceImpl implements CarsDataSource {
 
   @override
   Future<List<String>> fetchProducers() async {
-    final response = await _supabase.from('autoworld_producers').select('name').order('name');
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId == null) return [];
+    final response = await _supabase
+        .from('autoworld_producers')
+        .select('name')
+        .eq('user_id', userId)
+        .order('name');
     return (response as List).map((e) => e['name'] as String).toList();
   }
 

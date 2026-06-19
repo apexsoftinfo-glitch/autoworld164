@@ -337,7 +337,7 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
             onPressed: () {
               Navigator.pop(dialogContext);
               setState(() => _isDeleting = true);
-              cubit.deleteCar(widget.car!.id);
+              cubit.deleteCar(widget.car!);
             },
             child: Text(l10n.carDetailsDeleteConfirmTitle.toUpperCase(), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
           ),

@@ -202,7 +202,7 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
                                   final cubit = context.read<MarketFormCubit>();
                                   final confirmed = await MarketSoldSuccessDialog.show(context);
                                   if (confirmed == true && mounted) {
-                                    cubit.deleteCar(widget.car.id);
+                                    cubit.deleteCar(widget.car);
                                   }
                                 },
                               ),

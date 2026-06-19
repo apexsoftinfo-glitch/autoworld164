@@ -84,8 +84,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketSearchNoResults => 'No results';
 
   @override
-  String get marketCarDeletedFromGarage =>
-      'Model has been removed from the garage';
+  String get marketCarDeletedFromGarage => 'Model moved to Trade/Sale';
+
+  @override
+  String get carDeletedSuccessfully => 'Model has been deleted';
 
   @override
   String get marketTryAgain => 'TRY AGAIN';
@@ -1018,4 +1020,47 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get carFormSeriesDeleteConfirmBody =>
       'Are you sure you want to delete this series?';
+
+  @override
+  String get sellButtonLabel => 'SELL';
+
+  @override
+  String get backupPreparingFiles => 'Preparing files...';
+
+  @override
+  String get backupMightTakeAMoment => 'This may take a moment';
+
+  @override
+  String get backupTransferringData => 'Transferring data...';
+
+  @override
+  String get backupImportError => 'IMPORT ERROR';
+
+  @override
+  String get backupImportUnknownError => 'Unknown error';
+
+  @override
+  String get garageBackgroundClassic => 'Classic';
+
+  @override
+  String get garageBackgroundIndustrial => 'Industrial';
+
+  @override
+  String get garageBackgroundCarbon => 'Dark Carbon';
+
+  @override
+  String get garageBackgroundModern => 'Modern';
+
+  @override
+  String get garageBackgroundAbstract => 'Abstract';
+
+  @override
+  String get settingsBackupGuestWarningTitle => 'Warning – Guest Account';
+
+  @override
+  String get settingsBackupGuestWarningBody =>
+      'Guest accounts may be deleted. Secure your account before making a backup.';
+
+  @override
+  String get backupCreatedSuccessTitle => 'Backup ready';
 }

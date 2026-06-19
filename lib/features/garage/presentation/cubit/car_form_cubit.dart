@@ -112,11 +112,9 @@ class CarFormCubit extends Cubit<CarFormState> {
     }
   }
 
-  Future<void> deleteCar(String carId) async {
+  Future<void> deleteCar(CarModel car) async {
     emit(const CarFormState.loading());
     try {
-      final cars = await _carsRepository.carsStream.first;
-      final car = cars.firstWhere((c) => c.id == carId);
       await _carsRepository.deleteCar(car);
       emit(const CarFormState.success());
     } catch (e, stack) {

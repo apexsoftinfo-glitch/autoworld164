@@ -17,6 +17,8 @@ import '../../../l10n/l10n.dart';
 import '../../market/presentation/cubit/market_cubit.dart';
 import '../../market/ui/widgets/garage_move_success_dialog.dart';
 import '../../../shared/sound_helper.dart';
+import '../../settings/models/settings_model.dart';
+import '../../settings/presentation/settings_cubit.dart';
 
 class CarDetailsScreen extends StatelessWidget {
   final CarModel car;
@@ -26,17 +28,12 @@ class CarDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final supabase = getIt<SupabaseClient>();
-    final isPolish = Localizations.localeOf(context).languageCode == 'pl';
-    
-    final currencyFormat = NumberFormat.simpleCurrency(
-      locale: isPolish ? 'pl_PL' : 'en_US',
-      name: isPolish ? 'PLN' : 'USD',
-    );
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<CarFormCubit>()),
         BlocProvider(create: (context) => getIt<MarketCubit>()),
+        BlocProvider.value(value: getIt<SettingsCubit>()),
       ],
       child: BlocListener<MarketCubit, MarketState>(
         listener: (context, state) {
@@ -60,7 +57,7 @@ class CarDetailsScreen extends StatelessWidget {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(l10n.marketCarDeletedFromGarage),
+                    content: Text(l10n.carDeletedSuccessfully),
                     backgroundColor: Colors.black87,
                   ),
                 );
@@ -85,7 +82,7 @@ class CarDetailsScreen extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
               ),
               actions: [
-                _DeleteButton(carId: car.id),
+                _DeleteButton(car: car),
               ],
             ),
             body: Container(
@@ -142,7 +139,7 @@ class CarDetailsScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            _DetailGrid(car: car, currencyFormat: currencyFormat),
+                            _DetailGrid(car: car),
                             const SizedBox(height: 8),
                           ],
                         ),
@@ -306,13 +303,28 @@ class _Placeholder extends StatelessWidget {
 
 class _DetailGrid extends StatelessWidget {
   final CarModel car;
-  final NumberFormat currencyFormat;
 
-  const _DetailGrid({required this.car, required this.currencyFormat});
+  const _DetailGrid({required this.car});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
+    // Waluta z ustawień użytkownika
+    final settingsState = context.watch<SettingsCubit>().state;
+    final currency = settingsState is Data
+        ? settingsState.settings.currency
+        : AppCurrency.pln;
+    final (currencyLocale, currencyName) = switch (currency) {
+      AppCurrency.pln => ('pl_PL', 'PLN'),
+      AppCurrency.usd => ('en_US', 'USD'),
+      AppCurrency.eur => ('de_DE', 'EUR'),
+    };
+    final currencyFormat = NumberFormat.simpleCurrency(
+      locale: currencyLocale,
+      name: currencyName,
+    );
+
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -443,7 +455,7 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 const Icon(Icons.sell_outlined, color: Colors.greenAccent, size: 20),
                 Text(
-                  isPolish ? 'SPRZEDAJ' : 'SELL',
+                  l10n.sellButtonLabel,
                   style: const TextStyle(color: Colors.greenAccent, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1),
                 ),
               ],
@@ -545,8 +557,8 @@ class _ActionButtons extends StatelessWidget {
 }
 
 class _DeleteButton extends StatelessWidget {
-  final String carId;
-  const _DeleteButton({required this.carId});
+  final CarModel car;
+  const _DeleteButton({required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -575,7 +587,7 @@ class _DeleteButton extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.pop(diagContext);
-                context.read<CarFormCubit>().deleteCar(carId);
+                context.read<CarFormCubit>().deleteCar(car);
               },
               child: Text(l10n.deleteAccountConfirmButtonLabel.toUpperCase(), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
             ),

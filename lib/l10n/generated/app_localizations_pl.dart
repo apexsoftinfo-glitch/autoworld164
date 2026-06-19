@@ -84,7 +84,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get marketSearchNoResults => 'Brak wyników';
 
   @override
-  String get marketCarDeletedFromGarage => 'Model został usunięty z garażu';
+  String get marketCarDeletedFromGarage =>
+      'Model przeniesiony do Wymiana/Sprzedaż';
+
+  @override
+  String get carDeletedSuccessfully => 'Model został usunięty';
 
   @override
   String get marketTryAgain => 'SPRÓBUJ PONOWNIE';
@@ -1022,4 +1026,47 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get carFormSeriesDeleteConfirmBody =>
       'Czy na pewno chcesz usunąć tę serię?';
+
+  @override
+  String get sellButtonLabel => 'SPRZEDAJ';
+
+  @override
+  String get backupPreparingFiles => 'Przygotowywanie plików...';
+
+  @override
+  String get backupMightTakeAMoment => 'To może chwilę potrwać';
+
+  @override
+  String get backupTransferringData => 'Przenoszenie danych...';
+
+  @override
+  String get backupImportError => 'BŁĄD IMPORTU';
+
+  @override
+  String get backupImportUnknownError => 'Nieznany błąd';
+
+  @override
+  String get garageBackgroundClassic => 'Klasyczny';
+
+  @override
+  String get garageBackgroundIndustrial => 'Industrialny';
+
+  @override
+  String get garageBackgroundCarbon => 'Ciemny Carbon';
+
+  @override
+  String get garageBackgroundModern => 'Nowoczesny';
+
+  @override
+  String get garageBackgroundAbstract => 'Abstrakcyjny';
+
+  @override
+  String get settingsBackupGuestWarningTitle => 'Uwaga – konto gościa';
+
+  @override
+  String get settingsBackupGuestWarningBody =>
+      'Konta gości mogą być usunięte. Zabezpiecz konto, zanim zrobisz kopię zapasową.';
+
+  @override
+  String get backupCreatedSuccessTitle => 'Kopia zapasowa gotowa';
 }

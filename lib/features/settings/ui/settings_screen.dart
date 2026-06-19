@@ -128,7 +128,11 @@ class _SettingsView extends StatelessWidget {
             child: BlocBuilder<SettingsCubit, SettingsState>(
               builder: (context, state) {
                 return switch (state) {
-                  Initial() || Loading() || Success() => const Center(
+                  Initial() || Loading() => const Center(
+                      child: CircularProgressIndicator(color: Color(0xFFFFD700)),
+                    ),
+                  // Success jest przejściowy — SettingsCubit zawsze wraca do Data przez strumień
+                  Success() => const Center(
                       child: CircularProgressIndicator(color: Color(0xFFFFD700)),
                     ),
                   Error(errorKey: final key) => Center(
@@ -185,14 +189,14 @@ class _SettingsView extends StatelessWidget {
                   color: Color(0xFFFFD700),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Przygotowywanie plików...',
-                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                Text(
+                  l10n.backupPreparingFiles,
+                  style: const TextStyle(color: Colors.white38, fontSize: 12),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'To może chwilę potrwać',
-                  style: TextStyle(color: Colors.white24, fontSize: 10),
+                Text(
+                  l10n.backupMightTakeAMoment,
+                  style: const TextStyle(color: Colors.white24, fontSize: 10),
                 ),
               ],
             ],
@@ -232,9 +236,9 @@ class _SettingsView extends StatelessWidget {
                   color: Color(0xFFFFD700),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Przenoszenie danych...',
-                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                Text(
+                  l10n.backupTransferringData,
+                  style: const TextStyle(color: Colors.white38, fontSize: 12),
                 ),
               ] else if (success) ...[
                 const Icon(Icons.check_circle_outline, color: Colors.green, size: 64),
@@ -259,13 +263,13 @@ class _SettingsView extends StatelessWidget {
               ] else ...[
                 const Icon(Icons.error_outline, color: Colors.red, size: 64),
                 const SizedBox(height: 16),
-                const Text(
-                  'BŁĄD IMPORTU',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+                Text(
+                  l10n.backupImportError,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  error ?? 'Nieznany błąd',
+                  error ?? l10n.backupImportUnknownError,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.redAccent, fontSize: 13),
                 ),
@@ -608,6 +612,9 @@ class _BackupSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final userId = Supabase.instance.client.auth.currentUser!.id;
+    final settingsState = context.watch<SettingsCubit>().state;
+    final isGuest = settingsState is Data && settingsState.isGuest;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -615,6 +622,29 @@ class _BackupSection extends StatelessWidget {
           l10n.settingsBackupDescription,
           style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.5),
         ),
+        if (isGuest) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.orange.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 18),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.settingsBackupGuestWarningBody,
+                    style: const TextStyle(color: Colors.orange, fontSize: 12, height: 1.4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
         const SizedBox(height: 20),
         _ActionTile(
           label: l10n.settingsBackupCreate,
@@ -685,12 +715,13 @@ class _AppearanceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final backgrounds = [
-      {'path': 'assets/images/warm_garage.png', 'name': 'Klasyczny'},
-      {'path': 'assets/images/industrial_dark_garage.png', 'name': 'Industrialny'},
-      {'path': 'assets/images/modern_carbon_garage.png', 'name': 'Ciemny Carbon'},
-      {'path': 'assets/images/add_model_bg.png', 'name': 'Nowoczesny'},
-      {'path': 'assets/images/settings_bg.png', 'name': 'Abstrakcyjny'},
+      {'path': 'assets/images/warm_garage.png', 'name': l10n.garageBackgroundClassic},
+      {'path': 'assets/images/industrial_dark_garage.png', 'name': l10n.garageBackgroundIndustrial},
+      {'path': 'assets/images/modern_carbon_garage.png', 'name': l10n.garageBackgroundCarbon},
+      {'path': 'assets/images/add_model_bg.png', 'name': l10n.garageBackgroundModern},
+      {'path': 'assets/images/settings_bg.png', 'name': l10n.garageBackgroundAbstract},
     ];
 
     final isCustomBg = settings.garageBackground.isNotEmpty && !settings.garageBackground.startsWith('assets/');

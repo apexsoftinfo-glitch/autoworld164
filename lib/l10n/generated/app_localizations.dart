@@ -245,8 +245,14 @@ abstract class AppLocalizations {
   /// No description provided for @marketCarDeletedFromGarage.
   ///
   /// In pl, this message translates to:
-  /// **'Model został usunięty z garażu'**
+  /// **'Model przeniesiony do Wymiana/Sprzedaż'**
   String get marketCarDeletedFromGarage;
+
+  /// No description provided for @carDeletedSuccessfully.
+  ///
+  /// In pl, this message translates to:
+  /// **'Model został usunięty'**
+  String get carDeletedSuccessfully;
 
   /// No description provided for @marketTryAgain.
   ///
@@ -1981,6 +1987,90 @@ abstract class AppLocalizations {
   /// In pl, this message translates to:
   /// **'Czy na pewno chcesz usunąć tę serię?'**
   String get carFormSeriesDeleteConfirmBody;
+
+  /// No description provided for @sellButtonLabel.
+  ///
+  /// In pl, this message translates to:
+  /// **'SPRZEDAJ'**
+  String get sellButtonLabel;
+
+  /// No description provided for @backupPreparingFiles.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przygotowywanie plików...'**
+  String get backupPreparingFiles;
+
+  /// No description provided for @backupMightTakeAMoment.
+  ///
+  /// In pl, this message translates to:
+  /// **'To może chwilę potrwać'**
+  String get backupMightTakeAMoment;
+
+  /// No description provided for @backupTransferringData.
+  ///
+  /// In pl, this message translates to:
+  /// **'Przenoszenie danych...'**
+  String get backupTransferringData;
+
+  /// No description provided for @backupImportError.
+  ///
+  /// In pl, this message translates to:
+  /// **'BŁĄD IMPORTU'**
+  String get backupImportError;
+
+  /// No description provided for @backupImportUnknownError.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nieznany błąd'**
+  String get backupImportUnknownError;
+
+  /// No description provided for @garageBackgroundClassic.
+  ///
+  /// In pl, this message translates to:
+  /// **'Klasyczny'**
+  String get garageBackgroundClassic;
+
+  /// No description provided for @garageBackgroundIndustrial.
+  ///
+  /// In pl, this message translates to:
+  /// **'Industrialny'**
+  String get garageBackgroundIndustrial;
+
+  /// No description provided for @garageBackgroundCarbon.
+  ///
+  /// In pl, this message translates to:
+  /// **'Ciemny Carbon'**
+  String get garageBackgroundCarbon;
+
+  /// No description provided for @garageBackgroundModern.
+  ///
+  /// In pl, this message translates to:
+  /// **'Nowoczesny'**
+  String get garageBackgroundModern;
+
+  /// No description provided for @garageBackgroundAbstract.
+  ///
+  /// In pl, this message translates to:
+  /// **'Abstrakcyjny'**
+  String get garageBackgroundAbstract;
+
+  /// No description provided for @settingsBackupGuestWarningTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Uwaga – konto gościa'**
+  String get settingsBackupGuestWarningTitle;
+
+  /// No description provided for @settingsBackupGuestWarningBody.
+  ///
+  /// In pl, this message translates to:
+  /// **'Konta gości mogą być usunięte. Zabezpiecz konto, zanim zrobisz kopię zapasową.'**
+  String get settingsBackupGuestWarningBody;
+
+  /// No description provided for @backupCreatedSuccessTitle.
+  ///
+  /// In pl, this message translates to:
+  /// **'Kopia zapasowa gotowa'**
+  String get backupCreatedSuccessTitle;
 }
 
 class _AppLocalizationsDelegate

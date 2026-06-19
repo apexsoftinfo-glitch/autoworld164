@@ -130,11 +130,9 @@ class MarketFormCubit extends Cubit<MarketFormState> {
     }
   }
 
-  Future<void> deleteCar(String carId) async {
+  Future<void> deleteCar(MarketCarModel car) async {
     emit(const MarketFormState.loading());
     try {
-      final cars = await _marketRepository.marketCarsStream.first;
-      final car = cars.firstWhere((c) => c.id == carId);
       await _marketRepository.deleteMarketCar(car);
       emit(const MarketFormState.success());
     } catch (e, stack) {
