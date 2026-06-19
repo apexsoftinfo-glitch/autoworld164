@@ -615,52 +615,177 @@ class _SeriesSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current = controller.text;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            label.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.white60,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => _showSeriesBottomSheet(context),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        current.isNotEmpty ? current.toUpperCase() : "WYBIERZ SERIĘ...",
+                        style: TextStyle(
+                          color: current.isNotEmpty ? Colors.white : Colors.white54,
+                          fontSize: 15,
+                          fontWeight: current.isNotEmpty ? FontWeight.w600 : FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const Icon(Icons.keyboard_arrow_down, color: Color(0xFFFFD700)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showSeriesBottomSheet(BuildContext context) {
+    final current = controller.text;
     final Set<String> itemsSet = {...dynamicSeries};
     if (current.isNotEmpty && !itemsSet.contains(current)) itemsSet.add(current);
     final List<String> items = itemsSet.toList()..sort();
-    items.add(context.l10n.commonOther);
+    final l10n = context.l10n;
 
-    return _GlassDropdown<String>(
-      label: label,
-      value: current.isEmpty ? null : (items.contains(current) ? current : null),
-      items: items.map((s) {
-        final isOther = s == context.l10n.commonOther;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1A120B),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (bottomSheetContext) {
+        return Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.white.withValues(alpha: 0.1), width: 1),
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 12),
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  label.toUpperCase(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Przytrzymaj serię dłużej, aby ją usunąć",
+                  style: TextStyle(
+                    color: Colors.white60,
+                    fontSize: 11,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: items.length + 1,
+                    itemBuilder: (ctx, index) {
+                      if (index == items.length) {
+                        return ListTile(
+                          title: Text(
+                            l10n.commonOther.toUpperCase(),
+                            style: const TextStyle(
+                              color: Color(0xFFFFD700),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          trailing: const Icon(Icons.add, color: Color(0xFFFFD700)),
+                          onTap: () async {
+                            Navigator.pop(bottomSheetContext);
+                            final result = await _showCustomDialog(context, label, current);
+                            if (result != null && result.isNotEmpty) {
+                              controller.text = result;
+                              onChanged(result);
+                            }
+                          },
+                        );
+                      }
 
-        return DropdownMenuItem<String>(
-          value: s,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onLongPress: isOther ? null : () async {
-              Navigator.pop(context); // Close dropdown
-              final confirm = await _showDeleteSeriesConfirmDialog(context, s);
-              if (confirm == true && context.mounted) {
-                context.read<MarketFormCubit>().deleteSeries(s);
-                if (current == s) {
-                  controller.clear();
-                  onChanged('');
-                }
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              alignment: Alignment.centerLeft,
-              child: Text(s.toUpperCase(), style: const TextStyle(fontSize: 12)),
+                      final s = items[index];
+                      final isSelected = current == s;
+
+                      return ListTile(
+                        title: Text(
+                          s.toUpperCase(),
+                          style: TextStyle(
+                            color: isSelected ? const Color(0xFFFFD700) : Colors.white,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                        trailing: isSelected ? const Icon(Icons.check, color: Color(0xFFFFD700)) : null,
+                        onTap: () {
+                          Navigator.pop(bottomSheetContext);
+                          controller.text = s;
+                          onChanged(s);
+                        },
+                        onLongPress: () async {
+                          Navigator.pop(bottomSheetContext);
+                          final confirm = await _showDeleteSeriesConfirmDialog(context, s);
+                          if (confirm == true && context.mounted) {
+                            context.read<MarketFormCubit>().deleteSeries(s);
+                            if (current == s) {
+                              controller.clear();
+                              onChanged('');
+                            }
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
             ),
           ),
         );
-      }).toList(),
-      onChanged: (val) async {
-        if (val == context.l10n.commonOther) {
-          final result = await _showCustomDialog(context, label, current);
-          if (result != null && result.isNotEmpty) {
-            controller.text = result;
-            onChanged(result);
-          }
-        } else if (val != null) {
-          controller.text = val;
-          onChanged(val);
-        }
       },
     );
   }
