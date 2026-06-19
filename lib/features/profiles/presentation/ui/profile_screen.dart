@@ -124,7 +124,10 @@ class _ProfileViewState extends State<_ProfileView> {
             if (state.successKey == 'profile_saved') {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(l10n.profileSavedSnackbar),
+                  content: Text(
+                    l10n.profileSavedSnackbar,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -137,7 +140,10 @@ class _ProfileViewState extends State<_ProfileView> {
             if (state.successKey == 'pro_enabled') {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(l10n.proEnabledSnackbar),
+                  content: Text(
+                    l10n.proEnabledSnackbar,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -146,7 +152,10 @@ class _ProfileViewState extends State<_ProfileView> {
             if (state.successKey == 'password_changed') {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(l10n.saveSuccess),
+                  content: Text(
+                    l10n.saveSuccess,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -396,7 +405,10 @@ class _ProfileViewState extends State<_ProfileView> {
                                               if (result == true) {
                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                   SnackBar(
-                                                    content: Text(l10n.accountSecuredSnackbar),
+                                                    content: Text(
+                                                      l10n.accountSecuredSnackbar,
+                                                      style: const TextStyle(color: Colors.white),
+                                                    ),
                                                     backgroundColor: Colors.green,
                                                   ),
                                                 );

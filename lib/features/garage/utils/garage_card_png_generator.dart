@@ -91,7 +91,12 @@ class GarageCardPngGenerator {
       debugPrint('GarageCardPngGenerator error: $e');
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error generating PNG')),
+          const SnackBar(
+            content: Text(
+              'Error generating PNG',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         );
       }
     }

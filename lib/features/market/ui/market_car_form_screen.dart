@@ -83,7 +83,12 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
     final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
     if (total >= 5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.carFormMaxPhotos)),
+        SnackBar(
+          content: Text(
+            l10n.carFormMaxPhotos,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       );
       return;
     }
@@ -104,7 +109,12 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
       debugPrint('MarketCarFormScreen error picking image: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.carFormImageError)),
+          SnackBar(
+            content: Text(
+              l10n.carFormImageError,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         );
       }
     }
@@ -120,10 +130,17 @@ class _MarketCarFormScreenState extends State<MarketCarFormScreen> {
             if (_isDeleting) {
               SoundHelper.playDeleteChime();
             }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(l10n.saveSuccess), backgroundColor: Colors.green),
-            );
+            final messenger = ScaffoldMessenger.of(context);
             Navigator.pop(context);
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text(
+                  _isDeleting ? l10n.carDeletedSuccessfully : l10n.saveSuccess,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                backgroundColor: _isDeleting ? Colors.black87 : Colors.green,
+              ),
+            );
           }
         },
         builder: (context, state) {

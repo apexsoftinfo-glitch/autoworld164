@@ -17,6 +17,7 @@ import '../../../l10n/l10n.dart';
 import '../../market/presentation/cubit/market_cubit.dart';
 import '../../market/ui/widgets/garage_move_success_dialog.dart';
 import '../../../shared/sound_helper.dart';
+import '../../../shared/error_messages.dart';
 import '../../settings/models/settings_model.dart';
 import '../../settings/presentation/settings_cubit.dart';
 
@@ -37,11 +38,15 @@ class CarDetailsScreen extends StatelessWidget {
       ],
       child: BlocListener<MarketCubit, MarketState>(
         listener: (context, state) {
+          final l10n = context.l10n;
           state.whenOrNull(
             error: (key) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(key),
+                  content: Text(
+                    messageForErrorKey(l10n, key),
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   backgroundColor: Colors.red.shade800,
                 ),
               );
@@ -54,10 +59,14 @@ class CarDetailsScreen extends StatelessWidget {
             state.whenOrNull(
               success: () {
                 SoundHelper.playDeleteChime();
+                final messenger = ScaffoldMessenger.of(context);
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
+                messenger.showSnackBar(
                   SnackBar(
-                    content: Text(l10n.carDeletedSuccessfully),
+                    content: Text(
+                      l10n.carDeletedSuccessfully,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     backgroundColor: Colors.black87,
                   ),
                 );
@@ -65,7 +74,10 @@ class CarDetailsScreen extends StatelessWidget {
               error: (key, producers, series) {
                  ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(key),
+                    content: Text(
+                      messageForErrorKey(l10n, key),
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     backgroundColor: Colors.red.shade800,
                   ),
                 );

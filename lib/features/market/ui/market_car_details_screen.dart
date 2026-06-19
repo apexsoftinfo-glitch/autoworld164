@@ -18,6 +18,7 @@ import '../data/repositories/market_repository.dart';
 import 'market_car_form_screen.dart';
 import 'widgets/market_sold_success_dialog.dart';
 import '../../../../shared/sound_helper.dart';
+import '../../../../shared/error_messages.dart';
 
 class MarketCarDetailsScreen extends StatefulWidget {
   final MarketCarModel car;
@@ -54,14 +55,31 @@ class _MarketCarDetailsScreenState extends State<MarketCarDetailsScreen> {
 
           return BlocListener<MarketFormCubit, MarketFormState>(
             listener: (context, state) {
+              final l10n = context.l10n;
               state.whenOrNull(
                 success: () {
                   SoundHelper.playDeleteChime();
+                  final messenger = ScaffoldMessenger.of(context);
                   Navigator.pop(context);
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        l10n.carDeletedSuccessfully,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.black87,
+                    ),
+                  );
                 },
                 error: (key, p, s) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(key), backgroundColor: Colors.redAccent),
+                    SnackBar(
+                      content: Text(
+                        messageForErrorKey(l10n, key),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.redAccent,
+                    ),
                   );
                 },
               );

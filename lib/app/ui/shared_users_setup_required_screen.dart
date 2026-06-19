@@ -109,7 +109,10 @@ class SharedUsersSetupRequiredScreen extends StatelessWidget {
                                 if (!context.mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(l10n.promptCopiedSnackbar),
+                                    content: Text(
+                                      l10n.promptCopiedSnackbar,
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 );
                               },

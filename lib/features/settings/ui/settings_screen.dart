@@ -103,8 +103,13 @@ class _SettingsView extends StatelessWidget {
                   final message = state.messageKey == 'account_upgraded_successfully' 
                       ? l10n.account_upgraded_successfully 
                       : l10n.saveSuccess;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(message)),
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        message,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
                   );
                 }
               }
@@ -119,8 +124,14 @@ class _SettingsView extends StatelessWidget {
                   Navigator.of(context, rootNavigator: true).pop();
                 } else if (state.errorKey != null) {
                   final error = messageForErrorKey(l10n, state.errorKey);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(error), backgroundColor: Colors.red),
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        error,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
                   );
                 }
               }

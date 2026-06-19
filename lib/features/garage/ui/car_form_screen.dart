@@ -126,7 +126,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
     final total = _newImages.length + _remainingPhotoPaths.length + _internetPhotoUrls.length;
     if (total >= 5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.carFormMaxPhotos)),
+        SnackBar(
+          content: Text(
+            l10n.carFormMaxPhotos,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
       );
       return;
     }
@@ -147,7 +152,12 @@ class _CarFormScreenState extends State<CarFormScreen> {
       debugPrint('Error picking image: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.carFormImageError}: $e')),
+          SnackBar(
+            content: Text(
+              '${l10n.carFormImageError}: $e',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         );
       }
     }
@@ -184,11 +194,13 @@ class _CarFormScreenState extends State<CarFormScreen> {
               if (!isEditing) {
                 SoundHelper.playSuccessChime();
               }
+              final messenger = ScaffoldMessenger.of(context);
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
+              messenger.showSnackBar(
                 SnackBar(
                   content: Text(
                     isEditing ? l10n.carFormSuccessEdited : l10n.carFormSuccessAdded,
+                    style: const TextStyle(color: Colors.white),
                   ),
                   backgroundColor: Colors.green.shade800,
                 ),

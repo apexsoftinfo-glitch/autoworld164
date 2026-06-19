@@ -40,7 +40,12 @@ class _HuntingViewState extends State<_HuntingView> {
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.errorCannotOpenLink)),
+          SnackBar(
+            content: Text(
+              context.l10n.errorCannotOpenLink,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         );
       }
     }

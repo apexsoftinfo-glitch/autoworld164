@@ -26,16 +26,20 @@ class App extends StatelessWidget {
             locale: state.localeOrNull,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            theme: ThemeData(
-              brightness: Brightness.dark,
-              scaffoldBackgroundColor: const Color(0xFF0C0C0C),
-              colorScheme: const ColorScheme.dark(
-                primary: Color(0xFFFFD700), // Gold
-                secondary: Color(0xFFFF9800), // Amber
-                surface: Colors.black54,
+              theme: ThemeData(
+                brightness: Brightness.dark,
+                scaffoldBackgroundColor: const Color(0xFF0C0C0C),
+                colorScheme: const ColorScheme.dark(
+                  primary: Color(0xFFFFD700), // Gold
+                  secondary: Color(0xFFFF9800), // Amber
+                  surface: Colors.black54,
+                ),
+                snackBarTheme: const SnackBarThemeData(
+                  backgroundColor: Color(0xFF1A1A1A),
+                  contentTextStyle: TextStyle(color: Colors.white),
+                ),
+                useMaterial3: true,
               ),
-              useMaterial3: true,
-            ),
             home: _AppShell(hasSupabaseKeys: hasSupabaseKeys),
           );
         },
