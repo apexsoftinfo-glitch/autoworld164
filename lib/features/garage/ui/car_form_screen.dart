@@ -765,11 +765,14 @@ class _SeriesSelector extends StatelessWidget {
                 const SizedBox(height: 16),
                 Flexible(
                   child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: items.length + 1,
                     itemBuilder: (ctx, index) {
                       if (index == items.length) {
                         return ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                          leading: const SizedBox(width: 24, height: 24, child: Icon(Icons.add, color: Color(0xFFFFD700))),
                           title: Text(
                             l10n.commonOther.toUpperCase(),
                             style: const TextStyle(
@@ -778,7 +781,6 @@ class _SeriesSelector extends StatelessWidget {
                               fontSize: 14,
                             ),
                           ),
-                          trailing: const Icon(Icons.add, color: Color(0xFFFFD700)),
                           onTap: () async {
                             Navigator.pop(bottomSheetContext);
                             final result = await _showCustomSeriesDialog(context, current);
@@ -795,6 +797,12 @@ class _SeriesSelector extends StatelessWidget {
                       final isSelected = current == s;
 
                       return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                        leading: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: isSelected ? const Icon(Icons.check, color: Color(0xFFFFD700)) : null,
+                        ),
                         title: Text(
                           s.toUpperCase(),
                           style: TextStyle(
@@ -803,23 +811,40 @@ class _SeriesSelector extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
-                        trailing: isSelected ? const Icon(Icons.check, color: Color(0xFFFFD700)) : null,
+                        trailing: isFixed
+                            ? null
+                            : IconButton(
+                                icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20),
+                                onPressed: () async {
+                                  Navigator.pop(bottomSheetContext);
+                                  final confirm = await _showDeleteSeriesConfirmDialog(context, s);
+                                  if (confirm == true && context.mounted) {
+                                    context.read<CarFormCubit>().deleteSeries(s);
+                                    if (current == s) {
+                                      controller.clear();
+                                      onChanged('');
+                                    }
+                                  }
+                                },
+                              ),
                         onTap: () {
                           Navigator.pop(bottomSheetContext);
                           controller.text = s;
                           onChanged(s);
                         },
-                        onLongPress: isFixed ? null : () async {
-                          Navigator.pop(bottomSheetContext);
-                          final confirm = await _showDeleteSeriesConfirmDialog(context, s);
-                          if (confirm == true && context.mounted) {
-                            context.read<CarFormCubit>().deleteSeries(s);
-                            if (current == s) {
-                              controller.clear();
-                              onChanged('');
-                            }
-                          }
-                        },
+                        onLongPress: isFixed
+                            ? null
+                            : () async {
+                                Navigator.pop(bottomSheetContext);
+                                final confirm = await _showDeleteSeriesConfirmDialog(context, s);
+                                if (confirm == true && context.mounted) {
+                                  context.read<CarFormCubit>().deleteSeries(s);
+                                  if (current == s) {
+                                    controller.clear();
+                                    onChanged('');
+                                  }
+                                }
+                              },
                       );
                     },
                   ),
