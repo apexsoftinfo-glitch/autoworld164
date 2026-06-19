@@ -678,6 +678,7 @@ class _SeriesSelector extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
+      enableDrag: false,
       backgroundColor: const Color(0xFF1A120B),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
